@@ -152,9 +152,6 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 									<div class="col-md-4 col-sm-6 col-12 d-flex justify-content-end">
 										<div class="mt-4">
-											<button class="btn btn-outline-primary mr-2 addToWishlist" data-id={{ $c->id }}>
-												<i class="fas fa-heart " data-toggle="tooltip" data-title="Añadir a la lista de deseos"></i>
-											</button>
 											<button class="btn btn-outline-danger eliminar">
 												<i class="fas fa-times mr-2"></i>Eliminar
 											</button>
@@ -913,35 +910,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			}
 		})
 
-		$('.addToWishlist').click(function(){
-			let producto = $(this).data('id')
-			let that = $(this)
-
-			$.post({
-				url: '/lista-de-deseos',
-				data: { productoid: producto },
-				beforeSend(){
-					that.attr('disabled', true)
-					that.html('<i class="fas fa-circle-notch fa-spin fa-"></i>')
-				}
-			})
-			.done((res) => {
-				if (res.type == 'warning') {
-					toastr.warning(res.mess)
-				}
-				else {
-					toastr.success(res.mess)
-					$('#wishlist_counter').removeClass('d-none')
-					$('#wishlist_counter').text(res.wl_qty)
-				}
-
-				that.removeAttr('disabled')
-				that.html('<i class="fas fa-heart"></i>')
-			})
-			.fail((err) => {
-				console.log(err)
-			})
-		})
+		
 
 		$('#pay_method').change(function() {
 			let valor = $(this).val()

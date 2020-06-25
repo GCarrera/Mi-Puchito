@@ -152,11 +152,13 @@
 													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
 												</button>
 											@else
-												<button  class="btn btn-outline-primary btn-block mb-2" disabled>
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
+												<button class="btn btn-outline-primary btn-block mb-2" disabled>
+													<i class="fa fa-heart" data-toggle="tooltip" data-title="Inicia sesión para usar esta función"></i>
 												</button>
 												<button type="button" class="btn btn-primary btn-block" disabled>
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
+													<span data-toggle="tooltip" data-title="Inicia sesión para poder comprar">
+														<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
+													</span>
 												</button>
 											@endauth
 
@@ -339,7 +341,7 @@
 				}
 			})
 			.done((res) => {
-				console.log(res)
+				// console.log(res)
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				}

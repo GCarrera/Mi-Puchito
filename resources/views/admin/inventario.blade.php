@@ -126,11 +126,11 @@
 				<div class="modal-body">
 
 					<div class="form-row mb-4">
-						<div class="col-md-6 col-12">
+						<div class="col-md-6 col-12 mb-3">
 							<label for="product_name">Nombre del producto</label>
 							<input type="text" class="form-control ProductNameAutoComplete" name="product_name" id="product_name" required autocomplete="off">
 						</div>
-						<div class="col-md-3 col-12">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="enterprise">Empresa fabricante</label><br>
 							<select name="enterprise" id="enterprise" class="selectpicker border form-control" data-live-search="true" data-width="100%">
 								<option disabled selected>Selecciona</option>
@@ -151,12 +151,12 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-md-4 col-12">
+						<div class="col-md-4 col-12 mb-3">
 							<label for="cantidad">Cantidad</label>
 							<input type="number" min="0" class="form-control" name="cantidad" id="cantidad" required>
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12">
+						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad" class="selectpicker border form-control" data-width="100%">
 								<option disabled selected>Selecciona</option>
@@ -237,11 +237,11 @@
 				<div class="modal-body">
 
 					<div class="form-row mb-4">
-						<div class="col-md-6 col-12">
+						<div class="col-md-6 col-12 mb-3">
 							<label for="product_name">Nombre del producto</label>
 							<input type="text" class="form-control ProductNameAutoComplete" name="product_name" id="product_name_edit" required autocomplete="off">
 						</div>
-						<div class="col-md-3 col-12">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="enterprise">Empresa fabricante</label><br>
 							<select name="enterprise" id="enterprise_edit" class="selectpicker border form-control" data-live-search="true" data-width="100%">
 								<option disabled selected>Selecciona</option>
@@ -262,12 +262,12 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-md-4 col-12">
+						<div class="col-md-4 col-12 mb-3">
 							<label for="cantidad">Cantidad</label>
 							<input type="number" min="0" class="form-control" name="cantidad" id="cantidad_edit" required>
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12">
+						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad_edit" class="selectpicker border form-control" data-width="100%">
 								<option disabled selected>Selecciona</option>

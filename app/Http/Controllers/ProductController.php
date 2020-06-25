@@ -60,9 +60,28 @@ class ProductController extends Controller
 		return $product;
 	}
 
-	public function update(Request $request, $id)
+	public function update(Request $req, $id)
 	{
-		//
+		$product = Product::find($id);
+		
+		$product->cost                   = $req->input('cost');
+		$product->iva_percent            = $req->input('iva_percent');
+		$product->retail_margin_gain     = $req->input('retail_margin_gain');
+		// $product->retail_pvp             = $req->input('retail_pvp');
+		$product->retail_total_price     = $req->input('retail_total_price');
+		$product->retail_iva_amount      = $req->input('retail_iva_amount');
+		$product->image                  = $product->image;
+		$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
+		// $product->wholesale_pvp          = $req->input('wholesale_pvp');
+		$product->wholesale_packet_price = $req->input('wholesale_packet_price');
+		$product->wholesale_total_individual_price = $req->input('wholesale_total_individual_price');
+		$product->wholesale_total_packet_price     = $req->input('wholesale_total_packet_price');
+		$product->wholesale_iva_amount   = $req->input('wholesale_iva_amount');
+		$product->inventory_id           = $product->inventory_id;
+
+		$product->save();
+
+		return redirect()->back()->with('success', 'Producto editado exitosamente.');
 	}
 
 	public function destroy($id)
