@@ -20,7 +20,7 @@ class CreateSalesTable extends Migration
             $table->string('amount');
             $table->string('dispatched')->default('No');
             $table->string('payment_reference_code');
-            $table->string('payment_capture');
+            // $table->string('payment_capture');
             $table->string('delivery')->default('No');
             $table->unsignedInteger('user_id');
             $table->timestamps();

@@ -39,7 +39,7 @@ class SaleController extends Controller
 		$code     = '20-123321213';
 		$delivery = $req->input('delivery');
 		$user     = auth()->user()->id;
-		$payment_capture = $req->file('capture_payment')->store('capturas');
+		// $payment_capture = $req->file('capture_payment')->store('capturas');
 		$payment_reference_code = $req->input('numero_referencia');
 
 		$sale = new Sale();
@@ -48,7 +48,7 @@ class SaleController extends Controller
 		// $sale->type     = $type;
 		$sale->amount   = $monto;
 		$sale->payment_reference_code = $payment_reference_code;
-		$sale->payment_capture = $payment_capture;
+		// $sale->payment_capture = $payment_capture;
 		$sale->delivery = $delivery;
 		$sale->user_id  = $user;
 

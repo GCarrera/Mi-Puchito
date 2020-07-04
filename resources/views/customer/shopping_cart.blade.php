@@ -123,9 +123,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<span class="preciopvp">{{ number_format($c->attributes->wholesale_total_packet_price, 2, ',', '.') }}</span> c/u
 											</span>
 											<br>
-											<span class="text-muted small">
+											{{--<span class="text-muted small">
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{  number_format($c->attributes->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
-											</span>
+											</span>--}}
 											<br>
 
 										@else
@@ -136,9 +136,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> c/u
 											</span>
 											<br>
-											<span class="text-muted small">
+											{{-- <span class="text-muted small">
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{ number_format($c->attributes->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
-											</span>
+											</span> --}}
 											<br>
 
 										@endif
@@ -174,7 +174,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 				</div>
 				<div class="card-footer d-flex justify-content-between">
-					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#clear_cart"><i class="fas fa-times mr-2"></i>Limpiar carrito</button>
+					@if(count($cart) > 0)
+						<button type="button" class="btn btn-danger" id="limpiar_carrito" data-toggle="modal" data-target="#clear_cart"><i class="fas fa-times mr-2"></i>Limpiar carrito</button>
+					@endif
 					<a href="/home" class="btn btn-primary"><i class="fas fa-cart-plus mr-2"></i>Seguir comprando</a>
 				</div>
 			</div>
@@ -257,11 +259,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<input type="hidden" name="monto" id="monto">
 						<input type="hidden" name="user_address_delivery" id="user_address_delivery">
 						<input type="hidden" name="numero_referencia" id="numero_referencia">
-						<input type="file" name="capture_payment" class="custom-file-input" accept="image/*" id="customFile" style="height: 1px; width: 1px">
+						<!-- <input type="file" name="capture_payment" class="custom-file-input" accept="image/*" id="customFile" style="height: 1px; width: 1px"> -->
 
 						<div class="row mb-4">
 							<div class="col">
-								<label for="delivery">¿Desea contratar el servicio de entrega personalizada?</label>
+								<label for="delivery" class="text-success">¿Desea el servicio delivery?</label>
 								<select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
@@ -391,16 +393,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				<div class="row mb-3">
 					<div class="col-12">
 						<label for="direccion">Selecciona una dirección para la entrega</label><br>
-						<select required name="address" data-live-search="true" class="selectpicker border form-control" data-width="100%" id="direccion">
+						<select required name="address" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="direccion">
 							<option selected disabled>Direcciones registradas</option>
 							{{-- <option data-subtext="Registrar una nueva dirección para la entrega" value="nueva">Nueva dirección</option> --}}
 
 							@forelse ($user_address as $address)
 								<option data-subtext="{{ number_format($address->travel_rate->rate, 0, ',', '.') }} Bs" value="{{ $address->id }}">{{ $address->travel_rate->sector->sector }}</option>
 							@empty
-								<option disabled>Ve a tu perfil y añade una dirección para la entrega.</option>
+								<option disabled>No tienes direcciones registradas</option>
 							@endforelse
 						</select>
+						@if($user_address)
+
+							<a href="/perfil/"><i class="fas fa-plus mr-1"></i>Registrar una dirección</a>
+						@endif
 					</div>
 				</div>
 
@@ -450,7 +456,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 {{-- MODAL PARa SELECCONAR EL TIPO DE PAGO --}}
 <div class="modal fade" id="pay_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<div class="modal-content modal-sm">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Rellena todos los campos</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -475,30 +481,30 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<div id="collapse-{{ $loop->iteration }}" class="collapse" aria-labelledby="heading-{{ $loop->iteration }}" data-parent="#accordionExample">
 								<div class="card-body">
 									<div class="row">
-										<div class="col-6 col-md-2">
+										<div class="col-6">
 											<small class="font-weight-bold">Código</small>
 											<p>{{ $c->code }}</p>
 										</div>
-										<div class="col-12 col-md-6 ">
-											<small class="font-weight-bold">Número de cuenta</small>
-											<p>{{ $c->account_number }}</p>
-										</div>
-										<div class="col-12 col-md-4 ">
+										<div class="col-6 ">
 											<small class="font-weight-bold">Cédula</small>
 											<p>{{ $c->dni }}</p>
+										</div>
+										<div class="col-12 ">
+											<small class="font-weight-bold">Número de cuenta</small>
+											<p>{{ $c->account_number }}</p>
 										</div>
 									</div>
 									<hr>
 									<div class="row ">
-										<div class="col-12 col-md-4">
+										<div class="col-12">
 											<small class="font-weight-bold">Nombre empresa</small>
 											<p>{{ $c->name_enterprise }}</p>
 										</div>
-										<div class="col-12 col-md-4 ">
+										<div class="col-12 ">
 											<small class="font-weight-bold">Teléfono</small>
 											<p>{{ $c->phone_enterprise }}</p>
 										</div>
-										<div class="col-12 col-md-4 ">
+										<div class="col-12 ">
 											<small class="font-weight-bold">Correo Electrónico</small>
 											<p>{{ $c->email_enterprise }}</p>
 										</div>
@@ -517,9 +523,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 				</div>
 
-				<hr class="my-4">
-
-				<h6 class="mb-3 font-weight-light">Información del cliente</h6>
+				{{--<h6 class="mb-3 font-weight-light">Información del cliente</h6>
 				<div class="row">
 					<div class="col-6 col-md-4">
 						<small class="font-weight-bold">Cédula</small>
@@ -533,27 +537,27 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<small class="font-weight-bold">Apellido</small>
 						<p>{{ $user->people->lastname }}</p>
 					</div>
-				</div>
+				</div>--}}
 
 				<hr class="my-4">
 
 				<h6 class="mb-3 font-weight-light">Información del pago</h6>
 				<div class="row mb-2">
-					<div class="col-12 col-md-5 mb-3">
+					<div class="col-12 mb-3">
 						<label for="referencia">Número de referencia</label>
 						<input type="number" id="referencia" class="form-control" name="referencia">
 					</div>
-					<div class="col-12 text-center col-md-7">
+					<!-- <div class="col-12 text-center col-md-7">
 						<label for="customFile">Captura de la operación</label>
 						<label id="btn_search" class="btn btn-primary" for="customFile"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-					</div>
+					</div> -->
 				</div>
 
-				<div class="row">
+				<!-- <div class="row">
 					<div class="col">
 						<img class="img-fluid rounded-lg d-none img-thumbnail" id="capture_preview">
 					</div>
-				</div>
+				</div> -->
 
 			</div>
 			<div class="modal-footer">
@@ -794,6 +798,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			$.ajax('/limpiar_carrito', { method: 'delete' })
 			.done((res) => {
 
+				$('#limpiar_carrito').remove()
+
 				$('#cart_counter').text(res)
 				$('.itempadre').remove()
 
@@ -936,17 +942,17 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			$('#enviarPago').removeAttr('disabled')
 		})
 
-		$('#customFile').change(function(e) {
-			let reader = new FileReader()
+		// $('#customFile').change(function(e) {
+		// 	let reader = new FileReader()
 
-			reader.onload = () => {
-				$('#capture_preview').attr('src', reader.result)
-				$('#capture_preview').removeClass('d-none')
+		// 	reader.onload = () => {
+		// 		$('#capture_preview').attr('src', reader.result)
+		// 		$('#capture_preview').removeClass('d-none')
 
-			}
+		// 	}
 
-			reader.readAsDataURL(e.target.files[0])
-		})
+		// 	reader.readAsDataURL(e.target.files[0])
+		// })
 
 
 		// EMVIAR PAGO

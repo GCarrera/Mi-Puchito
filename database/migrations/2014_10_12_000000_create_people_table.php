@@ -18,7 +18,7 @@ class CreatePeopleTable extends Migration
             $table->string('dni', 9)->unique();;
             $table->string('name');
             $table->string('lastname');
-            $table->string('phone_number', 11);
+            $table->string('phone_number', 11)->nullable();
             $table->timestamps();
         });
     }

@@ -1,11 +1,11 @@
 @include('layouts.header')
 
-<div class="d-flex  justify-content-center align-items-center">
+<div class="d-flex justify-content-center align-items-center" style="height: 100%">
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-8">
 				<div class="card">
-					<div class="card-header">{{ __('Registro') }}</div>
+					<div class="card-header">{{ __('Crea tu cuenta') }}</div>
 
 					<div class="card-body">
 						<form method="POST" action="{{ route('register') }}">
@@ -67,7 +67,7 @@
 								</div>
 							</div>
 
-							<div class="form-group row">
+							{{--<div class="form-group row">
 								<label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('Teléfono') }}</label>
 
 								<div class="col-md-6">
@@ -79,7 +79,7 @@
 										</span>
 									@enderror
 								</div>
-							</div>
+							</div>--}}
 
 							<div class="form-group row">
 								<label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Contraseña') }}</label>
@@ -106,7 +106,7 @@
 							<div class="form-group row mb-0">
 								<div class="col-md-6 offset-md-4">
 									<button type="submit" class="btn btn-md btn-primary">
-										{{ __('Registrar') }}
+										<i class="fas fa-save mr-2"></i>{{ __('Registrar') }}
 									</button>
 								</div>
 							</div>

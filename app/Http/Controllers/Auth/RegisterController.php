@@ -65,7 +65,7 @@ class RegisterController extends Controller
             'dni' => ['required', 'digits_between:8,9'],
             'name' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'digits:11'],
+            // 'phone_number' => ['required', 'digits:11'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
@@ -86,7 +86,7 @@ class RegisterController extends Controller
             $people->dni = $data['dni'];
             $people->name = $data['name'];
             $people->lastname = $data['lastname'];
-            $people->phone_number = $data['phone_number'];
+            // $people->phone_number = $data['phone_number'];
 
             $people->save();
 
