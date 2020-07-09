@@ -134,4 +134,15 @@
 </div>
 
 
-@include('layouts.header')
+@push('scripts')
+<script>
+	$(() => {
+		$('#password').click((e) => {
+			console.log(e.target)
+		})
+	})
+</script>
+@endpush
+
+
+@include('layouts.footer')
