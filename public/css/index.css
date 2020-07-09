@@ -19,7 +19,7 @@
 
 html, body {
 	height: 100% !important;
-	background-color: #f5f5f5;
+	background: radial-gradient(white, #e4e4e4);
 	font-family: "Open Sans" !important;
 	font-size: .95em;
 	/*margin: 0;*/
@@ -28,15 +28,15 @@ html, body {
 
 .fondo-login {
 	height: 100%;
-	background-image: url('/img/fondologin.jpg');
+	/*background-image: url('/img/fondologin.jpg');
 	background-attachment: fixed;
 	background-position: center;
 	background-repeat: no-repeat;
-	background-size: cover;
+	background-size: cover;*/
 }
 
 .card, .btn, .form-control, .input-group-text, .file-input-wrapper, .SearchProductNameAutoComplete, .modal-content, .modal_loader  {
-	border-radius: 0.60rem;
+	border-radius: 0.50rem;
 }
 
 .input-group > .form-control:not(:last-child), .input-group > .custom-select:not(:last-child) {
@@ -45,17 +45,17 @@ html, body {
 }
 
 .card > .card-body > .list-group:first-child .list-group-item:first-child {
-	border-top-left-radius: 0.60rem;
-  	border-top-right-radius: 0.60rem;
+	border-top-left-radius: 0.50rem;
+  	border-top-right-radius: 0.50rem;
 }
 
 .card > .card-body > .list-group:last-child .list-group-item:last-child {
-	border-bottom-left-radius: 0.60rem;
-  	border-bottom-right-radius: 0.60rem;
+	border-bottom-left-radius: 0.50rem;
+  	border-bottom-right-radius: 0.50rem;
 }
 
 .rounded-lg {
-	border-radius: 0.60rem !important;
+	border-radius: 0.50rem !important;
 }
 
 .navbar {

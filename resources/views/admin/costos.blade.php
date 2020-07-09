@@ -66,10 +66,11 @@
 							<thead>
 								<tr>
 									<th>PRODUCTO</th>
+									<th>COSTO (Bs)</th>
 									<!-- <th>I.V.A (%)</th> -->
-									<!-- <th>GANANCIA AL MAYOR (%)</th> -->
+									<th>GANANCIA AL MAYOR (%)</th>
 									<th>PRECIO AL MAYOR (Bs)</th>
-									<!-- <th>GANANCIA AL MENOR (%)</th> -->
+									<th>GANANCIA AL MENOR (%)</th>
 									<th>PRECIO AL MENOR (Bs)</th>
 									<th class="text-center">ACCIONES</th>
 								</tr>
@@ -78,10 +79,11 @@
 								@forelse ($productos as $pro)
 									<tr>
 										<td>{{ $pro->inventory->product_name }}</td>
+										<td>{{ $pro->cost }}</td>
 										<!-- <td>{{ $pro->iva_percent }}</td> -->
-										<!-- <td>{{ $pro->wholesale_margin_gain }}</td> -->
+										<td>{{ $pro->wholesale_margin_gain }}</td>
 										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }}</td>
-										<!-- <td>{{ $pro->retail_margin_gain }}</td> -->
+										<td>{{ $pro->retail_margin_gain }}</td>
 										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}</td>
 										<td class="text-center">
 											<button class="btn mr-2 btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">

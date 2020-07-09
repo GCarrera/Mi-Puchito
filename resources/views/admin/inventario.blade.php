@@ -125,6 +125,7 @@
 
 				<div class="modal-body">
 
+
 					<div class="form-row mb-4">
 						<div class="col-md-6 col-12 mb-3">
 							<label for="product_name">Nombre del producto</label>
@@ -138,6 +139,7 @@
 									<option value="{{ $e->id }}">{{ $e->name }}</option>
 								@endforeach
 							</select>
+							<small ><a href="/admin/empresa_categorias">Ir a empresas y categorias</a></small>
 						</div>
 						<div class="col-md-3 col-12">
 							<label for="category">Categoria</label><br>
@@ -159,10 +161,11 @@
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad" class="selectpicker border form-control" data-width="100%">
-								<option disabled selected>Selecciona</option>
+								<option disabled>Selecciona</option>
 								<option value="bulto">Bulto</option>
-								<option value="caja">Caja</option>
+								<option selected value="caja">Caja</option>
 								<option value="saco">Saco</option>
+								<option value="granel">Granel</option>
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
@@ -214,7 +217,7 @@
 	</div>
 </div>
 
-<!-- Modal EDITAR poducto -->
+<!-- Modal EDITAsR poducto -->
 <div class="modal fade" id="editPRoduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -343,7 +346,6 @@
 
 			let productos_totales = cantidad * cant_prod
 			
-			console.log(productos_totales)
 			$('.cantidad_producto').text(`${productos_totales} productos`)
 			$('#cantidad_producto_hd').val(productos_totales)
 			$('#cantidad_producto_hd_edit').val(productos_totales)
@@ -381,7 +383,12 @@
 
 				$('#description_edit').val(response.description)
 
+				let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
+				let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
 
+				let productos_totales = cantidad * cant_prod
+				
+				$('#cantidad_producto_hd_edit').val(productos_totales)
 
 				$('#modal_loader').fadeOut()
 			})
