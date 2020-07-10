@@ -27,7 +27,7 @@
         					<div class="input-group-prepend">
           						<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 							</div>
-							<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" @error('email') value="{{ old('email') }}" @enderror value="elon@musk.com" required placeholder="Email">
+							<input autofocus id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" @error('email') value="{{ old('email') }}" @enderror value="elon@musk.com" required placeholder="Email">
 
 							@error('email')
 								<span class="invalid-feedback" role="alert">

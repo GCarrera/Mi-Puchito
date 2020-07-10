@@ -210,6 +210,7 @@
 								<p id="image_name" class="mt-3 mb-1"></p>
 								<p id="image_weigth" class="mb-3"></p>
 
+								<p id="imgerror" class="text-danger" style="display: none;"></p>
 								<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
 								<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
 								<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*" required>
@@ -450,19 +451,46 @@
 			let file   = e.target.files[0];
 			let reader = new FileReader();
 
-			console.log(file)
+			let filesize = file.size / 1024
+
+			// validaciones del archivo
+			if (filesize > 150) {
+				$('#imgerror').text('La imagen excede los 150kb permitidos.')
+				$('#imgerror').show()
+				return
+			}
+
+			let allowed_ext = ['png', 'jpeg', 'gif']
+			let ext_length = allowed_ext.length
+
+			for (let i = 0; i < ext_length; i++){
+				
+				if (!file.type.includes(allowed_ext[i])) {
+					if (ext_length - 1 == i) {
+						$('#imgerror').text('Este formato no está permitido.')
+						$('#imgerror').show()
+
+						return
+					} 
+				}
+				else {
+					break
+				}
+			}
 
 			reader.onload = (ev) => {
+				$('#imgerror').hide()
+					
 				$('#foto').show();
 				$('#clearbtn').show();
 
 				$('#foto').attr('src', ev.target.result);
 				$('#image_name').text(file.name)
-				$('#image_weigth').text(`${(file.size / 1024).toFixed(2)} kb`)
+				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
 			}
 
 			$('#clearbtn').click(() => {
-				console.log('goola vle')
+				$('#imgerror').text('')
 				$('#fileinput').val('')
 				$('#foto').hide()
 				$('#image_name').text('')

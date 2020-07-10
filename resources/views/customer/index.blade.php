@@ -118,7 +118,7 @@
 
 					<div class="card-header d-flex justify-content-between align-items-center">
 						<h5>{{ $k }}</h5>
-						<a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a>
+						{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
 					</div>
 					<div class="card-body">
 

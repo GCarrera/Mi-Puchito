@@ -22,7 +22,7 @@
 						<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-id-card"></i></div>
 						</div>
-						<input id="dni" type="text" class="form-control @error('dni') is-invalid @enderror" name="dni" value="{{ old('dni') }}" required>
+						<input id="dni" autofocus type="text" class="form-control @error('dni') is-invalid @enderror" name="dni" value="{{ old('dni') }}" required>
 
 						@error('dni')
 							<span class="invalid-feedback" role="alert">
