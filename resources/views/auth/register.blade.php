@@ -95,9 +95,17 @@
 					<div class="input-group mb-3">
 
 						<div class="input-group-prepend">
-							<div class="input-group-text"><i class="fas fa-lock"></i></div>
+							<div class="input-group-text">
+								<i class="fas fa-lock"></i>
+							</div>
 						</div>
-						<input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+						<input id="password" type="password" class="form-control rounded-right border border-right-0 @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" >
+
+						<div class="input-group-prepend">
+							<div class="input-group-text rounded-right rounder-icon-password-input">
+								<i id="icon-eye-password" class="fas fa-eye"></i>
+							</div>
+						</div>
 
 						@error('password')
 							<span class="invalid-feedback" role="alert">
@@ -113,14 +121,23 @@
 							<div class="input-group-text"><i class="fas fa-lock"></i></div>
 						</div>
 
-						<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+						<input id="password-confirm" type="password" class="form-control rounded-right border border-right-0" name="password_confirmation" required autocomplete="new-password">
+
+						<div class="input-group-prepend">
+							<div class="input-group-text rounded-right rounder-icon-password-input">
+								<i id="icon-eye-password-confirm" class="fas fa-eye"></i>
+							</div>
+						</div>
 					</div>
+
 
 					<div class="form-group mb-3">
 						<button type="submit" class="btn btn-md btn-primary btn-block">
 							<i class="fas fa-save mr-2"></i>{{ __('Registrar y acceder') }}
 						</button>
 					</div>
+
+
 
 					<hr>
 
@@ -136,10 +153,51 @@
 
 @push('scripts')
 <script>
-	$(() => {
-		$('#password').click((e) => {
-			console.log(e.target)
-		})
+	$(() => { 
+		$('#icon-eye-password').click((e) => {	
+			if ($('#password').val()) {
+				if ($('#icon-eye-password').hasClass('fa-eye')) {
+					$('#password').removeAttr('type');
+					$('#icon-eye-password').addClass('fa-eye-slash').removeClass('fa fa-eye');
+				} else {
+					$('#password').attr('type', 'password');
+					$('#password-confirm').attr('type', 'password');
+					$('#icon-eye-password').addClass('fa fa-eye').removeClass('fa-eye-slash');;
+				}
+			}
+		});
+
+		//Validar que el icono cambie cuando el input este vacio, o si deciden borrar el pass completamente.
+		$('#password').keyup((e) => {
+			if ($('#password').val() === '') {
+				$('#password').attr('type', 'password');
+				$('#icon-eye-password').addClass('fa fa-eye').removeClass('fa-eye-slash');
+				$('#icon-eye-password-confirm').addClass('fa fa-eye').removeClass('fa-eye-slash');
+				$('#password-confirm').attr('type', 'password');
+				$('#password-confirm').val('');
+			}
+		});	
+
+		/*------------------------------ Confirmar contraseña --------------------------------------*/
+		$('#icon-eye-password-confirm').click((e) => {	
+			if ($('#password').val()) {
+				if ($('#icon-eye-password-confirm').hasClass('fa-eye')) {
+					$('#password-confirm').removeAttr('type');
+					$('#icon-eye-password-confirm').addClass('fa-eye-slash').removeClass('fa fa-eye');
+				} else {
+					$('#password-confirm').attr('type', 'password');
+					$('#icon-eye-password-confirm').addClass('fa fa-eye').removeClass('fa-eye-slash');;
+				}
+			}
+		});
+
+		$('#password-confirm').keyup((e) => {
+			if ($('#password-confirm').val() === '') {
+				$('#password-confirm').attr('type', 'password');
+				$('#icon-eye-password-confirm').addClass('fa fa-eye').removeClass('fa-eye-slash');
+			}
+		});
+
 	})
 </script>
 @endpush
