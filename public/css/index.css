@@ -90,6 +90,11 @@ html, body {
 	width: 30px
 }
 
+.rounder-icon-password-input {
+	border-top-right-radius: 0.50rem !important; 
+	border-bottom-right-radius: 0.50rem !important;
+}
+
 .loading {
 	overflow-y: hidden;
 	height: 100%;
