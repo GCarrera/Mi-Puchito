@@ -12,7 +12,7 @@
 </div>
 
 
-<div id="carouselExampleIndicators" class="carousel slide mt-5" data-ride="carousel">
+{{-- <div id="carouselExampleIndicators" class="carousel slide mt-5" data-ride="carousel">
 	<ol class="carousel-indicators">
 		<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
 		<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -49,7 +49,7 @@
 		<span class="carousel-control-next-icon" aria-hidden="true"></span>
 		<span class="sr-only">Next</span>
 	</a>
-</div>
+</div> --}}
 
 
 
@@ -127,7 +127,7 @@
 								@if( ! $al_mayor )
 									
 									<div class="card shadow-sm">
-										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->image }}' class="card-img-top">
+										<img style="height: 200px; object-fit: contain" src='{{ url("storage/$producto->image") }}' class="card-img-top">
 										<div class="card-body">
 											<h5 class="card-title font-weight-light">{{ $producto->inventory->product_name }}</h5>
 
