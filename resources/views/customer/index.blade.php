@@ -152,14 +152,14 @@
 													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
 												</button>
 											@else
-												<button class="btn btn-outline-primary btn-block mb-2" disabled>
+												<a href="{{ url('login') }}" class="btn btn-outline-primary btn-block mb-2">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Inicia sesión para usar esta función"></i>
-												</button>
-												<button type="button" class="btn btn-primary btn-block" disabled>
-													<span data-toggle="tooltip" data-title="Inicia sesión para poder comprar">
+												</a>
+												<a href="{{ url('login') }}" class="btn btn-primary btn-block">
+													<span data-toggle="tooltip">
 														<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
 													</span>
-												</button>
+												</a>
 											@endauth
 
 										</div>
@@ -341,12 +341,11 @@
 				}
 			})
 			.done((res) => {
-				// console.log(res)
+				console.log(res)
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
-				}
-				else {
-
+				} else {
+					toastr.success('Producto añadido al carrito')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
 				}

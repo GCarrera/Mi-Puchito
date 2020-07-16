@@ -23,10 +23,10 @@
 		</div>
 
 		<ul class="navbar-nav ml-auto">
-			<li class="nav-item" id="inicio">
-				<a class="nav-link" href="/home"><i class="fas fa-home mr-2"></i>Inicio</a>
-			</li>
 			@auth
+				<li class="nav-item" id="inicio">
+					<a class="nav-link" href="/home"><i class="fas fa-home mr-2"></i>Inicio</a>
+				</li>
 				<li class="nav-item" id="lista-de-deseos">
 					<a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2"></i>
 						<span class="badge badge-secondary d-none" id="wishlist_counter">0</span> Lista de deseos
@@ -51,6 +51,9 @@
 				</li>
 			@endauth
 			@guest
+				<li class="nav-item" id="inicio">
+					<a class="nav-link" href="/"><i class="fas fa-home mr-2"></i>Inicio</a>
+				</li>
 				<li class="nav-item" id="lista-de-deseos">
 					<a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
 						<i class="fas fa-heart mr-2"></i>
