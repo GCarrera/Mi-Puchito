@@ -18,6 +18,14 @@
 			console.log(LocalStorage.getItem('buttonPressed'))
 			window.location = 'login'
 		}
+		
+		function soloNumeros(e){
+			var key = window.event ? e.which : e.keyCode;
+			if (key < 48 || key > 57) {
+				//Usando la definición del DOM level 2, "return" NO funciona.
+				e.preventDefault();
+			}
+		}
 	</script>
 	@stack('scripts')
 </body>

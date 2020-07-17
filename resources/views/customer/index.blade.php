@@ -56,20 +56,15 @@
 <div class="container-fluid mt-70 wrapper">
 	<div class="row">
 		<div class="col-lg-3 col-12">
-			<div class="card shadow-sm mb-4">
+			<div class="card shadow-sm ">
 				<div class="card-body">
 					<div class="form-group mb-4">
-						<label for="empresas">Mostrar los productos por el tipo de compra</label>
-						<select class="form-control" id="tipo_prod">
-							<option disabled selected>Selecciona</option>
-							<option value="mayor">Al Mayor</option>
-							<option value="menor">Al Menor</option>
-						</select>
+						<label for="empresas">Precios por el tipo de compra</label>
+						<ul class="nav-list">
+							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'bold' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a></li>
+							<li><a class="font-weight-{{ Request::get('buytype') == 'minor' ? 'bold' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a></li>
+						</ul>
 					</div>
-
-					<button class="btn btn-primary btn-block mr-2" type="button" id="typebtn">
-						<i class="fas fa-shopping-cart mr-2"></i>Mostrar
-					</button>
 				</div>
 			</div>
 			<div class="card shadow-sm mb-4">
@@ -84,7 +79,8 @@
 								<option disabled selected>Selecciona una empresa</option>
 								<option value=""> Todos</option>
 								@foreach ($empresas as $emp)
-									<option value="{{ $emp->id }}">{{ $emp->name }}</option>
+									{{Request::get('enterprise') == $emp->id ? $selected = 'selected' : $selected = ''}}
+									<option value="{{ $emp->id }}" {{$selected}}>{{ $emp->name }}</option>
 								@endforeach
 							</select>
 						</div>
@@ -120,26 +116,31 @@
 									<div class="card shadow-sm">
 										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body">
-											<h6 class="card-title font-weight-light truncated-text">{{ $producto->product_name }}</h5>
+											<h5 class="card-title font-weight-bold truncated-text">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-
-											<p class="lead font-weight-normal truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+											<h6 class="font-weight-normal truncated-text">Compra al mayor: <span class="font-weight-bold">{{$producto->qty_per_unit}}</span></h6>
+											<h6 class="font-weight-normal truncated-text">Iva: <span class="font-weight-bold">{{ $producto->product->iva_percent > 0 ? 'SI' : 'NO' }}</span></h6> 
+											@if(Request::get('buytype') == 'minor')
+												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+											@elseif(Request::get('buytype') == 'major')
+												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} Bs</p>
+											@else
+												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+											@endif
 
 											@auth
 											<div class="container">
 												<div class="row">
-													<div class="col-md-6">
+													<div class="col-6">
 														<button 
 															data-id="{{ $producto->id }}" 
 															class="btn btn-outline-primary btn-block mb-2 addToWishlist"
-															data-title="Añadir a la lista de deseos" 
-															data-toggle="tooltip"
 														>
 															<i class="fa fa-heart"></i>
 														</button>
 													</div>
-													<div class="col-md-6">
+													<div class="col-6">
 														<button
 															type="button"
 															class="btn btn-primary btn-block addCartBtn"
@@ -148,8 +149,6 @@
 															data-precio="{{ $producto->product->retail_total_price }}"
 															data-type="al-menor"
 															data-cantidad="1"
-															data-title="Comprar" 
-															data-toggle="tooltip"
 														>
 															<i class="fas fa-shopping-cart"></i>
 														</button>
@@ -160,7 +159,7 @@
 											@else
 											<div class="container">
 												<div class="row">
-													<div class="col-md-6 col-sm-6">
+													<div class="col-6">
 														<button 
 															onclick="buttonPressed('wish')" 
 															type="button" 
@@ -171,7 +170,7 @@
 															<i class="fa fa-heart"></i>
 														</button>
 													</div>
-													<div class="col-md-6 col-sm-6">
+													<div class="col-6">
 														<button 
 															onclick="buttonPressed('cart')" 
 															class="btn btn-primary btn-block"
@@ -389,7 +388,7 @@
 				}
 
 				that.removeAttr('disabled')
-				that.html('<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>')
+				that.html('<i class="fas fa-shopping-cart mr-2"></i>')
 			})
 			.fail((err) => {
 				toastr.error('Ha ocurrido un error.')
