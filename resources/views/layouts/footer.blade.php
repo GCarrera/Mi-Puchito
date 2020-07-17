@@ -10,7 +10,15 @@
 	<!-- <script src="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
 	<script src="{{ asset('js/datatables.min.js') }}" ></script>
 	<script src="{{ asset('js/app.js') }}"></script>
-
+	<script>
+		// Para añadir cuando no está logueado
+		function buttonPressed(button) {
+			LocalStorage = window.localStorage;
+			LocalStorage.setItem('buttonPressed', button)
+			console.log(LocalStorage.getItem('buttonPressed'))
+			window.location = 'login'
+		}
+	</script>
 	@stack('scripts')
 </body>
 </html>

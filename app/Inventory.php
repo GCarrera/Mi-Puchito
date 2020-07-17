@@ -27,4 +27,9 @@ class Inventory extends Model
     // {
     //     return $this->hasMany('App\Product');
     // }
+
+    public function product()
+    {
+        return $this->hasOne('App\Product', 'inventory_id', 'id');
+    }
 }

@@ -53,7 +53,7 @@
 
 
 
-<div class="container-fluid my-5 wrapper">
+<div class="container-fluid mt-70 wrapper">
 	<div class="row">
 		<div class="col-lg-3 col-12">
 			<div class="card shadow-sm mb-4">
@@ -80,86 +80,109 @@
 					<form>
 						<div class="form-group mb-4">
 							<label for="empresas">Por empresas</label>
-							<select class="form-control" id="empresas">
+							<select class="form-control" id="empresas" onchange="filterEnterprise(this.value)">
 								<option disabled selected>Selecciona una empresa</option>
+								<option value=""> Todos</option>
 								@foreach ($empresas as $emp)
-									<option {{ $emp->id }}>{{ $emp->name }}</option>
+									<option value="{{ $emp->id }}">{{ $emp->name }}</option>
 								@endforeach
 							</select>
 						</div>
 						<div class="form-group mb-4">
 							<label for="empresas">Por categorias</label>
-							<select class="form-control" id="categorias">
-								<option disabled selected>Selecciona una categoria</option>
-								@foreach ($categorias as $categoria)
-									<option {{ $categoria->id }}>{{ $categoria->name }}</option>
+							<select class="form-control" id="categorias" onchange="filterCategory(this.value)">
+								<option disabled selected >Selecciona una categoria</option>
+								<option value="">Todas</option>
+								@foreach ($categories as $categoria)
+									{{Request::get('category') == $categoria->id ? $selected = 'selected' : $selected = ''}}
+									<option value="{{ $categoria->id }}" {{$selected}}>{{ $categoria->name }}</option>
 								@endforeach
 							</select>
-						</div>
-
-						<div class="d-flex justify-content-center">
-							<button class="btn btn-primary mr-2" type="reset">
-								<i class="fas fa-sync mr-2"></i>Reiniciar
-							</button>
-
-							<button class="btn btn-primary" type="reset">
-								<i class="fas fa-search mr-2"></i>Filtrar
-							</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-9 col-12">
-
 			@forelse ($data as $k => $d)
-
 				<div class="card shadow-sm mb-4">
-
 					<div class="card-header d-flex justify-content-between align-items-center">
-						<h5>{{ $k }}</h5>
+						<h5>{{ $d->name }}</h5>
 						{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
 					</div>
 					<div class="card-body">
 
 						<div class="slickk">
-							@foreach ($d as $producto)
+							@foreach ($d->inventory as $producto)
+							
 								@if( ! $al_mayor )
 									
 									<div class="card shadow-sm">
-										<img style="height: 200px; object-fit: contain" src='{{ url("storage/$producto->image") }}' class="card-img-top">
+										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body">
-											<h5 class="card-title font-weight-light">{{ $producto->inventory->product_name }}</h5>
+											<h6 class="card-title font-weight-light truncated-text">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
 
-											<p class="lead font-weight-normal">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
+											<p class="lead font-weight-normal truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 
 											@auth
-												<button data-id="{{ $producto->id }}" class="btn btn-outline-primary btn-block mb-2 addToWishlist">
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
-												</button>
-												<button
-													type="button"
-													class="btn btn-primary btn-block addCartBtn"
-													data-id="{{ $producto->id }}"
-													data-producto="{{ $producto->inventory->product_name }}"
-													data-precio="{{ $producto->retail_total_price }}"
-													data-type="al-menor"
-													data-cantidad="1"
-												>
-
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
-												</button>
+											<div class="container">
+												<div class="row">
+													<div class="col-md-6">
+														<button 
+															data-id="{{ $producto->id }}" 
+															class="btn btn-outline-primary btn-block mb-2 addToWishlist"
+															data-title="Añadir a la lista de deseos" 
+															data-toggle="tooltip"
+														>
+															<i class="fa fa-heart"></i>
+														</button>
+													</div>
+													<div class="col-md-6">
+														<button
+															type="button"
+															class="btn btn-primary btn-block addCartBtn"
+															data-id="{{ $producto->id }}"
+															data-producto="{{ $producto->product_name }}"
+															data-precio="{{ $producto->product->retail_total_price }}"
+															data-type="al-menor"
+															data-cantidad="1"
+															data-title="Comprar" 
+															data-toggle="tooltip"
+														>
+															<i class="fas fa-shopping-cart"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+												
 											@else
-												<a href="{{ url('login') }}" class="btn btn-outline-primary btn-block mb-2">
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Inicia sesión para usar esta función"></i>
-												</a>
-												<a href="{{ url('login') }}" class="btn btn-primary btn-block">
-													<span data-toggle="tooltip">
-														<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
-													</span>
-												</a>
+											<div class="container">
+												<div class="row">
+													<div class="col-md-6 col-sm-6">
+														<button 
+															onclick="buttonPressed('wish')" 
+															type="button" 
+															class="btn btn-outline-primary btn-block mb-2"
+															data-title="Añadir a la lista de deseos" 
+															data-toggle="tooltip"
+														>
+															<i class="fa fa-heart"></i>
+														</button>
+													</div>
+													<div class="col-md-6 col-sm-6">
+														<button 
+															onclick="buttonPressed('cart')" 
+															class="btn btn-primary btn-block"
+															data-title="Comprar" 
+															data-toggle="tooltip"
+														>
+															<i class="fas fa-shopping-cart"></i>
+														</button>
+													</div>
+												</div>
+											</div>		
 											@endauth
 
 										</div>
@@ -167,9 +190,9 @@
 
 								@else
 									<div class="card shadow-sm">
-										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->image }}' class="card-img-top">
+										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->product->image }}' class="card-img-top">
 										<div class="card-body">
-											<h5 class="card-title font-weight-light">{{ $producto->inventory->product_name }}</h5>
+											<h5 class="card-title font-weight-light">{{ $producto->product_name }}</h5>
 
 											<p>
 												<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->inventory->unit_type) }}<br>
@@ -186,7 +209,7 @@
 													type="button"
 													class="btn btn-primary btn-block addCartBtn"
 													data-id="{{ $producto->id }}"
-													data-producto="{{ $producto->inventory->product_name }}"
+													data-producto="{{ $producto->product_name }}"
 													data-precio="{{ $producto->wholesale_total_packet_price }}"
 													data-type="al-mayor"
 													data-cantidad="1"
@@ -232,6 +255,21 @@
 
 @push('scripts')
 <script>
+
+	function getParameterByName(name) {
+		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+		var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+		return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+	}
+
+	function filterCategory(category) {
+		window.location = '?category=' + category
+	}
+
+	function filterEnterprise(enterprise) {
+		window.location = '?enterprise=' + enterprise
+	}
 
 	$(() => {
 
@@ -359,6 +397,7 @@
 			})
 		});
 
+		// Para añadir cuando está logueado
 		$('.addToWishlist').click(function(){
 			let producto = $(this).data('id')
 			let that = $(this)

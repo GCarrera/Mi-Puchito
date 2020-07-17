@@ -18,41 +18,46 @@ class CustomerController extends Controller
 		$this->middleware('auth')->except('index');
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
 		if (auth()->check() && auth()->user()->type == 'admin') {
 			return redirect('admin');
-		}
-		else {
+		} else {
 
-			$products   = Product::all();
-			$categorias = Category::all();
 			$empresas   = Enterprise::all();
-
-			$data     = [];
-			$al_mayor = false;
-
-			foreach ($categorias as $k => $category) {
-				foreach ($products as $key => $product) {
-					if ($product->inventory->category->name == $category->name) {
-						$p[] = $product;
+			$categories = Category::select('id', 'name')->get();
+			$search = str_replace("+", " ", $request->search); 
+			$data = Category::select('id', 'name')
+			->with(['inventory' => function($inventory) use($request, $search) {
+				$inventory->with(['product' => function($product) {
+					if ($product != NULL) {
+						$product->select('inventory_id', 'image', 'retail_total_price');
 					}
+				}])->whereHas('product');
+				if ($request->enterprise) {
+					$inventory = $inventory->where('enterprise_id', $request->enterprise);
 				}
-				if (isset($p)) {
-					$data[$category->name] = $p;
-					$p = [];
+				
+				if ($search) {
+					$inventory = $inventory->where('product_name', 'like', '%'.$search.'%');
 				}
-				else {
-					$data = [];
-				}
+			}])->whereHas('inventory', function ($inventory) use ($request, $search) {
+				$inventory->whereHas('product')->where('product_name', 'like', '%'.$search.'%');
+			});
+	
+			if ($request->category) {
+				$data = $data->where('id', $request->category);
 			}
+			
+			$data = $data->get();
+
+			$al_mayor = false;
 
 			// return $data;
 
 			return view('customer.index')
 					->with('data', $data)
-					->with('products', $products)
-					->with('categorias', $categorias)
+					->with('categories', $categories)
 					->with('al_mayor', $al_mayor)
 					->with('empresas', $empresas);
 		}

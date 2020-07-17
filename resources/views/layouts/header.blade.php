@@ -27,7 +27,16 @@
 	<link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
 
 	<link href="{{ asset('css/index.css') }}" rel="stylesheet">
-
+	<style>
+		.truncated-text {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		.mt-70 {
+			margin-top: 70px;
+		}
+	</style>
 	@stack('styles')
 
 </head>

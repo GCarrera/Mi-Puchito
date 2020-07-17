@@ -10,6 +10,6 @@ class Category extends Model
 
     public function inventory()
     {
-    	return $this->hasMany('App\Inventory');
+    	return $this->hasMany('App\Inventory', 'category_id', 'id');
     }
 }

@@ -83,3 +83,31 @@
 	</div>
 
 @include('layouts.footer')
+
+<script>
+		$(document).ready(function() {
+			console.log('adsd')
+			toastr.options = {
+				"closeButton": true,
+				"progressBar": true,
+				"positionClass": "toast-bottom-left",
+			}
+			LocalStorage = window.localStorage;
+			console.log(LocalStorage.getItem('buttonPressed'))
+			var val = LocalStorage.getItem('buttonPressed')
+			switch (val) {
+				case 'wish':
+					toastr.info('Para añadir a la lista de deseos por favor Inicie Sesión')
+					localStorage.removeItem('buttonPressed');					
+					break;
+				case 'cart':
+					toastr.info('Para añadir al carrito de compra por favor Inicie Sesión')
+					localStorage.removeItem('buttonPressed');
+					break;
+				default:
+					break;
+			}
+
+		})
+
+</script>

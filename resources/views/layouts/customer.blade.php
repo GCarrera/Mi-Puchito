@@ -11,14 +11,17 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-		<div class="w-50">
-			<form class="my-2 my-lg-0">
-				<div class="input-group">
+	
+		<div class="col-md-6 col-sm-12 col-xs-12">
+			<form action="/" method="GET" class="my-2 my-lg-0">
+				<div class="input-group mb-2">
 					<div class="input-group-prepend">
-						<div class="input-group-text"><i class="fas fa-search"></i></div>
+						<button class="input-group-text" type="submit">
+							<i class="fas fa-search"></i>
+						</button>
 					</div>
-					<input class="form-control mr-sm-2 SearchProductNameAutoComplete" type="search" placeholder="Buscar productos">
-				</div>
+					<input name="search" class="form-control mr-sm-2 SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" >
+				</div>			
 			</form>
 		</div>
 
@@ -66,13 +69,10 @@
 						Mi Carrito
 					</a>
 				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-user mr-2"></i>Invitado
+				<li class="nav-item">
+					<a class="nav-link" href="/login" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="fas fa-user mr-2"></i>Iniciar Sesión
 					</a>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item"  href="/login">Iniciar sesión</a>
-					</div>
 				</li>
 			@endguest
 		</ul>
@@ -87,9 +87,73 @@
 @yield('content')
 
 
-<footer id="sticky-footer" class="py-4 bg-dark text-white-50">
-    <div class="container">
-    	<p>Copyright &copy; 2020 - PrometheusV1</p>
+<footer class="text-white section footer-classic context-dark bg-image" style="background: #2d3246;">
+	<div class="container">
+		<div class="row row-30">
+			<div class="col-md-4 col-xl-5 mt-5">
+				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="images/agency/logo-inverse-140x37.png" alt="" width="140" height="37" srcset="images/agency/logo-retina-inverse-280x74.png 2x"></a>
+					<p>Prometheus es una tienda virtual, dedicada a la venta de todo tipo de productos.</p>
+					<!-- Rights-->
+					<p class="rights"><span>©  </span><span class="copyright-year">2020</span><span> </span><span>Prometheus</span><span>. </span><span>Todos los derechos reservados.</span></p>
+				</div>
+			</div>
+			<div class="col-md-4 mt-5">
+				<h5>Contácto</h5>
+				<dl class="contact-list">
+					<dt>Dirección:</dt>
+					<dd>Cagua Edo. Aragua</dd>
+				</dl>
+				<dl class="contact-list">
+					<dt>email:</dt>
+					<dd><a href="mailto:#">promemtheus@gmail.com</a></dd>
+				</dl>
+				<dl class="contact-list">
+					<dt>teléfonos:</dt>
+					<dd><a href="tel:#">0412-555-5555</a> <span>ó</span> <a href="tel:#">0414-555-5555</a>
+					</dd>
+				</dl>
+			</div>
+			<div class="col-md-4 col-xl-3 mt-5">
+				<h5>Enlaces</h5>
+				<ul class="nav-list">
+					<li><a class="text-white btn" href="{{url('/')}}">Inicio</a></li>
+					@auth
+						<li><a class="text-white btn" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
+						<li><a class="text-white btn" href="{{url('shoppingcart')}}">Mi carrito</a></li>
+
+					@endauth
+					@guest
+						<li><a class="text-white btn" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
+						<li><a class="text-white btn" onclick="buttonPressed('cart')">Mi carrito</a></li>
+						 
+						<li><a class="text-white btn" href="{{url('login')}}">Iniciar sesión</a></li>
+						<li><a class="text-white btn" href="{{url('register')}}">Registrarse</a></li>
+					@endguest
+				</ul>
+			</div>
+		</div>
+	</div>
+    <div class="row no-gutters social-container">
+		<div class="col-3 text-center mb-3">
+			<a class="social-inner" href="#">
+				<i class="fab fa-3x text-center fa-facebook"></i>
+			</a>
+		</div>
+		<div class="col-3 text-center mb-3">
+			<a class="social-inner" href="#">
+				<i class="fab fa-3x fa-instagram"></i>
+			</a>
+		</div>
+		<div class="col-3 text-center mb-3">
+			<a class="social-inner" href="#">
+				<i class="fab fa-3x fa-twitter"></i>
+			</a>
+		</div>
+		<div class="col-3 text-center mb-3">
+			<a class="social-inner" href="#">
+				<i class="fab fa-3x fa-google" aria-hidden="true"></i>
+			</a>
+		</div>
     </div>
 </footer>
 
