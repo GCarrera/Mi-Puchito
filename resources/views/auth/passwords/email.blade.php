@@ -4,7 +4,9 @@
 
 	<div class="animated fadeIn">
 		<div class="mb-3 d-flex justify-content-center">
-			<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+			<a href="/">
+				<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+			</a>
 		</div>
 
 
@@ -41,6 +43,12 @@
 						<button type="submit" class="btn btn-primary mb-3 btn-block">
 							<i class="fas fa-link mr-2"></i>Enviar link de reseteo al correo
 						</button>
+
+						<div class="text-center">
+								<a href="/" class="btn btn-link">
+									Inicio
+								</a>
+							</div>
 
 						{{-- <div class="mb-3">
 							<a href="/login">Inicia sesión</a>
