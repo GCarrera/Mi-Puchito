@@ -39,12 +39,14 @@ Route::middleware(['auth'])->group(function(){
 	Route::resource('lista-de-deseos', 'WishlistController');
 
 	Route::get('/perfil', 'ProfileController@perfil')->name('perfil');
+	Route::get('/editar_perfil', 'ProfileController@editar_perfil')->name('editar_perfil');
 	Route::resource('/direcciones', 'AddressUserDeliveryController');
 
 	Route::resource('/travel_rates', 'TravelRateController');
 	Route::resource('/products', 'ProductController');
 	Route::resource('/inventory', 'InventoryController');
 
+	
 	Route::post('/traer_empresa', 'AdminController@traer_empresa');
 	Route::post('/editar_empresa', 'AdminController@editar_empresa');
 	Route::post('/traer_categoria', 'AdminController@traer_categoria');

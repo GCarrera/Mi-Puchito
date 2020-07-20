@@ -59,61 +59,54 @@
 			<div class="card mb-4 shadow-sm">
 				<div class="card-body">
 					<div class="tab-content" id="nav-tabContent">
-
 						<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+							<form action="editar_perfil" method="GET">
+								<div class="row mb-4">
+									<div class="col d-flex justify-content-between">
+										<h4 class="font-weight-light">Información personal</h4>
+										<h5></h5>
+									</div>
+								</div>
+								<hr>
+								<div class="row mb-2">
+									<div class="col-lg-4 col-12 mb-3">
+										<label for="dni">Cédula</label>
+										<input type="hidden" name="id" value="{{ $user->id }}" readonly>
+										<input type="number" readonly name="dni" value="{{ $user->people->dni }}" id="dni" class="form-control" required>
+									</div>
+									<div class="col-lg-8 col-12 mb-3">
+										<label for="name">Nombre Completo</label>
+										<input type="text" name="name" value="{{ $user->people->name }}" id="name" class="form-control" required>
+									</div>
+								</div>
 
-							<div class="row mb-4">
-								<div class="col d-flex justify-content-between">
-									<h4 class="font-weight-light">Información personal</h4>
-									<button class="btn btn-primary">
-										<i class="fas fa-edit mr-2"></i> Editar
-									</button>
+								<div class="row mb-2">
+									<div class="col-lg-6 col-12 mb-3">
+										<label for="email">Correo electrónico</label>
+										<input type="email" name="email" value="{{ $user->email }}" id="email" class="form-control" required>
+									</div>
+									<div class="col-lg-6 col-12 mb-3">
+										<label for="phone">Teléfono</label>
+										<input type="text" name="phone" id="phone" value="{{ $user->people->phone_number }}" class="form-control" required>
+									</div>
 								</div>
-							</div>
-							<hr>
 
-							<div class="row mb-4">
-								<div class="col-12">
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi maiores voluptates esse, excepturi, alias quod tempore, est nostrum ea a sint voluptas in corporis, qui voluptatum culpa dolorum minus unde.
+								<div class="row mb-4">
+									<div class="col-lg-6 col-12 mb-3">
+										<label for="password">Contraseña</label>
+										<input type="password" autocomplete="off" name="password" id="password" class="form-control">
+									</div>
+									<div class="col-lg-6 col-12 mb-3">
+										<label for="password_confirmation">Confirmación de Contraseña</label>
+										<input type="password" autocomplete="off" name="password_confirmation" id="password_confirmation" class="form-control">
+									</div>
+									<div class="col-lg-12 col-12 text-center">
+										<button type="submit" class="btn btn-primary">
+											<i class="fas fa-edit mr-2"></i> Guardar
+										</button>
+									</div>
 								</div>
-							</div>
-
-							<div class="row mb-2">
-								<div class="col-lg-4 col-12 mb-3">
-									<label for="dni">Cédula</label>
-									<input type="number" name="dni" value="{{ $user->people->dni }}" id="dni" class="form-control" required>
-								</div>
-								<div class="col-lg-4 col-12 mb-3">
-									<label for="name">Nombre</label>
-									<input type="text" name="name" value="{{ $user->people->name }}" id="name" class="form-control" required>
-								</div>
-								<div class="col-lg-4 col-12 mb-3">
-									<label for="apellido">Apellido</label>
-									<input type="text" name="apellido" value="{{ $user->people->lastname }}" id="apellido" class="form-control" required>
-								</div>
-							</div>
-
-							<div class="row mb-2">
-								<div class="col-lg-6 col-12 mb-3">
-									<label for="email">Correo electrónico</label>
-									<input type="email" name="email" value="{{ $user->email }}" id="email" class="form-control" required>
-								</div>
-								<div class="col-lg-6 col-12 mb-3">
-									<label for="phone">Teléfono</label>
-									<input type="text" name="phone" id="phone" value="{{ $user->people->phone_number }}" class="form-control" required>
-								</div>
-							</div>
-
-							<div class="row mb-4">
-								<div class="col-lg-6 col-12 mb-3">
-									<label for="password">Contraseña</label>
-									<input type="password" name="password" id="password" class="form-control">
-								</div>
-								<div class="col-lg-6 col-12 mb-3">
-									<label for="password-repeat">Repita Contraseña</label>
-									<input type="password" name="password-repeat" id="password-repeat" class="form-control">
-								</div>
-							</div>
+							</form>
 						</div>
 
 						<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
@@ -344,10 +337,6 @@
 		}
 
 		// Mostrar notificaciones
-		@if (session('success'))
-			toastr.success("<?php echo session('success') ?>")
-		@endif
-
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -451,6 +440,16 @@
 				toastr.error('Algo ha fallado.')
 			})
 		})
+
+		@if ($errors->any())
+			@foreach ($errors->all() as $error)
+				toastr.error("{{ $error }}")
+            @endforeach
+		@endif()
+
+		@if (session('success'))
+			toastr.success("{{ session('success') }}")
+		@endif()
 	})
 
 </script>

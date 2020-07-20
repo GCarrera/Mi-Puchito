@@ -2,8 +2,8 @@
 
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-	<a class="navbar-brand" href="#">
-		 <img src="/img/brand.png" width="35" height="35" class="d-inline-block align-top" alt="">
+	<a class="navbar-brand" href="/">
+		 <img src="/img/logo.jpg" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -89,9 +89,9 @@
 
 <footer class="text-white section footer-classic context-dark bg-image" style="background: #2d3246;">
 	<div class="container">
-		<div class="row row-30">
+		<div class="row row-30 text-center">
 			<div class="col-md-4 col-xl-5 mt-5">
-				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="images/agency/logo-inverse-140x37.png" alt="" width="140" height="37" srcset="images/agency/logo-retina-inverse-280x74.png 2x"></a>
+				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="img/logo.jpg" alt="Mi puchito's" srcset="img/logo.jpg 2x"></a>
 					<p>Prometheus es una tienda virtual, dedicada a la venta de todo tipo de productos.</p>
 					<!-- Rights-->
 					<p class="rights"><span>©  </span><span class="copyright-year">2020</span><span> </span><span>Prometheus</span><span>. </span><span>Todos los derechos reservados.</span></p>
@@ -104,12 +104,12 @@
 					<dd>Cagua Edo. Aragua</dd>
 				</dl>
 				<dl class="contact-list">
-					<dt>email:</dt>
-					<dd><a href="mailto:#">promemtheus@gmail.com</a></dd>
+					<dt>Email:</dt>
+					<dd><a href="mailto:promemtheus@gmail.com">promemtheus@gmail.com</a></dd>
 				</dl>
 				<dl class="contact-list">
-					<dt>teléfonos:</dt>
-					<dd><a href="tel:#">0412-555-5555</a> <span>ó</span> <a href="tel:#">0414-555-5555</a>
+					<dt>Teléfonos:</dt>
+					<dd><a href="tel:04125555555">0412-555-5555</a> <span>ó</span> <a href="tel:04145555555">0414-555-5555</a>
 					</dd>
 				</dl>
 			</div>

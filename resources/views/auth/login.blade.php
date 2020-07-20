@@ -4,7 +4,9 @@
 		<div class="animated fadeIn">
 
 			<div class="mb-3 d-flex justify-content-center">
-				<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+				<a href="/">
+					<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+				</a>
 			</div>
 
 			<!-- Material form login -->
@@ -70,6 +72,11 @@
 							<div>
 								<a class="btn btn-link" href="{{ route('register') }}">Registrarme</a>
 							</div>
+						</div>
+						<div class="text-center">
+							<a href="/" class="btn btn-link">
+								Inicio
+							</a>
 						</div>
 
 					</form>
