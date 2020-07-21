@@ -22,7 +22,7 @@
 						<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-id-card"></i></div>
 						</div>
-						<input id="dni" autofocus type="text" class="form-control @error('dni') is-invalid @enderror" name="dni" value="{{ old('dni') }}" required>
+						<input id="dni" autofocus type="text" class="form-control @error('dni') is-invalid @enderror" name="dni" value="{{ old('dni') }}" >
 
 						@error('dni')
 							<span class="invalid-feedback" role="alert">
@@ -37,24 +37,9 @@
 						<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-user"></i></div>
 						</div>
-						<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required >
+						<input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}"  >
 
 						@error('name')
-							<span class="invalid-feedback" role="alert">
-								<strong>{{ $message }}</strong>
-							</span>
-						@enderror
-					</div>
-
-					<label for="lastname">{{ __('Apellido') }}</label>
-					<div class="input-group mb-3">
-
-						<div class="input-group-prepend">
-							<div class="input-group-text"><i class="fas fa-user"></i></div>
-						</div>
-						<input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required >
-
-						@error('lastname')
 							<span class="invalid-feedback" role="alert">
 								<strong>{{ $message }}</strong>
 							</span>
@@ -68,7 +53,7 @@
 							<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 						</div>
 
-						<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+						<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">	
 
 						@error('email')
 							<span class="invalid-feedback" role="alert">
@@ -99,7 +84,7 @@
 								<i class="fas fa-lock"></i>
 							</div>
 						</div>
-						<input id="password" type="password" class="form-control rounded-right border border-right-0 @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" >
+						<input id="password" type="password" class="form-control rounded-right border border-right-0 @error('password') is-invalid @enderror" name="password"  autocomplete="new-password" >
 
 						<div class="input-group-prepend">
 							<div class="input-group-text rounded-right rounder-icon-password-input">
@@ -121,7 +106,7 @@
 							<div class="input-group-text"><i class="fas fa-lock"></i></div>
 						</div>
 
-						<input id="password-confirm" type="password" class="form-control rounded-right border border-right-0" name="password_confirmation" required autocomplete="new-password">
+						<input id="password-confirm" type="password" class="form-control rounded-right border border-right-0" name="password_confirmation"  autocomplete="new-password">
 
 						<div class="input-group-prepend">
 							<div class="input-group-text rounded-right rounder-icon-password-input">
@@ -153,7 +138,38 @@
 
 @push('scripts')
 <script>
+	
 	$(() => { 
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+
+		// $('#dni').blur(function() {
+		// 	toastr.error('blur')
+		// 	var data = { dni: $('dni').val() }
+		// 	$.post({url: 'get_dni', data})
+		// 	.done((res) => {
+		// 		toastr.success('Exito')
+		// 		console.log(res)
+		// 	})
+		// 	.fail((err) => {
+		// 		toastr.error('Ha ocurrido un error')
+		// 	})
+		// })
+		@if ($errors->any())
+			@foreach ($errors->all() as $error)
+				toastr.error("{{ $error }}")
+            @endforeach
+		@endif()
+
+		toastr.options = {
+			"closeButton": true,
+			"progressBar": true,
+			"positionClass": "toast-bottom-left",
+		}
+
 		$('#icon-eye-password').click((e) => {	
 			if ($('#password').val()) {
 				if ($('#icon-eye-password').hasClass('fa-eye')) {

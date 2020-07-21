@@ -77,4 +77,19 @@ class ProfileController extends Controller
 
 		return redirect()->back()->withSuccess('Datos guardados exitosamente!');
 	}
+
+	public function getDni(Request $request)
+	{
+		$texto = file_get_contents("http://www.cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=".$request->dni);
+		$pos_name = strpos($texto, "Nombre:");
+		if (!$pos_name) {
+			return response()->json(['result' => false, 'name' => '']);
+		}
+		$pos_init_name = strpos($texto, "<b>", $pos_name);
+		$pos_end_name =  strpos($texto, "</b>", $pos_init_name);
+		$name = substr($texto, $pos_init_name, $pos_end_name-$pos_init_name);
+		$name = str_replace("<b>", "", $name);
+
+		return response()->json(['result' => true, 'name' => $name]);
+	}
 }

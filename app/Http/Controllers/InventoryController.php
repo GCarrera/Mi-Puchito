@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Inventory;
 
 class InventoryController extends Controller
@@ -31,6 +32,21 @@ class InventoryController extends Controller
      */
     public function store(Request $req)
     {
+        $validator = Validator::make($req->all(), [
+            'product_name' => 'required|max:191',
+            'description' => 'nullable|max:191',
+            'cantidad' => 'required|max:191',
+            'tipo_unidad' => 'required|max:191',
+            'cant_prod' => 'required|max:191',
+            'category' => 'required|integer',
+            'enterprise' => 'required|integer',
+		]);
+		
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         $inventory = new Inventory();
 
         $inventory->product_name   = $req->input('product_name');
@@ -69,6 +85,21 @@ class InventoryController extends Controller
      */
     public function update(Request $req, $id)
     {
+        $validator = Validator::make($req->all(), [
+            'product_name' => 'required|max:191',
+            'description' => 'nullable|max:191',
+            'cantidad' => 'required|max:191',
+            'tipo_unidad' => 'required|max:191',
+            'cant_prod' => 'required|max:191',
+            'category' => 'required|integer',
+            'enterprise' => 'required|integer',
+		]);
+		
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+        }
         $inventory = Inventory::find($id);
 
         $inventory->product_name   = $req->input('product_name');

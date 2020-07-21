@@ -17,6 +17,7 @@ Route::get('/', 'CustomerController@index');
 // Route::get('/home', function () {
 //     return redirect('services');
 // });
+Route::post('/get_dni', 'ProfileController@getDni');
 
 Auth::routes();
 

@@ -152,6 +152,13 @@ return [
         'email' => 'Correo Electrónico',
         'password' => 'Contraseña',
         'password_confirmation' => 'Confirmación de Contraseña',
+        'product_name' => 'Nombre del Producto',
+        'description' => 'Descripción del Producto',
+        'cantidad' => 'Cantidad comprada al mayor',
+        'tipo_unidad' => 'Tipo de Unidad',
+        'cant_prod' => 'Cantidad de productos por unidad',
+        'category' => 'Categoria de productos',
+        'enterprise' => 'Empresa Fabricante',
     ],
 
 ];

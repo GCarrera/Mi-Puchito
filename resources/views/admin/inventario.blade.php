@@ -129,7 +129,7 @@
 					<div class="form-row mb-4">
 						<div class="col-md-6 col-12 mb-3">
 							<label for="product_name">Nombre del producto</label>
-							<input type="text" class="form-control ProductNameAutoComplete" name="product_name" id="product_name" required autocomplete="off">
+							<input type="text" class="form-control ProductNameAutoComplete" name="product_name" id="product_name" maxlength="255" required autocomplete="off">
 						</div>
 						<div class="col-md-3 col-12 mb-3">
 							<label for="enterprise">Empresa fabricante</label><br>
@@ -327,7 +327,12 @@
 			toastr.success("<?php echo session('success') ?>")
 		@endif
 
-
+		@if ($errors->any())
+			@foreach ($errors->all() as $error)
+				toastr.error("{{ $error }}")
+            @endforeach
+		@endif()
+		
 		$('.ProductNameAutoComplete').autoComplete({
 			minLength: 2,
 			resolverSettings: {
