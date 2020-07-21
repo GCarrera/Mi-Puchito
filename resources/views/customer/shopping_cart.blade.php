@@ -177,7 +177,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					@if(count($cart) > 0)
 						<button type="button" class="btn btn-danger" id="limpiar_carrito" data-toggle="modal" data-target="#clear_cart"><i class="fas fa-times mr-2"></i>Limpiar carrito</button>
 					@endif
-					<a href="/home" class="btn btn-primary"><i class="fas fa-cart-plus mr-2"></i>Seguir comprando</a>
+					<a href="/home" class="btn btn-primary"><i class="fas fa-cart-plus mr-2"></i>Agregar más productos
+					</a>
 				</div>
 			</div>
 		</div>
@@ -264,11 +265,22 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<div class="row mb-4">
 							<div class="col">
 								<label for="delivery" class="text-success">¿Desea el servicio delivery?</label>
-								<select id="delivery" name="delivery" class="form-control border selectpicker">
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="delivery" value="si">Si
+									</label>
+								</div>
+								<div class="form-check">
+									<label class="form-check-label">
+										<input type="radio" class="form-check-input" name="delivery" value="no">No
+									</label>
+								</div>
+							
+								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
 									<option value="no">No</option>
-								</select>
+								</select> --}}
 								<p class="mt-2 mb-0 text-right d-none" id="delivery_btn">
 									<a href="#modalDelivery" data-toggle="modal">Editar</a>
 								</p>

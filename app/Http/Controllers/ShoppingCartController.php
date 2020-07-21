@@ -64,7 +64,7 @@ class ShoppingCartController extends Controller
 		$price    = $request->input('precio');
 		$type     = $request->input('type');
 
-		$producto = Product::find($id);
+		$producto = Product::where('inventory_id', $id)->first();
 
 		$userId   = auth()->user()->id;
 
