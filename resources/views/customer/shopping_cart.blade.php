@@ -104,7 +104,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<div class="input-group-prepend">
 												<button class="input-group-text btn btn-primary substract"><i class="fas fa-angle-down"></i></button>
 											</div>
-											<input type="number" class="form-control sinflechas rounded-0" value="{{ $c->quantity }}" min="1">
+											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas rounded-0" value="{{ $c->quantity }}" min="1">
 											<div class="input-group-append">
 												<button class="input-group-text btn btn-primary add"><i class="fas fa-angle-up"></i></button>
 											</div>
@@ -264,7 +264,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 						<div class="row mb-4">
 							<div class="col">
-								<label for="delivery" class="text-success">¿Desea el servicio delivery?</label>
+								<label for="delivery" class="text-success">¿Desea el servicio delivery?</label><br>
+								<i>Solo se hará delivery en el Municipio Sucre.</i>
 								<div class="form-check">
 									<label class="form-check-label">
 										<input type="radio" class="form-check-input" name="delivery" value="si">Si
@@ -402,7 +403,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="row mb-3">
+				<div class="row">
 					<div class="col-12">
 						<label for="direccion">Selecciona una dirección para la entrega</label><br>
 						<select required name="address" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="direccion">
@@ -468,7 +469,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 {{-- MODAL PARa SELECCONAR EL TIPO DE PAGO --}}
 <div class="modal fade" id="pay_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
-		<div class="modal-content modal-sm">
+		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Rellena todos los campos</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -477,64 +478,43 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			</div>
 
 			<div class="modal-body">
-				<h6 class="mb-3 font-weight-light">Información bancaria</h6>
-				<div class="accordion" id="accordionExample">
-
-					@forelse($cb as $c)
-						<div class="card">
-							<div class="card-header" id="heading-{{ $loop->iteration }}">
-								<h2 class="mb-0">
-									<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse-{{ $loop->iteration }}" aria-expanded="true" aria-controls="collapse-{{ $loop->iteration }}">
-										{{ $c->bank }}
-									</button>
-								</h2>
-							</div>
-
-							<div id="collapse-{{ $loop->iteration }}" class="collapse" aria-labelledby="heading-{{ $loop->iteration }}" data-parent="#accordionExample">
-								<div class="card-body">
-									<div class="row">
-										<div class="col-6">
-											<small class="font-weight-bold">Código</small>
-											<p>{{ $c->code }}</p>
-										</div>
-										<div class="col-6 ">
-											<small class="font-weight-bold">Cédula</small>
-											<p>{{ $c->dni }}</p>
-										</div>
-										<div class="col-12 ">
-											<small class="font-weight-bold">Número de cuenta</small>
-											<p>{{ $c->account_number }}</p>
-										</div>
-									</div>
-									<hr>
-									<div class="row ">
-										<div class="col-12">
-											<small class="font-weight-bold">Nombre empresa</small>
-											<p>{{ $c->name_enterprise }}</p>
-										</div>
-										<div class="col-12 ">
-											<small class="font-weight-bold">Teléfono</small>
-											<p>{{ $c->phone_enterprise }}</p>
-										</div>
-										<div class="col-12 ">
-											<small class="font-weight-bold">Correo Electrónico</small>
-											<p>{{ $c->email_enterprise }}</p>
-										</div>
-									</div>
-
-								</div>
-							</div>
-						</div>
-					@empty
-						<div class="card">
-							<div class="card-body">
-								<p class="text-center">No hay información bancaria disponible.</p>
-							</div>
-						</div>
-					@endforelse
-
+				<h6 class="font-weight-light">Información del pago</h6>
+				<div class="row">
+					<div class="col-12">
+						<label for="referencia">Número de referencia</label>
+						<input type="number" id="referencia" class="form-control" name="referencia">
+					</div>
+					<!-- <div class="col-12 text-center col-md-7">
+						<label for="customFile">Captura de la operación</label>
+						<label id="btn_search" class="btn btn-primary" for="customFile"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+					</div> -->
 				</div>
 
+				<hr>
+	
+				<h6 class="font-weight-light">Información bancaria</h6>
+					@forelse($cb as $c)
+						<div class="card-body">
+							<blockquote class="blockquote mb-0">
+								<footer class="blockquote-footer">
+									<b>Nombre: </b> <i id="name-{{$loop->iteration}}">{{ $c->name_enterprise }}</i> / 
+									<b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i> / 
+									<b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i> / 
+									<b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i> / 
+									<b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i>
+									<cite title="Source Title"></cite>
+								</footer>
+							</blockquote>
+						</div>
+					@empty
+						<div class="card-body">
+							<blockquote class="blockquote mb-0">
+								<footer class="blockquote-footer">
+									<b>No hay información disponible</b>
+								</footer>
+							</blockquote>
+						</div>
+					@endforelse
 				{{--<h6 class="mb-3 font-weight-light">Información del cliente</h6>
 				<div class="row">
 					<div class="col-6 col-md-4">
@@ -550,20 +530,6 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<p>{{ $user->people->lastname }}</p>
 					</div>
 				</div>--}}
-
-				<hr class="my-4">
-
-				<h6 class="mb-3 font-weight-light">Información del pago</h6>
-				<div class="row mb-2">
-					<div class="col-12 mb-3">
-						<label for="referencia">Número de referencia</label>
-						<input type="number" id="referencia" class="form-control" name="referencia">
-					</div>
-					<!-- <div class="col-12 text-center col-md-7">
-						<label for="customFile">Captura de la operación</label>
-						<label id="btn_search" class="btn btn-primary" for="customFile"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-					</div> -->
-				</div>
 
 				<!-- <div class="row">
 					<div class="col">
@@ -584,6 +550,27 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 @push('scripts')
 <script>
+
+function copiarAlPortapapeles(id){
+        var codigoACopiar = document.getElementById(id);    //Elemento a copiar
+        //Debe estar seleccionado en la página para que surta efecto, así que...
+        var seleccion = document.createRange(); //Creo una nueva selección vacía
+        seleccion.selectNodeContents(codigoACopiar);    //incluyo el nodo en la selección
+        //Antes de añadir el intervalo de selección a la selección actual, elimino otros que pudieran existir (sino no funciona en Edge)
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(seleccion);  //Y la añado a lo seleccionado actualmente
+        try {
+            var res = document.execCommand('copy'); //Intento el copiado
+            if (res)
+				toastr.success('Texto copiado al portapapeles')
+            else
+            	toastr.error('No se pudo copiar')
+        }
+        catch(ex) {
+            toastr.error('No se pudo copiar')
+        }
+        window.getSelection().removeRange(seleccion);
+    }
 
 	$(() => {
 
