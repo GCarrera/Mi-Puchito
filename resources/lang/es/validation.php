@@ -159,6 +159,12 @@ return [
         'cant_prod' => 'Cantidad de productos por unidad',
         'category' => 'Categoria de productos',
         'enterprise' => 'Empresa Fabricante',
+        'product' => 'Productos sin marcar',
+        'cost' => 'Costo total del producto',
+        'iva_percent' => 'Tipo de I.V.A',
+        'retail_margin_gain' => 'Ganancia al menor',
+        'wholesale_margin_gain' => 'Ganancia al mayor',
+        'fileinput' => 'Imágen del producto',
     ],
 
 ];

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Inventory;
 use App\Product;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -22,26 +23,49 @@ class ProductController extends Controller
 
 	public function store(Request $req)
 	{
+		$validator = Validator::make($req->all(), [
+            'product' => 'required|integer',
+			'cost' => 'required|numeric',
+			'iva_percent' => 'required|numeric',
+			'retail_margin_gain' => 'required|numeric',
+			'wholesale_margin_gain' => 'required|numeric',
+			'fileinput' => 'required'
+		]);
+		
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+		}
+		
 		$product = new Product();
+		$inventory = Inventory::find($req->input('product'));
+
+		$retail_subtotal_price =  $req->input('cost') + ($req->input('cost')*($req->input('retail_margin_gain')/100));
+		$retail_iva_amount = $retail_subtotal_price * ($req->input('iva_percent')/100);
+		$retail_total_price = $retail_subtotal_price + $retail_iva_amount;
+
+		$wholesale_subtotal_price = $req->input('cost') + ($req->input('cost')*($req->input('wholesale_margin_gain')/100));
+		$wholesale_iva_amount =  $wholesale_subtotal_price * ($req->input('iva_percent')/100);
+		$wholesale_total_individual_price = $wholesale_subtotal_price + $wholesale_iva_amount;
 
 		$product->cost                   = $req->input('cost');
 		$product->iva_percent            = $req->input('iva_percent');
 		$product->retail_margin_gain     = $req->input('retail_margin_gain');
 		// $product->retail_pvp             = $req->input('retail_pvp');
-		$product->retail_total_price     = $req->input('retail_total_price');
-		$product->retail_iva_amount      = $req->input('retail_iva_amount');
+		$product->retail_total_price     = $retail_total_price;
+		$product->retail_iva_amount      = $retail_iva_amount;
 		$product->image                  = explode('public/', $req->file('fileinput')->store('public'))[1];
 		$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
 		// $product->wholesale_pvp          = $req->input('wholesale_pvp');
 		$product->wholesale_packet_price = $req->input('wholesale_packet_price');
-		$product->wholesale_total_individual_price = $req->input('wholesale_total_individual_price');
-		$product->wholesale_total_packet_price     = $req->input('wholesale_total_packet_price');
-		$product->wholesale_iva_amount   = $req->input('wholesale_iva_amount');
+		$product->wholesale_total_packet_price     = $req->input('wholesale_packet_price');
+		$product->wholesale_total_individual_price = $wholesale_total_individual_price;
+		$product->wholesale_iva_amount   = $wholesale_iva_amount;
 		$product->inventory_id           = $req->input('product');
 
 		$product->save();
 
-		$inventory = Inventory::find($req->input('product'));
 		$inventory->status = 1;
 		$inventory->save();
 

@@ -13,7 +13,7 @@
 
 <div class="container-fluid animated wrapper" style="margin-top: 90px">
 
-	<button class="btn btn-primary btn-lg rounded-circle" data-target="#marcarPrecio" data-toggle="modal" style="position: fixed; bottom: 30px; right: 30px">
+	<button class="btn btn-primary btn-lg rounded-circle btn-open-modal" data-target="#marcarPrecio" data-toggle="modal" style="position: fixed; bottom: 30px; right: 30px">
 		<i class="fas fa-plus"></i>
 	</button>
 
@@ -152,11 +152,11 @@
 						</div>
 						<div class="col-12 col-md-3 mb-2">
 							<label for="cost">Costo total del producto</label>
-							<input type="text" pattern="^[0-9]+([,][0-9]+)?$" class="form-control costo" name="cost" id="cost" required>
+							<input type="text" onkeypress="soloNumeros(event)" class="form-control costo" name="cost" id="cost" onkeyup="calcularPrecio()" required>
 						</div>
 						<div class="col-12 col-md-3">
 							<label for="iva_percent">Tipo de I.V.A</label><br>
-							<select name="iva_percent" id="iva_percent" class="selectpicker border form-control iva" data-width="100%" required>
+							<select name="iva_percent" id="iva_percent" class="selectp	icker border form-control iva" data-width="100%" required>
 								<option value="24">24%</option>
 								<option value="20">20%</option>
 								<option value="16">16%</option>
@@ -171,11 +171,11 @@
 							<div class="row mb-4">
 								<div class="col-12 col-md-6 mb-2">
 									<label for="wholesale_margin_gain">Ganancia al mayor (%)</label>
-									<input type="number" class="form-control ganancia_al_mayor" id="wholesale_margin_gain" name="wholesale_margin_gain" required>
+									<input type="text" onkeypress="soloNumeros(event)" onkeyup="calcularPrecio()" maxlength="2" class="form-control ganancia_al_mayor" id="wholesale_margin_gain" name="wholesale_margin_gain" required>
 								</div>
 								<div class="col-12 col-md-6">
 									<label for="retail_margin_gain">Ganancia al menor (%)</label>
-									<input type="number" class="form-control ganancia_al_menor" id="retail_margin_gain" name="retail_margin_gain" required>
+									<input type="text" onkeypress="soloNumeros(event)" onkeyup="calcularPrecio()" maxlength="2" class="form-control ganancia_al_menor" id="retail_margin_gain" name="retail_margin_gain" required>
 								</div>
 							</div>
 							<div class="row mb-4">
@@ -187,17 +187,17 @@
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al menor</h5>
-										PVP: <span class="precio font-weight-light total_retail_price">0,00</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_retail_price">0,00</span> Bs<br>
-										TOT: <span class="precio font-weight-light total_amount_retail_price">0,00</span> Bs<br>
+										PVP: <span class="precio font-weight-light total_retail_price">0</span> Bs<br>
+										IVA: <span class="precio font-weight-light iva_retail_price">0</span> Bs<br>
+										TOT: <span class="precio font-weight-light total_amount_retail_price">0</span> Bs<br>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="text-right">
 										<h5 class="mb-4">Precio al mayor</h5>
-										PVP: <span class="precio font-weight-light total_wholesale_price">0,00</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_wholesale_price">0,00</span> Bs<br>
-										TOT: <span class="precio font-weight-light total_amount_wholesale_price">0,00</span> Bs</span><br>
+										PVP: <span class="precio font-weight-light total_wholesale_price">0</span> Bs<br>
+										IVA: <span class="precio font-weight-light iva_wholesale_price">0</span> Bs<br>
+										TOT: <span class="precio font-weight-light total_amount_wholesale_price">0</span> Bs</span><br>
 										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
 									</div>
 								</div>
@@ -353,7 +353,7 @@
 						</div>
 						<div class="col-12 col-md-3">
 							<label for="iva_percent">Tipo de I.V.A</label><br>
-							<select name="iva_percent" id="iva_percent_edit" class="border custom-select form-control iva" required>
+							<select name="iva_percent" onchange="calcularPrecio()" id="iva_percent_edit" class="border custom-select form-control iva" required>
 								<option value="24">24%</option>
 								<option value="20">20%</option>
 								<option value="16">16%</option>
@@ -418,7 +418,7 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-					<button type="submit" id="sendform" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
+					<button type="submit" id="sendformedit" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
 				</div>
 			</form>
 		</div>
@@ -429,7 +429,32 @@
 
 @push('scripts')
 <script>
+
+	function calcularPrecio() {
+		$('.calcular').trigger('click')
+	}
+
 	$(() => {
+		
+		let form = {
+			inventoryid: null,
+			costo: '0.00',
+			iva: '0',
+			ganancia_al_mayor: '0.00',
+			ganancia_al_menor: '0.00'
+		}
+
+		$('.btn-open-modal').on('click', function() {
+			form.costo = '0.00'
+			form.ganancia_al_mayor = '0.00'
+			form.ganancia_al_menor = '0.00'
+			$('#cost').val('')
+			$('#wholesale_margin_gain').val('')
+			$('#retail_margin_gain').val('')
+
+			$('.calcular').trigger('click')
+			$('#marcarPrecio').modal('show')
+		})
 
 		$('#loading').fadeOut()
 
@@ -444,6 +469,12 @@
 			toastr.success("<?php echo session('success') ?>")
 		@endif
 
+		@if ($errors->any())
+			@foreach ($errors->all() as $error)
+				toastr.error("{{ $error }}")
+            @endforeach
+		@endif()
+		
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
 
@@ -554,14 +585,6 @@
 
 		//-------------- data binding -------------------
 
-		let form = {
-			inventoryid: null,
-			costo: null,
-			iva: null,
-			ganancia_al_mayor: null,
-			ganancia_al_menor: null
-		}
-
 
 		$('.btnedit').click(function() {
 			
@@ -594,7 +617,6 @@
 				$('#retail_margin_gain_edit').val(data.retail_margin_gain)
 				form.ganancia_al_menor = data.retail_margin_gain
 				
-
 				$('#modal_loader').fadeOut()
 			})
 			.fail((err)=> {
@@ -625,7 +647,7 @@
 
 		$('.calcular').click(function() {
 
-			console.log(form)
+			// console.log(form)
 
 			let id = form.inventoryid
 
@@ -646,9 +668,7 @@
 				let costo      = form.costo
 				let sin_puntos = costo.replace(/\./g, '')
 				let precio     = + sin_puntos.replace(/,/g, '.')
-
 				let iva_percent = + form.iva
-
 				let retail_margin_gain    = + form.ganancia_al_menor
 				let wholesale_margin_gain = + form.ganancia_al_mayor
 
