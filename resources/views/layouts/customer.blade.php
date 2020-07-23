@@ -101,7 +101,7 @@
 				<h5>Contácto</h5>
 				<dl class="contact-list">
 					<dt>Dirección:</dt>
-					<dd>Cagua Edo. Aragua</dd>
+					<dd>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</dd>
 				</dl>
 				<dl class="contact-list">
 					<dt>Email:</dt>

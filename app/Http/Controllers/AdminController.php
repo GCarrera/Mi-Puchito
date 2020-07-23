@@ -40,40 +40,12 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
 
-		$ventas   = Sale::all();
-		$entregas = Delivery::all();
-		$detalles = SaleDetail::all();
-
-		$data = [];
-
-		foreach ($ventas as $venta) {
-			foreach ($entregas as $entrega) {
-				if ( $entrega->sale_id == $venta->id ) {
-					$venta->delivery = $entrega;
-					$data[]  = $venta;
-				}
-				else {
-					$venta->delivery = null;
-					$data[]  = $venta;
-				}
-			}
-		}
-
-		$d = collect($data);
+		$ventas = Sale::with(['deliveries', 'details'])->get();
+		
 		$details = [];
 
-		foreach ($d as $venta) {
-			$venta->details = [];
-			foreach ($detalles as $det) {
-				if ($venta->id == $det->sale_id) {
-					$details[] = $det;
-				}
-			}
-			$venta->details = $details;
-		}
-
 		return view('admin.index')
-			->with('ventas', $d);
+			->with('ventas', $ventas);
 			// ->with('empresasCount', $empresasCount)
 			// ->with('productosCount', $productosCount)
 			// ->with('salesCount', $salesCount)

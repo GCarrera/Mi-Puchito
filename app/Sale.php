@@ -23,4 +23,9 @@ class Sale extends Model
     {
     	return $this->max('id');
     }
+
+    public function details()
+    {
+        return $this->hasMany('App\SaleDetail', 'sale_id', 'id');
+    }
 }

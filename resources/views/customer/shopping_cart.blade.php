@@ -76,7 +76,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<div class="d-none" data-id="{{ $c->id }}"></div>
 									<div class="d-none sale_type">{{ $c->attributes->sale_type }}</div>
 
-									<div class="col-md-4 col-sm-6 col-12">
+									<div class="col-md-3 col-sm-6 col-12">
 										
 										@if( $c->attributes->sale_type == 'al-mayor' )
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
@@ -145,12 +145,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 									</div>
 
+									<div class="col-md-1 col-sm-6 col-12">
+										<p class="text-muted small">IVA</p>
+										<span class="font-weight-bold precio">{{ $c->attributes->iva > 0 ? 'SI' : 'NO' }}</span><br>
+									</div>
+									<div class="col-md-2 col-sm-6 col-12">
+										<p class="text-muted small">CANT. AL MAYOR</p>
+										<span class="font-weight-bold precio">{{ $c->attributes->wholesale_quantity }}</span><br>
+									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CALIFICAR</p>
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-4 col-sm-6 col-12 d-flex justify-content-end">
+									<div class="col-md-2 col-sm-6 col-12 d-flex justify-content-end">
 										<div class="mt-4">
 											<button class="btn btn-outline-danger eliminar">
 												<i class="fas fa-times mr-2"></i>Eliminar
@@ -175,9 +183,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				</div>
 				<div class="card-footer d-flex justify-content-between">
 					@if(count($cart) > 0)
-						<button type="button" class="btn btn-danger" id="limpiar_carrito" data-toggle="modal" data-target="#clear_cart"><i class="fas fa-times mr-2"></i>Limpiar carrito</button>
+						<button type="button" class="btn btn-danger" id="limpiar_carrito" data-toggle="modal" data-target="#clear_cart">
+							<i class="fas fa-times mr-2"></i>Limpiar carrito
+						</button>
 					@endif
-					<a href="/home" class="btn btn-primary"><i class="fas fa-cart-plus mr-2"></i>Agregar más productos
+					<a href="/home" class="btn btn-primary">
+						<i class="fas fa-cart-plus mr-2"></i>Agregar más productos
 					</a>
 				</div>
 			</div>
@@ -268,15 +279,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<i>Solo se hará delivery en el Municipio Sucre.</i>
 								<div class="form-check">
 									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="delivery" value="si">Si
+										<input type="radio" onchange="changeRadio(this.value)" class="form-check-input" name="delivery" value="si">Si
 									</label>
 								</div>
 								<div class="form-check">
 									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="delivery" value="no">No
+										<input type="radio" onchange="changeRadio(this.value)" class="form-check-input" name="delivery" value="no">No
 									</label>
 								</div>
-							
+								<i id="address" class="d-none">Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
 								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
@@ -480,8 +491,24 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			<div class="modal-body">
 				<h6 class="font-weight-light">Información del pago</h6>
 				<div class="row">
-					<div class="col-12">
-						<label for="referencia">Número de referencia</label>
+					<div class="col-5">
+						<b>Adjuntar Comprobante</b><br>
+						<div class="file-input-wrapper">
+							<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
+							<p id="image_name" class="mt-3 mb-1"></p>
+							<p id="image_weigth" class="mb-3"></p>
+
+							<p id="imgerror" class="text-danger" style="display: none;"></p>
+							<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
+							<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+							<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*,application/pdf" required>
+						</div>
+					</div>
+					<div class="col-2">
+						<b>Ó</b>
+					</div>
+					<div class="col-5">
+						<label for="referencia" class="font-weight-bold">Número de referencia</label>
 						<input type="number" id="referencia" class="form-control" name="referencia">
 					</div>
 					<!-- <div class="col-12 text-center col-md-7">
@@ -498,10 +525,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<blockquote class="blockquote mb-0">
 								<footer class="blockquote-footer">
 									<b>Nombre: </b> <i id="name-{{$loop->iteration}}">{{ $c->name_enterprise }}</i> / 
-									<b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i> / 
-									<b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i> / 
-									<b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i> / 
-									<b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="fa fa-copy text-primary" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i>
+									<b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i> / 
+									<b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i> / 
+									<b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i> / 
+									<b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i>
 									<cite title="Source Title"></cite>
 								</footer>
 							</blockquote>
@@ -551,6 +578,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 @push('scripts')
 <script>
 
+function changeRadio(val) {
+	if (val == 'si') {
+		$('#address').addClass('d-none').removeClass('d-block')
+		$('#modalDelivery').modal('show')
+	} else {
+		$('#address').addClass('d-block').removeClass('d-none')
+	}
+}
+
 function copiarAlPortapapeles(id){
         var codigoACopiar = document.getElementById(id);    //Elemento a copiar
         //Debe estar seleccionado en la página para que surta efecto, así que...
@@ -573,6 +609,57 @@ function copiarAlPortapapeles(id){
     }
 
 	$(() => {
+		$('#fileinput').change((e) => {
+			// $('#sendBtn').removeClass('d-none')
+			// imagen de preview
+			let file   = e.target.files[0];
+			let reader = new FileReader();
+			let filesize = file.size / 1024
+
+			// validaciones del archivo
+			if (filesize > 150) {
+				$('#imgerror').text('La imagen excede los 150kb permitidos.')
+				$('#imgerror').show()
+				return
+			}
+
+			let allowed_ext = ['png', 'jpeg', 'gif', 'jpg', 'pdf']
+			let ext_length = allowed_ext.length
+
+			for (let i = 0; i < ext_length; i++){
+				if (!file.type.includes(allowed_ext[i])) {
+					if (ext_length - 1 == i) {
+						$('#imgerror').text('Este formato no está permitido.')
+						$('#imgerror').show()
+
+						return
+					} 
+				} else {
+					break
+				}
+			}
+
+			reader.onload = (ev) => {
+				$('#imgerror').hide()
+				$('#foto').show();
+				$('#clearbtn').show();
+				$('#foto').attr('src', file.type == 'application/pdf' ? '{{asset("img/file-icon.png")}}' : ev.target.result);
+				$('#foto').css('height', '110px');
+				$('#image_name').text(file.name)
+				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
+			}
+
+			$('#clearbtn').click(() => {
+				$('#imgerror').text('')
+				$('#fileinput').val('')
+				$('#foto').hide()
+				$('#image_name').text('')
+				$('#image_weigth').text('')
+				$('#clearbtn').hide()
+			})
+
+			reader.readAsDataURL(file);
+		});
 
 		toastr.options = {
 			"closeButton": true,
@@ -825,12 +912,10 @@ function copiarAlPortapapeles(id){
 
 		$('#delivery').change(function() {
 			let resp = $(this).val()
-
+			console.log(resp)
 			if (resp == 'si') {
-				$('#modalDelivery').modal('show')
-				$('#delivery_btn').removeClass('d-none')
-			}
-			else {
+				
+			} else {
 				$('#sector_info').text('')
 				$('#stimatedtime_info').text('')
 				$('#detalles_info').text('')

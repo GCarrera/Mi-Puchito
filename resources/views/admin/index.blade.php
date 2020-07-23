@@ -70,11 +70,11 @@
 							<tbody>
 								@forelse($ventas as $venta)
 									<tr>
-										<td>1-20200531233940</td>
-										<td>Al por menor</td>
-										<td>160.000</td>
-										<td>Naclo Libre</td>
-										<td>Si</td>
+										<td>{{$venta->code}}</td>
+										<td></td>
+										<td>{{$venta->amount}}</td>
+										<td></td>
+										<td>{{ $venta->delivery}}</td>
 										<td>
 											<button class="btn btn-md btn-primary">
 												<i class="fas fa-info-circle"></i>

@@ -64,9 +64,12 @@ class ShoppingCartController extends Controller
 		$price    = $request->input('precio');
 		$type     = $request->input('type');
 
-		$producto = Product::where('inventory_id', $id)->first();
-
+		$producto = Product::where('inventory_id', $id)
+			->with('inventory')
+			->first();
+		
 		$userId   = auth()->user()->id;
+
 
 		$data     = \Cart::session($userId)->get($id);
 
@@ -91,7 +94,7 @@ class ShoppingCartController extends Controller
 				'wholesale_iva_amount'   => $producto->wholesale_iva_amount,
 				'wholesale_packet_price' => $producto->wholesale_packet_price,
 				'wholesale_total_packet_price' => $producto->wholesale_total_packet_price,
-				'wholesale_quantity'     => $producto->inventory->qty_per_quantity
+				'wholesale_quantity'     => $producto->inventory->qty_per_unit
 			],
     		'associatedModel' => $producto
 		]);
