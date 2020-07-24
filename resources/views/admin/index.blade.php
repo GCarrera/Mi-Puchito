@@ -60,7 +60,6 @@
 							<thead>
 								<tr>
 									<th>ID FACTURA</th>
-									<th>TIPO VENTA</th>
 									<th>MONTO (Bs)</th>
 									<th>CLIENTE</th>
 									<th>DELIVERY</th>

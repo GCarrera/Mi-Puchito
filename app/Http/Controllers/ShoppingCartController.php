@@ -34,8 +34,7 @@ class ShoppingCartController extends Controller
 				
 				$r = $d->attributes->wholesale_total_packet_price * $d->quantity;
 				$totalSinIva += $r;
-			}
-			else {
+			} else {
 				$t = $d->attributes->retail_iva_amount * $d->quantity;
 				$ivatotal+= $t;
 				

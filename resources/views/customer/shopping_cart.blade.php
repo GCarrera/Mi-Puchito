@@ -67,8 +67,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				<div class="card-body">
 
 					<ul class="list-group">
-
+						@php
+						// $totalSinIva = 0;	
+						// $ivatotal = 0;
+						// $total = 0;
+						@endphp
 						@forelse ($cart as $c)
+							@php
+							$subtotal = ($c->price - $c->attributes->retail_iva_amount) * $c->quantity;
+							$iva = $c->attributes->retail_iva_amount * $c->quantity;
+
+							// $totalSinIva += $subtotal;
+							// $ivatotal += $iva; 
+							// $total += $totalSinIva + $ivatotal;
+							@endphp
 
 							<li class="list-group-item itempadre">
 								<div class="row filapadre">
@@ -76,7 +88,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<div class="d-none" data-id="{{ $c->id }}"></div>
 									<div class="d-none sale_type">{{ $c->attributes->sale_type }}</div>
 
-									<div class="col-md-3 col-sm-6 col-12">
+									<div class="col-md-4 col-sm-6 col-12">
 										
 										@if( $c->attributes->sale_type == 'al-mayor' )
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
@@ -102,19 +114,23 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<p class="text-muted small">CANTIDAD</p>
 										<div class="input-group mb-3 padre">
 											<div class="input-group-prepend">
-												<button class="input-group-text btn btn-primary substract"><i class="fas fa-angle-down"></i></button>
+												<button class="input-group-text btn btn-primary" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
-											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas rounded-0" value="{{ $c->quantity }}" min="1">
+											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1">
 											<div class="input-group-append">
-												<button class="input-group-text btn btn-primary add"><i class="fas fa-angle-up"></i></button>
+												<button class="input-group-text btn btn-primary" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
 											</div>
 										</div>
 									</div>
-
+									
 									<div class="col-md-2 col-sm-6 col-12 padreprecio">
 										<p class="text-muted small">PRECIO Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($c->price * $c->quantity, 2, ',', '.') }}</span><br>
-										
+										<p class="small">
+											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+											<br>
+											<span class="iva_product">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
+										</p>
+
 										@if( $c->attributes->sale_type == 'al-mayor' )
 
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
@@ -127,9 +143,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{  number_format($c->attributes->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
 											</span>--}}
 											<br>
-
 										@else
-										
+									
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->cost }}">
 
 											<span class="text-muted small">
@@ -145,23 +160,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 									</div>
 
-									<div class="col-md-1 col-sm-6 col-12">
-										<p class="text-muted small">IVA</p>
-										<span class="font-weight-bold precio">{{ $c->attributes->iva > 0 ? 'SI' : 'NO' }}</span><br>
-									</div>
-									<div class="col-md-2 col-sm-6 col-12">
+									
+									<div class="col-md-3 col-sm-6 col-12">
 										<p class="text-muted small">CANT. AL MAYOR</p>
-										<span class="font-weight-bold precio">{{ $c->attributes->wholesale_quantity }}</span><br>
+										<span class="font-weight-normal precio">{{ $c->attributes->wholesale_quantity }}</span><br>
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CALIFICAR</p>
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-2 col-sm-6 col-12 d-flex justify-content-end">
+									<div class="col-md-1 col-sm-6 col-12 d-flex justify-content-end">
 										<div class="mt-4">
 											<button class="btn btn-outline-danger eliminar">
-												<i class="fas fa-times mr-2"></i>Eliminar
+												<i class="fas fa-times"></i>
 											</button>
 										</div>
 									</div>
@@ -213,7 +225,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				<div class="card-body">
 					<div class="row mb-1">
 						<div class="col">
-							<span>Productos:</span>
+							<span>Subtotal:</span>
 						</div>
 						<div class="col text-right">
 							<span id="totalSinIva">{{ number_format($totalSinIva, 2, ',', '.') }} Bs</span>
@@ -227,33 +239,6 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span><span id="ivatotal">{{ number_format($ivatotal, 2, ',', '.') }}</span> Bs</span>
 						</div>
 					</div>
-					<!--<div class="row mb-1">
-						<div class="col">
-							<span>IVA:</span>
-						</div>
-						<div class="col text-right">
-							<span>34.000 Bs</span>
-						</div>
-					</div>
-					<div class="row mb-1">
-						<div class="col">
-							<span>Descuento:</span>
-						</div>
-						<div class="col text-right">
-							<span class="text-danger">- 45.000 Bs</span>
-						</div>
-					</div>-->
-					<div class="row mb-1 delivery_cost d-none">
-						<div class="col">
-							<span>Delivery:</span>
-						</div>
-						<div class="col text-right">
-							<span>+<span class="precio no" id="delivery_cost">0</span> Bs</span>
-						</div>
-					</div>
-
-					<br>
-
 					<div class="row mb-3">
 						<div class="col">
 							<span class="font-weight-bold">Total:</span>
@@ -261,7 +246,23 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<div class="col text-right">
 							<span class="font-weight-bold"><span id="montoTotal">{{ number_format($total, 2, ',', '.') }}</span> Bs</span>
 						</div>
+					</div>					
+					<!--<div class="row mb-1">
+						<div class="col">
+							<span>Descuento:</span>
+						</div>
+						<div class="col text-right">
+							<span class="text-danger">- 45.000 Bs</span>
+						</div>
 					</div>
+					<div class="row mb-1 delivery_cost d-none">
+						<div class="col">
+							<span>Delivery:</span>
+						</div>
+						<div class="col text-right">
+							<span>+<span class="precio no" id="delivery_cost">0</span> Bs</span>
+						</div>
+					</div>-->
 
 					<hr>
 
@@ -577,37 +578,61 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 @push('scripts')
 <script>
+	var myCart = @json($cart);
 
-function changeRadio(val) {
-	if (val == 'si') {
-		$('#address').addClass('d-none').removeClass('d-block')
-		$('#modalDelivery').modal('show')
-	} else {
-		$('#address').addClass('d-block').removeClass('d-none')
+	function changeRadio(val) {
+		if (val == 'si') {
+			$('#address').addClass('d-none').removeClass('d-block')
+			$('#modalDelivery').modal('show')
+		} else {
+			$('#address').addClass('d-block').removeClass('d-none')
+		}
 	}
-}
 
-function copiarAlPortapapeles(id){
-        var codigoACopiar = document.getElementById(id);    //Elemento a copiar
-        //Debe estar seleccionado en la página para que surta efecto, así que...
-        var seleccion = document.createRange(); //Creo una nueva selección vacía
-        seleccion.selectNodeContents(codigoACopiar);    //incluyo el nodo en la selección
-        //Antes de añadir el intervalo de selección a la selección actual, elimino otros que pudieran existir (sino no funciona en Edge)
-        window.getSelection().removeAllRanges();
-        window.getSelection().addRange(seleccion);  //Y la añado a lo seleccionado actualmente
-        try {
-            var res = document.execCommand('copy'); //Intento el copiado
-            if (res)
-				toastr.success('Texto copiado al portapapeles')
-            else
-            	toastr.error('No se pudo copiar')
-        }
-        catch(ex) {
-            toastr.error('No se pudo copiar')
-        }
-        window.getSelection().removeRange(seleccion);
-    }
+	function substract(id) {
+		myCart[id].quantity = parseInt(myCart[id].quantity) - 1;
+		if (myCart[id].quantity == 1) {
+			return
+		}
+		$('.sinflechas-'+id).val(myCart[id].quantity)
+		subtotal_item(id)
+		subtotal()
+	}
 
+	function add(id) {
+		myCart[id].quantity = parseInt(myCart[id].quantity) + 1
+		if (myCart[id].quantity >= parseInt(myCart[id].attributes.wholesale_quantity)) {
+
+		}
+		$('.sinflechas-'+id).val(myCart[id].quantity)
+		subtotal_item(id)
+		subtotal()
+	}
+
+	function subtotal_item(id) {
+		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].attributes.retail_iva_amount), typeof myCart[id].quantity)
+		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].attributes.retail_iva_amount)) * myCart[id].quantity
+		$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
+		return myCart[id].subtotal
+	}
+
+	function subtotal() {
+		let subtotal = 0
+		let iva = 0
+		let total = 0
+		for (let cart in myCart) {
+			total += myCart[cart].price * myCart[cart].quantity
+			console.log()
+			subtotal += myCart[cart].price * myCart[cart].quantity - parseInt(myCart[cart].attributes.retail_iva_amount)
+			console.log(subtotal)
+			iva += parseInt(myCart[cart].attributes.retail_iva_amount)
+		}
+		console.log(total)
+		$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
+		$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(iva)+',00')
+		$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(total)+',00')
+	}
+	
 	$(() => {
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
@@ -678,118 +703,112 @@ function copiarAlPortapapeles(id){
 			}
 		});
 
-		function actualizarCarro(id, cantidad, tipo_compra){
+		// function actualizarCarro(id, cantidad, tipo_compra){
 
-			console.log(tipo_compra)
+		// 	console.log(tipo_compra)
 
-			$.ajax(`/shoppingcart/${id}`, {
-				method: 'put',
-				data: {
-					quantity: cantidad,
-					sale_type: tipo_compra
-				},
-				beforeSend(){
-					// console.log('before send')
-				}
-			})
-			.done((res) => {
+		// 	$.ajax(`/shoppingcart/${id}`, {
+		// 		method: 'put',
+		// 		data: {
+		// 			quantity: cantidad,
+		// 			sale_type: tipo_compra
+		// 		},
+		// 		beforeSend(){
+		// 			// console.log('before send')
+		// 		}
+		// 	})
+		// 	.done((res) => {
 
-				if (res == 'rejected') {
-					toastr.warning('El tipo de compra no coincide.')
-				}
-				else {
-					$('#cart_counter').text(res)
-				}
+		// 		if (res == 'rejected') {
+		// 			toastr.warning('El tipo de compra no coincide.')
+		// 		}
+		// 		else {
+		// 			$('#cart_counter').text(res)
+		// 		}
 
-				console.log(res)
-			})
-			.catch((err) => {
-				toastr.error('Ha ocurrido un error')
-				console.error(err)
-			})
-		}
+		// 		console.log(res)
+		// 	})
+		// 	.catch((err) => {
+		// 		toastr.error('Ha ocurrido un error')
+		// 		console.error(err)
+		// 	})
+		// }
 
-		function calcularPrecio(ev, operacion){
-			let id        = $(ev.target).parents('.filapadre').children('div.d-none').data('id')
-			let input     = $(ev.target).parents('.padre').children('.sinflechas')
-			let cantidad  = input.val()
-			let sale_type = $(ev.target).parents('.filapadre').children('.sale_type').text()
-			let precio    = $(ev.target).parents('.filapadre').children('.padreprecio').children('.text-muted').children('.preciopvp').text()
+		// function calcularPrecio(ev, operacion){
+		// 	console.log(ev.target, )
+		// 	let id        = $(ev.target).parents('.filapadre').children('div.d-none').data('id')
+		// 	let input     = $(ev.target).parents('.padre').children('.sinflechas')
+		// 	let cantidad  = input.val()
+		// 	let sale_type = $(ev.target).parents('.filapadre').children('.sale_type').text()
+		// 	let precio    = $(ev.target).parents('.filapadre').children('.padreprecio').children('.text-muted').children('.preciopvp').text()
 
-			let formatedprecio1 = precio.replace(/\./g, '')
-			let formatedprecio2 = formatedprecio1.replace(',', '.')
+		// 	let formatedprecio1 = precio.replace(/\./g, '')
+		// 	let formatedprecio2 = formatedprecio1.replace(',', '.')
 
-			if (operacion == 'sumar') {
-				if (ev.type == 'click' && ev.target.nodeName == 'BUTTON' || ev.target.nodeName == 'I') {
-					input.val(parseInt(cantidad) + 1)
-				}
+		// 	if (operacion == 'sumar') {
+		// 		if (ev.type == 'click' && ev.target.nodeName == 'BUTTON' || ev.target.nodeName == 'I') {
+		// 			input.val(parseInt(cantidad) + 1)
+		// 		}
 
-				actualizarCarro(id, input.val(), sale_type)
+		// 		actualizarCarro(id, input.val(), sale_type)
+		// 		//console.log(new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val()))
+		// 		return new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val())
+		// 	} else {
+		// 		if (cantidad < 2) {
+		// 			cantidad = 1
+		// 		} else {
+		// 			if (ev.type == 'click') {
+		// 				input.val(parseInt(cantidad) - 1)
+		// 			}
+		// 		}
 
-				//console.log(new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val()))
-				return new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val())
-			}
-			else {
-				if (cantidad < 2) {
-					cantidad = 1
-				}
-				else {
-					if (ev.type == 'click') {
-						input.val(parseInt(cantidad) - 1)
-					}
-				}
+		// 		actualizarCarro(id, input.val(), sale_type)
 
-				actualizarCarro(id, input.val(), sale_type)
+		// 		return new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val())
+		// 	}
+		// }
 
-				return new Intl.NumberFormat('de-DE').format(formatedprecio2 * input.val())
-			}
-		}
+		// function calcularPrecioTotal(){
+		// 	let result = 0
+		// 	let sinIva = 0
 
-		function calcularPrecioTotal(){
-			let result = 0
-			let sinIva = 0
+		// 	// calcular precio total
+		// 	$('.precio').each((i, el) => {
+		// 		let formatedprecio1 = $(el).text().replace(/\./g, '')
+		// 		let formatedprecio2 = formatedprecio1.replace(',', '.')
+		// 		result += parseFloat(formatedprecio2)
+		// 	})
 
-			// calcular precio total
-			$('.precio').each((i, el) => {
+		// 	// calcular precio sin iva
+		// 	$('.preciosiniva').each((i, el) => {
+		// 		let precio = $(el).val()
+		// 		let qty    = $(el).parents('.filapadre').children('.padrecantidad').children('.padre').children('.sinflechas').val()
+		// 		let r = precio * qty
+		// 		sinIva += parseFloat(r)
+		// 	})
 
-				let formatedprecio1 = $(el).text().replace(/\./g, '')
-				let formatedprecio2 = formatedprecio1.replace(',', '.')
+		// 	return {
+		// 		total: new Intl.NumberFormat('de-DE').format(result),
+		// 		sinIva: new Intl.NumberFormat('de-DE').format(sinIva)
+		// 	}
+		// }
 
-				result += parseFloat(formatedprecio2)
-			})
+		// function calcularIVATotal(){
+		// 	let result = 0
 
-			// calcular precio sin iva
-			$('.preciosiniva').each((i, el) => {
-
-				let precio = $(el).val()
-				let qty    = $(el).parents('.filapadre').children('.padrecantidad').children('.padre').children('.sinflechas').val()
-				let r = precio * qty
-
-				sinIva += parseFloat(r)
-			})
-
-			return {
-				total: new Intl.NumberFormat('de-DE').format(result),
-				sinIva: new Intl.NumberFormat('de-DE').format(sinIva)
-			} 
-		}
-
-		function calcularIVATotal(){
-			let result = 0
-
-			$('.iva').each((i, el) => {
-				let formatedprecio1 = $(el).text().replace(/\./g, '')
-				let formatedprecio2 = formatedprecio1.replace(',', '.')
-				let cantidad        = $(el).parents('.filapadre').children('.padrecantidad').children('.padre').children('.sinflechas').val()
+		// 	$('.iva').each((i, el) => {
+		// 		let formatedprecio1 = $(el).text().replace(/\./g, '')
+		// 		let formatedprecio2 = formatedprecio1.replace(',', '.')
+		// 		let cantidad        = $(el).parents('.filapadre').children('.padrecantidad').children('.padre').children('.sinflechas').val()
 				
-				let r = formatedprecio2 * cantidad
+		// 		let r = formatedprecio2 * cantidad
 				
-				result += parseFloat(r)
-				// debugger
-			})
+		// 		result += parseFloat(r)
+		// 		// debugger
+		// 	})
 
-			return new Intl.NumberFormat('de-DE').format(result)
-		}
+		// 	return new Intl.NumberFormat('de-DE').format(result)
+		// }
 
 		// saber si hay elementos en el carrito para mostrar la candidad en color rojo en el navbar
 		$.get('/get_shoppingcart', (res) => {
@@ -814,34 +833,36 @@ function copiarAlPortapapeles(id){
 		})
 
 		$('.add, .sinflechas').on('click keyup', (e) => {
-			let result = calcularPrecio(e, 'sumar')
+			// let result = calcularPrecio(e, 'sumar')
 			
-			$(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
+			// $(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
 
-			let total = calcularPrecioTotal()
-			$('#montoTotal').text(total.total)
+			// let total = calcularPrecioTotal()
+			// $('#montoTotal').text(total.total)
 
-			let precioSinIva = calcularPrecioTotal()
-			$('#totalSinIva').text(total.sinIva)
+			// let precioSinIva = calcularPrecioTotal()
+			// $('#totalSinIva').text(total.sinIva)
 
-			let ivaTotal = calcularIVATotal()
-			$('#ivatotal').text(ivaTotal)
-
+			// let ivaTotal = calcularIVATotal()
+			// $('#ivatotal').text(ivaTotal)
 		})
 
 		$('.substract').click((e) => {
+			console.log(e)
+			myCart.find((el) => {
+				
+			})
+			// let result = calcularPrecio(e, 'restar')
+			// $(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
 
-			let result = calcularPrecio(e, 'restar')
-			$(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
+			// let total = calcularPrecioTotal()
+			// $('#montoTotal').text(total.total)
 
-			let total = calcularPrecioTotal()
-			$('#montoTotal').text(total.total)
+			// let precioSinIva = calcularPrecioTotal()
+			// $('#totalSinIva').text(total.sinIva)
 
-			let precioSinIva = calcularPrecioTotal()
-			$('#totalSinIva').text(total.sinIva)
-
-			let ivaTotal = calcularIVATotal()
-			$('#ivatotal').text(ivaTotal)
+			// let ivaTotal = calcularIVATotal()
+			// $('#ivatotal').text(ivaTotal)
 		})
 
 		$('.eliminar').click(function() {

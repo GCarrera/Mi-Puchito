@@ -26,6 +26,26 @@
 				e.preventDefault();
 			}
 		}
+
+		function copiarAlPortapapeles(id){
+			var codigoACopiar = document.getElementById(id);    //Elemento a copiar
+			//Debe estar seleccionado en la página para que surta efecto, así que...
+			var seleccion = document.createRange(); //Creo una nueva selección vacía
+			seleccion.selectNodeContents(codigoACopiar);    //incluyo el nodo en la selección
+			//Antes de añadir el intervalo de selección a la selección actual, elimino otros que pudieran existir (sino no funciona en Edge)
+			window.getSelection().removeAllRanges();
+			window.getSelection().addRange(seleccion);  //Y la añado a lo seleccionado actualmente
+			try {
+				var res = document.execCommand('copy'); //Intento el copiado
+				if (res)
+					toastr.success('Texto copiado al portapapeles')
+				else
+					toastr.error('No se pudo copiar')
+			} catch(ex) {
+				toastr.error('No se pudo copiar')
+			}
+			window.getSelection().removeRange(seleccion);
+		}
 	</script>
 	@stack('scripts')
 </body>
