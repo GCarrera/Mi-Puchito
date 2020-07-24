@@ -52,7 +52,7 @@
 			<div class="card shadow-sm">
 				<div class="card-header d-flex justify-content-between">
 					<h4>Ventas del día</h4>
-					<p class="lead">Martes, 25 de Octubre</p>
+					<p class="lead">{{ucfirst(Carbon::now()->isoFormat('dddd, LL'))}}</p>
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
@@ -71,10 +71,9 @@
 								@forelse($ventas as $venta)
 									<tr>
 										<td>{{$venta->code}}</td>
-										<td></td>
 										<td>{{$venta->amount}}</td>
-										<td></td>
-										<td>{{ $venta->delivery}}</td>
+										<td>{{$venta->user->people->name}}</td>
+										<td>{{strtoupper($venta->delivery)}}</td>
 										<td>
 											<button class="btn btn-md btn-primary">
 												<i class="fas fa-info-circle"></i>

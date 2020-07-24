@@ -231,7 +231,7 @@ return [
 
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-
+        'Carbon' => Carbon\Carbon::class,
     ],
 
 ];
