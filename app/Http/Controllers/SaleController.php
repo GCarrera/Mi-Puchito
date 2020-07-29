@@ -43,7 +43,6 @@ class SaleController extends Controller
 		$payment_reference_code = $req->input('numero_referencia');
 
 		$sale = new Sale();
-
 		$sale->code     = $code;
 		// $sale->type     = $type;
 		$sale->amount   = $monto;
@@ -51,9 +50,7 @@ class SaleController extends Controller
 		// $sale->payment_capture = $payment_capture;
 		$sale->delivery = $delivery;
 		$sale->user_id  = $user;
-
 		$sale->save();
-
 		$saleid = $sale->lastid();
 
 		// guardar en sales details
@@ -61,27 +58,21 @@ class SaleController extends Controller
 
 		foreach ($productos as $producto) {
 			$saleDetail = new SaleDetail();
-
 			$saleDetail->quantity   = $producto->quantity;
 			$saleDetail->product_id = $producto->id;
 			$saleDetail->sale_id    = $saleid;
-
 			$saleDetail->save();
 		}
 
-
 		if ($req->input('user_address_delivery')) {
-
 			$delivery = new Delivery();
-
 			$delivery->address_user_delivery_id = $req->input('user_address_delivery');
 			$delivery->sale_id = $saleid;
-
 			$delivery->save();
 		}
 
 		\Cart::session($user)->clear();
 
-		return redirect('/perfil')->with('success', 'Su compra está en proceso, puede verla en sus pedidos.');
+		return redirect('/perfil')->with(['success' => 'Su compra está en proceso, puede verla en sus pedidos.', 'pedidos' => true]);
 	}
 }

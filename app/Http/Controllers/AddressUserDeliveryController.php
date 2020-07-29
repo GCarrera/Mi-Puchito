@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\AddressUserDelivery;
+use App\TravelRate;
 
 class AddressUserDeliveryController extends Controller
 {
@@ -32,9 +33,13 @@ class AddressUserDeliveryController extends Controller
 
 	public function show($id)
 	{
-		$data = AddressUserDelivery::find($id);
+		$travel = TravelRate::where('sector_id', $id);
+		if ($travel->count() == 0) {	 
+			return response()->json(['travel_rate' => ['stimated_time' => 0, 'rate' => 0], 'details' => 'No hay tiempos estimados registrados.']);
+		}
+		$travel = $travel->first();
+		$data = AddressUserDelivery::where('travel_rate_id', $travel->id)->first();
 		$data->travel_rate;
-
  		return $data;
 	}
 }

@@ -343,7 +343,9 @@
 			}
 		});
 
-
+		@if (session('pedidos'))
+			$('#list-messages-list').trigger('click')
+		@endif()
 		// saber si hay elementos en el carrito para mostrar la candidad en color rojo en el navbar
 		$.get('/get_shoppingcart', (res) => {
 			if (res > 0) {

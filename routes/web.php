@@ -13,7 +13,6 @@
 
 Route::get('/', 'CustomerController@index');
 
-
 // Route::get('/home', function () {
 //     return redirect('services');
 // });
@@ -32,10 +31,11 @@ Route::middleware(['auth'])->group(function(){
 		Route::resource('/cuentas-bancarias', 'BankAccountController');
 	});
 
-
 	Route::get('/home', 'CustomerController@index')->name('home');
 	Route::get('/ventas-al-mayor', 'CustomerController@al_mayor');
 	Route::get('/categoria/{categoria}', 'CustomerController@categoria');
+	Route::get('/city/{state_id}', 'ShoppingCartController@getCity');
+	Route::get('/sector/{city_id}', 'ShoppingCartController@getSector');
 	Route::resource('shoppingcart', 'ShoppingCartController');
 	Route::resource('lista-de-deseos', 'WishlistController');
 
@@ -64,7 +64,6 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('/get_wishlist', 'WishlistController@get_wishlist');
 	Route::post('/sale', 'SaleController@store');
 	Route::post('/get_sale', 'SaleController@get_sale');
-
 });
 
 Route::get('/traer_productos', 'AdminController@traer_productos');

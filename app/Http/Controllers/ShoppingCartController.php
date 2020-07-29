@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\AddressUserDelivery;
 use App\BankAccount;
+use App\City;
+use App\Sector;
+use App\State;
 
 class ShoppingCartController extends Controller
 {
@@ -45,6 +48,7 @@ class ShoppingCartController extends Controller
 
 		$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
 		$cb = BankAccount::all();
+		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
 		return view('customer.shopping_cart')
 				->with('cart', $data)
@@ -53,6 +57,7 @@ class ShoppingCartController extends Controller
 				->with('user', $user)
 				->with('ivatotal', $ivatotal)
 				->with('totalSinIva', $totalSinIva)
+				->with('cities', $cities)
 				->with('total', $total);
 	}
 
@@ -138,5 +143,17 @@ class ShoppingCartController extends Controller
 		\Cart::session($userId)->clear();
 
 		return \Cart::session($userId)->getTotalQuantity();
+	}
+
+	public function getCity(Request $request)
+	{
+		$cities = City::where('state_id', $request->state_id)->get();
+		return response()->json($cities);
+	}
+
+	public function getSector(Request $request)
+	{
+		$cities = Sector::where('city_id', $request->city_id)->get();
+		return response()->json($cities);
 	}
 }

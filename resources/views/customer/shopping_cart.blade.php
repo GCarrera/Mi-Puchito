@@ -307,14 +307,14 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<p class="text-right" id="sector_info">...</p>
 									</div>
 								</div>
-								<div class="row">
+								{{-- <div class="row">
 									<div class="col-5">
 										<p class="font-weight-bold">Tiempo estimado:</p>
 									</div>
 									<div class="col">
 										<p class="text-right" id="stimatedtime_info">...</p>
 									</div>
-								</div>
+								</div> --}}
 								<div class="row">
 									<div class="col-5">
 										<p class="font-weight-bold">Detalles:</p>
@@ -323,14 +323,14 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<p class="text-right" id="detalles_info">...</p>
 									</div>
 								</div>
-								<div class="row">
+								{{-- <div class="row">
 									<div class="col-5">
 										<p class="font-weight-bold">Tarifa:</p>
 									</div>
 									<div class="col">
 										<p class="text-right"><span id="tarifa_info">...</span> Bs</p>
 									</div>
-								</div>
+								</div> --}}
 							</div>
 						</div>
 
@@ -413,22 +413,31 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			</div>
 			<div class="modal-body">
 				<div class="row">
+					{{-- <div class="col-12">
+						<label for="state_id">Estado</label><br>
+						<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
+						@foreach ($collection as $item)
+							
+						@endforeach
+					</div> --}}
 					<div class="col-12">
-						<label for="direccion">Selecciona una dirección para la entrega</label><br>
-						<select required name="address" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="direccion">
-							<option selected disabled>Direcciones registradas</option>
-							{{-- <option data-subtext="Registrar una nueva dirección para la entrega" value="nueva">Nueva dirección</option> --}}
-
-							@forelse ($user_address as $address)
-								<option data-subtext="{{ number_format($address->travel_rate->rate, 0, ',', '.') }} Bs" value="{{ $address->id }}">{{ $address->travel_rate->sector->sector }}</option>
-							@empty
-								<option disabled>No tienes direcciones registradas</option>
-							@endforelse
+						<label for="city_id">Ciudad</label><br>
+						<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
+							<option value="" selected>Seleccione Ciudad</option>
+						@foreach ($cities as $city)
+							<option value="{{$city->id}}">{{$city->city}}</option>
+						@endforeach
 						</select>
-						@if($user_address)
-
-							<a href="/perfil/"><i class="fas fa-plus mr-1"></i>Registrar una dirección</a>
-						@endif
+					</div>
+					<div class="col-12">
+						<label for="sector_id">Sector</label><br>
+						<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id">
+							<option value="">Seleccione Sector</option>
+						</select>
+					</div>
+					<div class="col-12">
+						<label for="detalles">Dirección exacta</label><br>
+						<input type="text" class="form-control" name="detalles" id="detalles" placeholder="Calle, Número de Casa, Algún punto de referencia.">
 					</div>
 				</div>
 
@@ -439,30 +448,30 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					</div>
 
 					<div class="col-12 d-none" id="direccion_content">
-						<div class="row">
+						{{-- <div class="row">
 							<div class="col-4">
 								<p class="font-weight-bold">Tiempo estimado:</p>
 							</div>
 							<div class="col">
 								<p id="stimatedtime">...</p>
 							</div>
-						</div>
-						<div class="row">
+						</div> --}}
+						{{-- <div class="row">
 							<div class="col-4">
 								<p class="font-weight-bold">Tarifa:</p>
 							</div>
 							<div class="col">
 								<p><span id="tarifa">0</span> Bs</p>
 							</div>
-						</div>
-						<div class="row">
+						</div> --}}
+						{{-- <div class="row">
 							<div class="col-4">
 								<p class="font-weight-bold">Detalles:</p>
 							</div>
 							<div class="col">
 								<p id="detalles">...</p>
 							</div>
-						</div>
+						</div> --}}
 					</div>
 				</div>
 			</div>
@@ -643,6 +652,47 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 	
 	$(() => {
+		$('#state_id').on('change', function() { 
+			var state_id = $('#state_id').val(); 
+			$.ajax({
+				url: "city/"+state_id,
+				type: "GET",
+				dataType: "json",
+				error: function(element){
+				//console.log(element);
+				}, 
+				success: function(respuesta){
+					$("#city_id").html('<option value="" selected="true"> Seleccione una opción </option>');
+					respuesta.forEach(element => {
+						$('#city_id').append('<option value='+element.id+'> '+element.city+' </option>')
+					});
+				}
+			});
+
+		})
+
+		$('#city_id').on('change', function() { 
+			var city_id = $('#city_id').val(); 
+			$.ajax({
+				url: "sector/"+city_id,
+				type: "GET",
+				dataType: "json",
+				error: function(error){
+				//console.log(error);
+				}, 
+				success: function(respuesta){
+					console.log(respuesta)
+					$("#sector_id").html('<option value="" selected="true"> Seleccione una opción </option>');
+					respuesta.forEach(element => {
+						console.log(element)
+						$('#sector_id').append('<option value='+element.id+'> '+element.sector+' </option>')
+					});
+					$('.selectpicker').selectpicker('refresh');
+				}
+			});
+
+		})
+
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
 			// imagen de preview
@@ -940,7 +990,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				$('#sector').text('')
 				$('#stimatedtime').text('')
 				$('#detalles').text('')
-				$('#tarifa').text('')
+				// $('#tarifa').text('')
 
 				$('.delivery_cost').addClass('d-none')
 				$('#delivery_cost').text(0)
@@ -960,60 +1010,44 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			}
 		})
 
-		$('#direccion').change(function(){
+		// $('#sector_id').change(function(){
 
-			let direccion = $(this).val()
+		// 	let direccion = $(this).val()
 
-			$('#direccion_loader').removeClass('sr-only')
+		// 	$('#direccion_loader').removeClass('sr-only')
 
-			$.get(`/direcciones/${direccion}`, (res) => {
-				$('#stimatedtime').text(`${res.travel_rate.stimated_time} min`)
-				$('#tarifa').text(new Intl.NumberFormat('de-DE').format(res.travel_rate.rate))
-				$('#detalles').text(`${res.details}`)
+		// 	$.get(`/direcciones/${direccion}`, (res) => {
+		// 		$('#stimatedtime').text(`${res.travel_rate.stimated_time} min`)
+		// 		// $('#tarifa').text(new Intl.NumberFormat('de-DE').format(res.travel_rate.rate))
+		// 		$('#detalles').text(`${res.details}`)
 
-				$('#direccion_loader').addClass('sr-only')		
-				$('#direccion_content').removeClass('d-none')			
-			})
-			.catch((err) => {
-				toastr.error('Algo ha ocurrido.')
-				console.error(err)
-			})
-		})
+		// 		$('#direccion_loader').addClass('sr-only')
+		// 		$('#direccion_content').removeClass('d-none')
+		// 	})
+		// 	.catch((err) => {
+		// 		toastr.error('Algo ha ocurrido.')
+		// 		console.error(err)
+		// 	})
+		// })
 
 		// boton listo del modal del delivery
 		$('#listo').click(() => {
-			let sector        = $('#direccion option:selected').text()
-			let stimated_time = $('#stimatedtime').text()
-			let tarifa        = $('#tarifa').text()
-			let detalles      = $('#detalles').text()
-
-			if ( ! $('#direccion')[0].validity.valueMissing ){
-
-				$('#user_address_delivery').val($('#direccion').val())
-
+			let sector        = $('#sector_id option:selected').text()
+			// let stimated_time = $('#stimatedtime').text()
+			// let tarifa        = $('#tarifa').text()
+			let detalles      = $('#detalles').val()
+			if ( ! $('#sector_id')[0].validity.valueMissing ){
+				$('#user_address_delivery').val($('#sector_id').val())
 				$('#sector_info').text(sector)
-				$('#stimatedtime_info').text(stimated_time)
 				$('#detalles_info').text(detalles)
-				$('#tarifa_info').text(tarifa)
-
-				$('.delivery_cost').removeClass('d-none')
-				$('#delivery_cost').text(tarifa)
-
-				let total = calcularPrecioTotal()
-				$('#montoTotal').text(total.total)
-
-				let precioSinIva = calcularPrecioTotal()
-				$('#totalSinIva').text(total.sinIva)
-
-				let ivaTotal = calcularIVATotal()
-				$('#ivatotal').text(ivaTotal)
-
+				// $('#stimatedtime_info').text(stimated_time)
+				// $('#tarifa_info').text(tarifa)
+				// $('.delivery_cost').removeClass('d-none')
+				// $('#delivery_cost').text(tarifa)
 				$('.detallesescondidos').removeClass('d-none')
-
 				$('#modalDelivery').modal('hide')
-			}
-			else {
-				$('#direccion')[0].setCustomValidity('Este campo no puede quedar vacío.')
+			} else {
+				$('#sector_id')[0].setCustomValidity('Este campo no puede quedar vacío.')
 			}
 		})
 
