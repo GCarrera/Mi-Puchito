@@ -60,8 +60,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 
 <div class="container-fluid wrapper my-5">
-	<div class="row d-lg-none d-md-none">
-		Carrito de Compra
+	<div class="row d-lg-none d-md-none text-center">
+		<h4 class="col-md-12">
+			Carrito de Compra
+		</h4>
 	</div>
 	<div class="row">
 		<div class="col-lg-9 col-12">
