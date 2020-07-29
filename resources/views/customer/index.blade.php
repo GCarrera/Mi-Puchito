@@ -136,6 +136,9 @@
 														<button 
 															data-id="{{ $producto->id }}" 
 															class="btn btn-outline-primary btn-block mb-2 addToWishlist"
+															data-producto="{{ $producto->product_name }}"
+															data-precio="{{ $producto->product->retail_total_price }}"
+
 														>
 															<i class="fa fa-heart"></i>
 														</button>

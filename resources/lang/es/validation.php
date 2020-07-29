@@ -165,6 +165,7 @@ return [
         'retail_margin_gain' => 'Ganancia al menor',
         'wholesale_margin_gain' => 'Ganancia al mayor',
         'fileinput' => 'Imágen del producto',
+        'dni' => 'Cédula',
     ],
 
 ];

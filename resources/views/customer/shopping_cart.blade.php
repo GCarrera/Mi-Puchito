@@ -60,26 +60,21 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 
 <div class="container-fluid wrapper my-5">
+	<div class="row d-lg-none d-md-none">
+		Carrito de Compra
+	</div>
 	<div class="row">
-
 		<div class="col-lg-9 col-12">
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 
 					<ul class="list-group">
-						@php
-						// $totalSinIva = 0;	
-						// $ivatotal = 0;
-						// $total = 0;
-						@endphp
 						@forelse ($cart as $c)
 							@php
 							$subtotal = ($c->price - $c->attributes->retail_iva_amount) * $c->quantity;
 							$iva = $c->attributes->retail_iva_amount * $c->quantity;
 
-							// $totalSinIva += $subtotal;
-							// $ivatotal += $iva; 
-							// $total += $totalSinIva + $ivatotal;
+							$totalSinIva += $subtotal;
 							@endphp
 
 							<li class="list-group-item itempadre">
@@ -123,12 +118,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										</div>
 									</div>
 									
-									<div class="col-md-2 col-sm-6 col-12 padreprecio">
+									<div class="col-md-3 col-sm-6 col-12 padreprecio">
 										<p class="text-muted small">PRECIO Bs</p>
 										<p class="small">
 											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 											<br>
-											<span class="iva_product">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
+											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
 										</p>
 
 										@if( $c->attributes->sale_type == 'al-mayor' )
@@ -161,7 +156,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</div>
 
 									
-									<div class="col-md-3 col-sm-6 col-12">
+									<div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CANT. AL MAYOR</p>
 										<span class="font-weight-normal precio">{{ $c->attributes->wholesale_quantity }}</span><br>
 									</div>
@@ -172,7 +167,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 									<div class="col-md-1 col-sm-6 col-12 d-flex justify-content-end">
 										<div class="mt-4">
-											<button class="btn btn-outline-danger eliminar">
+											<button class="btn btn-outline-danger eliminar" onclick="delete_item({{$c->id}})">
 												<i class="fas fa-times"></i>
 											</button>
 										</div>
@@ -228,7 +223,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span>Subtotal:</span>
 						</div>
 						<div class="col text-right">
-							<span id="totalSinIva">{{ number_format($totalSinIva, 2, ',', '.') }} Bs</span>
+							<span><span id="totalSinIva">{{ number_format($totalSinIva, 2, ',', '.') }} </span> Bs.</span>
 						</div>
 					</div>
 					<div class="row mb-1">
@@ -590,12 +585,19 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 
 	function substract(id) {
-		myCart[id].quantity = parseInt(myCart[id].quantity) - 1;
 		if (myCart[id].quantity == 1) {
 			return
 		}
+		myCart[id].quantity = parseInt(myCart[id].quantity) - 1;
 		$('.sinflechas-'+id).val(myCart[id].quantity)
 		subtotal_item(id)
+		subtotal()
+	}
+
+	function delete_item(id) {
+		// console.log(id, myCart[id])
+		delete myCart[id]
+		console.log(myCart)
 		subtotal()
 	}
 
@@ -612,7 +614,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	function subtotal_item(id) {
 		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].attributes.retail_iva_amount), typeof myCart[id].quantity)
 		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].attributes.retail_iva_amount)) * myCart[id].quantity
+		myCart[id].iva = myCart[id].attributes.retail_iva_amount * myCart[id].quantity
 		$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
+		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE').format(myCart[id].iva)+',00')
 		return myCart[id].subtotal
 	}
 
@@ -620,15 +624,18 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		let subtotal = 0
 		let iva = 0
 		let total = 0
+		// console.log(myCart)
 		for (let cart in myCart) {
 			total += myCart[cart].price * myCart[cart].quantity
-			console.log()
-			subtotal += myCart[cart].price * myCart[cart].quantity - parseInt(myCart[cart].attributes.retail_iva_amount)
-			console.log(subtotal)
-			iva += parseInt(myCart[cart].attributes.retail_iva_amount)
+			// console.log(myCart[cart].price, myCart[cart].quantity, parseInt(myCart[cart].attributes.retail_iva_amount))
+			subtotal += (myCart[cart].price * parseInt(myCart[cart].quantity)) - (parseInt(myCart[cart].attributes.retail_iva_amount) * parseInt(myCart[cart].quantity))
+			// console.log("subtotal: ", subtotal)
+			iva += parseInt(myCart[cart].attributes.retail_iva_amount * myCart[cart].quantity)
 		}
-		console.log(total)
+		console.log("total: ", subtotal)
+		console.log("total: ", total)
 		$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
+
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(iva)+',00')
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(total)+',00')
 	}
@@ -866,7 +873,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		})
 
 		$('.eliminar').click(function() {
-
+			console.log("clase eliminar")
 			let producto = $(this).parents('.itempadre')
 			let id = $(this).parents('.filapadre').children('.d-none').data('id')
 
@@ -885,14 +892,6 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					`)
 				}
 
-				let total = calcularPrecioTotal()
-				$('#montoTotal').text(total.total)
-
-				let precioSinIva = calcularPrecioTotal()
-				$('#totalSinIva').text(total.sinIva)
-
-				let ivaTotal = calcularIVATotal()
-				$('#ivatotal').text(ivaTotal)
 			})
 			.catch((err) => {
 				toastr.error('Ha ocurrido un error')
@@ -916,15 +915,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						No hay productos en el carrito.
 					</h5>
 				`)
-
-				let total = calcularPrecioTotal()
-				$('#montoTotal').text(total.total)
-
-				let precioSinIva = calcularPrecioTotal()
-				$('#totalSinIva').text(total.sinIva)
-
-				let ivaTotal = calcularIVATotal()
-				$('#ivatotal').text(ivaTotal)
+				myCart = {}
+				$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(0)+',00')
+				$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(0)+',00')
+				$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(0)+',00')
 			})
 			.catch((err) => {
 				console.error(err)

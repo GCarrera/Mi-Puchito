@@ -32,35 +32,34 @@
 				<div class="card-body">
 
 					<ul class="list-group">
-
+						
 						@forelse ($products as $producto)
-
 							<li class="list-group-item itempadre">
 								<div class="row">
 
 									<div class="col-md-4 col-sm-6 col-12">
 										<p class="text-muted small">PRODUCTO</p>
 										<div class="d-flex justify-content-start">
-											<img src="/storage/{{ $producto->product->image }}" style="height: 70px;" class="mr-2">
+											<img src="/storage/{{ $producto->inventory->product->image }}" style="height: 70px;" class="mr-2">
 											<p>
-												<small class="font-weight-bold">{{ $producto->product->inventory->product_name }}</small><br>
-												<small>{{ $producto->product->inventory->description }}</small>
+												<small class="font-weight-bold">{{ $producto->inventory->product_name }}</small><br>
+												<small>{{ $producto->inventory->description }}</small>
 											</p>
 										</div>
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12 padreprecio">
 										<p class="text-muted small">PRECIO MENOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span>
+										<span class="font-weight-bold precio">{{ number_format($producto->inventory->product->retail_total_price, 2, ',', '.') }}</span>
 									</div>
 									<div class="col-md-2 col-sm-6 col-12 padreprecio">
 										<p class="text-muted small">PRECIO MAYOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->product->wholesale_total_packet_price, 2, ',', '.') }}</span><br>
+										<span class="font-weight-bold precio">{{ number_format($producto->inventory->product->wholesale_total_packet_price, 2, ',', '.') }}</span><br>
 										<span class="text-muted small">
-											<span class="preciopvp">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }}</span> c/u
+											<span class="preciopvp">{{ number_format($producto->inventory->product->wholesale_total_individual_price, 2, ',', '.') }}</span> c/u
 										</span><br>
 										<span class="text-muted small">
-											1 {{ $producto->product->inventory->unit_type }} de {{ $producto->product->inventory->qty_per_unit }} productos
+											1 {{ $producto->inventory->unit_type }} de {{ $producto->inventory->qty_per_unit }} productos
 										</span>
 									</div>
 
@@ -71,15 +70,15 @@
 
 									<div class="col-md-4 col-sm-6 col-12 d-flex justify-content-end">
 										<div class="mt-4">
-											<button data-id="{{ $producto->id }}" data-target="#del_wl_item" data-toggle="modal" class="btn btn-outline-danger mr-2 eliminar">
+											<button data-id="{{ $producto->inventory->id }}" data-target="#del_wl_item" data-toggle="modal" class="btn btn-outline-danger mr-2 eliminar">
 												<i class="fas fa-times mr-2"></i>Eliminar
 											</button>
 											<button
 												type="button"
 												class="btn btn-primary addCartBtn"
-												data-id="{{ $producto->product_id }}"
-												data-producto="{{ $producto->product->inventory->product_name }}"
-												data-precio="{{ $producto->product->retail_total_price }}"
+												data-id="{{ $producto->inventory->id }}"
+												data-producto="{{ $producto->inventory->product_name }}"
+												data-precio="{{ $producto->inventory->product->retail_total_price }}"
 												data-type="al-menor"
 												data-cantidad="1">
 
@@ -143,7 +142,12 @@
 <script>
 
 	$(() => {
-
+		toastr.options = {
+			"closeButton": true,
+			"progressBar": true,
+			"positionClass": "toast-bottom-left",
+		}
+		
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -195,22 +199,18 @@
 					that.attr('disabled', true)
 					that.html('<i class="fas fa-circle-notch fa-spin fa-"></i>')
 				}
-			})
-			.done((res) => {
-				console.log(res)
+			}).done((res) => {
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
-				}
-				else {
-
+				} else {
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
+					toastr.success('Producto agregado satisfactoriamente.')
 				}
 
 				that.removeAttr('disabled')
 				that.html('<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>')
-			})
-			.fail((err) => {
+			}).fail((err) => {
 				toastr.error('Ha ocurrido un error.')
 				console.error(err)
 			})
