@@ -40,13 +40,18 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
 
-		$ventas = Sale::with(['deliveries', 'details', 'user' => function($user) {
+		$ventas = Sale::with(['deliveries', 
+		'details' => function($details) {
+			$details->with(['inventory' => function ($inventory) {
+				$inventory->select('id',	'product_name');
+			}]);
+		}, 'user' => function($user) {
 			$user->select('id', 'people_id')->with(['people' => function($people) {
 				$people->select('id', 'name');
 			}]);
-		}])->get();
-		
-		$details = [];
+		}])
+		->whereHas('details')
+		->get();
 
 		return view('admin.index')
 			->with('ventas', $ventas);

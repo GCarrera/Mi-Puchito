@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class SaleDetail extends Model
 {
     protected $fillable = ['quantity', 'product_id', 'sale_id'];
+    
+    public function inventory()
+    {
+        return $this->hasOne('App\Inventory', 'id', 'product_id');
+    }
 
     public function product()
     {
