@@ -34,45 +34,48 @@ class SaleController extends Controller
 
 	public function store(Request $req)
 	{
-		// $type     = $req->input('type');
-		$monto    = $req->input('monto');
-		$code     = '20-123321213';
-		$delivery = $req->input('delivery');
 		$user     = auth()->user()->id;
-		// $payment_capture = $req->file('capture_payment')->store('capturas');
-		$payment_reference_code = $req->input('numero_referencia');
-
-		$sale = new Sale();
-		$sale->code     = $code;
-		// $sale->type     = $type;
-		$sale->amount   = $monto;
-		$sale->payment_reference_code = $payment_reference_code;
-		// $sale->payment_capture = $payment_capture;
-		$sale->delivery = $delivery;
-		$sale->user_id  = $user;
-		$sale->save();
-		$saleid = $sale->lastid();
-
-		// guardar en sales details
 		$productos = \Cart::session($user)->getContent();
+		if (count($productos) > 0) {
+			// $type     = $req->input('type');
+			$monto    = $req->input('monto');
+			$code     = '20-123321213';
+			$delivery = $req->input('delivery');
+			// $payment_capture = $req->file('capture_payment')->store('capturas');
+			$payment_reference_code = $req->input('numero_referencia');
 
-		foreach ($productos as $producto) {
-			$saleDetail = new SaleDetail();
-			$saleDetail->quantity   = $producto->quantity;
-			$saleDetail->product_id = $producto->id;
-			$saleDetail->sale_id    = $saleid;
-			$saleDetail->save();
+			$sale = new Sale();
+			$sale->code     = $code;
+			// $sale->type     = $type;
+			$sale->amount   = $monto;
+			$sale->payment_reference_code = $payment_reference_code;
+			// $sale->payment_capture = $payment_capture;
+			$sale->delivery = $delivery;
+			$sale->user_id  = $user;
+			$sale->save();
+			$saleid = $sale->lastid();
+
+			foreach ($productos as $producto) {
+				$saleDetail = new SaleDetail();
+				$saleDetail->quantity   = $producto->quantity;
+				$saleDetail->product_id = $producto->id;
+				$saleDetail->sale_id    = $saleid;
+				$saleDetail->save();
+			}
+
+			if ($req->input('user_address_delivery')) {
+				$delivery = new Delivery();
+				$delivery->address_user_delivery_id = $req->input('user_address_delivery');
+				$delivery->sale_id = $saleid;
+				$delivery->save();
+			}
+
+			\Cart::session($user)->clear();
+
+			return redirect('/perfil')->with(['success' => 'Su compra está en proceso, puede verla en sus pedidos.', 'pedidos' => true]);
 		}
 
-		if ($req->input('user_address_delivery')) {
-			$delivery = new Delivery();
-			$delivery->address_user_delivery_id = $req->input('user_address_delivery');
-			$delivery->sale_id = $saleid;
-			$delivery->save();
-		}
+		return redirect()->back()->withErrors(['No ha cargado productos al carrito.']);
 
-		\Cart::session($user)->clear();
-
-		return redirect('/perfil')->with(['success' => 'Su compra está en proceso, puede verla en sus pedidos.', 'pedidos' => true]);
 	}
 }

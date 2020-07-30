@@ -652,6 +652,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 	
 	$(() => {
+		
+		@if ($errors->any())
+			@foreach ($errors->all() as $error)
+				toastr.error("{{ $error }}")
+            @endforeach
+		@endif()
+
 		$('#state_id').on('change', function() { 
 			var state_id = $('#state_id').val(); 
 			$.ajax({
