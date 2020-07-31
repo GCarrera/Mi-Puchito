@@ -166,6 +166,11 @@ return [
         'wholesale_margin_gain' => 'Ganancia al mayor',
         'fileinput' => 'Imágen del producto',
         'dni' => 'Cédula',
+        'monto' => 'Total',
+        'delivery' => '¿Desea el servicio delivery?',
+        'numero_referencia' => 'Número de Referencia de Pago',
+        'pay_method' => 'Método de pago',
+        'fileattached' => 'Comprobante Adjunto'
     ],
 
 ];
