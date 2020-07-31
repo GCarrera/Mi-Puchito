@@ -32,4 +32,9 @@ class Inventory extends Model
     {
         return $this->hasOne('App\Product', 'inventory_id', 'id');
     }
+
+    public function category_p()
+    {
+        return $this->hasOne('App\Category', 'id', 'category_id');
+    }
 }

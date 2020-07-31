@@ -61,8 +61,8 @@
 					<div class="form-group mb-4">
 						<label for="empresas">Precios por el tipo de compra</label>
 						<ul class="nav-list">
-							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'bold' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a></li>
-							<li><a class="font-weight-{{ Request::get('buytype') == 'minor' ? 'bold' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a></li>
+							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'bold h5' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a></li>
+							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'normal' : 'bold h5' }}" href="{{url('?buytype=minor')}}">Al menor</a></li>
 						</ul>
 					</div>
 				</div>
@@ -119,8 +119,8 @@
 											<h5 class="card-title font-weight-bold truncated-text">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-											<h6 class="font-weight-normal truncated-text">Compra al mayor: <span class="font-weight-bold">{{$producto->qty_per_unit}}</span></h6>
-											<h6 class="font-weight-normal truncated-text">Iva: <span class="font-weight-bold">{{ $producto->product->iva_percent > 0 ? 'SI' : 'NO' }}</span></h6> 
+											<h6 class="font-weight-normal truncated-text">Subtotal: <span class="font-weight-bold">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
+											<h6 class="font-weight-normal truncated-text">Iva: <span class="font-weight-bold">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> 
 											@if(Request::get('buytype') == 'minor')
 												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 											@elseif(Request::get('buytype') == 'major')
@@ -131,17 +131,18 @@
 
 											@auth
 											<div class="container">
-												<div class="row">
+												<div class="row text-center">
 													<div class="col-6">
 														<button 
 															data-id="{{ $producto->id }}" 
-															class="btn btn-outline-primary btn-block mb-2 addToWishlist"
+															class="btn btn-outline-danger btn-block addToWishlist"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
 
 														>
 															<i class="fa fa-heart"></i>
 														</button>
+														<b>Deseo</b>
 													</div>
 													<div class="col-6">
 														<button
@@ -155,6 +156,7 @@
 														>
 															<i class="fas fa-shopping-cart"></i>
 														</button>
+														<b>Comprar</b>
 													</div>
 												</div>
 											</div>
@@ -166,7 +168,7 @@
 														<button 
 															onclick="buttonPressed('wish')" 
 															type="button" 
-															class="btn btn-outline-primary btn-block mb-2"
+															class="btn btn-outline-danger btn-block mb-2"
 															data-title="Añadir a la lista de deseos" 
 															data-toggle="tooltip"
 														>
@@ -204,7 +206,7 @@
 											<p class="lead font-weight-normal">{{ number_format($producto->wholesale_total_packet_price, 2, ',', '.') }} Bs</p>
 
 											@auth
-												<button data-id="{{ $producto->id }}" class="btn btn-outline-primary btn-block mb-2 addToWishlist">
+												<button data-id="{{ $producto->id }}" class="btn btn-outline-danger btn-block mb-2 addToWishlist">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
 												</button>
 												<button
@@ -220,7 +222,7 @@
 													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
 												</button>
 											@else
-												<button  class="btn btn-outline-primary btn-block mb-2" disabled>
+												<button  class="btn btn-outline-danger btn-block mb-2" disabled>
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
 												</button>
 												<button type="button" class="btn btn-primary btn-block" disabled>

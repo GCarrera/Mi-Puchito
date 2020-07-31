@@ -31,24 +31,38 @@ class CustomerController extends Controller
 			->with(['inventory' => function($inventory) use($request, $search) {
 				$inventory->with(['product' => function($product) {
 					if ($product != NULL) {
-						$product->select('inventory_id', 'image', 'retail_total_price', 'wholesale_total_individual_price', 'iva_percent');
+						$product->select(
+							'inventory_id', 
+							'image', 
+							'retail_total_price', 
+							'retail_iva_amount',
+							'wholesale_total_individual_price', 
+							'iva_percent'
+						);
 					}
-				}])->whereHas('product');
+				}]);
 				if ($request->enterprise) {
-					$inventory = $inventory->where('enterprise_id', $request->enterprise);
+					$inventory->where('enterprise_id', $request->enterprise);
 				}
 				
 				if ($search) {
-					$inventory = $inventory->where('product_name', 'like', '%'.$search.'%');
+					$inventory->where('product_name', 'like', '%'.$search.'%')
+					->orWhereHas('category_p', function($categ) use($search) {
+						return $categ->where('name', 'like', '%'.$search.'%');
+					});
 				}
-			}])->whereHas('inventory', function ($inventory) use ($request, $search) {
 				$inventory->whereHas('product');
-					if ($request->enterprise) {
-						$inventory = $inventory->where('enterprise_id', $request->enterprise);
-					}
-					if ($search) {
-						$inventory = $inventory->where('product_name', 'like', '%'.$search.'%');
-					}
+			}])->whereHas('inventory', function ($inventory) use ($request, $search) {
+				if ($request->enterprise) {
+					$inventory->where('enterprise_id', $request->enterprise);
+				}
+				if ($search) {
+					$inventory->where('product_name', 'like', '%'.$search.'%')
+					->orWhereHas('category_p', function($categ) use($search) {
+						return $categ->where('name', 'like', '%'.$search.'%');
+					});
+				}
+				$inventory->whereHas('product');
 			});
 	
 			if ($request->category) {

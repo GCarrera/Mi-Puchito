@@ -128,7 +128,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
 										</p>
 
-										@if( $c->attributes->sale_type == 'al-mayor' )
+										@if($c->attributes->sale_type == 'al-mayor')
 
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
 											
@@ -587,6 +587,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	var myCart = @json($cart);
 
 	function changeRadio(val) {
+		if ($('#pay_method').val() == "dolares") {
+			$('#enviarPago').attr('disabled', false)
+		}
 		if (val == 'si') {
 			$('#address').addClass('d-none').removeClass('d-block')
 			$('#modalDelivery').modal('show')
@@ -1064,23 +1067,28 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			let valor = $(this).val()
 
 			if ( valor == 'transferencia' || valor == 'pagomovil' ) {
+				$('#enviarPago').attr('disabled', true)
 				$('#pay_method_modal').modal('show')
-			}
-			else {
-				//
+			} else {
+				for (let i = 0; i < $('input:radio[name=delivery]').length; i++) {
+					console.log($('input:radio[name=delivery]')[i].checked)
+					if (!$('input:radio[name=delivery]')[i].checked) {
+						$('#enviarPago').attr('disabled', true)
+					} else {
+						$('#enviarPago').attr('disabled', false)
+						break
+					}
+				}
 			}
 		})
 
 		$('#listo2').click(() => {
-
+			
 			// ASEGURARME QUE LOS CAMPOS DE LA REFERENCIA E IMAGEN ESTEN VALIDADPS
-
 			$('#nooperacion').text($('#referencia').val())
 			$('#numero_referencia').val($('#referencia').val())
 			$('#monto').val($('#montoTotal').text())
-
 			$('.detallesescondidos2').removeClass('d-none')
-
 			$('#enviarPago').removeAttr('disabled')
 		})
 
