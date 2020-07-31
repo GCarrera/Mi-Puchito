@@ -269,7 +269,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<i>Solo se hará delivery en el Municipio Sucre.</i>
 								<div class="form-check">
 									<label class="form-check-label">
-										<input type="radio" onchange="changeRadio(this.value)" class="form-check-input" name="delivery" value="si">Si
+										<input type="radio" onchange="changeRadio(this.value)" onclick="openModalDelivery()" class="form-check-input" name="delivery" value="si">Si
 									</label>
 								</div>
 								<div class="form-check">
@@ -468,7 +468,6 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
 				<button type="button" id="listo" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Listo</button>
 			</div>
 		</div>
@@ -488,80 +487,67 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			</div>
 
 			<div class="modal-body">
-				<h6 class="font-weight-light">Información del pago</h6>
-				<div class="row">
-					<div class="col-5">
-						<b>Adjuntar Comprobante</b><br>
-						<div class="file-input-wrapper">
-							<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
-							<p id="image_name" class="mt-3 mb-1"></p>
-							<p id="image_weigth" class="mb-3"></p>
-
-							<p id="imgerror" class="text-danger" style="display: none;"></p>
-							<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
-							<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-							<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*,application/pdf" required>
+				<h6 class="font-weight-light">Información bancaria</h6>
+				@forelse($cb as $c)
+					<div class="card-body">
+						<div class="row">
+							<h6 class="col-3"><b>Nombre: </b> <i id="name-{{$loop->iteration}}">{{ $c->name_enterprise }}</i></h6>
+							<h6 class="col-6"><b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-3"><b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-6"><b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-6"><b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i></h6>
 						</div>
 					</div>
-					<div class="col-2">
-						<b>Ó</b>
+				@empty
+					<div class="card-body">
+						<div class="row">
+							<b>No hay información disponible</b>
+						</div>
 					</div>
-					<div class="col-5">
-						<label for="referencia" class="font-weight-bold">Número de referencia</label>
-						<input type="number" id="referencia" class="form-control" name="referencia">
+				@endforelse
+					
+				<hr>	
+
+				<h6 class="font-weight-light">Información del pago</h6>
+				<div class="row">
+					<div class="col-12">
+
+
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+							  <a class="nav-link active" id="attach-file-tab" data-toggle="tab" href="#attach-file" role="tab" aria-controls="attach-file" aria-selected="true">Adjuntar Comprobante</a>
+							</li>
+							<li class="nav-item">
+							  <a class="nav-link" id="reference-number-tab" data-toggle="tab" href="#reference-number" role="tab" aria-controls="reference-number" aria-selected="false">Número de referencia</a>
+							</li>
+						  </ul>
+						  <div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active" id="attach-file" role="tabpanel" aria-labelledby="attach-file-tab">
+								<b>Adjuntar Comprobante</b><br>
+								<div class="file-input-wrapper">
+									<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
+									<p id="image_name" class="mt-3 mb-1"></p>
+									<p id="image_weigth" class="mb-3"></p>
+		
+									<p id="imgerror" class="text-danger" style="display: none;"></p>
+									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
+									<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+									<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*,application/pdf" required>
+								</div>		
+							</div>
+							<div class="tab-pane fade" id="reference-number" role="tabpanel" aria-labelledby="reference-number-tab">
+								<div class="col-5">
+									<label for="referencia" class="font-weight-bold">Número de referencia</label>
+									<input type="number" id="referencia" class="form-control" name="referencia">
+								</div>
+							</div>
+						  </div>
 					</div>
 					<!-- <div class="col-12 text-center col-md-7">
 						<label for="customFile">Captura de la operación</label>
 						<label id="btn_search" class="btn btn-primary" for="customFile"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
 					</div> -->
 				</div>
-
-				<hr>
-	
-				<h6 class="font-weight-light">Información bancaria</h6>
-					@forelse($cb as $c)
-						<div class="card-body">
-							<blockquote class="blockquote mb-0">
-								<footer class="blockquote-footer">
-									<b>Nombre: </b> <i id="name-{{$loop->iteration}}">{{ $c->name_enterprise }}</i> / 
-									<b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i> / 
-									<b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i> / 
-									<b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i> / 
-									<b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i>
-									<cite title="Source Title"></cite>
-								</footer>
-							</blockquote>
-						</div>
-					@empty
-						<div class="card-body">
-							<blockquote class="blockquote mb-0">
-								<footer class="blockquote-footer">
-									<b>No hay información disponible</b>
-								</footer>
-							</blockquote>
-						</div>
-					@endforelse
-				{{--<h6 class="mb-3 font-weight-light">Información del cliente</h6>
-				<div class="row">
-					<div class="col-6 col-md-4">
-						<small class="font-weight-bold">Cédula</small>
-						<p>{{ $user->people->dni }}</p>
-					</div>
-					<div class="col-6 col-md-4">
-						<small class="font-weight-bold">Nombre</small>
-						<p>{{ $user->people->name }}</p>
-					</div>
-					<div class="col-6 col-md-4">
-						<small class="font-weight-bold">Apellido</small>
-						<p>{{ $user->people->lastname }}</p>
-					</div>
-				</div>--}}
-
-				<!-- <div class="row">
-					<div class="col">
-						<img class="img-fluid rounded-lg d-none img-thumbnail" id="capture_preview">
-					</div>
-				</div> -->
 
 			</div>
 			<div class="modal-footer">
@@ -584,10 +570,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		}
 		if (val == 'si') {
 			$('#address').addClass('d-none').removeClass('d-block')
-			$('#modalDelivery').modal('show')
 		} else {
 			$('#address').addClass('d-block').removeClass('d-none')
 		}
+	}
+
+	function openModalDelivery() {
+		$('#modalDelivery').modal('show')
 	}
 
 	function substract(id) {
