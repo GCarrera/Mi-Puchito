@@ -5,10 +5,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Sale;
 use App\Delivery;
 use App\SaleDetail;
+
 
 class SaleController extends Controller
 {
@@ -34,23 +36,32 @@ class SaleController extends Controller
 
 	public function store(Request $req)
 	{
+		$validator = Validator::make($req->all(), [
+            'delivery' => 'required|max:191',
+            'numero_referencia' => 'required|max:191',
+			'monto' => 'required|max:191',
+			'pay_method' => 'required',
+		]);
+		
+        if ($validator->fails()) {
+            return redirect()->back()
+                        ->withErrors($validator)
+                        ->withInput();
+		}
+		
 		$user     = auth()->user()->id;
 		$productos = \Cart::session($user)->getContent();
 		if (count($productos) > 0) {
-			// $type     = $req->input('type');
-			$monto    = $req->input('monto');
 			$code     = '20-123321213';
-			$delivery = $req->input('delivery');
 			// $payment_capture = $req->file('capture_payment')->store('capturas');
-			$payment_reference_code = $req->input('numero_referencia');
 
 			$sale = new Sale();
 			$sale->code     = $code;
-			// $sale->type     = $type;
-			$sale->amount   = $monto;
-			$sale->payment_reference_code = $payment_reference_code;
-			// $sale->payment_capture = $payment_capture;
-			$sale->delivery = $delivery;
+			$sale->payment_type     = $req->input('pay_method');
+			$sale->amount   = $req->input('monto');
+			$sale->payment_reference_code = $req->input('numero_referencia');
+			// $sale->attached_file = $payment_capture;
+			$sale->delivery = $req->input('delivery');
 			$sale->user_id  = $user;
 			$sale->save();
 			$saleid = $sale->lastid();

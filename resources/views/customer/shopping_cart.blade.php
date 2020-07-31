@@ -531,8 +531,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		
 									<p id="imgerror" class="text-danger" style="display: none;"></p>
 									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
-									<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-									<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*,application/pdf" required>
+									<label for="fileattached" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+									<input id="fileattached" id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" required>
 								</div>		
 							</div>
 							<div class="tab-pane fade" id="reference-number" role="tabpanel" aria-labelledby="reference-number-tab">
@@ -633,9 +633,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(iva)+',00')
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(total)+',00')
+		$('#monto').val(total)
 	}
 	
 	$(() => {
+		subtotal()
 		
 		@if ($errors->any())
 			@foreach ($errors->all() as $error)
@@ -684,7 +686,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		})
 
-		$('#fileinput').change((e) => {
+		$('#fileattached').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
 			// imagen de preview
 			let file   = e.target.files[0];
@@ -726,7 +728,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 			$('#clearbtn').click(() => {
 				$('#imgerror').text('')
-				$('#fileinput').val('')
+				$('#fileattached').val('')
 				$('#foto').hide()
 				$('#image_name').text('')
 				$('#image_weigth').text('')
