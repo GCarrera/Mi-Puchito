@@ -129,9 +129,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										</p>
 
 										@if($c->attributes->sale_type == 'al-mayor')
-
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
-											
 											<span class="text-muted small">
 												<span class="preciopvp">{{ number_format($c->attributes->wholesale_total_packet_price, 2, ',', '.') }}</span> c/u
 											</span>
@@ -141,9 +139,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											</span>--}}
 											<br>
 										@else
-									
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->cost }}">
-
 											<span class="text-muted small">
 												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> c/u
 											</span>
@@ -152,11 +148,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{ number_format($c->attributes->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
 											</span> --}}
 											<br>
-
 										@endif
-
 									</div>
-
 									
 									<div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CANT. AL MAYOR</p>
@@ -285,7 +278,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<input type="radio" onchange="changeRadio(this.value)" class="form-check-input" name="delivery" value="no">No
 									</label>
 								</div>
-								<i id="address" class="d-none">Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
+								<i id="address" class="d-none">Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
 								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
