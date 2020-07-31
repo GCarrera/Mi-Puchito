@@ -163,17 +163,18 @@
 												
 											@else
 											<div class="container">
-												<div class="row">
+												<div class="row text-center">
 													<div class="col-6">
 														<button 
 															onclick="buttonPressed('wish')" 
 															type="button" 
-															class="btn btn-outline-danger btn-block mb-2"
+															class="btn btn-outline-danger btn-block"
 															data-title="Añadir a la lista de deseos" 
 															data-toggle="tooltip"
 														>
 															<i class="fa fa-heart"></i>
 														</button>
+														<b>Deseo</b>
 													</div>
 													<div class="col-6">
 														<button 
@@ -184,6 +185,7 @@
 														>
 															<i class="fas fa-shopping-cart"></i>
 														</button>
+														<b>Comprar</b>
 													</div>
 												</div>
 											</div>		

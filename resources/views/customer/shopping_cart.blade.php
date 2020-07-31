@@ -100,22 +100,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 												@if( $c->attributes->sale_type == 'al-mayor' )
 													<span>1 {{ $c->model->inventory->unit_type }} de {{ $c->model->inventory->qty_per_unit }} productos</span>
-												@else
-													<span>{{ $c->model->inventory->description }}</span>
 												@endif
 											</p>
 										</div>
 									</div>
 
-									<div class="col-md-2 col-sm-6 col-12 padrecantidad">
+									<div class="col-md-2 col-sm-6 col-xs-6 col-12 padrecantidad">
 										<p class="text-muted small">CANTIDAD</p>
 										<div class="input-group mb-3 padre">
 											<div class="input-group-prepend">
-												<button class="input-group-text btn btn-primary" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
+												<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
 											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1">
 											<div class="input-group-append">
-												<button class="input-group-text btn btn-primary" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
+												<button class="btn btn-secondary btn-sm" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
 											</div>
 										</div>
 									</div>
@@ -151,19 +149,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										@endif
 									</div>
 									
-									<div class="col-md-2 col-sm-6 col-12">
-										<p class="text-muted small">CANT. AL MAYOR</p>
-										<span class="font-weight-normal precio">{{ $c->attributes->wholesale_quantity }}</span><br>
+									<div class="col-md-2 col-sm-5 col-12">
+										<p class="text-muted small">DESCRIPCIÓN</p>
+										<span class="font-weight-normal precio">{{ $c->model->inventory->description }}</span>
+										<br>
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CALIFICAR</p>
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-1 col-sm-6 col-12 d-flex justify-content-end">
+									<div class="col-md-1 col-sm-1 col-12 d-flex justify-content-end">
 										<div class="mt-4">
 											<button class="btn btn-outline-danger eliminar" onclick="delete_item({{$c->id}})">
-												<i class="fas fa-times"></i>
+												<i class="fas fa-trash"></i>
 											</button>
 										</div>
 									</div>
@@ -186,7 +185,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				<div class="card-footer d-flex justify-content-between">
 					@if(count($cart) > 0)
 						<button type="button" class="btn btn-danger" id="limpiar_carrito" data-toggle="modal" data-target="#clear_cart">
-							<i class="fas fa-times mr-2"></i>Limpiar carrito
+							<i class="fas fa-trash mr-2"></i>Vaciar carro
 						</button>
 					@endif
 					<a href="/home" class="btn btn-primary">

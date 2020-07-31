@@ -97,7 +97,8 @@
 			toastr.options = {
 				"closeButton": true,
 				"progressBar": true,
-				"positionClass": "toast-bottom-left",
+				"positionClass": "toast-top-right",
+				"timeOut": 10000,
 			}
 			LocalStorage = window.localStorage;
 			console.log(LocalStorage.getItem('buttonPressed'))
