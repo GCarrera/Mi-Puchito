@@ -1,26 +1,26 @@
 @font-face {
-	src: url('/fonts/Open_Sans/OpenSans-Regular.ttf');
+	src: url('/fonts/Roboto/Roboto-Regular.ttf');
 	font-weight: 400;
-	font-family: 'Open Sans';
+	font-family: 'Roboto';
 }
 
 @font-face {
-	src: url('/fonts/Open_Sans/OpenSans-Light.ttf');
+	src: url('/fonts/Roboto/Roboto-Light.ttf');
 	font-weight: 200;
-	font-family: 'Open Sans';
+	font-family: 'Roboto';
 }
 
 @font-face {
-	src: url('/fonts/Open_Sans/OpenSans-SemiBold.ttf');
+	src: url('/fonts/Roboto/Roboto-BoldItalic.ttf');
 	font-weight: 600;
-	font-family: 'Open Sans';
+	font-family: 'Roboto';
 }
 
 
 html, body {
 	height: 100% !important;
 	background: radial-gradient(white, #c4c4c4);
-	font-family: "Open Sans" !important;
+	font-family: "Roboto" !important;
 	font-size: .95em;
 	/*margin: 0;*/
   	/*margin-bottom: 60px;*/
@@ -141,3 +141,48 @@ html, body {
 	-webkit-linear-gradient(rgba(135, 60, 255, 1), rgba(135, 60, 255, 0.0) 0%),
 	-webkit-linear-gradient(-45deg, rgba(120, 155, 255, 0.9) 45%, rgba(55, 230, 235, 1) 0%);
 }*/
+
+/*VISTA PRINCIPIAL*/
+
+#background-top{
+	background-image: url('../img/amazon.jpg');
+	background-position: top center;
+	background-size: cover;
+	max-width: 100%;
+	height: 35%;
+	margin-top: 4%;
+}
+
+/*VISTA CARRITO*/
+
+#img-carrito{
+	height: 470px; 
+	background-image: url('/img/banner2.jpg'); 
+	background-position: center; 
+	position: relative;
+}
+
+#img-carrito:before {
+  content:'';
+  position: absolute;
+        top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.filapadre{
+background: #ffffff;
+background: -moz-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, #ffffff), color-stop(41%, #ffffff), color-stop(100%, #ebf4ff));
+background: -webkit-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -o-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -ms-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: linear-gradient(to right, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebf4ff', GradientType=1 );
+}
+
+.itempadre{
+	padding: 0px 0px 0px 0px !important;
+}

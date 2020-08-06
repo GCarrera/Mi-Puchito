@@ -31,7 +31,7 @@
 		<div class="carousel-item">
 			<img src="/img/banner3.jpg" style="height: 470px" class="d-block w-100" alt="...">
 		</div>
-		<div class="carousel-item">
+		<div class="carousel-item">	
 			<img src="/img/banner4.jpg" style="height: 470px" class="d-block w-100" alt="...">
 		</div>
 		<div class="carousel-item">
@@ -51,19 +51,24 @@
 	</a>
 </div> --}}
 
+<div id="background-top">
 
+</div>
 
-<div class="container-fluid mt-70 wrapper">
+<!--
+<img src="img/amazon.jpg" alt="" class="img-fluid mt-5" style="background-size: cover; background-position: center; height: 30%;">
+-->
+<div class="container-fluid wrapper">
 	<div class="row">
 		<div class="col-lg-3 col-12">
 			<div class="card shadow-sm ">
 				<div class="card-body">
 					<div class="form-group mb-4">
-						<label for="empresas">Precios por el tipo de compra</label>
-						<ul class="nav-list">
-							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'bold h5' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a></li>
-							<li><a class="font-weight-{{ Request::get('buytype') == 'major' ? 'normal' : 'bold h5' }}" href="{{url('?buytype=minor')}}">Al menor</a></li>
-						</ul>
+						<label for="empresas">Usted está comprando:</label>
+						<div class="nav-list">
+							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a>
+							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'minor' ? 'active' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -102,31 +107,35 @@
 		<div class="col-lg-9 col-12">
 			@forelse ($data as $k => $d)
 				<div class="card shadow-sm mb-4">
+					
 					<div class="card-header d-flex justify-content-between align-items-center">
-						<h5>{{ $d->name }}</h5>
+						<a href="/categoria/{{ $d->id }}" style="color: black;">
+							<h5 class="font-weight-bold">{{ $d->name }}</h5>
+						</a>
 						{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
 					</div>
-					<div class="card-body">
+					
+					<div class="card-body bg-light">
 
 						<div class="slickk">
 							@foreach ($d->inventory as $producto)
 							
 								@if( ! $al_mayor )
 									
-									<div class="card shadow-sm">
+									<div class="card shadow">
 										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body">
-											<h5 class="card-title font-weight-bold truncated-text">{{ $producto->product_name }}</h5>
+											<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-											<h6 class="font-weight-normal truncated-text">Subtotal: <span class="font-weight-bold">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
-											<h6 class="font-weight-normal truncated-text">Iva: <span class="font-weight-bold">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> 
+											<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="font-weight-bold">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
+											<h6 class="font-weight-normal truncated-text text-center">Iva: <span class="font-weight-bold">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> 
 											@if(Request::get('buytype') == 'minor')
-												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 											@elseif(Request::get('buytype') == 'major')
-												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} Bs</p>
 											@else
-												<p class="lead font-weight-light truncated-text">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 											@endif
 
 											@auth
@@ -135,28 +144,28 @@
 													<div class="col-6">
 														<button 
 															data-id="{{ $producto->id }}" 
-															class="btn btn-outline-danger btn-block addToWishlist"
+															class="btn btn-block addToWishlist"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
 
 														>
-															<i class="fa fa-heart"></i>
+															<i class="fa fa-heart" style="color: #dc3545;"></i>
 														</button>
-														<b>Deseo</b>
+														<b>Lista de Deseos</b>
 													</div>
 													<div class="col-6">
 														<button
 															type="button"
-															class="btn btn-primary btn-block addCartBtn"
+															class="btn btn-block addCartBtn"
 															data-id="{{ $producto->id }}"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
 															data-type="al-menor"
 															data-cantidad="1"
 														>
-															<i class="fas fa-shopping-cart"></i>
+															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
 														</button>
-														<b>Comprar</b>
+														<b>Agregar al carrito</b>
 													</div>
 												</div>
 											</div>
@@ -168,24 +177,25 @@
 														<button 
 															onclick="buttonPressed('wish')" 
 															type="button" 
-															class="btn btn-outline-danger btn-block"
+															class="btn btn-block"
 															data-title="Añadir a la lista de deseos" 
 															data-toggle="tooltip"
 														>
-															<i class="fa fa-heart"></i>
+															<i class="fa fa-heart" style="color: #dc3545;"></i>
 														</button>
-														<b>Deseo</b>
+
+														<b>Lista de Deseos</b>
 													</div>
 													<div class="col-6">
 														<button 
 															onclick="buttonPressed('cart')" 
-															class="btn btn-primary btn-block"
+															class="btn btn-block"
 															data-title="Comprar" 
 															data-toggle="tooltip"
 														>
-															<i class="fas fa-shopping-cart"></i>
+															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
 														</button>
-														<b>Comprar</b>
+														<b>Agregar al carrito</b>
 													</div>
 												</div>
 											</div>		
@@ -289,6 +299,7 @@
 			"closeButton": true,
 			"progressBar": true,
 			"positionClass": "toast-bottom-left",
+			"timeOut": 10000
 		}
 
 		$('.slickk').slick({
@@ -389,7 +400,7 @@
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				} else {
-					toastr.success('Producto añadido al carrito')
+					toastr.success('<i>Producto añadido al carrito</i>')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
 				}

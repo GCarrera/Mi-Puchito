@@ -56,8 +56,16 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	</div>
 </div>
 
-<div style="margin-top: 90px"></div>
+<div style="margin-top: 4%"></div>
 
+<!--<img src="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
+<div id="img-carrito">
+	<div class="row align-items-center h-100">
+		<div class="col-12">
+			<h1 class="text-center text-white font-weight-bold" style="font-size: 7em;">Carrito de compra</h1>
+		</div>
+	</div>
+</div>
 
 <div class="container-fluid wrapper my-5">
 	<div class="row d-lg-none d-md-none text-center">
@@ -70,7 +78,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 
-					<ul class="list-group">
+					<ul class="list-group" style="">
 						@forelse ($cart as $c)
 							@php
 							$subtotal = ($c->price - $c->attributes->retail_iva_amount) * $c->quantity;
@@ -106,21 +114,21 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-xs-6 col-12 padrecantidad">
-										<p class="text-muted small">CANTIDAD</p>
+										<p class="text-muted small text-center">CANTIDAD</p>
 										<div class="input-group mb-3 padre">
 											<div class="input-group-prepend">
-												<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
+												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
 											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1">
 											<div class="input-group-append">
-												<button class="btn btn-secondary btn-sm" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
+												<button class="btn btn-primary btn-sm" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
 											</div>
 										</div>
 									</div>
 									
 									<div class="col-md-3 col-sm-6 col-12 padreprecio">
-										<p class="text-muted small">PRECIO Bs</p>
-										<p class="small">
+										<p class="text-muted small text-center">PRECIO Bs</p>
+										<p class="small text-center">
 											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 											<br>
 											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
@@ -138,9 +146,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<br>
 										@else
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->cost }}">
+											<p class="text-center">
 											<span class="text-muted small">
 												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> c/u
 											</span>
+											</p>
 											<br>
 											{{-- <span class="text-muted small">
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{ number_format($c->attributes->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
@@ -160,9 +170,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</div> --}}
 
 									<div class="col-md-1 col-sm-1 col-12 d-flex justify-content-end">
-										<div class="mt-4">
-											<button class="btn btn-outline-danger eliminar" onclick="delete_item({{$c->id}})">
-												<i class="fas fa-trash"></i>
+										<div class="my-4 d-block w-100 text-center">
+											<button class="btn btn-danger eliminar" onclick="delete_item({{$c->id}})">
+												<i class="fas fa-trash" style="font-size: 1.8em;"></i>
 											</button>
 										</div>
 									</div>

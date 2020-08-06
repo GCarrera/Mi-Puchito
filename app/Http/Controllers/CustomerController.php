@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
 use App\Enterprise;
+use App\Inventory;
 
 
 class CustomerController extends Controller
@@ -67,6 +68,7 @@ class CustomerController extends Controller
 	
 			if ($request->category) {
 				$data = $data->where('id', $request->category);
+				return response()->json($data);
 			}
 			
 			$data = $data->get();
@@ -129,15 +131,17 @@ class CustomerController extends Controller
 		$products   = Product::all();
 		$data = [];
 
+		$cate_name = Category::select('name')->findOrFail($category);
+
 		foreach ($products as $key => $value) {
-			if ($value->inventory->category->name == $category) {
+			if ($value->inventory->category_id == $category) {
 				$data[] = $value;
 			}
 		}
 
 		return view('customer.category_product')
 				->with('data', $data)
-				->with('cat', $category)
+				->with('cat', $cate_name->name)
 				->with('categorias', $categorias)
 				->with('empresas', $empresas);
 	}
