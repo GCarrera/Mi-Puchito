@@ -288,6 +288,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</label>
 								</div>
 								<i id="address" class="d-none">Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
+
+								<i id="address-descrip" class="d-none"></i>
 								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
@@ -422,6 +424,23 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							
 						@endforeach
 					</div> --}}
+					
+					<div class="col-12">
+						<label for="forma-delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
+						<select required name="forma-delivery" value="2" class="selectpicker mb-2 border form-control" id="forma-delivery">
+							<option value="" id="select-option-forma">Seleccione una forma</option>
+							<option value="1">Escribir la direccion</option>
+							<option value="2">Buscar mi direccion</option>
+						</select>
+					</div>
+
+				<div id="direc-descrip-caja" class="w-100">
+					<div class="col-12">
+						<textarea name="direc-descrip-area" id="direc-descrip-area" cols="30" rows="10" class="form-control"></textarea>
+					</div>
+				</div>
+
+				<div id="select-multiples" class="w-100">
 					<div class="col-12">
 						<label for="city_id">Ciudad</label><br>
 						<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
@@ -441,6 +460,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<label for="detalles">Dirección exacta</label><br>
 						<input type="text" class="form-control" name="detalles" id="detalles" placeholder="Calle, Número de Casa, Algún punto de referencia.">
 					</div>
+				</div>
 				</div>
 
 				<div class="row" id="">
@@ -580,8 +600,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		}
 		if (val == 'si') {
 			$('#address').addClass('d-none').removeClass('d-block')
+
 		} else {
 			$('#address').addClass('d-block').removeClass('d-none')
+			$('#address-descrip').addClass('d-none').removeClass('d-block')
 		}
 	}
 
@@ -1035,23 +1057,35 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		// boton listo del modal del delivery
 		$('#listo').click(() => {
-			let sector        = $('#sector_id option:selected').text()
-			// let stimated_time = $('#stimatedtime').text()
-			// let tarifa        = $('#tarifa').text()
-			let detalles      = $('#detalles').val()
-			if ( ! $('#sector_id')[0].validity.valueMissing ){
-				$('#user_address_delivery').val($('#sector_id').val())
-				$('#sector_info').text(sector)
-				$('#detalles_info').text(detalles)
-				// $('#stimatedtime_info').text(stimated_time)
-				// $('#tarifa_info').text(tarifa)
-				// $('.delivery_cost').removeClass('d-none')
-				// $('#delivery_cost').text(tarifa)
-				$('.detallesescondidos').removeClass('d-none')
-				$('#modalDelivery').modal('hide')
-			} else {
-				$('#sector_id')[0].setCustomValidity('Este campo no puede quedar vacío.')
+
+			if ($('#forma-delivery').val() == 2) {
+				let sector        = $('#sector_id option:selected').text()
+				// let stimated_time = $('#stimatedtime').text()
+				// let tarifa        = $('#tarifa').text()
+				let detalles      = $('#detalles').val()
+				if ( ! $('#sector_id')[0].validity.valueMissing ){
+					$('#user_address_delivery').val($('#sector_id').val())
+					$('#sector_info').text(sector)
+					$('#detalles_info').text(detalles)
+					// $('#stimatedtime_info').text(stimated_time)
+					// $('#tarifa_info').text(tarifa)
+					// $('.delivery_cost').removeClass('d-none')
+					// $('#delivery_cost').text(tarifa)
+					$('.detallesescondidos').removeClass('d-none')
+					$('#modalDelivery').modal('hide')
+				} else {
+					$('#sector_id')[0].setCustomValidity('Este campo no puede quedar vacío.')
+				}
+			}else if($('#forma-delivery').val() == 1){
+				$('#address-descrip').text($('#direc-descrip-area').val());
+				
+				$('#address-descrip').addClass('d-block').removeClass('d-none');
+				$('#modalDelivery').modal('hide');
+				//LIMPIO EL CAMP DEL TEXTAREA
+				$('#direc-descrip-area').val("");
 			}
+
+			console.log($('#forma-delivery').val());
 		})
 
 		
@@ -1114,7 +1148,26 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// 	starCaptionClasses: {1: 'text-danger', 2: 'text-warning', 3: 'text-info', 4: 'text-primary', 5: 'text-success'},
 		// });
 	})
+		//LUIS
+		$('#select-multiples').hide();
 
+		$('#direc-descrip-caja').hide();
+
+		$('#forma-delivery').on('change', (e) => {
+
+			$('#select-multiples').hide();
+
+			$('#direc-descrip-caja').hide();
+
+			if ($('#forma-delivery').val() == 2) {
+
+				$('#select-multiples').show();
+			}else if($('#forma-delivery').val() == 1){
+
+				$('#direc-descrip-caja').show();
+			}
+			console.log($('#forma-delivery').val());
+		})
 </script>
 @endpush
 
