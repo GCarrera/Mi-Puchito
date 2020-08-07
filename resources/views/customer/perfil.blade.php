@@ -178,6 +178,8 @@
 												<td>{{ ucfirst($compra->delivery) }}</td>
 												<td>
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
+													<a class="btn btn-danger" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+
 												</td>
 											</tr>
 										@empty

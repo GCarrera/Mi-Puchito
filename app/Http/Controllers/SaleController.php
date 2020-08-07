@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Sale;
 use App\Delivery;
 use App\SaleDetail;
-
+use App\AddressUserDelivery;
 
 class SaleController extends Controller
 {
@@ -64,7 +64,8 @@ class SaleController extends Controller
 			$sale->delivery = $req->input('delivery');
 			$sale->user_id  = $user;
 			$sale->save();
-			$saleid = $sale->lastid();
+			//$saleid = $sale->lastid();
+			$saleid = $sale->id;
 
 			foreach ($productos as $producto) {
 				$saleDetail = new SaleDetail();
@@ -75,6 +76,8 @@ class SaleController extends Controller
 			}
 
 			if ($req->input('user_address_delivery')) {
+
+
 				$delivery = new Delivery();
 				$delivery->address_user_delivery_id = $req->input('user_address_delivery');
 				$delivery->sale_id = $saleid;

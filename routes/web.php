@@ -64,6 +64,11 @@ Route::middleware(['auth'])->group(function(){
 	Route::get('/get_wishlist', 'WishlistController@get_wishlist');
 	Route::post('/sale', 'SaleController@store');
 	Route::post('/get_sale', 'SaleController@get_sale');
+
+	//PDF FACTURA
+	Route::get('/get-pedido/{id}', 'FacturaController@get_pedido')->name('factura.pdf');
 });
 
 Route::get('/traer_productos', 'AdminController@traer_productos');
+
+Route::get('prueba', 'ShoppingCartController@prueba');

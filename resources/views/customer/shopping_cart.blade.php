@@ -345,9 +345,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<label for="pay_method">Selecciona el método de pago</label>
 								<select id="pay_method" name="pay_method" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
-									<option value="transferencia">Transferencia Bancaria</option>
-									<option value="pagomovil">Pago Móvil</option>
-									<option value="dolares">Dolares (efectivo)</option>
+									<option value="2">Transferencia Bancaria</option>
+									<option value="3">Pago Móvil</option>
+									<option value="1">Dolares (efectivo)</option>
 								</select>
 							</div>
 						</div>
@@ -1093,7 +1093,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		$('#pay_method').change(function() {
 			let valor = $(this).val()
 
-			if ( valor == 'transferencia' || valor == 'pagomovil' ) {
+			if ( valor == '2' || valor == '3' ) {
 				$('#enviarPago').attr('disabled', true)
 				$('#pay_method_modal').modal('show')
 			} else {

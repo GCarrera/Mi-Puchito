@@ -156,4 +156,20 @@ class ShoppingCartController extends Controller
 		$cities = Sector::where('city_id', $request->city_id)->get();
 		return response()->json($cities);
 	}
+
+	public function prueba()
+	{	
+		$user = auth()->user();
+
+		$data   = \Cart::session($user->id)->getContent();
+
+		$cantidades = [];
+		foreach ($data as $producto) {
+				
+				$cantidades[]  = $producto->quantity;
+				
+			}
+
+		return $cantidades;
+	}
 }

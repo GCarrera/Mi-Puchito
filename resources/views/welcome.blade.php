@@ -7,14 +7,14 @@
         <title>Laravel</title>
 
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+      
 
         <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Nunito', sans-serif;
+            
                 font-weight: 200;
                 height: 100vh;
                 margin: 0;
@@ -95,6 +95,111 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
             </div>
+
+            <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <!--HEADER DE LA FACTURA-->
+                    <div class="row">
+                        <div class="col-4">
+                            <p class="font-weight-bold">Mi puchitos</p>
+                            <p>Dirección:</p>
+                            <p>Teléfonos:</p>
+                            <p>Pagina web:</p>
+                        </div>
+                        <div class="col-4">
+                            <!--<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; position: center;" alt="Mi puchitos logo">-->
+                        </div>
+                        <div class="col-4">
+                            <table class="table table-striped table-bordered">
+
+                                <tr>
+                                    <th>Pedido numero</th>
+                                </tr>
+                                <tr>
+                                    <td>3123123123</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Fecha</th>
+                                </tr>
+                                <tr>
+                                    <td> 7/8/2019</td>
+                                </tr>
+                            
+                            </table>
+                        </div>
+
+                    </div>
+                    <!--DATOS DEL CLIENTE-->
+                    <div>
+                        <p class="font-weight-bold">Datos del cliente:</p>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <p><span class="font-weight-bold">Nombre:</span> luis briceño</p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="font-weight-bold">Telefono:</span> 2564546846</p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="font-weight-bold">Direccion:</span> fdfnsafhsdfnaslfkbnasdfklnasklfnklasfnaslñfks</p>
+                            </div>
+                            <div class="col-6">
+                                <p><span class="font-weight-bold">Ciudad:</span> Maracay</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--TABLA DE PRODUCTOS-->
+
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Cantidad</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>iva</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>231</td>
+                                <td>salchichas</td>
+                                <td>200000</td>
+                                <td>20000</td>
+                            </tr>
+                            <tr>
+                                <td>231</td>
+                                <td>salchichas</td>
+                                <td>200000</td>
+                                <td>20000</td>
+                            </tr>
+                            <tr>
+                                <td>231</td>
+                                <td>salchichas</td>
+                                <td>200000</td>
+                                <td>20000</td>
+                            </tr>
+                        </tbody>
+                        <tfoot class="bordered">
+                            <tr>
+                                <td colspan="3" class="text-right">Subtotal:</td>
+                                <td>fdsf</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-right">IVA:</td>
+                                <td>fdsf</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="text-right">Total:</td>
+                                <td>fdsf</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
         </div>
     </body>
 </html>
