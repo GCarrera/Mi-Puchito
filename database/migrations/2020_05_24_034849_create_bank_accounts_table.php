@@ -17,11 +17,11 @@ class CreateBankAccountsTable extends Migration
             $table->increments('id');
             $table->string('bank');
             $table->string('code');
-            $table->string('account_number');
+            $table->string('account_number')->nullable();
             $table->string('dni');
             $table->string('name_enterprise');
             $table->string('email_enterprise')->nullable();
-            $table->string('phone_enterprise');
+            $table->string('phone_enterprise')->nullable();
             $table->timestamps();
         });
     }

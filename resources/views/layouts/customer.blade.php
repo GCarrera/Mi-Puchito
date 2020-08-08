@@ -5,8 +5,10 @@
 	<a class="navbar-brand" href="/">
 		 <img src="/img/logo.jpg" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
+	<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
+
 	</button>
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -37,7 +39,7 @@
 				</li>
 				<li class="nav-item" id="shoppingcart">
 					<a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2"></i>
-						<span class="badge badge-danger d-none" id="cart_counter">0</span> Mi Carrito
+						<span class="badge badge-danger d-none" id="cart_counter">0</span> <span class="d-none d-xl-inline">Mi </span>Carrito
 					</a>
 				</li>
 				<li class="nav-item dropdown">

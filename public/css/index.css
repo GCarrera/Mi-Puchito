@@ -186,3 +186,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 .itempadre{
 	padding: 0px 0px 0px 0px !important;
 }
+
+/*LG*/
+	@media (min-width: 992px) and (max-width: 1200px) {
+		#body-pruducto{
+		padding-left: 0px;
+		padding-right: 0px;
+		}
+	}

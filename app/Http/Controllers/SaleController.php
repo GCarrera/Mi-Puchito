@@ -38,7 +38,7 @@ class SaleController extends Controller
 	{
 		$validator = Validator::make($req->all(), [
             'delivery' => 'required|max:191',
-            'numero_referencia' => 'required|max:191',
+            'numero_referencia' => 'max:191',
 			'monto' => 'required|max:191',
 			'pay_method' => 'required',
 		]);

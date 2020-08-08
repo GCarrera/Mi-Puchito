@@ -169,10 +169,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-1 col-sm-1 col-12 d-flex justify-content-end">
-										<div class="my-4 d-block w-100 text-center">
+									<div class="col-md-1 col-sm-1 col-12">
+										<div class="w-100 text-center">
 											<button class="btn btn-danger eliminar" onclick="delete_item({{$c->id}})">
-												<i class="fas fa-trash" style="font-size: 1.8em;"></i>
+												<i class="fas fa-trash" style="font-size: 0.9em;"></i>
 											</button>
 										</div>
 									</div>
@@ -302,7 +302,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</div>
 
 						<div class="row d-none detallesescondidos">
-							<div class="col-12">
+							<div class="col-12" id="detallesescondidos-2">
 								<div class="row">
 									<div class="col-5">
 										<p class="font-weight-bold">Sector:</p>
@@ -345,8 +345,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<label for="pay_method">Selecciona el método de pago</label>
 								<select id="pay_method" name="pay_method" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
-									<option value="2">Transferencia Bancaria</option>
-									<option value="3">Pago Móvil</option>
+									<option value="2">Transferencia Bancaria o pago movil</option>
 									<option value="1">Dolares (efectivo)</option>
 								</select>
 							</div>
@@ -444,7 +443,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					<div class="col-12">
 						<label for="city_id">Ciudad</label><br>
 						<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
-							<option value="" selected>Seleccione Ciudad</option>
+							<option value="0" selected>Seleccione Ciudad</option>
 						@foreach ($cities as $city)
 							<option value="{{$city->id}}">{{$city->city}}</option>
 						@endforeach
@@ -453,7 +452,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					<div class="col-12">
 						<label for="sector_id">Sector</label><br>
 						<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id">
-							<option value="">Seleccione Sector</option>
+							<option value="0">Seleccione Sector</option>
 						</select>
 					</div>
 					<div class="col-12">
@@ -519,15 +518,28 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			<div class="modal-body">
 				<h6 class="font-weight-light">Información bancaria</h6>
 				@forelse($cb as $c)
+					@if(isset($c->name_enterprise) && isset($c->account_number) && isset($c->bank) && isset($c->dni))
 					<div class="card-body">
+						<h5><b>Transferencias:</b></h5>
 						<div class="row">
 							<h6 class="col-3"><b>Nombre: </b> <i id="name-{{$loop->iteration}}">{{ $c->name_enterprise }}</i></h6>
 							<h6 class="col-6"><b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i></h6>
-							<h6 class="col-3"><b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-3"><b>Banco: </b> <i id="code-{{$loop->iteration}}">{{ $c->bank }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i></h6>
 							<h6 class="col-6"><b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i></h6>
-							<h6 class="col-6"><b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i></h6>
+	
 						</div>
 					</div>
+					@endif
+					@if(isset($c->phone_enterprise) && isset($c->dni) && isset($c->code))
+					<div class="card-body">
+						<h5><b>Pago movil:</b></h5>
+						<div class="row">
+							<h6 class="col-6"><b>Telf: </b><i id="phone-{{$loop->iteration}}">{{ str_replace("-", "", $c->phone_enterprise) }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-6"><b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i></h6>
+							<h6 class="col-3"><b>Código: </b> <i id="code-{{$loop->iteration}}">{{ $c->code }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i></h6>
+						</div>
+					</div>
+					@endif
 				@empty
 					<div class="card-body">
 						<div class="row">
@@ -545,15 +557,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 						<ul class="nav nav-tabs" id="myTab" role="tablist">
 							<li class="nav-item">
-							  <a class="nav-link active" id="attach-file-tab" data-toggle="tab" href="#attach-file" role="tab" aria-controls="attach-file" aria-selected="true">Adjuntar Comprobante</a>
+							  <a class="nav-link active" id="attach-file-tab" data-toggle="tab" href="#attach-file" role="tab" aria-controls="attach-file" aria-selected="true">Agregar captura</a>
 							</li>
 							<li class="nav-item">
-							  <a class="nav-link" id="reference-number-tab" data-toggle="tab" href="#reference-number" role="tab" aria-controls="reference-number" aria-selected="false">Número de referencia</a>
+							  <a class="nav-link" id="reference-number-tab" data-toggle="tab" href="#reference-number" role="tab" aria-controls="reference-number" aria-selected="false">Agregar referencia</a>
 							</li>
 						  </ul>
 						  <div class="tab-content" id="myTabContent">
 							<div class="tab-pane fade show active" id="attach-file" role="tabpanel" aria-labelledby="attach-file-tab">
-								<b>Adjuntar Comprobante</b><br>
+								<b>Agregar captura</b><br>
 								<div class="file-input-wrapper">
 									<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
 									<p id="image_name" class="mt-3 mb-1"></p>
@@ -562,13 +574,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<p id="imgerror" class="text-danger" style="display: none;"></p>
 									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
 									<label for="fileattached" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-									<input id="fileattached" id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" required>
+									<input id="fileattached" id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" required class="form-control-file" hidden>
 								</div>		
 							</div>
 							<div class="tab-pane fade" id="reference-number" role="tabpanel" aria-labelledby="reference-number-tab">
-								<div class="col-5">
-									<label for="referencia" class="font-weight-bold">Número de referencia</label>
-									<input type="number" id="referencia" class="form-control" name="referencia">
+								<div class="col-12">
+									<label for="referencia" class="font-weight-bold">Agregar referencia</label>
+									<input type="number" id="referencia" placeholder="Colocar los últimos 4 digitos" class="form-control w-100" name="referencia">
 								</div>
 							</div>
 						  </div>
@@ -598,12 +610,23 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		if ($('#pay_method').val() == "dolares") {
 			$('#enviarPago').attr('disabled', false)
 		}
+
+
 		if (val == 'si') {
+
+
+			//$('#detalles').val('');//VACIA EL CAMPO DIRECCION EXACTA
+
 			$('#address').addClass('d-none').removeClass('d-block')
 
 		} else {
 			$('#address').addClass('d-block').removeClass('d-none')
 			$('#address-descrip').addClass('d-none').removeClass('d-block')
+			$('#address-descrip').text("")
+
+			$('#detallesescondidos').addClass('d-none').removeClass('d-block')
+			$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
+				
 		}
 	}
 
@@ -1006,7 +1029,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			let resp = $(this).val()
 			console.log(resp)
 			if (resp == 'si') {
-				
+				$('.detallesescondidos').addClass('d-none');
 			} else {
 				$('#sector_info').text('')
 				$('#stimatedtime_info').text('')
@@ -1063,6 +1086,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				// let stimated_time = $('#stimatedtime').text()
 				// let tarifa        = $('#tarifa').text()
 				let detalles      = $('#detalles').val()
+				$('#detallesescondidos-2').addClass('d-block').removeClass('d-none')
 				if ( ! $('#sector_id')[0].validity.valueMissing ){
 					$('#user_address_delivery').val($('#sector_id').val())
 					$('#sector_info').text(sector)
@@ -1083,6 +1107,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				$('#modalDelivery').modal('hide');
 				//LIMPIO EL CAMP DEL TEXTAREA
 				$('#direc-descrip-area').val("");
+
+				$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
 			}
 
 			console.log($('#forma-delivery').val());

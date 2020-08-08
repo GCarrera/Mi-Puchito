@@ -67,7 +67,7 @@
 						<label for="empresas">Usted está comprando:</label>
 						<div class="nav-list">
 							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('?buytype=major')}}">Al mayor</a>
-							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'minor' ? 'active' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a>
+							<a class="list-group-item list-group-item-action {{ Request::get('buytype') != 'major' ? 'active' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a>
 						</div>
 					</div>
 				</div>
@@ -124,7 +124,7 @@
 									
 									<div class="card shadow">
 										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
-										<div class="card-body">
+										<div class="card-body" id="body-pruducto">
 											<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
@@ -139,7 +139,7 @@
 											@endif
 
 											@auth
-											<div class="container">
+											<div class="">
 												<div class="row text-center">
 													<div class="col-6">
 														<button 
@@ -171,7 +171,7 @@
 											</div>
 												
 											@else
-											<div class="container">
+											<div class="">
 												<div class="row text-center">
 													<div class="col-6">
 														<button 
@@ -403,6 +403,8 @@
 					toastr.success('<i>Producto añadido al carrito</i>')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
+					$('#cart_counter-2').removeClass('d-none')
+					$('#cart_counter-2').text(res)
 				}
 
 				that.removeAttr('disabled')

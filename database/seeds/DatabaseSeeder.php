@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             EnterprisesTableSeeder::class,
             WarehousesTableSeeder::class,
             InventoriesTableSeeder::class,
+            BankAccountsSeeder::class
         ]);
 
     }

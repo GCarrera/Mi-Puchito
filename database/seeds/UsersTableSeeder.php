@@ -28,5 +28,21 @@ class UsersTableSeeder extends Seeder
     		'people_id' => 1,
     		'created_at' => now()
     	]);
+
+        DB::table('people')->insert([
+            'dni' => '26734165',
+            'name' => 'Luis',
+            'lastname' => 'Briceño',
+            'phone_number' => '04149112456',
+            'created_at' => now()
+        ]);
+
+        DB::table('users')->insert([
+            'email' => 'siulbriceno20@gmail.com',
+            'type' => 'customer',
+            'password' => bcrypt('26734165'),
+            'people_id' => 2,
+            'created_at' => now()
+        ]);
     }
 }
