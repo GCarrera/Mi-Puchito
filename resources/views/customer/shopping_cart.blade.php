@@ -221,29 +221,37 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			</div> --}}
 
 			<div class="card shadow-sm">
-				<div class="card-body">
-					<div class="row mb-1">
-						<div class="col">
+				<div class="card-body" style="font-size: 0.9em;">
+					<div class="row mb-1 no-gutters">
+						<div class="col-4">
 							<span>Subtotal:</span>
 						</div>
-						<div class="col text-right">
+						<div class="col-8 text-right">
 							<span><span id="totalSinIva">{{ number_format($totalSinIva, 2, ',', '.') }} </span> Bs.</span>
 						</div>
 					</div>
-					<div class="row mb-1">
-						<div class="col">
+					<div class="row mb-1 no-gutters">
+						<div class="col-5">
 							<span>IVA Total:</span>
 						</div>
-						<div class="col text-right">
+						<div class="col-7 text-right">
 							<span><span id="ivatotal">{{ number_format($ivatotal, 2, ',', '.') }}</span> Bs</span>
 						</div>
 					</div>
-					<div class="row mb-3">
-						<div class="col">
+					<div class="row mb-3 no-gutters">
+						<div class="col-4">
 							<span class="font-weight-bold">Total:</span>
 						</div>
-						<div class="col text-right">
+						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="montoTotal">{{ number_format($total, 2, ',', '.') }}</span> Bs</span>
+						</div>
+					</div>	
+					<div class="row mb-3 no-gutters">
+						<div class="col-4">
+							<span class="font-weight-bold">Dolar a:</span>
+						</div>
+						<div class="col-8 text-right">
+							<span class="font-weight-bold"><span id="dolar">{{ number_format($dolar->price, 2, ',', '.') }}</span> Bs</span>
 						</div>
 					</div>					
 					<!--<div class="row mb-1">
@@ -271,7 +279,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<input type="hidden" name="monto" id="monto">
 						<input type="hidden" name="user_address_delivery" id="user_address_delivery">
 						<input type="hidden" name="numero_referencia" id="numero_referencia">
-						<!-- <input type="file" name="capture_payment" class="custom-file-input" accept="image/*" id="customFile" style="height: 1px; width: 1px"> -->
+						<!--<input type="file" name="capture_payment" class="custom-file-input" accept="image/*,application/pdf" id="capture_payment" style="height: 1px; width: 1px">-->
 
 						<div class="row mb-4">
 							<div class="col">
@@ -341,23 +349,30 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<hr>
 
 						<div class="row mb-4">
+						
 							<div class="col">
 								<label for="pay_method">Selecciona el método de pago</label>
-								<select id="pay_method" name="pay_method" class="form-control border selectpicker">
-									<option selected disabled>Selecciona</option>
-									<option value="2">Transferencia Bancaria o pago movil</option>
-									<option value="1">Dolares (efectivo)</option>
-								</select>
+								<div class="form-check">
+									<label for="" class="form-check-label">
+										<input id="pay_method" type="radio" onclick="openModanPayMethod()" class="form-check-input" name="pay_method" value="2">Tranferencias bancarias ó pago movil
+									</label>
+								</div>
+
+								<div class="form-check">
+									<label for="" class="form-check-label">
+										<input id="pay_method" type="radio" class="form-check-input" name="pay_method" value="1">Dolares (efectivo)
+									</label>
+								</div>
 							</div>
 						</div>
 
 						<div class="row d-none detallesescondidos2">
 							<div class="col-12">
 								<div class="row">
-									<div class="col-5">
+									<div class="col-8">
 										<p class="font-weight-bold">N° Operación:</p>
 									</div>
-									<div class="col">
+									<div class="col-4">
 										<p id="nooperacion" class="text-right">123456789</p>
 									</div>
 								</div>
@@ -373,138 +388,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								</button>
 							</div>
 						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 
-
-
-{{-- MODAL PAR LIMPIAR EL CARRITO --}}
-<div class="modal fade" id="clear_cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Limpiar carrito de compras</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<h4 class="text-center font-weight-light my-5">¿Estás seguro de querer eliminar los productos?</h4>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-				<button type="button" id="limpiar" data-dismiss="modal" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Sí, estoy seguro</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-{{-- MODAL PARA LA DIRECCION DEL DELIVERY --}}
-<div class="modal fade" id="modalDelivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Información para la entrega</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<div class="row">
-					{{-- <div class="col-12">
-						<label for="state_id">Estado</label><br>
-						<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
-						@foreach ($collection as $item)
-							
-						@endforeach
-					</div> --}}
-					
-					<div class="col-12">
-						<label for="forma-delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
-						<select required name="forma-delivery" value="2" class="selectpicker mb-2 border form-control" id="forma-delivery">
-							<option value="" id="select-option-forma">Seleccione una forma</option>
-							<option value="1">Escribir la direccion</option>
-							<option value="2">Buscar mi direccion</option>
-						</select>
-					</div>
-
-				<div id="direc-descrip-caja" class="w-100">
-					<div class="col-12">
-						<textarea name="direc-descrip-area" id="direc-descrip-area" cols="30" rows="10" class="form-control"></textarea>
-					</div>
-				</div>
-
-				<div id="select-multiples" class="w-100">
-					<div class="col-12">
-						<label for="city_id">Ciudad</label><br>
-						<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
-							<option value="0" selected>Seleccione Ciudad</option>
-						@foreach ($cities as $city)
-							<option value="{{$city->id}}">{{$city->city}}</option>
-						@endforeach
-						</select>
-					</div>
-					<div class="col-12">
-						<label for="sector_id">Sector</label><br>
-						<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id">
-							<option value="0">Seleccione Sector</option>
-						</select>
-					</div>
-					<div class="col-12">
-						<label for="detalles">Dirección exacta</label><br>
-						<input type="text" class="form-control" name="detalles" id="detalles" placeholder="Calle, Número de Casa, Algún punto de referencia.">
-					</div>
-				</div>
-				</div>
-
-				<div class="row" id="">
-					
-					<div class=" mx-auto py-5 sr-only" id="direccion_loader">
-						<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
-					</div>
-
-					<div class="col-12 d-none" id="direccion_content">
-						{{-- <div class="row">
-							<div class="col-4">
-								<p class="font-weight-bold">Tiempo estimado:</p>
-							</div>
-							<div class="col">
-								<p id="stimatedtime">...</p>
-							</div>
-						</div> --}}
-						{{-- <div class="row">
-							<div class="col-4">
-								<p class="font-weight-bold">Tarifa:</p>
-							</div>
-							<div class="col">
-								<p><span id="tarifa">0</span> Bs</p>
-							</div>
-						</div> --}}
-						{{-- <div class="row">
-							<div class="col-4">
-								<p class="font-weight-bold">Detalles:</p>
-							</div>
-							<div class="col">
-								<p id="detalles">...</p>
-							</div>
-						</div> --}}
-					</div>
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" id="listo" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Listo</button>
-			</div>
-		</div>
-	</div>
-</div>
-
-
-{{-- MODAL PARa SELECCONAR EL TIPO DE PAGO --}}
+						{{-- MODAL PARa SELECCONAR EL TIPO DE PAGO --}}
 <div class="modal fade" id="pay_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -574,7 +459,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<p id="imgerror" class="text-danger" style="display: none;"></p>
 									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
 									<label for="fileattached" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-									<input id="fileattached" id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" required class="form-control-file" hidden>
+									<input id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" class="form-control-file" hidden>
 								</div>		
 							</div>
 							<div class="tab-pane fade" id="reference-number" role="tabpanel" aria-labelledby="reference-number-tab">
@@ -600,11 +485,162 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	</div>
 </div>
 
+				{{-- MODAL PARA LA DIRECCION DEL DELIVERY --}}
+<div class="modal fade" id="modalDelivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Información para la entrega</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					{{-- <div class="col-12">
+						<label for="state_id">Estado</label><br>
+						<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
+						@foreach ($collection as $item)
+							
+						@endforeach
+					</div> --}}
+					
+					<div class="col-12">
+						<label for="forma_delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
+						<select name="forma_delivery" class="selectpicker mb-2 border form-control" id="forma-delivery">
+							<option value="" id="select-option-forma">Seleccione una forma</option>
+							<option value="1">Escribir la direccion</option>
+							<option value="2">Buscar mi direccion</option>
+						</select>
+					</div>
+
+					<div id="direc-descrip-caja" class="w-100">
+						<div class="col-12">
+							<textarea name="direc_descrip_area" id="direc-descrip-area" cols="30" rows="5" class="form-control" maxlength="255" ></textarea>
+						</div>
+					</div>
+
+					<div id="select-multiples" class="w-100">
+						<div class="col-12">
+							<label for="city_id">Ciudad</label><br>
+							<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
+								<option value="0" selected>Seleccione Ciudad</option>
+							@foreach ($cities as $city)
+								<option value="{{$city->id}}">{{$city->city}}</option>
+							@endforeach
+							</select>
+						</div>
+						<div class="col-12">
+							<label for="sector_id">Sector</label><br>
+							<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id">
+								<option value="0">Seleccione Sector</option>
+							</select>
+						</div>
+						<div class="col-12">
+							<label for="detalles">Dirección exacta</label><br>
+							<input type="text" class="form-control" name="detalles" id="detalles" placeholder="Calle, Número de Casa, Algún punto de referencia.">
+						</div>
+					</div>
+				</div>
+				
+				<div id="caja-direc-anteriores">
+					<b style="font-size: 1.3em; margin-top: 5%;">Direcciones anteriores:</b>
+					@foreach($user_address as $address)
+					<div class="list-group">
+					  <button type="button" class="list-group-item list-group-item-action direc-list" value="{{$address->id}}" name="direc_list" id="direc-list-{{$address->id}}">{{$address->details}} {{ $address->travel_rate_id ? ", ".$address->travel_rate->sector->sector : "" }} {{ $address->travel_rate_id ? $address->travel_rate->rate : "" }}
+					  </button>
+					</div>
+					@endforeach
+					<input type="text" class="form-control" id="input-direc-anteriores" name="input_direc_anteriores" hidden>
+					<input type="text" class="form-control" id="input-text-direc-anteriores" name="input_text_direc_anteriores" hidden>
+				</div>
+
+				<div class="row" id="">
+					
+					<div class=" mx-auto py-5 sr-only" id="direccion_loader">
+						<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
+					</div>
+
+					<div class="col-12 d-none" id="direccion_content">
+						{{-- <div class="row">
+							<div class="col-4">
+								<p class="font-weight-bold">Tiempo estimado:</p>
+							</div>
+							<div class="col">
+								<p id="stimatedtime">...</p>
+							</div>
+						</div> --}}
+						{{-- <div class="row">
+							<div class="col-4">
+								<p class="font-weight-bold">Tarifa:</p>
+							</div>
+							<div class="col">
+								<p><span id="tarifa">0</span> Bs</p>
+							</div>
+						</div> --}}
+						{{-- <div class="row">
+							<div class="col-4">
+								<p class="font-weight-bold">Detalles:</p>
+							</div>
+							<div class="col">
+								<p id="detalles">...</p>
+							</div>
+						</div> --}}
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="listo" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Listo</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{{-- MODAL PAR LIMPIAR EL CARRITO --}}
+<div class="modal fade" id="clear_cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Limpiar carrito de compras</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<h4 class="text-center font-weight-light my-5">¿Estás seguro de querer eliminar los productos?</h4>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
+				<button type="button" id="limpiar" data-dismiss="modal" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Sí, estoy seguro</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
 @endsection
 
 @push('scripts')
 <script>
 	var myCart = @json($cart);
+
+	function openModanPayMethod(){
+		
+			$('#pay_method_modal').modal('show');
+		}
+
 
 	function changeRadio(val) {
 		if ($('#pay_method').val() == "dolares") {
@@ -745,6 +781,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			// $('#sendBtn').removeClass('d-none')
 			// imagen de preview
 			let file   = e.target.files[0];
+
 			let reader = new FileReader();
 			let filesize = file.size / 1024
 
@@ -767,6 +804,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						return
 					} 
 				} else {
+
+
 					break
 				}
 			}
@@ -1082,6 +1121,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		$('#listo').click(() => {
 
 			if ($('#forma-delivery').val() == 2) {
+				$('#address-descrip').addClass('d-none').removeClass('d-block');
 				let sector        = $('#sector_id option:selected').text()
 				// let stimated_time = $('#stimatedtime').text()
 				// let tarifa        = $('#tarifa').text()
@@ -1105,17 +1145,19 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				
 				$('#address-descrip').addClass('d-block').removeClass('d-none');
 				$('#modalDelivery').modal('hide');
-				//LIMPIO EL CAMP DEL TEXTAREA
-				$('#direc-descrip-area').val("");
 
 				$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
+			}else if ($('#forma-delivery').val() == ""){
+				$('#address-descrip').text($('#input-text-direc-anteriores').val());
+				$('#address-descrip').addClass('d-block').removeClass('d-none');
+				$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
+				$('#modalDelivery').modal('hide');
 			}
 
 			console.log($('#forma-delivery').val());
 		})
 
-		
-
+	
 		$('#pay_method').change(function() {
 			let valor = $(this).val()
 
@@ -1134,6 +1176,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				}
 			}
 		})
+		
+		
+		
 
 		$('#listo2').click(() => {
 			
@@ -1185,15 +1230,35 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 			$('#direc-descrip-caja').hide();
 
+			$('#caja-direc-anteriores').hide();
+
 			if ($('#forma-delivery').val() == 2) {
 
 				$('#select-multiples').show();
+				$('#caja-direc-anteriores').hide();
 			}else if($('#forma-delivery').val() == 1){
 
 				$('#direc-descrip-caja').show();
+				$('#caja-direc-anteriores').hide();
+			}else if($('#forma-delivery').val() == ""){
+
+				$('#caja-direc-anteriores').show();
 			}
 			console.log($('#forma-delivery').val());
 		})
+
+		//RADIO CON LAS DIRECCIONES ANTERIORES DEL MODAL
+
+		$('.direc-list').click(function(e){
+
+			$('#input-direc-anteriores').val(e.target.value);
+			$('#input-text-direc-anteriores').val(e.target.textContent);
+
+			$('.direc-list').removeClass('active')
+			$('#direc-list-'+ e.target.value).addClass('active');
+			console.log(e.target.classList);
+			//console.log($('input-direc-anteriores').val());
+		});
 </script>
 @endpush
 

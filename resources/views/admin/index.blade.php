@@ -10,25 +10,6 @@
 	</div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="modalDetails" tabindex="-1" role="dialog" aria-labelledby="modalDetailsLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-	  <div class="modal-content">
-		<div class="modal-header">
-		  <h5 class="modal-title" id="modalDetailsLabel">Detalles de la venta</h5>
-		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		  </button>
-		</div>
-		<div class="modal-body">
-
-		</div>
-		<div class="modal-footer">
-		  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-		</div>
-	  </div>
-	</div>
-</div>
 
 <div class="container-fluid wrapper" style="margin-top: 90px">	
 	<div class="row">
@@ -46,8 +27,9 @@
 									<th>ID FACTURA</th>
 									<th>MONTO (Bs)</th>
 									<th>CLIENTE</th>
-									<th>DELIVERY</th>
-									<th>INFORMACION</th>
+									<th>Tiempo transcurrido</th>
+									<th>Confirmado</th>
+									<th>Opciones</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -55,14 +37,56 @@
 									<tr>
 										<td>{{$venta->code}}</td>
 										<td>{{$venta->amount}}</td>
-										<td>{{$venta->user->people->name}}</td>
-										<td>{{strtoupper($venta->delivery)}}</td>
+										<td>{{$venta->user->id}}</td>
+										<td></td>
+										<td>{{$venta->dispatched}}</td>
 										<td>
-											<button class="btn btn-md btn-primary" onclick="detailSale({{$venta->id}})">
-												<i class="fas fa-info-circle"></i>
+											
+											<button class="btn btn-success"><i class="fas fa-check"></i></button>
+											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
+												<i class="fas fa-receipt"></i>
 											</button>
 										</td>
 									</tr>
+
+									<!-- Modal -->
+									<div class="modal fade" id="modalDetails-{{$venta->id}}" tabindex="-1" role="dialog" aria-labelledby="modalDetailsLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+										  <div class="modal-content">
+											<div class="modal-header">
+											  <h5 class="modal-title" id="modalDetailsLabel">Informacion de pago</h5>
+											  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+											<div class="modal-body">
+												@if($venta->attached_file)
+												<div id="captura-{{$venta->id}}">
+													<h6 class="font-weight-bold">Captura</h6>
+													
+													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
+													
+												</div>
+												@endif
+												@if($venta->payment_reference_code)
+												<div id="referencia-{{$venta->id}}">
+													<h6 class="font-weight-bold">Referencia</h6>
+													<p>{{$venta->payment_reference_code}}</p>
+												</div>
+												@endif
+												@if(!$venta->attached_file && !$venta->payment_reference_code)
+												<div id="dolares-{{$venta->id}}">
+													<h6 class="font-weight-bold">Pagara en dolares en efectivo</h6>
+												</div>
+												@endif
+											</div>
+											<div class="modal-footer">
+											  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+											</div>
+										  </div>
+										</div>
+									</div>
 								@empty
 
 									<tr>
@@ -85,20 +109,9 @@
 <script>
 	var ventas = @json($ventas);
 	
-	function detailSale(id) {
-		console.log(id)
-		$(".modal-body").html("")
-		let sales = ventas.find(el=>el.id == id)
-		if (sales.details) {
-			for (let i = 0; i < Object.keys(sales.details).length; i++) {
-				let product_name = sales.details[i].inventory ? sales.details[i].inventory.product_name : ''
-				let quanty = sales.details[i].quantity ? sales.details[i].quantity : ''
-				console.log(product_name, quanty)
-				$(".modal-body").append("<b>Producto: </b>"+product_name+" ")
-				$(".modal-body").append("<b>Cantidad:</b>"+quanty+"<br>")
-			}
-		}
-		$('#modalDetails').modal('show')
+	function openModal(id) {
+
+		$('#modalDetails-'+id).modal('show')
 	}
 
 	$(() => {

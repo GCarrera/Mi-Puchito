@@ -14,7 +14,7 @@ use App\TravelRate;
 use App\AddressUserDelivery;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Validator;
-
+use App\City;
 
 class ProfileController extends Controller
 {
@@ -39,13 +39,16 @@ class ProfileController extends Controller
 			$pedido->details = $detalles;
 		}
 
+		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
+
 		return view('customer.perfil')
 			->with('pedidosCount', $pedidosCount)
 			->with('wishlistCount', $wishlistCount)
 			->with('pedidos', $pedidos)
 			->with('sectors', $sectores)
 			->with('rates', $rates)
-			->with('user', $user);
+			->with('user', $user)
+			->with('cities', $cities);
 	}
 
 	public function editar_perfil(Request $request)

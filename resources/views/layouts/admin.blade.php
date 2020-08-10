@@ -26,7 +26,7 @@
 
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item" id="admin">
-				<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-home mr-2"></i>Inicio</a>
+				<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-coins mr-2	"></i>Ventas</a>
 			</li>
 			<li class="nav-item" id="inventario">
 				<a class="nav-link" href="{{ route('inventario') }}"><i class="fas fa-clipboard-list mr-2"></i>Inventario</a>

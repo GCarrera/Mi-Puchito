@@ -16,9 +16,10 @@ class AddressUserDeliveryController extends Controller
 
 	public function store(Request $req)
 	{
+		$user_id = auth()->user()->id;
+		/*
 		$details        = $req->input('details');
 		$travel_rate_id = $req->input('travel_id');
-		$user_id        = auth()->user()->id;
 
 		$user_address = new AddressUserDelivery();
 
@@ -27,6 +28,24 @@ class AddressUserDeliveryController extends Controller
 		$user_address->user_id        = $user_id;
 
 		$user_address->save();
+		*/
+		if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
+			$address_delivery = new AddressUserDelivery();
+			$address_delivery->user_id = $user_id;
+
+				if ($req->forma_delivery == 1 ) {
+					$address_delivery->details =  $req->direc_descrip_area;
+				}else{
+					$travel = new TravelRate();
+					$travel->sector_id = $req->sector_id;
+					$travel->save();
+
+					$address_delivery->details =  $req->detalles;
+					$address_delivery->travel_rate_id = $travel->id;
+				}
+
+			$address_delivery->save();
+		}
 
 		return back()->with('success', 'Dirección guardada correctamente.');
 	}

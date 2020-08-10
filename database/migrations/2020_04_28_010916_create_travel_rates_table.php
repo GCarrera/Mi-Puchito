@@ -15,8 +15,8 @@ class CreateTravelRatesTable extends Migration
     {
         Schema::create('travel_rates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('rate');
-            $table->string('stimated_time');
+            $table->string('rate')->nullable();
+            $table->string('stimated_time')->nullable();
             $table->unsignedInteger('sector_id');
             $table->timestamps();
 

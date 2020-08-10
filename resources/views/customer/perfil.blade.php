@@ -120,30 +120,27 @@
 								<table class="table text-center table-sm table-hover table-bordered">
 									<thead>
 										<tr>
-											<th>NUM</th>
-											<th>SECTOR</th>
-											<th>DETALLES</th>
-											<th>TARIFA (Bs)</th>
-											<th colspan="2">ACCIONES</th>
+											<th>N°</th>
+											<th>Direccion</th>
+											<th >ACCIONES</th>
 										</tr>
 									</thead>
 									<tbody>
 										@forelse($rates as $rate)
 											<tr>
 												<td>{{ $loop->iteration }}</td>
-												<td>{{ $rate->travel_rate->sector->sector }}</td>
-												<td>{{ $rate->details }}</td>
-												<td>{{ number_format($rate->travel_rate->rate, 0, ',', '.') }}</td>
+												<td>{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }} 
+												{{ $rate->details }}
+												{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}</td>
 												<td>
 													<button data-id="{{ $rate->id }}" class="btn btn-warning address_edit"><i class="fas fa-edit"></i></button>
-												</td>
-												<td>
+											
 													<button data-id="{{ $rate->id }}" class="btn btn-danger address_delete"><i class="fas fa-trash"></i></button>
 												</td>
 											</tr>
 										@empty
 											<tr>
-												<td colspan="5" class="text-center">No hay datos registrados.</td>
+												<td colspan="3" class="text-center">No hay datos registrados.</td>
 											</tr>
 										@endforelse
 									</tbody>
@@ -177,8 +174,10 @@
 												<td>{{ $compra->amount }}</td>
 												<td>{{ ucfirst($compra->delivery) }}</td>
 												<td>
+													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
-													<a class="btn btn-danger" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+													-->
+													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 
 												</td>
 											</tr>
@@ -218,36 +217,57 @@
 			<form action="/direcciones" method="post">
 				@csrf
 
-				<div class="modal-body">
+			<div class="modal-body">
 
-					<div class="row mb-3">
-						<div class="col-12 mb-3 col-lg-4">
-							<label for="travelRate">Selecciona un sector</label>
-							<select data-live-search="true" id="travelRate" name="travel_id" class="form-control border selectpicker" required>
-								<option disabled selected>Selecciona un sector</option>
-								@foreach ($sectors as $sector)
-									<option data-subtext="{{ $sector->sector->city->city }}" value="{{ $sector->id }}">{{ $sector->sector->sector }}</option>
-								@endforeach
+				<div class="row">
+						{{-- <div class="col-12">
+							<label for="state_id">Estado</label><br>
+							<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
+							@foreach ($collection as $item)
+								
+							@endforeach
+						</div> --}}
+						
+					<div class="col-12">
+						<label for="forma_delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
+						<select name="forma_delivery" class="selectpicker mb-2 border form-control" id="forma-delivery">
+							<option value="" id="select-option-forma">Seleccione una forma</option>
+							<option value="1">Escribir la direccion</option>
+							<option value="2">Buscar mi direccion</option>
+						</select>
+					</div>
+
+					<div id="direc-descrip-caja" class="w-100">
+						<div class="col-12">
+							<textarea name="direc_descrip_area" id="direc-descrip-area" cols="30" rows="5" class="form-control" maxlength="255" ></textarea>
+							</div>
+					</div>
+
+					<div id="select-multiples" class="w-100">
+						<div class="col-12">
+							<label for="city_id">Ciudad</label><br>
+							<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
+								<option value="0" selected>Seleccione Ciudad</option>
+							@foreach ($cities as $city)
+								<option value="{{$city->id}}">{{$city->city}}</option>
+							@endforeach
 							</select>
 						</div>
-						<div class="col-12 col-lg-4 mb-3">
-							<label>Tiempo estimado (min)</label>
-							<input type="text" readonly class="form-control" id="stimated_time">
+						<div class="col-12">
+							<label for="sector_id">Sector</label><br>
+							<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id">
+								<option value="0">Seleccione Sector</option>
+							</select>
 						</div>
-						<div class="col-12 col-lg-4">
-							<label>Tarifa (Bs)</label>
-							<input type="text" readonly class="form-control" id="rate">
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col">
-							<label for="details">Detalles de la dirección</label>
-							<textarea name="details" id="details" rows="2" class="form-control" placeholder="Al frente del edificio López en la casa de rejas blancas #12 ..." required></textarea>
+						<div class="col-12">
+							<label for="detalles">Dirección exacta</label><br>
+							<input type="text" class="form-control" name="detalles" id="detalles" placeholder="Calle, Número de Casa, Algún punto de referencia.">
 						</div>
 					</div>
-
 				</div>
+				
+
+			</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
 					<button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Guardar</button>
@@ -455,6 +475,57 @@
 			toastr.success("{{ session('success') }}")
 		@endif()
 	})
+
+	//MODAL DE DIRECCION
+
+	$('#select-multiples').hide();
+	$('#direc-descrip-caja').hide();
+
+	$('#forma-delivery').on('change', (e) => {
+
+			$('#select-multiples').hide();
+
+			$('#direc-descrip-caja').hide();
+
+			$('#caja-direc-anteriores').hide();
+
+			if ($('#forma-delivery').val() == 2) {
+
+				$('#select-multiples').show();
+				$('#caja-direc-anteriores').hide();
+			}else if($('#forma-delivery').val() == 1){
+
+				$('#direc-descrip-caja').show();
+				$('#caja-direc-anteriores').hide();
+			}else if($('#forma-delivery').val() == ""){
+
+				$('#caja-direc-anteriores').show();
+			}
+			console.log($('#forma-delivery').val());
+		})
+
+	//CONSULTA DE LOS SECTORES DE LA CIUDAD SELECCIONADA
+	$('#city_id').on('change', function() { 
+			var city_id = $('#city_id').val(); 
+			$.ajax({
+				url: "sector/"+city_id,
+				type: "GET",
+				dataType: "json",
+				error: function(error){
+				//console.log(error);
+				}, 
+				success: function(respuesta){
+					console.log(respuesta)
+					$("#sector_id").html('<option value="" selected="true"> Seleccione una opción </option>');
+					respuesta.forEach(element => {
+						console.log(element)
+						$('#sector_id').append('<option value='+element.id+'> '+element.sector+' </option>')
+					});
+					$('.selectpicker').selectpicker('refresh');
+				}
+			});
+
+		})
 
 </script>
 @endpush

@@ -71,4 +71,10 @@ Route::middleware(['auth'])->group(function(){
 
 Route::get('/traer_productos', 'AdminController@traer_productos');
 
-Route::get('prueba', 'ShoppingCartController@prueba');
+Route::post('/prueba', 'ShoppingCartController@prueba');
+
+Route::get('/formulario', function(){
+
+	return view('Prueba');
+});
+

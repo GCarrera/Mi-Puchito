@@ -11,6 +11,7 @@ use App\Sale;
 use App\Delivery;
 use App\SaleDetail;
 use App\AddressUserDelivery;
+use App\TravelRate;
 
 class SaleController extends Controller
 {
@@ -36,6 +37,7 @@ class SaleController extends Controller
 
 	public function store(Request $req)
 	{
+
 		$validator = Validator::make($req->all(), [
             'delivery' => 'required|max:191',
             'numero_referencia' => 'max:191',
@@ -51,19 +53,60 @@ class SaleController extends Controller
 		
 		$user     = auth()->user()->id;
 		$productos = \Cart::session($user)->getContent();
-		if (count($productos) > 0) {
+		if (count($productos) > 0) {	
+
 			$code     = '20-123321213';
-			// $payment_capture = $req->file('capture_payment')->store('capturas');
+			// 
 
 			$sale = new Sale();
 			$sale->code     = $code;
 			$sale->payment_type     = $req->input('pay_method');
 			$sale->amount   = $req->input('monto');
 			$sale->payment_reference_code = $req->input('numero_referencia');
-			// $sale->attached_file = $payment_capture;
+			if ($req->hasFile('fileattached')) {
+				$tiempo = time();
+				$payment_capture = explode('public/', $req->file('fileattached')->storeAs('public/capturas', $tiempo))[1];
+				$sale->attached_file = $payment_capture;
+			}
 			$sale->delivery = $req->input('delivery');
 			$sale->user_id  = $user;
 			$sale->save();
+
+			if ($req->input('delivery') == "si") {//VERIFICA SI LA OPCION SE SERVICIO DE DELIVERY ES SI
+		
+				$delivery = new Delivery();//CREA UN NUEVO DELIVERY
+				$delivery->sale_id = $sale->id;
+				
+				if ($req->forma_delivery == "" && $req->input_direc_anteriores == "") {
+
+					return redirect()->back()->withErrors(['Agregue alguna direccion.']);
+				}
+
+				if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
+				$address_delivery = new AddressUserDelivery();
+				$address_delivery->user_id = $user;
+
+					if ($req->forma_delivery == 1 ) {
+						$address_delivery->details =  $req->direc_descrip_area;
+					}else{
+						$travel = new TravelRate();
+						$travel->sector_id = $req->sector_id;
+						$travel->save();
+
+						$address_delivery->details =  $req->detalles;
+						$address_delivery->travel_rate_id = $travel->id;
+					}
+
+				$address_delivery->save();
+				$delivery->address_user_delivery_id = $address_delivery->id;
+				}else {
+					//colocar direcciones anteriores
+					$delivery->address_user_delivery_id = $req->input_direc_anteriores;
+				}
+				
+				$delivery->save();
+			}
+
 			//$saleid = $sale->lastid();
 			$saleid = $sale->id;
 

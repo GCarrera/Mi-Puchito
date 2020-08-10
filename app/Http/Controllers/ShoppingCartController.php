@@ -10,6 +10,7 @@ use App\BankAccount;
 use App\City;
 use App\Sector;
 use App\State;
+use App\Dolar;
 
 class ShoppingCartController extends Controller
 {
@@ -50,6 +51,8 @@ class ShoppingCartController extends Controller
 		$cb = BankAccount::all();
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
+
 		return view('customer.shopping_cart')
 				->with('cart', $data)
 				->with('user_address', $user_address)
@@ -58,7 +61,8 @@ class ShoppingCartController extends Controller
 				->with('ivatotal', $ivatotal)
 				->with('totalSinIva', $totalSinIva)
 				->with('cities', $cities)
-				->with('total', $total);
+				->with('total', $total)
+				->with('dolar', $dolar);
 	}
 
 	public function store(Request $request)
@@ -157,19 +161,9 @@ class ShoppingCartController extends Controller
 		return response()->json($cities);
 	}
 
-	public function prueba()
+	public function prueba(Request $request)
 	{	
-		$user = auth()->user();
-
-		$data   = \Cart::session($user->id)->getContent();
-
-		$cantidades = [];
-		foreach ($data as $producto) {
-				
-				$cantidades[]  = $producto->quantity;
-				
-			}
-
-		return $cantidades;
+		
+		return dd($request->filePrueba);
 	}
 }

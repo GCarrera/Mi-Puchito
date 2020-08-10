@@ -16,7 +16,7 @@ class CreateAddressUserDeliveriesTable extends Migration
         Schema::create('address_user_deliveries', function (Blueprint $table) {
             $table->increments('id');
             $table->string('details');
-            $table->unsignedInteger('travel_rate_id');
+            $table->unsignedInteger('travel_rate_id')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
 
