@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->string('code');
             // $table->string('type');
             $table->string('amount');
-            $table->string('dispatched')->default('No');
+            $table->dateTime('dispatched', 0)->nullable();
             $table->string('payment_reference_code')->nullable();
             // $table->string('payment_capture');
             $table->string('delivery')->default('No');

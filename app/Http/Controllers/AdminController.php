@@ -25,6 +25,8 @@ use App\State;
 use App\Sale;
 use App\Delivery;
 use App\SaleDetail;
+use App\AddressUserDelivery;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -51,6 +53,7 @@ class AdminController extends Controller
 			}]);
 		}])
 		->whereHas('details')
+		->where('delivery', 'no')
 		->get();
 
 		return view('admin.index')
@@ -131,16 +134,34 @@ class AdminController extends Controller
 		// $categoriasCount = Category::all()->count();
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
-		$estados = State::all();
-		$rates   = TravelRate::all();
+		//$estados = State::all();
+		//$rates   = TravelRate::all();
 
-		return view('admin.delivery')
+		//return view('admin.delivery')
 			// ->with('empresasCount', $empresasCount)
 			// ->with('categoriasCount', $categoriasCount)
 			// ->with('productosCount', $productosCount)
 			// ->with('salesCount', $salesCount)
-			->with('rates', $rates)
-			->with('estados', $estados);
+		//	->with('rates', $rates)
+		//	->with('estados', $estados)
+		//	->with('user_address', $user_address);
+
+		$ventas = Sale::with(['deliveries', 
+		'details' => function($details) {
+			$details->with(['inventory' => function ($inventory) {
+				$inventory->select('id',	'product_name');
+			}]);
+		}, 'user' => function($user) {
+			$user->select('id', 'people_id')->with(['people' => function($people) {
+				$people->select('id', 'name');
+			}]);
+		}])
+		->whereHas('details')
+		->where('delivery', 'si')
+		->get();
+
+		return view('admin.delivery')
+			->with('ventas', $ventas);
 	}
 
 	public function traer_productos()
@@ -219,4 +240,33 @@ class AdminController extends Controller
 	}
 
 	// ------------------------------------------------------------------------------------------------
+
+	public function confirmar_pedido($id)
+	{
+
+		$venta = Sale::findOrFail($id);
+
+		$confirmacion = $venta->dispatched = "si";
+		$venta->save();
+
+		return $confirmacion;
+	}
+
+	public function confirmar_pedido_delivery($id, Request $request)
+	{
+		$now = Carbon::now();
+
+		$venta = Sale::findOrFail($id);
+
+		$confirmacion = $venta->dispatched = $now;
+
+		$address = AddressUserDelivery::findOrFail($venta->deliveries[0]->address_user_delivery->id);
+		$address->stimated_time = $request->stimated_time;
+		$address->save();
+		$venta->save();
+		
+
+
+		return $confirmacion;
+	}
 }

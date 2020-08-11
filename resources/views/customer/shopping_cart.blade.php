@@ -360,7 +360,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 								<div class="form-check">
 									<label for="" class="form-check-label">
-										<input id="pay_method" type="radio" class="form-check-input" name="pay_method" value="1">Dolares (efectivo)
+										<input id="pay_method-2" type="radio" class="form-check-input" name="pay_method" value="1">Dolares (efectivo)
 									</label>
 								</div>
 							</div>
@@ -1160,7 +1160,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	
 		$('#pay_method').change(function() {
 			let valor = $(this).val()
-
+			
 			if ( valor == '2' || valor == '3' ) {
 				$('#enviarPago').attr('disabled', true)
 				$('#pay_method_modal').modal('show')
@@ -1175,9 +1175,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					}
 				}
 			}
+			
 		})
 		
-		
+		$('#pay_method-2').click(function() {
+			$('#enviarPago').attr('disabled', false);
+		})
 		
 
 		$('#listo2').click(() => {

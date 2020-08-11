@@ -39,16 +39,38 @@
 										<td>{{$venta->amount}}</td>
 										<td>{{$venta->user->id}}</td>
 										<td></td>
-										<td>{{$venta->dispatched}}</td>
+										<td id="dispatched-{{$venta->id}}">{{$venta->dispatched}}</td>
 										<td>
 											
-											<button class="btn btn-success"><i class="fas fa-check"></i></button>
+											<button class="btn btn-success" data-toggle="modal" data-target="#checkModal-{{$venta->id}}"><i class="fas fa-check"></i></button>
 											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
-												<i class="fas fa-receipt"></i>
+												<i class="fas fa-coins"></i>
 											</button>
 										</td>
 									</tr>
+
+									<!--MODAL DE CONFIRMACION-->
+
+									<div class="modal fade" tabindex="-1" id="checkModal-{{$venta->id}}">
+										<div class="modal-dialog">
+									    	<div class="modal-content">
+									    		<div class="modal-header">
+									        	<h5 class="modal-title">Confirmacion de pedido</h5>
+									        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									        	<span aria-hidden="true">&times;</span>
+									        	</button>
+									      	</div>
+									    	<div class="modal-body">
+									        <p>¿Esta seguro que desea confirmar el pedido?</p>
+									      	</div>
+									    	<div class="modal-footer">
+									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+									        	<button type="button" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}})">Si</button>
+									      	</div>
+									    </div>
+									  </div>
+									</div>
 
 									<!-- Modal -->
 									<div class="modal fade" id="modalDetails-{{$venta->id}}" tabindex="-1" role="dialog" aria-labelledby="modalDetailsLabel" aria-hidden="true">
@@ -108,6 +130,12 @@
 @push('scripts')
 <script>
 	var ventas = @json($ventas);
+
+	$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
 	
 	function openModal(id) {
 
@@ -117,5 +145,27 @@
 	$(() => {
 		$('#loading').fadeOut()
 	})
+
+	function hideModalCheck(id){
+		//console.log(id)
+
+		$.ajax(`/admin/confirmar-pedido/${id}`, { method: 'put' })
+			.done((res) => {
+				//console.log(res)
+				$('#dispatched-'+id).text(res);
+
+			})
+			.catch((err) => {
+				toastr.error('Ha ocurrido un error')
+				console.error(err)
+			})
+
+
+		$('#checkModal-'+id).modal('hide');
+	}
+
+
+	
+
 </script>
 @endpush

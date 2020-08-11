@@ -10,79 +10,115 @@
 	</div>
 </div>
 
-<div class="container-fluid animated wrapper" style="margin-top: 90px">
-
-	<button class="btn btn-primary btn-lg rounded-circle" data-target="#tarifaModal" data-toggle="modal" style="position: fixed; bottom: 30px; right: 30px">
-		<i class="fas fa-plus"></i>
-	</button>
-
-
-	{{-- <div class="row mb-5">
-		<div class="col mb-3">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $productosCount }} Productos</h5>
-					<i class="fas fa-chart-line fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col mb-3">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $empresasCount }} Empresas</h5>
-					<i class="fas fa-building fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col mb-3">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $categoriasCount	 }} Categorias</h5>
-					<i class="fas fa-clipboard-list fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col mb-3">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $salesCount }} Ventas</h5>
-					<i class="fas fa-cash-register fa-2x"></i>
-				</div>
-			</div>
-		</div>
-	</div> --}}
-
-	<div class="row mb-5">
+<div class="container-fluid wrapper" style="margin-top: 90px">	
+	<div class="row">
 		<div class="col">
 			<div class="card shadow-sm">
-				<div class="card-header d-flex justify-content-between mb-3">
-					<h4>Delivery</h4>
+				<div class="card-header d-flex justify-content-between">
+					<h4>Ventas del día</h4>
+					<p class="lead">{{ucfirst(Carbon::now()->isoFormat('dddd, LL'))}}</p>
 				</div>
 				<div class="card-body">
-					<div class="table responsive">
-						<table class="table table-sm table-hover table-bordered text-center">
+					<div class="table-responsive">
+						<table class="table text-center table-sm table-hover table-bordered">
 							<thead>
 								<tr>
-									<th>CIUDAD</th>
-									<th>SECTOR</th>
-									<th>TIEMPO ESTIMADO</th>
-									<th>TARIFA (Bs)</th>
-									<th>ACCIONES</th>
+									<th>ID FACTURA</th>
+									<th>MONTO (Bs)</th>
+									<th>CLIENTE</th>
+									<th>Tiempo transcurrido</th>
+									<th>Confirmado</th>
+									<th>Opciones</th>
 								</tr>
 							</thead>
 							<tbody>
-								@foreach ($rates as $rate)
+								@forelse($ventas as $venta)
 									<tr>
-										<td>{{ $rate->sector->city->city }}</td>
-										<td>{{ $rate->sector->sector }}</td>
-										<td>{{ $rate->stimated_time }}</td>
-										<td>{{ number_format($rate->rate, 0, ',', '.') }}</td>
+										<td>{{$venta->code}}</td>
+										<td>{{$venta->amount}}</td>
+										<td>{{$venta->user->id}}</td>
+										<td></td>
+										<td id="dispatched-{{$venta->id}}">{{$venta->dispatched}}</td>
 										<td>
-											<button data-toggle="modal" data-target="#tarifaModalEditar" data-id="{{ $rate->id }}" class="btn btn-warning tarifaModalEditar mr-2"><i class="fas fa-edit"></i></button>
-											<button data-toggle="modal" data-id="{{ $rate->id }}" data-target="#tarifaModalBorrar" class="btn btn-danger tarifaModalBorrar"><i class="fas fa-trash"></i></button>
+											
+											<button class="btn btn-success" data-toggle="modal" data-target="#checkModal-{{$venta->id}}"><i class="fas fa-check"></i></button>
+											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
+												<i class="fas fa-coins"></i>
+											</button>
 										</td>
 									</tr>
-								@endforeach
+
+									<!--MODAL DE CONFIRMACION-->
+
+									<div class="modal fade" tabindex="-1" id="checkModal-{{$venta->id}}">
+										<div class="modal-dialog">
+									    	<div class="modal-content">
+									    		<div class="modal-header">
+									        	<h5 class="modal-title">Confirmacion de pedido</h5>
+									        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									        	<span aria-hidden="true">&times;</span>
+									        	</button>
+									      	</div>
+									    	<div class="modal-body" >
+									        <p>¿Esta seguro que desea confirmar el pedido?</p>
+									        <label for="stimated_time">Tiempo estimado de llegada (min)</label>
+							
+											<input type="text" id="stimated_time_{{$venta->id}}" class="form-control" name="stimated_time" placeholder="Ejm: 30:00" pattern="^[0-9]{2}:[0-9]{2}$" required>
+									      	</div>
+									    	<div class="modal-footer">
+									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+									        	<button type="submit" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}})">Si</button>
+									      	</div>
+									
+									    </div>
+									  </div>
+									</div>
+
+									<!-- Modal -->
+									<div class="modal fade" id="modalDetails-{{$venta->id}}" tabindex="-1" role="dialog" aria-labelledby="modalDetailsLabel" aria-hidden="true">
+										<div class="modal-dialog" role="document">
+										  <div class="modal-content">
+											<div class="modal-header">
+											  <h5 class="modal-title" id="modalDetailsLabel">Informacion de pago</h5>
+											  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											  </button>
+											</div>
+											<div class="modal-body">
+												@if($venta->attached_file)
+												<div id="captura-{{$venta->id}}">
+													<h6 class="font-weight-bold">Captura</h6>
+													
+													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
+													
+												</div>
+												@endif
+												@if($venta->payment_reference_code)
+												<div id="referencia-{{$venta->id}}">
+													<h6 class="font-weight-bold">Referencia</h6>
+													<p>{{$venta->payment_reference_code}}</p>
+												</div>
+												@endif
+												@if(!$venta->attached_file && !$venta->payment_reference_code)
+												<div id="dolares-{{$venta->id}}">
+													<h6 class="font-weight-bold">Pagara en dolares en efectivo</h6>
+												</div>
+												@endif
+											</div>
+											<div class="modal-footer">
+											  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+											</div>
+										  </div>
+										</div>
+									</div>
+								@empty
+
+									<tr>
+										<td colspan="6">No hay datos para mostrar.</td>
+									</tr>
+
+								@endforelse
 							</tbody>
 						</table>
 					</div>
@@ -93,150 +129,46 @@
 </div>
 
 
-
-{{-- Modal ver info de producto marcdo --}}
-<!-- Modal -->
-<div class="modal fade" id="tarifaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Tarifas por sectores</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form action="/travel_rates" method="post">
-				@csrf
-
-				<div class="modal-body">
-
-					<div class="row mb-3">
-						<div class="col-12 mb-3 col-lg-6">
-							<label for="estado">Selecciona un estado</label>
-							<select data-live-search="true" id="estado" class="form-control border selectpicker" required>
-								<option disabled selected>Selecciona un estado</option>
-								@foreach ($estados as $estado)
-									<option value="{{ $estado->id }}">{{ $estado->state }}</option>
-								@endforeach
-							</select>
-						</div>
-						<div class="col-12 col-lg-6 mb-3">
-							<label for="ciudad">Selecciona una ciudad</label>
-							<select disabled id="city" class="border rounded-lg custom-select" required>
-								<option disabled selected>Selecciona una ciudad</option>
-							</select>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-12 col-lg-6 mb-3">
-							<label for="sector">Selecciona un Sector</label>
-							<select disabled name="sector" id="sector" class="rounded-lg border custom-select" required>
-								<option disabled selected>Selecciona un sector</option>
-							</select>
-						</div>
-						<div class="col-12 col-lg-6 mb-3">
-							<label for="tarifa">Tarifa (Bs)</label>
-							<input type="text" id="tarifa" class="form-control" name="tarifa" required>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-12 col-lg-6 mb-3">
-							<label for="stimated_time">Tiempo estimado de llegada (min)</label>
-							<input type="text" id="stimated_time" class="form-control" name="stimated_time" placeholder="Ejm: 30:00" pattern="^[0-9]{2}:[0-9]{2}$" required>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-					<button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Guardar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-
-<div class="modal fade" id="tarifaModalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Tarifas por sectores</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form id="editForm" method="post">
-				@method('put')
-				@csrf
-
-				<input type="hidden" name="sector" id="sectoredithd">
-
-				<div class="modal-body">
-
-					<div class="row">
-						<div class="col-12 col-lg-6 mb-3">
-							<label for="sector">Selecciona un Sector</label>
-							<input type="text" class="form-control" disabled  id="sectoredit" required>
-						</div>
-						<div class="col-12 col-lg-6">
-							<label for="tarifa">Tarifa (Bs)</label>
-							<input type="text" id="tarifaedit" class="form-control" placeholder="Sin separadores decimales" name="tarifa" required>
-						</div>
-
-						<div class="col-12 col-lg-6">
-							<label for="stimated_timeedit">Tiempo estimado de llegada</label>
-							<input type="text" id="stimated_timeedit" class="form-control" name="stimated_timeedit" placeholder="Ejm: 30:00" pattern="^[0-9]{2}:[0-9]{2}$" required>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-					<button type="submit" class="btn btn-primary"><i class="fas fa-save mr-2"></i>Guardar</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="tarifaModalBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Eliminar tarifa seleccionada</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form id="travelFormDel" method="post">
-				@csrf
-				@method('delete')
-				<div class="modal-body">
-
-					<h5 class="text-center my-5">¿Estás seguro de querer borrarla?</h5>
-
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-					<button type="submit" class="btn btn-primary"><i class="fas fa-check mr-2"></i>Sí, lo estoy</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
 @endsection
 
 @push('scripts')
 <script>
+	var ventas = @json($ventas);
+
+	$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+	
+	function openModal(id) {
+
+		$('#modalDetails-'+id).modal('show')
+	}
+
+	$(() => {
+		$('#loading').fadeOut()
+	})
+	//MODAL DE CONFIRMACION Y CONSULTA AJAX DE CONFIRMACION
+	function hideModalCheck(id){
+		console.log($('#stimated_time_'+id).val())
+
+		$.ajax({type: 'PUT', url: `/admin/confirmar-pedido-delivery/${id}`, data: {stimated_time: $('#stimated_time_'+id).val()}})
+			.done((res) => {
+				console.log(res)
+				$('#dispatched-'+id).text(res);
+
+			})
+			.catch((err) => {
+				toastr.error('Ha ocurrido un error')
+				console.error(err.response)
+			})
+
+
+		$('#checkModal-'+id).modal('hide');
+	}
+	
+	/*
 	$(() => {
 
 		$('#loading').fadeOut()
@@ -320,5 +252,6 @@
 		})
 
 	})
+	*/
 </script>
 @endpush

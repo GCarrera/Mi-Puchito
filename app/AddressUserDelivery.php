@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AddressUserDelivery extends Model
 {
-    protected $fillable = ['details', 'travel_rate_id', 'user_id'];
+    protected $fillable = ['details', 'travel_rate_id', 'user_id', 'stimated_time'];
 
     public function travel_rate()
     {

@@ -29,6 +29,8 @@ Route::middleware(['auth'])->group(function(){
 		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias');
 		Route::get('/delivery', 'AdminController@delivery')->name('delivery');
 		Route::resource('/cuentas-bancarias', 'BankAccountController');
+		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
+		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');
 	});
 
 	Route::get('/home', 'CustomerController@index')->name('home');

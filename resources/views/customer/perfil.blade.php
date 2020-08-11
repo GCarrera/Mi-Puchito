@@ -164,6 +164,8 @@
 										<th>PRODUCTOS</th>
 										<th>MONTO (Bs)</th>
 										<th>DELIVERY</th>
+										<th>CONFIRMADO</th>
+										<th>Estimado</th>
 										<th>ACCIONES</th>
 									</thead>
 									<tbody>
@@ -173,6 +175,11 @@
 												<td>{{ count($compra->details) }}</td>
 												<td>{{ $compra->amount }}</td>
 												<td>{{ ucfirst($compra->delivery) }}</td>
+												@if($compra->dispatched)
+												<td>{{$compra->dispatched}}</td>
+												@else
+												<td>No</td>
+												@endif
 												<td>
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
