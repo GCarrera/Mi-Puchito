@@ -41,17 +41,11 @@
 
 			<div class="card mb-4 shadow-sm">
 				<div class="card-body row p-0 text-center">
-					<div class="col-md-3 col-6 p-3">
+					<div class="col-6 p-3">
 						<h4>{{ $pedidosCount }}</h4>Pedidos
 					</div>
-					<div class="col-md-3 col-6 border-left p-3">
+					<div class="col-6 border-left p-3">
 						<h4>{{ $wishlistCount }}</h4>Lista de deseos
-					</div>
-					<div class="col-md-3 col-6 border-left p-3">
-						<h4>12</h4>Awaiting Deliveredvery
-					</div>
-					<div class="col-md-3 col-6 border-left p-3">
-						<h4>29</h4>Delivered items
 					</div>
 				</div>
 			</div>
@@ -160,34 +154,72 @@
 							<div class="table-responsive">
 								<table class="table text-center table-bordered table-sm table-hover">
 									<thead>
-										<th>ID COMPRA</th>
-										<th>PRODUCTOS</th>
+										<th class="d-none d-md-table-cell">ID COMPRA</th>
+										<th class="d-none d-md-table-cell">PRODUCTOS</th>
 										<th>MONTO (Bs)</th>
-										<th>DELIVERY</th>
-										<th>CONFIRMADO</th>
-										<th>Estimado</th>
+										<th class="d-none d-md-table-cell">DELIVERY</th>
+										<th  class="d-none d-md-table-cell">CONFIRMADO</th>
+										<th>Estimado (min)</th>
 										<th>ACCIONES</th>
 									</thead>
 									<tbody>
 										@forelse($pedidos as $compra)
 											<tr>
-												<td>{{ $compra->code }}</td>
-												<td>{{ count($compra->details) }}</td>
+												<td class="d-none d-md-table-cell">{{ $compra->id }}</td>
+												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
 												<td>{{ $compra->amount }}</td>
-												<td>{{ ucfirst($compra->delivery) }}</td>
-												@if($compra->dispatched)
-												<td>{{$compra->dispatched}}</td>
+												<td class="d-none d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
+												@if ($compra->dispatched != null)
+												<td class="d-none d-md-table-cell">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
 												@else
-												<td>No</td>
+												<td class="d-none d-md-table-cell">No</td>
+												@endif
+												@if($compra->stimated_time)
+												<td>{{$compra->stimated_time}}</td>
+												@else
+												<td></td>
 												@endif
 												<td>
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
 													-->
+													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4">más</button>
 													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 
 												</td>
 											</tr>
+
+											<!-- Modal MOVIL INFORMACION DE COMPRAS-->
+											<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+												<div class="modal-dialog">
+											    	<div class="modal-content">
+											    		<div class="modal-header">
+											        		<h5 class="modal-title" id="exampleModalLabel">Informacion de la compra</h5>
+											        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											          			<span aria-hidden="true">&times;</span>
+											        		</button>
+											      		</div>
+											      		<div class="modal-body">
+											      			<ul class="list-group">
+													  			<li class="list-group-item"><span class="font-weight-bold">ID COMPRA: </span>{{ $compra->code }}</li>
+																<li class="list-group-item"><span class="font-weight-bold">PRODUCTOS: </span>{{ $compra->count_product }}</li>
+																<li class="list-group-item"><span class="font-weight-bold">MONTO (Bs): </span>{{ $compra->amount }}</li>
+																<li class="list-group-item"><span class="font-weight-bold">DELIVERY: </span>{{ ucfirst($compra->delivery) }}</li>
+																@if($compra->dispatched != null)
+																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>{{$compra->dispatched}}</li>
+																@else
+																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>No</li>
+																@endif
+																<li class="list-group-item"><span class="font-weight-bold">ESTIMADO: </span>eros</li>
+	
+															</ul>
+												       	</div> 
+											      		<div class="modal-footer">
+											       			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+											      		</div>
+											    	</div>
+											  	</div>
+											</div>
 										@empty
 											<tr>
 												<td colspan="5">No hay información para mostrar.</td>
@@ -196,6 +228,9 @@
 									</tbody>
 								</table>
 							</div>
+						</div>
+
+							
 
 						</div>
 
@@ -349,7 +384,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 @endsection

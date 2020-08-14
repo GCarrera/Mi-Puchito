@@ -1,11 +1,13 @@
 @include('layouts.header')
 
 <!--Navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 	<a class="navbar-brand" href="/">
-		 <img src="/img/logo.jpg" width="35" height="35" class="d-inline-block align-top" alt="">
+		 <img src="/img/pinchitos.png" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
+	<a href="/shoppingcart" class="ml-auto">
 	<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
+	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 
@@ -17,13 +19,13 @@
 		<div class="col-md-6 col-sm-12 col-xs-12">
 			<form action="/" method="GET" class="my-2 my-lg-0">
 				<div class="input-group mb-2">
-					<div class="input-group-prepend">
-						<button class="input-group-text" type="submit">
+					<input name="search" class="form-control SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" aria-describedby="button-addon2">
+					<div class="input-group-append">
+						<button class="btn btn-primary input-group-text" type="submit" id="button-addon2">
 							<i class="fas fa-search"></i>
 						</button>
 					</div>
-					<input name="search" class="form-control mr-sm-2 SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" >
-				</div>			
+				</div>		
 			</form>
 		</div>
 
@@ -89,7 +91,7 @@
 @yield('content')
 
 
-<footer class="text-white section footer-classic context-dark bg-image" style="background: #2d3246;">
+<footer class="section footer-classic context-dark bg-image bg-light">
 	<div class="container">
 		<div class="row row-30 text-center">
 			<div class="col-md-4 col-xl-5 mt-5">
@@ -118,18 +120,18 @@
 			<div class="col-md-4 col-xl-3 mt-5">
 				<h5>Enlaces</h5>
 				<ul class="nav-list">
-					<li><a class="text-white btn" href="{{url('/')}}">Inicio</a></li>
+					<li><a class="btn" href="{{url('/')}}">Inicio</a></li>
 					@auth
-						<li><a class="text-white btn" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
-						<li><a class="text-white btn" href="{{url('shoppingcart')}}">Mi carrito</a></li>
+						<li><a class="btn" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
+						<li><a class="btn" href="{{url('shoppingcart')}}">Mi carrito</a></li>
 
 					@endauth
 					@guest
-						<li><a class="text-white btn" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
-						<li><a class="text-white btn" onclick="buttonPressed('cart')">Mi carrito</a></li>
+						<li><a class="btn" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
+						<li><a class="btn" onclick="buttonPressed('cart')">Mi carrito</a></li>
 						 
-						<li><a class="text-white btn" href="{{url('login')}}">Iniciar sesión</a></li>
-						<li><a class="text-white btn" href="{{url('register')}}">Registrarse</a></li>
+						<li><a class="btn" href="{{url('login')}}">Iniciar sesión</a></li>
+						<li><a class="btn" href="{{url('register')}}">Registrarse</a></li>
 					@endguest
 				</ul>
 			</div>

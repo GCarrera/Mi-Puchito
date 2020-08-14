@@ -20,8 +20,10 @@ class CreateSalesTable extends Migration
             $table->string('amount');
             $table->dateTime('dispatched', 0)->nullable();
             $table->string('payment_reference_code')->nullable();
+            $table->integer('count_product');
             // $table->string('payment_capture');
             $table->string('delivery')->default('No');
+            $table->string('stimated_time')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
 

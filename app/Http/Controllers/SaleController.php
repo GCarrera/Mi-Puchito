@@ -63,6 +63,8 @@ class SaleController extends Controller
 			$sale->payment_type     = $req->input('pay_method');
 			$sale->amount   = $req->input('monto');
 			$sale->payment_reference_code = $req->input('numero_referencia');
+			$sale->dolar_id = $req->dolar;
+			$sale->count_product = count($productos);
 			if ($req->hasFile('fileattached')) {
 				$tiempo = time();
 				$payment_capture = explode('public/', $req->file('fileattached')->storeAs('public/capturas', $tiempo))[1];

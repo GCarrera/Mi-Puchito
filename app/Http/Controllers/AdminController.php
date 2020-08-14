@@ -259,10 +259,7 @@ class AdminController extends Controller
 		$venta = Sale::findOrFail($id);
 
 		$confirmacion = $venta->dispatched = $now;
-
-		$address = AddressUserDelivery::findOrFail($venta->deliveries[0]->address_user_delivery->id);
-		$address->stimated_time = $request->stimated_time;
-		$address->save();
+		$venta->stimated_time = $request->stimated_time;
 		$venta->save();
 		
 

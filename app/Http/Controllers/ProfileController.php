@@ -28,16 +28,12 @@ class ProfileController extends Controller
 		$user     = auth()->user();
 		$sectores = TravelRate::all();
 		$rates    = AddressUserDelivery::where('user_id', $user->id)->get();
-		$pedidos  = Sale::where('user_id', $user->id)->get();
+		$pedidos  = Sale::orderBy('id', 'desc')->where('user_id', $user->id)->get();
 		$detalles = [];
 
 		$pedidosCount  = count($pedidos);
 		$wishlistCount = Wishlist::where('user_id', $user->id)->count();
 
-		foreach ($pedidos as $pedido) {
-			$detalles[] = SaleDetail::where('sale_id', $pedido->id)->get();
-			$pedido->details = $detalles;
-		}
 
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 

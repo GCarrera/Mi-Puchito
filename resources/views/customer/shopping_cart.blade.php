@@ -93,7 +93,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<div class="d-none" data-id="{{ $c->id }}"></div>
 									<div class="d-none sale_type">{{ $c->attributes->sale_type }}</div>
 
-									<div class="col-md-4 col-sm-6 col-12">
+									<div class="col-md-4 col-sm-6 col-12 order-1">
 										
 										@if( $c->attributes->sale_type == 'al-mayor' )
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
@@ -111,9 +111,16 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												@endif
 											</p>
 										</div>
+
+										<button class="btn btn-danger eliminar d-sm-none" onclick="delete_item({{$c->id}})" style="position: absolute; top: 4px; right: 4px;">
+												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
+										</button>
 									</div>
 
-									<div class="col-md-2 col-sm-6 col-xs-6 col-12 padrecantidad">
+									<div class="col-md-2 col-sm-6 col-xs-6 col-12 order-2 padrecantidad">
+										<button class="btn btn-danger eliminar d-none d-sm-block d-md-none" onclick="delete_item({{$c->id}})" style="position: relative; top: 4px; left: 84%;">
+												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
+											</button>
 										<p class="text-muted small text-center">CANTIDAD</p>
 										<div class="input-group mb-3 padre">
 											<div class="input-group-prepend">
@@ -126,7 +133,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										</div>
 									</div>
 									
-									<div class="col-md-3 col-sm-6 col-12 padreprecio">
+									<div class="col-md-3 col-sm-6 col-12 order-3 padreprecio">
 										<p class="text-muted small text-center">PRECIO Bs</p>
 										<p class="small text-center">
 											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
@@ -159,9 +166,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										@endif
 									</div>
 									
-									<div class="col-md-2 col-sm-5 col-12">
-										<p class="text-muted small">DESCRIPCIÓN</p>
-										<span class="font-weight-normal precio">{{ $c->model->inventory->description }}</span>
+									<div class="col-md-2 col-sm-5 col-12 order-4">
+										<p class="text-muted small text-center">DESCRIPCIÓN</p>
+										<p class="font-weight-normal precio text-center">{{ $c->model->inventory->description }}</p>
 										<br>
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
@@ -169,10 +176,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-1 col-sm-1 col-12">
+									<div class="col-md-1 col-sm-1 col-12 order-0 order-sm-5 d-none d-md-block">
 										<div class="w-100 text-center">
-											<button class="btn btn-danger eliminar" onclick="delete_item({{$c->id}})">
-												<i class="fas fa-trash" style="font-size: 0.9em;"></i>
+											<button class="btn btn-danger eliminar" onclick="delete_item({{$c->id}})" style="position: absolute; top: 4px; right: 4px;">
+												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
 											</button>
 										</div>
 									</div>
@@ -199,7 +206,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</button>
 					@endif
 					<a href="/home" class="btn btn-primary">
-						<i class="fas fa-cart-plus mr-2"></i>Agregar más productos
+						<i class="fas fa-cart-plus mr-2"></i>Agregar más
 					</a>
 				</div>
 			</div>
@@ -275,7 +282,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 					<form action="/sale" method="post" enctype="multipart/form-data">
 						@csrf
-
+						<input type="hidden" name="dolar" value="{{$dolar->id}}">
 						<input type="hidden" name="monto" id="monto">
 						<input type="hidden" name="user_address_delivery" id="user_address_delivery">
 						<input type="hidden" name="numero_referencia" id="numero_referencia">

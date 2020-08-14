@@ -354,6 +354,8 @@
 			if (res > 0) {
 				$('#cart_counter').removeClass('d-none')
 				$('#cart_counter').text(res)
+				$('#cart_counter-2').removeClass('d-none')
+				$('#cart_counter-2').text(res)
 			}
 
 			$('#page_loader').fadeOut()

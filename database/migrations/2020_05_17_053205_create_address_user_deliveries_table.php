@@ -18,7 +18,6 @@ class CreateAddressUserDeliveriesTable extends Migration
             $table->string('details');
             $table->unsignedInteger('travel_rate_id')->nullable();
             $table->unsignedInteger('user_id');
-            $table->string('stimated_time')->nullable();
             $table->timestamps();
 
             $table->foreign('travel_rate_id')->references('id')->on('travel_rates');

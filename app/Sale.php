@@ -28,4 +28,9 @@ class Sale extends Model
     {
         return $this->hasMany('App\SaleDetail', 'sale_id', 'id');
     }
+
+    public function dolar()
+    {
+        return $this->belongsTo('App\Dolar');
+    }
 }

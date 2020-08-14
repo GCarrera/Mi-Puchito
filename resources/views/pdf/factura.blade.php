@@ -17,61 +17,32 @@
 
        
                     <!--HEADER DE LA FACTURA-->
-                        <div class="float-left" style="max-width: 40%;">
-                            <span class="font-weight-bold">Mi puchitos</span>
-                            <br>
-                            <span class="font-weight-bold">Dirección:</span> Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.
-                            <br>
-                            <span class="font-weight-bold">Teléfonos:</span> 0414 265-2565
-                            <br>
-                            <span class="font-weight-bold">Pagina web:</span> https://www.mipuchito.com/
-                            <br>
-                        </div>
-                    
-                      
-                        <img src="../public/img/pinchitos.png" width="150" alt="logo-mi-puchito" style="margin-left:15px;">
-                        
-                        
-                        <table class="table-striped float-right" style="width: 25%;">
-
-                            <tr>
-                                <th>Pedido numero</th>
-                            </tr>
-                            <tr>
-                                <td>{{$pedido->code}}</td>
-                            </tr>
-
-                            <tr>
-                                <th>Fecha</th>
-                            </tr>
-                            <tr>
-                                <td> {{$pedido->created_at}}</td>
-                            </tr>
-                                
-                        </table>          
-                    <br>
-                    <!--DATOS DEL CLIENTE-->
-                    <div class="" style="margin-top: 50px;">
-                        <p class="font-weight-bold text-center">Datos del cliente:</p>
-
-                        <p><span class="font-weight-bold">Nombre:</span> {{$pedido->user->people->name}}</p>
-                        @if(isset($pedido->user->people->lastname))
-                        <p><span class="font-weight-bold">Apellido:</span> {{$pedido->user->people->lastname}}</p>
-                        @endif
-                        <p><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</p>
-                        @if(isset($pedido->user->people->phone_number))
-                        <p><span class="font-weight-bold">Telefono:</span> {{$pedido->user->people->phone_number}}</p>
-                        @endif
+                    <div class="" style="height: 120px; position: absolute; left: 10px; top: 0px;" >
+                        <img src="../public/img/pinchitos.png" width="150" alt="logo-mi-puchito" >
                     </div>
 
+                        <div class="text-center" style="width: 100%;">
+                            <span class="font-weight-bold">Comercial Mi puchito</span>
+                            <br>
+                            <span class="font-weight-bold">RIF J-30674696-0</span>
+                            <br>
+                            <span>Calle sabana larga cruce entre mariño y rondon.</span>
+                            <br>
+                            <span><span class="font-weight-bold">Teléfonos empresarial:</span> 0424-3622054</span>
+                            <br>
+                            
+                        </div> 
+
+
                     <!--TABLA DE PRODUCTOS-->
-                    <p class="font-weight-bold text-center">Factura:</p>
-                    <table class="table table-striped table-bordered">
-                        <thead class="thead-dark">
+    
+                    <table class="table table-striped table-bordered mt-5">
+                        <thead class="bg-info text-white">
                             <tr>
                                 <th>Cantidad</th>
-                                <th>Producto</th>
-                                <th>Precio Bs</th>
+                                <th>Descripcion</th>
+                                <th>Precio unitario</th>
+                                <th>Precio</th>
                                 <th>iva</th>
                             </tr>
                         </thead>
@@ -80,29 +51,29 @@
                             <tr>
                                 <td>{{$producto->quantity}}</td>
                                 <td>{{$producto->product->inventory->product_name}}</td>
+                                <td>{{$producto->product->retail_total_price - $producto->product->retail_iva_amount}}</td>
                                 <td>{{number_format((($producto->product->retail_total_price - $producto->product->retail_iva_amount) * $producto->quantity), 2, ',', '.') }}</td>
                                 <td>{{number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</td>
                             </tr>
                             @endforeach
 
                         </tbody>
-                        <tfoot class="bordered">
-                            <tr>
-                                <td colspan="3" class="text-right">Subtotal:</td>
-                                <td>{{number_format($subtotal, 2, ',', '.') }} Bs.</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="text-right">IVA:</td>
-                                <td>{{number_format($iva, 2, ',', '.') }} Bs.</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="text-right">Total:</td>
-                                <td>{{$pedido->amount}} Bs.</td>
-                            </tr>
-                        </tfoot>
                     </table>
+                    <div class="float-left text-center" style="width: 70%;">
+                        
+                        <span class="font-weight-bold" style="font-size: 1.5em;">Gracias por su compra siganos en instragram @Mipuchito.Ca</span>
+
+                    </div>
+                    <p class="text-right"><span class="mr-5 font-weight-bold">Subtotal:</span><span>{{number_format($subtotal, 2, ',', '.') }} Bs.<span></p>
+                    <p class="text-right"><span class="mr-5 font-weight-bold">IVA:</span><span>{{number_format($iva, 2, ',', '.') }} Bs.<span></p>
+                    <p class="text-right"><span class="mr-5 font-weight-bold">Total a pagar:</span><span>{{number_format($pedido->amount, 2, ',', '.')}} Bs.<span></p>
+                    <p class="text-right"><span class="mr-5 font-weight-bold">Total dolares:</span><span> {{number_format($pedido->dolar->price, 2, ',', '.')}}$.<span></p>
               
-            
+                    <span><span class="font-weight-bold">Fecha:</span> {{$pedido->created_at}}</span>
+                    <span><span class="font-weight-bold">N°Factura:</span> {{$pedido->code}}</span>
+                    <br>
+                    <span><span class="font-weight-bold">Cliente:</span> {{$pedido->user->people->name}}</span>
+                    <span><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</span>
       
     </body>
 </html>

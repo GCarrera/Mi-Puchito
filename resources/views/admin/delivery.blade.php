@@ -64,7 +64,8 @@
 									        <p>¿Esta seguro que desea confirmar el pedido?</p>
 									        <label for="stimated_time">Tiempo estimado de llegada (min)</label>
 							
-											<input type="text" id="stimated_time_{{$venta->id}}" class="form-control" name="stimated_time" placeholder="Ejm: 30:00" pattern="^[0-9]{2}:[0-9]{2}$" required>
+											<input type="text" id="stimated_time_{{$venta->id}}" class="form-control" name="stimated_time" placeholder="Ejm: 30" pattern="^[0-9]{2}:[0-9]{2}$" required>
+											<i class="font-weight-bold">Minutos</i>
 									      	</div>
 									    	<div class="modal-footer">
 									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
