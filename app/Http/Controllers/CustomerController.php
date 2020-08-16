@@ -14,13 +14,14 @@ class CustomerController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('customer')->except('index');
+		$this->middleware('customer')->except(['index', 'categoria']);
 		// $this->middleware('customer')->except('al-mayor');
-		$this->middleware('auth')->except('index');
+		$this->middleware('auth')->except(['index', 'categoria']);
 	}
 
 	public function index(Request $request)
-	{
+	{	
+		
 		if (auth()->check() && auth()->user()->type == 'admin') {
 			return redirect('admin');
 		} else {
@@ -32,14 +33,7 @@ class CustomerController extends Controller
 			->with(['inventory' => function($inventory) use($request, $search) {
 				$inventory->with(['product' => function($product) {
 					if ($product != NULL) {
-						$product->select(
-							'inventory_id', 
-							'image', 
-							'retail_total_price', 
-							'retail_iva_amount',
-							'wholesale_total_individual_price', 
-							'iva_percent'
-						);
+					
 					}
 				}]);
 				if ($request->enterprise) {
@@ -72,17 +66,30 @@ class CustomerController extends Controller
 			}
 			
 			$data = $data->get();
+			//SI EL USUARIO ESTA AUTENTICADO NADA MAS
+			if (auth()->check()) {
+				$user = auth()->user();
+				// \Cart::session($userId)->clear();
+				$carrito   = \Cart::session($user->id)->getContent();
 
-			$al_mayor = false;
+				return view('customer.index')
+					->with('data', $data)
+					->with('categories', $categories)
+					->with('empresas', $empresas)
+					->with('carrito', $carrito);	
+			}else{
 
-			// return $data;
 
+			//return $data[0]->inventory[0]->product->wholesale_iva_amount;
+			
 			return view('customer.index')
 					->with('data', $data)
 					->with('categories', $categories)
-					->with('al_mayor', $al_mayor)
-					->with('empresas', $empresas);
+					->with('empresas', $empresas);	
+			}
+			
 		}
+		
 	}
 
 	public function al_mayor()
@@ -129,20 +136,24 @@ class CustomerController extends Controller
 		$empresas   = Enterprise::all();
 
 		$products   = Product::all();
-		$data = [];
+	
 
-		$cate_name = Category::select('name')->findOrFail($category);
+		$data = Category::with(['inventory' =>  function($inventory){
+			//STATUS 1 ESPECIFICO QUE ESTE HABILITADO PARA LA VENTA
+			$inventory->where('status', 1)->with('product');
+		}])->findOrFail($category);
 
-		foreach ($products as $key => $value) {
-			if ($value->inventory->category_id == $category) {
-				$data[] = $value;
-			}
+		//SI EL USUARIO ESTA AUTENTICADO NADA MAS
+		if (auth()->check()) {
+			$user = auth()->user();
+			// \Cart::session($userId)->clear();
+			$carrito   = \Cart::session($user->id)->getContent();
+
+			return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito'));
+		}else{
+
+		//return $data;
+			return view('customer.category_product', compact('data','categorias', 'empresas'));
 		}
-
-		return view('customer.category_product')
-				->with('data', $data)
-				->with('cat', $cate_name->name)
-				->with('categorias', $categorias)
-				->with('empresas', $empresas);
 	}
 }

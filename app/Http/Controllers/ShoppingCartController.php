@@ -11,6 +11,7 @@ use App\City;
 use App\Sector;
 use App\State;
 use App\Dolar;
+use App\Wishlist;
 
 class ShoppingCartController extends Controller
 {
@@ -78,17 +79,31 @@ class ShoppingCartController extends Controller
 		
 		$userId   = auth()->user()->id;
 
+		$data = \Cart::session($userId)->getContent();
 
-		$data     = \Cart::session($userId)->get($id);
+		//return $data;
 
+		foreach ($data as $value) {
+			//SI EL PRODUCTO YA ESTA REGISTRADO EN EL CARRO Y TIENE EL MISMO TIPO DE COMPRA QUE SI AL MAYOR O AL MENOR
+			if ($value->associatedModel->id == $producto->id && $value->attributes->sale_type == $request->input('type')) {
+				# code...
+				return 'rejected';
+			}
+					
+					
+		}
+
+		/*
 		if (isset($data)) {
 			if ($data->attributes->sale_type != $request->input('type')) {
 				return 'rejected';
 			}
 		}
+		*/		
 
 		\Cart::session($userId)->add([
-			'id'         => $producto->id,
+			'id' => $data->count() + 1,
+			'product_id' => $producto->id,
 			'name'       => $producto->inventory->product_name,
 			'price'      => $price,
 			'quantity'   => $quantity,
@@ -107,28 +122,33 @@ class ShoppingCartController extends Controller
     		'associatedModel' => $producto
 		]);
 
-		return \Cart::session($userId)->getTotalQuantity();
+		return count(\Cart::session($userId)->getContent());
 	}
 
 	public function update(Request $request, $rowId)
 	{
 		$userId = auth()->user()->id;
 
-		\Cart::session($userId)->update($rowId, [
-			'quantity' => [
-				'relative' => false,
-				'value'    => $request->input('quantity')
-			],
-		]);
+		$carrito = \Cart::session($userId)->get($rowId);
+	
 
-		return \Cart::session($userId)->getTotalQuantity();
+		\Cart::session($userId)->update($rowId, [
+			'quantity' => -($carrito->quantity - 1)
+		]);
+		
+		\Cart::session($userId)->update($rowId, [
+			'quantity' => ($request->quantity -1)
+		]);
+		
+
+		return \Cart::session($userId)->getContent();
 	}
 
 	public function get_shoppingcart()
 	{
 		$userId = auth()->user()->id;
 
-		return \Cart::session($userId)->getTotalQuantity();
+		return count(\Cart::session($userId)->getContent());
 	}
 
 
@@ -164,6 +184,11 @@ class ShoppingCartController extends Controller
 	public function prueba(Request $request)
 	{	
 		
-		return dd($request->filePrueba);
+		$user_id  = auth()->user()->id;
+        $products = Wishlist::with('product.inventory')->where('user_id', $user_id)->get();
+
+        // dd($products);
+
+    	return \Cart::session($user_id)->getTotal();
 	}
 }

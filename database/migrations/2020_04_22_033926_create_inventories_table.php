@@ -19,6 +19,7 @@ class CreateInventoriesTable extends Migration
             $table->string('description');
             $table->string('quantity');
             $table->string('unit_type');
+            $table->string('unit_type_menor')->nullable();
             $table->string('qty_per_unit');
             // $table->string('unit_measure');
             // $table->string('qty_per_unit_measure');

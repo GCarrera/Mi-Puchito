@@ -80,13 +80,14 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 					<ul class="list-group" style="">
 						@forelse ($cart as $c)
+						@if($c->attributes->sale_type != 'al-mayor')
 							@php
 							$subtotal = ($c->price - $c->attributes->retail_iva_amount) * $c->quantity;
 							$iva = $c->attributes->retail_iva_amount * $c->quantity;
 
 							$totalSinIva += $subtotal;
 							@endphp
-
+						@endif
 							<li class="list-group-item itempadre">
 								<div class="row filapadre">
 
@@ -99,7 +100,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
 										@else
 											<p class="text-muted small">PRODUCTO AL MENOR</p>
+											
 										@endif
+							
 
 										<div class="d-flex justify-content-start">
 											<img src="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
@@ -107,7 +110,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<span class="font-weight-bold">{{ $c->name }}</span><br>
 
 												@if( $c->attributes->sale_type == 'al-mayor' )
-													<span>1 {{ $c->model->inventory->unit_type }} de {{ $c->model->inventory->qty_per_unit }} productos</span>
+													<span>1 {{ $c->associatedModel->inventory->unit_type }} de {{ $c->associatedModel->inventory->qty_per_unit }} productos</span>
 												@endif
 											</p>
 										</div>
@@ -126,7 +129,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<div class="input-group-prepend">
 												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
-											<input type="text" onkeypress="soloNumeros(event)" class="form-control sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1">
+											<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1" data-carrito="{{$c->id}}">
 											<div class="input-group-append">
 												<button class="btn btn-primary btn-sm" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
 											</div>
@@ -135,17 +138,32 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									
 									<div class="col-md-3 col-sm-6 col-12 order-3 padreprecio">
 										<p class="text-muted small text-center">PRECIO Bs</p>
+
+										@if($c->attributes->sale_type == 'al-mayor')
+										@php
+										$ivaprimero = $c->attributes->wholesale_iva_amount * $c->associatedModel->inventory->qty_per_unit;
+										$subtotal = $c->attributes->wholesale_packet_price;
+										$iva = $ivaprimero * $c->quantity;
+
+										$totalSinIva += $subtotal;
+										@endphp
 										<p class="small text-center">
 											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 											<br>
 											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
 										</p>
-
+										@else
+										<p class="small text-center">
+											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+											<br>
+											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
+										</p>
+										@endif
 										@if($c->attributes->sale_type == 'al-mayor')
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
-											<span class="text-muted small">
-												<span class="preciopvp">{{ number_format($c->attributes->wholesale_total_packet_price, 2, ',', '.') }}</span> c/u
-											</span>
+											<P class="text-muted small text-center">
+												<span class="preciopvp">{{ number_format(($c->attributes->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> c/u
+											</P>
 											<br>
 											{{--<span class="text-muted small">
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{  number_format($c->attributes->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
@@ -168,7 +186,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									
 									<div class="col-md-2 col-sm-5 col-12 order-4">
 										<p class="text-muted small text-center">DESCRIPCIÓN</p>
-										<p class="font-weight-normal precio text-center">{{ $c->model->inventory->description }}</p>
+										<p class="font-weight-normal precio text-center">{{ $c->associatedModel->inventory->description }}</p>
 										<br>
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
@@ -360,13 +378,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<div class="col">
 								<label for="pay_method">Selecciona el método de pago</label>
 								<div class="form-check">
-									<label for="" class="form-check-label">
+									<label class="form-check-label">
 										<input id="pay_method" type="radio" onclick="openModanPayMethod()" class="form-check-input" name="pay_method" value="2">Tranferencias bancarias ó pago movil
 									</label>
 								</div>
 
 								<div class="form-check">
-									<label for="" class="form-check-label">
+									<label class="form-check-label">
 										<input id="pay_method-2" type="radio" class="form-check-input" name="pay_method" value="1">Dolares (efectivo)
 									</label>
 								</div>
@@ -683,8 +701,23 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		}
 		myCart[id].quantity = parseInt(myCart[id].quantity) - 1;
 		$('.sinflechas-'+id).val(myCart[id].quantity)
-		subtotal_item(id)
-		subtotal()
+
+		let data = {"quantity": $('.sinflechas-'+id).val()}
+
+		
+		$.ajax({
+		    type: 'PUT',
+		    url: '/shoppingcart/'+ id,
+		    data: data, // access in body
+		}).done(function (response) {
+
+		    console.log(response);
+		    subtotal_item(id)
+			subtotal()
+		}).fail(function (e) {
+
+		    console.log(e);
+		});
 	}
 
 	function delete_item(id) {
@@ -700,9 +733,49 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		}
 		$('.sinflechas-'+id).val(myCart[id].quantity)
-		subtotal_item(id)
-		subtotal()
+
+		let data = {"quantity": $('.sinflechas-'+id).val()}
+
+		
+		$.ajax({
+		    type: 'PUT',
+		    url: '/shoppingcart/'+ id,
+		    data: data, // access in body
+		}).done(function (response) {
+
+		    console.log(response);
+		    subtotal_item(id)
+			subtotal()
+		}).fail(function (e) {
+
+		    console.log(e);
+		});
+		
+		
 	}
+	//CHANGE PARA EL INPUT DE LAS CANTIDADES
+	$('.input-cantidad').change(function(e){
+
+		let id = e.target.attributes[5].value
+		let data = {"quantity": e.target.value}
+
+		
+		$.ajax({
+		    type: 'PUT',
+		    url: '/shoppingcart/'+ id,
+		    data: data, // access in body
+		}).done(function (response) {
+
+		    console.log(response);
+		    subtotal_item(id)
+			subtotal()
+		}).fail(function (e) {
+
+		    console.log(e);
+		});
+		
+	});
+
 
 	function subtotal_item(id) {
 		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].attributes.retail_iva_amount), typeof myCart[id].quantity)
@@ -719,11 +792,25 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		let total = 0
 		// console.log(myCart)
 		for (let cart in myCart) {
+			if (myCart[cart].attributes.sale_type == "al-mayor") {
+
+				subtotal += (myCart[cart].price * parseInt(myCart[cart].quantity))
+
+				iva += parseInt((myCart[cart].attributes.wholesale_iva_amount * myCart[cart].associatedModel.inventory.qty_per_unit) * myCart[cart].quantity)
+
+				total += (myCart[cart].price + parseInt((myCart[cart].attributes.wholesale_iva_amount * myCart[cart].associatedModel.inventory.qty_per_unit))) * myCart[cart].quantity
+
+			}else if(myCart[cart].attributes.sale_type == "al-menor"){
+
 			total += myCart[cart].price * myCart[cart].quantity
 			// console.log(myCart[cart].price, myCart[cart].quantity, parseInt(myCart[cart].attributes.retail_iva_amount))
 			subtotal += (myCart[cart].price * parseInt(myCart[cart].quantity)) - (parseInt(myCart[cart].attributes.retail_iva_amount) * parseInt(myCart[cart].quantity))
 			// console.log("subtotal: ", subtotal)
 			iva += parseInt(myCart[cart].attributes.retail_iva_amount * myCart[cart].quantity)
+			}
+
+
+			
 		}
 		console.log("total: ", subtotal)
 		console.log("total: ", total)
@@ -1187,17 +1274,51 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		
 		$('#pay_method-2').click(function() {
 			$('#enviarPago').attr('disabled', false);
+			$('.detallesescondidos2').addClass('d-none')//OCULTAMOS LA INFORMACION DE LA DIRECCION
+			$('#referencia').val("")//VACIAMOS EL CAMPO DE REFERENCIA
+			$('#numero_referencia').val("")//VACIAMOS EL CAMPO NUMERO DE REFERENCIA QUE ES EL QUE ESTA EN EL FORM
+			//VACIOS EL IMPUT FILE
+			$('#imgerror').text('')
+			$('#fileattached').val('')
+			$('#foto').hide()
+			$('#image_name').text('')
+			$('#image_weigth').text('')
+			$('#clearbtn').hide()
 		})
 		
 
 		$('#listo2').click(() => {
+			//SI NO HAY CAPTURA Y SI HAY REFERENCIA
+			if ($('#fileattached').val() == "" && $('#referencia').val() != "") {
+				
+				$('.detallesescondidos2').removeClass('d-none')
+				$('#numero_referencia').val($('#referencia').val())
+				$('#nooperacion').text($('#referencia').val())
+				$('#enviarPago').removeAttr('disabled')
+				
+			}
+			//SI NO HAY REFERENCIA Y HAY CAPTURA
+			if ($('#referencia').val() == "" && $('#fileattached').val() != "") {
+				
+				
+				$('.detallesescondidos2').addClass('d-none')
+				$('#enviarPago').removeAttr('disabled')
+				
+			}
+			//SI HAY REFERENCIA Y CAPTURA
+			if ($('#referencia').val() != "" && $('#fileattached').val() != "") {
+				$('#nooperacion').text($('#referencia').val())
+				$('#enviarPago').removeAttr('disabled')
+
+			}
+			//SI NO HAY REFERENCIA Y NO HAY CAPTURA
+			if ($('#referencia').val() == "" && $('#fileattached').val() == "") {
+
+				$('.detallesescondidos2').addClass('d-none')
+			}
 			
-			// ASEGURARME QUE LOS CAMPOS DE LA REFERENCIA E IMAGEN ESTEN VALIDADPS
-			$('#nooperacion').text($('#referencia').val())
-			$('#numero_referencia').val($('#referencia').val())
 			$('#monto').val($('#montoTotal').text())
-			$('.detallesescondidos2').removeClass('d-none')
-			$('#enviarPago').removeAttr('disabled')
+			
 		})
 
 		// $('#customFile').change(function(e) {

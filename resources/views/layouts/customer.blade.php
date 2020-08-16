@@ -94,7 +94,7 @@
 <footer class="section footer-classic context-dark bg-image bg-light">
 	<div class="container">
 		<div class="row row-30 text-center">
-			<div class="col-md-4 col-xl-5 mt-5">
+			<div class="col-md-4 col-xl-4 mt-5">
 				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="img/logo.jpg" alt="Mi puchito's" srcset="img/logo.jpg 2x"></a>
 					<p>Prometheus es una tienda virtual, dedicada a la venta de todo tipo de productos.</p>
 					<!-- Rights-->
@@ -109,15 +109,15 @@
 				</dl>
 				<dl class="contact-list">
 					<dt>Email:</dt>
-					<dd><a href="mailto:promemtheus@gmail.com">promemtheus@gmail.com</a></dd>
+					<dd>promemtheus@gmail.com</dd>
 				</dl>
 				<dl class="contact-list">
-					<dt>Teléfonos:</dt>
-					<dd><a href="tel:04125555555">0412-555-5555</a> <span>ó</span> <a href="tel:04145555555">0414-555-5555</a>
+					<dt>whatsapp empresarial:</dt>
+					<dd>+58 424-3622054
 					</dd>
 				</dl>
 			</div>
-			<div class="col-md-4 col-xl-3 mt-5">
+			<div class="col-md-4 col-xl-4 mt-5">
 				<h5>Enlaces</h5>
 				<ul class="nav-list">
 					<li><a class="btn" href="{{url('/')}}">Inicio</a></li>
@@ -138,24 +138,19 @@
 		</div>
 	</div>
     <div class="row no-gutters social-container">
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" href="#">
+		<div class="col-4 text-center mb-3">
+			<a class="social-inner" target="_blank" href="https://www.facebook.com/mipuchitoca-113161223702409/">
 				<i class="fab fa-3x text-center fa-facebook"></i>
 			</a>
 		</div>
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" href="#">
+		<div class="col-4 text-center mb-3">
+			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
 				<i class="fab fa-3x fa-instagram"></i>
 			</a>
 		</div>
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" href="#">
+		<div class="col-4 text-center mb-3">
+			<a class="social-inner" target="_blank" href="https://twitter.com/MipuchitoCa">
 				<i class="fab fa-3x fa-twitter"></i>
-			</a>
-		</div>
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" href="#">
-				<i class="fab fa-3x fa-google" aria-hidden="true"></i>
 			</a>
 		</div>
     </div>

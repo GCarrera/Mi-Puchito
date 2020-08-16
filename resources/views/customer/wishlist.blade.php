@@ -34,32 +34,51 @@
 					<ul class="list-group">
 						
 						@forelse ($products as $producto)
+						<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+						@php
+						if (isset($carrito)) {
+							foreach ($carrito as $item) {
+								if ($item->attributes->sale_type == "al-menor") {
+									# code...
+									$respuesta1 = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+								}	
+												
+							}
+							foreach ($carrito as $item) {
+								if ($item->attributes->sale_type == "al-mayor") {
+									# code...
+									$respuesta2 = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+								}	
+												
+							}
+						}
+						@endphp
 							<li class="list-group-item itempadre">
-								<div class="row">
+								<div class="row text-center">
 
 									<div class="col-md-4 col-sm-6 col-12">
-										<p class="text-muted small">PRODUCTO</p>
-										<div class="d-flex justify-content-start">
-											<img src="/storage/{{ $producto->inventory->product->image }}" style="height: 70px;" class="mr-2">
-											<p>
-												<small class="font-weight-bold">{{ $producto->inventory->product_name }}</small><br>
-												<small>{{ $producto->inventory->description }}</small>
+										<p class="text-muted small text-center">PRODUCTO</p>
+										<div class="">
+											<img src="/storage/{{ $producto->product->image }}" style="height: 80px; position: absolute; top: 0px; left: 15px;">
+											<p class="text-center">
+												<small class="font-weight-bold">{{ $producto->product->inventory->product_name }}</small><br>
+												<small>{{ $producto->product->inventory->description }}</small>
 											</p>
 										</div>
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12 padreprecio">
 										<p class="text-muted small">PRECIO MENOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->inventory->product->retail_total_price, 2, ',', '.') }}</span>
+										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span>
 									</div>
-									<div class="col-md-2 col-sm-6 col-12 padreprecio">
+									<div class="col-md-2 col-sm-6 col-12 mt-3 padreprecio">
 										<p class="text-muted small">PRECIO MAYOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->inventory->product->wholesale_total_packet_price, 2, ',', '.') }}</span><br>
+										<span class="font-weight-bold precio">{{ number_format($producto->product->wholesale_total_packet_price, 2, ',', '.') }}</span><br>
 										<span class="text-muted small">
-											<span class="preciopvp">{{ number_format($producto->inventory->product->wholesale_total_individual_price, 2, ',', '.') }}</span> c/u
+											<span class="preciopvp">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }}</span> c/u
 										</span><br>
 										<span class="text-muted small">
-											1 {{ $producto->inventory->unit_type }} de {{ $producto->inventory->qty_per_unit }} productos
+											1 {{ $producto->inventory->unit_type }} de {{ $producto->product->inventory->qty_per_unit }} productos
 										</span>
 									</div>
 
@@ -68,21 +87,60 @@
 										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
 									</div> --}}
 
-									<div class="col-md-4 col-sm-6 col-12 d-flex justify-content-end">
-										<div class="mt-4">
-											<button data-id="{{ $producto->inventory->id }}" data-target="#del_wl_item" data-toggle="modal" class="btn btn-outline-danger mr-2 eliminar">
-												<i class="fas fa-times mr-2"></i>Eliminar
-											</button>
+									<div class="col-md-4 col-sm-6 col-12">
+										<div class="my-4">
+											@if(isset($respuesta1) && $respuesta1 != 0)
 											<button
 												type="button"
-												class="btn btn-primary addCartBtn"
-												data-id="{{ $producto->inventory->id }}"
-												data-producto="{{ $producto->inventory->product_name }}"
-												data-precio="{{ $producto->inventory->product->retail_total_price }}"
+												class="btn btn-success addCartBtn mx-2"
+												data-id="{{ $producto->id }}"
+												data-producto="{{ $producto->product_name }}"
+												data-precio="{{ $producto->product->retail_total_price }}"
+												data-type="al-menor"
+												data-cantidad="1"
+												style="max-width: 40%;">
+												<i class="fas fa-check mr-2"></i><span class="text">al menor agregado</span>
+											</button>
+											@else
+											<button
+												type="button"
+												class="btn btn-primary addCartBtn mx-2"
+												data-id="{{ $producto->id }}"
+												data-producto="{{ $producto->product_name }}"
+												data-precio="{{ $producto->product->retail_total_price }}"
 												data-type="al-menor"
 												data-cantidad="1">
 
-												<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
+												<i class="fas fa-shopping-cart mr-2"></i><span class="text">al menor</span>
+											</button>
+											@endif
+											@if(isset($respuesta2) && $respuesta2 != 0)
+											<button
+												type="button"
+												class="btn btn-success addCartBtn mx-2"
+												data-id="{{ $producto->id }}"
+												data-producto="{{ $producto->product_name }}"
+												data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+												data-type="al-mayor"
+												data-cantidad="1"
+												style="max-width: 40%;">
+												<i class="fas fa-check mr-2"></i><span class="text">al mayor agregado</span>
+											</button>
+											@else
+											<button
+												type="button"
+												class="btn btn-primary addCartBtn mx-2"
+												data-id="{{ $producto->id }}"
+												data-producto="{{ $producto->product_name }}"
+												data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+												data-type="al-mayor"
+												data-cantidad="1">
+
+												<i class="fas fa-shopping-cart mr-2"></i><span class="text">al mayor</span>
+											</button>
+											@endif
+											<button data-id="{{ $producto->id }}" data-target="#del_wl_item" data-toggle="modal" class="btn btn-outline-danger btn-block eliminar mt-3">
+												<i class="fas fa-times mr-2"></i>Eliminar
 											</button>
 										</div>
 									</div>
@@ -166,6 +224,8 @@
 			if (res > 0) {
 				$('#cart_counter').removeClass('d-none')
 				$('#cart_counter').text(res)
+				$('#cart_counter-2').removeClass('d-none')
+				$('#cart_counter-2').text(res)
 			}
 
 			$('#loading').fadeOut()

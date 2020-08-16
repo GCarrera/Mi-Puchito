@@ -26,8 +26,16 @@ class FacturaController extends Controller
     	}
 
     	foreach ($pedido->details as $producto) {
-    		$subtotal += ($producto->product->retail_total_price - $producto->product->retail_iva_amount) * $producto->quantity;
-    		$iva += $producto->product->retail_iva_amount * $producto->quantity;
+            if ($producto->type == "al-mayor") {
+                $subtotal += $producto->product->wholesale_packet_price * $producto->quantity;
+                $iva += ($producto->product->wholesale_iva_amount * $producto->product->inventory->qty_per_unit) * $producto->quantity;
+            }else if($producto->type == "al-menor"){
+
+                $subtotal += ($producto->product->retail_total_price - $producto->product->retail_iva_amount) * $producto->quantity;
+                $iva += $producto->product->retail_iva_amount * $producto->quantity;
+            }
+
+    		
     	}
 
     	$total = $subtotal + $iva;

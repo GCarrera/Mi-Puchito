@@ -54,6 +54,7 @@ class InventoryController extends Controller
         $inventory->quantity       = $req->input('cantidad');
         $inventory->unit_type      = $req->input('tipo_unidad');
         $inventory->qty_per_unit   = $req->input('cant_prod');
+        $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
         // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
         $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
         $inventory->category_id    = $req->input('category');

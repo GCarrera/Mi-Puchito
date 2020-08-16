@@ -153,10 +153,15 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-md-4 col-12 mb-3">
+						<div class="col-md-2 col-12 mb-3">
 							<label for="cantidad">Cantidad</label>
 							<input type="number" min="0" class="form-control" name="cantidad" id="cantidad" required>
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
+						</div>
+						<div class="col-md-2 col-12 mb-3">
+							<label for="tipo_unidad_menor">Unidad al menor</label>
+							<input type="text" class="form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" required>
+							<small class="text-muted text-help">Tipo de unidad en la que se vendera al menor</small>
 						</div>
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
@@ -169,6 +174,7 @@
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
+						
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="number" min="0" class="form-control" name="cant_prod" id="cant_prod" required>

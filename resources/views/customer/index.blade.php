@@ -120,11 +120,24 @@
 						<div class="slickk">
 							@foreach ($d->inventory as $producto)
 							
-								@if( ! $al_mayor )
+							
+								@if(Request::get('buytype') != 'major')
+								<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+								@php
+								if (isset($carrito)) {
+									foreach ($carrito as $item) {
+										if ($item->attributes->sale_type == "al-menor") {
+											# code...
+											$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+										}	
+														
+									}
+								}
+								@endphp
 									
 									<div class="card shadow">
 										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
-										<div class="card-body" id="body-pruducto">
+										<div class="card-body body-producto" id="body-producto">
 											<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
@@ -139,11 +152,12 @@
 											@endif
 
 											@auth
+											
 											<div class="">
 												<div class="row text-center">
 													<div class="col-6">
 														<button 
-															data-id="{{ $producto->id }}" 
+															data-id="{{ $producto->product->id }}" 
 															class="btn btn-block addToWishlist"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
@@ -153,6 +167,23 @@
 														</button>
 														<b>Lista de Deseos</b>
 													</div>
+													@if(isset($respuesta) && $respuesta != 0)
+													<div class="col-6">
+														<button
+															type="button"
+															class="btn btn-block addCartBtn"
+															data-id="{{ $producto->id }}"
+															data-producto="{{ $producto->product_name }}"
+															data-precio="{{ $producto->product->retail_total_price }}"
+															data-type="al-menor"
+															data-cantidad="1"
+														>
+															<i class="fas fa-check" style="color: #28a745;"></i>
+														</button>
+														<b>Producto agregado</b>
+													</div>
+													
+													@else
 													<div class="col-6">
 														<button
 															type="button"
@@ -165,8 +196,9 @@
 														>
 															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
 														</button>
-														<b>Agregar al carrito</b>
+														<b class="texto-carrito">Agregar al carrito</b>
 													</div>
+													@endif
 												</div>
 											</div>
 												
@@ -205,40 +237,82 @@
 									</div>
 
 								@else
+								<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+								@php
+								if (isset($carrito)) {
+									foreach ($carrito as $item) {
+										if ($item->attributes->sale_type == "al-mayor") {
+											# code...
+											$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+										}	
+														
+									}
+								}
+								@endphp
 									<div class="card shadow-sm">
 										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->product->image }}' class="card-img-top">
-										<div class="card-body">
-											<h5 class="card-title font-weight-light">{{ $producto->product_name }}</h5>
+										<div class="card-body text-center body-producto">
+											<h5 class="card-title font-weight-bold">{{ $producto->product_name }}</h5>
 
 											<p>
-												<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->inventory->unit_type) }}<br>
-												<span class="font-weight-bold">Cantidad: </span>{{ $producto->inventory->qty_per_unit }}
+												<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->unit_type) }}<br>
+												<span class="font-weight-bold">Cantidad: </span>{{ $producto->qty_per_unit }} <br>
+												<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} <br>
+												<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->product->wholesale_packet_price - $producto->product->wholesale_iva_amount), 2, ',', '.') }} <br>
+												<span class="font-weight-bold">Iva: </span>{{number_format($producto->product->wholesale_iva_amount, 2, ',', '.')  }} <br>
 											</p>
 
-											<p class="lead font-weight-normal">{{ number_format($producto->wholesale_total_packet_price, 2, ',', '.') }} Bs</p>
+											<p class="lead font-weight-normal">{{ number_format($producto->product->wholesale_total_packet_price, 2, ',', '.') }} Bs</p>
 
 											@auth
-												<button data-id="{{ $producto->id }}" class="btn btn-outline-danger btn-block mb-2 addToWishlist">
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
-												</button>
-												<button
-													type="button"
-													class="btn btn-primary btn-block addCartBtn"
-													data-id="{{ $producto->id }}"
-													data-producto="{{ $producto->product_name }}"
-													data-precio="{{ $producto->wholesale_total_packet_price }}"
-													data-type="al-mayor"
-													data-cantidad="1"
-												>
+											<div class="row text-center">
 
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
-												</button>
+												<div class="col-6">
+													<button data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
+														<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
+														<b class="d-block">Lista de deseos</b>
+													</button>
+												</div>
+												@if(isset($respuesta) && $respuesta != 0)
+													<div class="col-6">
+														<button
+															type="button"
+														class="btn btn-block addCartBtn"
+														data-id="{{ $producto->id }}"
+														data-producto="{{ $producto->product_name }}"
+														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+														data-type="al-mayor"
+														data-cantidad="1"
+														>
+															<i class="fas fa-check" style="color: #28a745;"></i>
+														</button>
+														<b>Producto agregado</b>
+													</div>
+													
+												@else
+												<div class="col-6">
+													<button
+														type="button"
+														class="btn btn-block addCartBtn"
+														data-id="{{ $producto->id }}"
+														data-producto="{{ $producto->product_name }}"
+														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+														data-type="al-mayor"
+														data-cantidad="1"
+													>
+
+														<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
+													</button>
+													<b class="texto-carrito">Agregar al carrito</b>
+												</div>
+												@endif
+											</div>
 											@else
-												<button  class="btn btn-outline-danger btn-block mb-2" disabled>
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos"></i>
+												<button  class="btn btn-block mb-2" disabled>
+													<i class="fa fa-heart" data-toggle="tooltip" data-title= "Agregar a favoritos" style="color: #dc3545;"></i>
 												</button>
-												<button type="button" class="btn btn-primary btn-block" disabled>
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
+												<button type="button" class="btn btn-block" disabled>
+													<i class="fas fa-shopping-cart mr-2"></i><span class="text" style="color: #007bff;">Comprar</span>
 												</button>
 											@endauth
 
@@ -280,7 +354,7 @@
 	}
 
 	function filterCategory(category) {
-		window.location = '?category=' + category
+		window.location = '/categoria/' + category
 	}
 
 	function filterEnterprise(enterprise) {
@@ -399,6 +473,7 @@
 			})
 			.done((res) => {
 				console.log(res)
+				
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				} else {
@@ -410,7 +485,10 @@
 				}
 
 				that.removeAttr('disabled')
-				that.html('<i class="fas fa-shopping-cart mr-2"></i>')
+				that.html('<i class="fas fa-check" style="color: #28a745;"></i>')
+				$('.texto-carrito').text("Producto agregado");
+				
+				
 			})
 			.fail((err) => {
 				toastr.error('Ha ocurrido un error.')
@@ -419,6 +497,7 @@
 		});
 
 		// Para añadir cuando está logueado
+		
 		$('.addToWishlist').click(function(){
 			let producto = $(this).data('id')
 			let that = $(this)
@@ -448,7 +527,7 @@
 				console.log(err)
 			})
 		})
-
+		
 
 		$('#typebtn').click(() => {
 			let tipo_prod = $('#tipo_prod').val()

@@ -189,7 +189,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 
 /*LG*/
 	@media (min-width: 992px) and (max-width: 1200px) {
-		#body-pruducto{
+		.body-producto{
 		padding-left: 0px;
 		padding-right: 0px;
 		}

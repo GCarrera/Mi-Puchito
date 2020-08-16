@@ -115,7 +115,8 @@ class SaleController extends Controller
 			foreach ($productos as $producto) {
 				$saleDetail = new SaleDetail();
 				$saleDetail->quantity   = $producto->quantity;
-				$saleDetail->product_id = $producto->id;
+				$saleDetail->type = $producto->attributes->sale_type;
+				$saleDetail->product_id = $producto->associatedModel->id;
 				$saleDetail->sale_id    = $saleid;
 				$saleDetail->save();
 			}

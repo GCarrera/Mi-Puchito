@@ -16,7 +16,7 @@
 			LocalStorage = window.localStorage;
 			LocalStorage.setItem('buttonPressed', button)
 			console.log(LocalStorage.getItem('buttonPressed'))
-			window.location = 'login'
+			window.location = '/login'
 		}
 		
 		function soloNumeros(e){

@@ -35,7 +35,7 @@ Route::middleware(['auth'])->group(function(){
 
 	Route::get('/home', 'CustomerController@index')->name('home');
 	Route::get('/ventas-al-mayor', 'CustomerController@al_mayor');
-	Route::get('/categoria/{categoria}', 'CustomerController@categoria');
+	
 	Route::get('/city/{state_id}', 'ShoppingCartController@getCity');
 	Route::get('/sector/{city_id}', 'ShoppingCartController@getSector');
 	Route::resource('shoppingcart', 'ShoppingCartController');
@@ -70,10 +70,11 @@ Route::middleware(['auth'])->group(function(){
 	//PDF FACTURA
 	Route::get('/get-pedido/{id}', 'FacturaController@get_pedido')->name('factura.pdf');
 });
+Route::get('/categoria/{categoria}', 'CustomerController@categoria');
 
 Route::get('/traer_productos', 'AdminController@traer_productos');
 
-Route::post('/prueba', 'ShoppingCartController@prueba');
+Route::get('/prueba', 'ShoppingCartController@prueba');
 
 Route::get('/formulario', function(){
 

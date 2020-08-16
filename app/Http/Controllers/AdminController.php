@@ -243,10 +243,10 @@ class AdminController extends Controller
 
 	public function confirmar_pedido($id)
 	{
-
+		$now = Carbon::now();
 		$venta = Sale::findOrFail($id);
 
-		$confirmacion = $venta->dispatched = "si";
+		$confirmacion = $venta->dispatched = $now;;
 		$venta->save();
 
 		return $confirmacion;
