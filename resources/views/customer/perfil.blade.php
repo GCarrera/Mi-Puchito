@@ -195,14 +195,14 @@
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
 													-->
-													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4">más</button>
+													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4-{{ $compra->id }}">más</button>
 													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 
 												</td>
 											</tr>
 
 											<!-- Modal MOVIL INFORMACION DE COMPRAS-->
-											<div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+											<div class="modal fade" id="exampleModal4-{{ $compra->id }}" tabindex="-1" aria-labelledby="exampleModalLabel4" aria-hidden="true">
 												<div class="modal-dialog">
 											    	<div class="modal-content">
 											    		<div class="modal-header">
@@ -217,7 +217,18 @@
 																<li class="list-group-item"><span class="font-weight-bold">PRODUCTOS: </span>{{ $compra->count_product }}</li>
 																<li class="list-group-item"><span class="font-weight-bold">MONTO (Bs): </span>{{ $compra->amount }}</li>
 																<li class="list-group-item"><span class="font-weight-bold">MONTO ($): </span>{{ number_format( ($compra->amount/$compra->dolar->price), 2, ',', '.') }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">DELIVERY: </span>{{ ucfirst($compra->delivery) }}</li>
+																<li class="list-group-item"><span class="font-weight-bold">DELIVERY: </span>
+																	@if(ucfirst($compra->delivery) == "No")
+																	<span class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</span>
+																	@else
+																		@if($compra->stimated_time != null)
+																		<span>{{$compra->stimated_time}}min</span>
+
+																		@else
+																		<span class=" d-md-table-cell">{{ ucfirst($compra->delivery) }}</span>
+																		@endif
+																	@endif
+																</li>
 																@if($compra->dispatched != null)
 																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</li>
 																@else
