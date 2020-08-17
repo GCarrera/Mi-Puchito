@@ -136,6 +136,9 @@
 								@endphp
 									
 									<div class="card shadow">
+										@if($producto->product->oferta == 1)
+										<span class="badge badge-danger rounded-circle" style="position: absolute; right: 0px; top: 5px; font-size: 1.5em;">Oferta</span>
+										@endif
 										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body body-producto" id="body-producto">
 											<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->product_name }}</h5>
@@ -250,6 +253,9 @@
 								}
 								@endphp
 									<div class="card shadow-sm">
+										@if($producto->product->oferta == 1)
+										<span class="badge badge-danger rounded-circle" style="position: absolute; right: 0px; top: 5px; font-size: 1.5em;">Oferta</span>
+										@endif
 										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->product->image }}' class="card-img-top">
 										<div class="card-body text-center body-producto">
 											<h5 class="card-title font-weight-bold">{{ $producto->product_name }}</h5>

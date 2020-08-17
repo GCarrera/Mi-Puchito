@@ -31,6 +31,7 @@ class CreateProductsTable extends Migration
             $table->string('wholesale_total_individual_price');
             $table->string('wholesale_total_packet_price');
             $table->string('wholesale_iva_amount');
+            $table->boolean('oferta')->default(0);
             $table->unsignedInteger('inventory_id');
             $table->timestamps();
 

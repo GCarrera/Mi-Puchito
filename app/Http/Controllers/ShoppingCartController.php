@@ -188,7 +188,13 @@ class ShoppingCartController extends Controller
         $products = Wishlist::with('product.inventory')->where('user_id', $user_id)->get();
 
         // dd($products);
+        $productos = Product::with(['inventory'])->where('oferta', 1)->paginate();
+        $lista = [];
+        foreach ($productos as $producto) {
+        	$lista[] = $producto;
+        }
 
-    	return \Cart::session($user_id)->getTotal();
+        return $lista;
+    	
 	}
 }

@@ -184,7 +184,7 @@
 
 				<input type="hidden" id="productohidden">
 
-				<h4 class="text-center font-weight-light my-5">¿Estás seguro de querer sacar el producto de la lista de deseos?</h4>
+				<p class="text-center font-weight-light">¿Estás seguro de querer sacar el producto de la lista de deseos?</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>

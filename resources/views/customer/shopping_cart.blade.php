@@ -642,7 +642,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				</button>
 			</div>
 			<div class="modal-body">
-				<h4 class="text-center font-weight-light my-5">¿Estás seguro de querer eliminar los productos?</h4>
+				<p class="text-center font-weight-light">¿Estás seguro de querer eliminar los productos?</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>

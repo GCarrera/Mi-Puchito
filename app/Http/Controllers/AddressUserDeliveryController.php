@@ -61,4 +61,17 @@ class AddressUserDeliveryController extends Controller
 		$data->travel_rate;
  		return $data;
 	}
+
+	public function destroy($id)
+	{
+		$address = AddressUserDelivery::findOrFail($id);
+		if ($address->travel_rate_id != null) {
+
+			$rate = TravelRate::findOrFail($address->travel_rate_id);
+			$rate->delete();
+		}
+		$address->delete();
+
+		return back()->with('success', 'Direccion eliminada correctamente');
+	}
 }

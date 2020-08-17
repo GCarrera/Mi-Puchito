@@ -15,6 +15,7 @@ use App\AddressUserDelivery;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Validator;
 use App\City;
+use App\Product;
 
 class ProfileController extends Controller
 {
@@ -37,6 +38,14 @@ class ProfileController extends Controller
 
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
+		//PRODUCTOS EN OFERTA
+
+		$productos = Product::with(['inventory'])->where('oferta', 1)->paginate();
+
+		$user = auth()->user();
+
+		$carrito   = \Cart::session($user->id)->getContent();
+
 		return view('customer.perfil')
 			->with('pedidosCount', $pedidosCount)
 			->with('wishlistCount', $wishlistCount)
@@ -44,7 +53,9 @@ class ProfileController extends Controller
 			->with('sectors', $sectores)
 			->with('rates', $rates)
 			->with('user', $user)
-			->with('cities', $cities);
+			->with('cities', $cities)
+			->with('productos', $productos)
+			->with('carrito', $carrito);
 	}
 
 	public function editar_perfil(Request $request)

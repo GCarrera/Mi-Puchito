@@ -215,6 +215,22 @@
 								<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
 								<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*" required>
 							</div>
+
+							<div>
+								<p>¿Esta en oferta el producto?</p>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="oferta" id="oferta1" value="1">
+									<label class="form-check-label" for="oferta1">
+									Si
+									</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="oferta" id="oferta2" value="0">
+									<label class="form-check-label" for="oferta2">
+									No
+									</label>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -250,30 +266,32 @@
 
 				<h5 class="mb-3">Imagen del producto</h5>
 				<div class="row mb-4">
-					<div class="col">
+					<div class="col col-md-4">
 						<img id="imageproduct" class="img-thumbnail img-fluid shadow-sm" alt="Cargando" style="height: 200px;">
 					</div>
+					<div class="col-md-8">
+						<h5 class="mb-3">Inventario</h5>
+						<div class="row mb-1">
+							<p class="col-6 font-weight-bold"><i class="fas fa-box-open mr-2"></i>Producto:</p>
+							<p class="col-6 font-weight-light" id="nombre_producto">...</p>
+						</div>
+
+						<div class="row mb-1">
+							<p class="col-6 font-weight-bold"><i class="fas fa-clipboard-list mr-2"></i>Categoria:</p>
+							<p class="col-6 font-weight-light" id="categoria_producto">...</p>
+						</div>
+
+						<div class="row mb-1">
+							<p class="col-6 font-weight-bold"><i class="fas fa-boxes mr-2"></i>Cantidad por empaque:</p>
+							<p class="col-6 font-weight-light" id="cantidadEmpaque">...</p>
+						</div>
+
+						<div class="row mb-1">
+							<p class="col-6 font-weight-bold"><i class="fas fa-boxes mr-2"></i>¿Esta en oferta?:</p>
+							<p class="col-6 font-weight-light" id="oferta"></p>
+						</div>
+					</div>
 				</div>
-
-				<hr>
-
-				<h5 class="mb-3">Inventario</h5>
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-box-open mr-2"></i>Producto:</p>
-					<p class="col-6 font-weight-light" id="nombre_producto">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-clipboard-list mr-2"></i>Categoria:</p>
-					<p class="col-6 font-weight-light" id="categoria_producto">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-boxes mr-2"></i>Cantidad por empaque:</p>
-					<p class="col-6 font-weight-light" id="cantidadEmpaque">...</p>
-				</div>
-
-				<hr>
 
 				<!-- <h5 class="mb-3">Precios</h5>
 				<div class="row mb-1">
@@ -366,13 +384,29 @@
 					<div class="form-row mb-4">
 						<div class="col-12">
 							<div class="row mb-4">
-								<div class="col-12 col-md-6 mb-2">
+								<div class="col-12 col-md-4 mb-2">
 									<label for="wholesale_margin_gain">Ganancia al mayor (%)</label>
 									<input type="number" class="form-control ganancia_al_mayor" id="wholesale_margin_gain_edit" name="wholesale_margin_gain" required>
 								</div>
-								<div class="col-12 col-md-6">
+								<div class="col-12 col-md-4">
 									<label for="retail_margin_gain">Ganancia al menor (%)</label>
 									<input type="number" class="form-control ganancia_al_menor" id="retail_margin_gain_edit" name="retail_margin_gain" required>
+								</div>
+
+								<div class="col-md-4">
+									<p>¿Esta en oferta el producto?</p>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit1" value="1">
+										<label class="form-check-label" for="oferta1">
+										Si
+										</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit2" value="0">
+										<label class="form-check-label" for="oferta2">
+										No
+										</label>
+									</div>
 								</div>
 							</div>
 							<div class="row mb-4">
@@ -567,6 +601,12 @@
 				$('#categoria_producto').text(`${data.inventory.category.name}`)
 				// $('#empresa').text(`${data.inventory.enterprise.name}`)
 				$('#cantidadEmpaque').text(`${data.inventory.quantity} ${data.inventory.unit_type} de ${data.inventory.qty_per_unit} productos`)
+				if (data.oferta == 1) {
+					$('#oferta').text(`si`)
+				}else{
+					$('#oferta').text(`no`)
+				}
+				
 				// $('#cantidad').text(`${data.inventory.total_qty_prod} productos`)
 				// $('#iva').text(`${data.iva_percent}%`)
 				// $('#ganancia_al_menor').text(`${data.retail_margin_gain}%`)
@@ -616,7 +656,19 @@
 
 				$('#retail_margin_gain_edit').val(data.retail_margin_gain)
 				form.ganancia_al_menor = data.retail_margin_gain
-				
+				//ESTABLECEMOS EL CHECK DE LAS OFERTAS
+				if (data.oferta == 1) {
+
+					$('#ofertaEdit2').removeAttr('checked')
+					$('#ofertaEdit1').attr('checked', true);
+					
+				}else{
+
+					$('#ofertaEdit1').removeAttr('checked', true);
+					$('#ofertaEdit2').attr('checked', true);
+		;
+				}
+
 				$('#modal_loader').fadeOut()
 			})
 			.fail((err)=> {

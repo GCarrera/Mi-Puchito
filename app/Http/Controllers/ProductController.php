@@ -63,7 +63,8 @@ class ProductController extends Controller
 		$product->wholesale_total_individual_price = $wholesale_total_individual_price;
 		$product->wholesale_iva_amount   = $wholesale_iva_amount;
 		$product->inventory_id           = $req->input('product');
-
+		//OFERTA
+		$product->oferta = $req->input('oferta');
 		$product->save();
 
 		$inventory->status = 1;

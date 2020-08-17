@@ -17,7 +17,12 @@
 
 	
 		<div class="col-md-6 col-sm-12 col-xs-12">
-			<form action="/" method="GET" class="my-2 my-lg-0">
+			@if(Request::get('buytype') == 'major')
+			<form action="" method="GET" class="my-2 my-lg-0">
+			<input type="hidden" name="buytype" value="major">
+			@else
+			<form action="" method="GET" class="my-2 my-lg-0">
+			@endif
 				<div class="input-group mb-2">
 					<input name="search" class="form-control SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" aria-describedby="button-addon2">
 					<div class="input-group-append">
@@ -32,15 +37,15 @@
 		<ul class="navbar-nav ml-auto">
 			@auth
 				<li class="nav-item" id="inicio">
-					<a class="nav-link" href="/home"><i class="fas fa-home mr-2"></i>Inicio</a>
+					<a class="nav-link" href="/home"><i class="fas fa-home mr-2" style="color: #007bff;"></i>Inicio</a>
 				</li>
 				<li class="nav-item" id="lista-de-deseos">
-					<a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2"></i>
+					<a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" style="color: #dc3545;"></i>
 						<span class="badge badge-secondary d-none" id="wishlist_counter">0</span> Lista de deseos
 					</a>
 				</li>
 				<li class="nav-item" id="shoppingcart">
-					<a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2"></i>
+					<a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" style="color: #28a745;"></i>
 						<span class="badge badge-danger d-none" id="cart_counter">0</span> <span class="d-none d-xl-inline">Mi </span>Carrito
 					</a>
 				</li>
@@ -119,7 +124,7 @@
 			</div>
 			<div class="col-md-4 col-xl-4 mt-5">
 				<h5>Enlaces</h5>
-				<ul class="nav-list">
+				<ul class="nav-list text-left">
 					<li><a class="btn" href="{{url('/')}}">Inicio</a></li>
 					@auth
 						<li><a class="btn" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
@@ -145,7 +150,7 @@
 		</div>
 		<div class="col-4 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
-				<i class="fab fa-3x fa-instagram"></i>
+				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px;">
 			</a>
 		</div>
 		<div class="col-4 text-center mb-3">
