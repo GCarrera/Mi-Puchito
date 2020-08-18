@@ -16,26 +16,38 @@
 <div class="container-fluid my-5 animated wrapper">
 
 	<div class="card mb-4 shadow-sm">
-		<div class="card-body d-flex justify-content-between">
-			<h5>{{ $data->name }}</h5>
-			<p>{{ count($data->inventory) }} productos encontrados</p>
+		<div class="card-body">
+			<div class="row no-gutters">
+				<div class="col col-md-4">
+					<h5 class="mt-2">{{ $data->name }}</h5>
+				</div>
+				<div class="col col-md-3">
+					<p class="mb-0 mt-2">{{ count($data->inventory) }} productos encontrados</p>
+				</div>
+				<div class="col col-md-2">
+					<p class="mb-0 mt-2">Usted está comprando:</p>
+				</div>
+				<div class="col col-md-3">
+					
+						<ul class="nav nav-pills">
+							<li class="nav-item">
+								<a class="nav-link {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=major')}}">Al mayor</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link {{ Request::get('buytype') != 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=minor')}}">Al menor</a>
+							</li>
+						</ul>
+					
+				
+				</div>
+			</div>
+			
+			
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-3">
-			<div class="card shadow-sm ">
-				<div class="card-body">
-					<div class="form-group mb-4">
-						<label for="empresas">Usted está comprando:</label>
-						<div class="nav-list">
-							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=major')}}">Al mayor</a>
-							<a class="list-group-item list-group-item-action {{ Request::get('buytype') != 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=minor')}}">Al menor</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-9">
+		
+		<div class="col-lg-12">
 			
 	
 			<div class="row">

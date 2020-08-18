@@ -16,6 +16,7 @@ use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Validator;
 use App\City;
 use App\Product;
+use App\Dolar;
 
 class ProfileController extends Controller
 {
@@ -46,6 +47,8 @@ class ProfileController extends Controller
 
 		$carrito   = \Cart::session($user->id)->getContent();
 
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
+
 		return view('customer.perfil')
 			->with('pedidosCount', $pedidosCount)
 			->with('wishlistCount', $wishlistCount)
@@ -55,7 +58,8 @@ class ProfileController extends Controller
 			->with('user', $user)
 			->with('cities', $cities)
 			->with('productos', $productos)
-			->with('carrito', $carrito);
+			->with('carrito', $carrito)
+			->with('dolar', $dolar);
 	}
 
 	public function editar_perfil(Request $request)

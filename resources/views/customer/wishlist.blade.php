@@ -54,32 +54,68 @@
 						}
 						@endphp
 							<li class="list-group-item itempadre">
-								<div class="row text-center">
+								<div class="row">
 
-									<div class="col-md-4 col-sm-6 col-12">
-										<p class="text-muted small text-center">PRODUCTO</p>
+									<div class="col-md-2 col-sm-6 col-12 mt-3">
+										
 										<div class="">
-											<img src="/storage/{{ $producto->product->image }}" style="height: 80px; position: absolute; top: 0px; left: 15px;">
-											<p class="text-center">
+											
+											<img src="/storage/{{ $producto->product->image }}" style="height: 80px; position: relative; top: 0px; left: 15px;">
+											@if(isset($respuesta1) && $respuesta1 != 0)
+											<div class="alert alert-success" role="alert">
+												su producto a sido agreado al menor
+											</div>
+											@endif
+											@if(isset($respuesta2) && $respuesta2 != 0)
+											<div class="alert alert-success" role="alert">
+												su producto a sido agreado al menor
+											</div>
+											@endif
+										</div>
+											
+										
+									</div>
+
+									<div class="col-md-2 col-sm-6 col-12 mt-3">
+										
+										<p class="text-muted small">PRODUCTO</p>
+											<p class="">
 												<small class="font-weight-bold">{{ $producto->product->inventory->product_name }}</small><br>
 												<small>{{ $producto->product->inventory->description }}</small>
 											</p>
-										</div>
+										
 									</div>
 
-									<div class="col-md-2 col-sm-6 col-12 padreprecio">
+									<div class="col-md-2 col-sm-6 col-12 mt-3 padreprecio">
 										<p class="text-muted small">PRECIO MENOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span>
+										
+										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span><br>
+										<span class="text-muted"><small><span class="font-weight-bold">Iva:</span> {{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</small></span><br>
+										<span class="text-muted"><small><span class="font-weight-bold">Subtotal:</span> {{ number_format(($producto->product->retail_total_price-$producto->product->retail_iva_amount), 2, ',', '.') }}</small></span>
+										<span class="text-success"><small><span class="">Dolares:</span> {{ number_format($producto->product->retail_total_price / $dolar->price, 2, ',', '.') }}$</small></span>
 									</div>
 									<div class="col-md-2 col-sm-6 col-12 mt-3 padreprecio">
 										<p class="text-muted small">PRECIO MAYOR Bs</p>
-										<span class="font-weight-bold precio">{{ number_format($producto->product->wholesale_total_packet_price, 2, ',', '.') }}</span><br>
+										<span class="font-weight-bold precio">{{ number_format($producto->product->wholesale_total_packet_price + ($producto->product->wholesale_iva_amount * $producto->product->inventory->qty_per_unit), 2, ',', '.') }}</span><br>
+										<!--
 										<span class="text-muted small">
-											<span class="preciopvp">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }}</span> c/u
+											<span class="preciopvp">Precio unidad: {{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }}</span>
 										</span><br>
+										-->
+										<!--
 										<span class="text-muted small">
 											1 {{ $producto->inventory->unit_type }} de {{ $producto->product->inventory->qty_per_unit }} productos
 										</span>
+										-->
+										<br>
+										<span  class="text-muted small">
+											<span class="font-weight-bold">Iva:</span> {{ number_format($producto->product->wholesale_iva_amount * $producto->product->inventory->qty_per_unit , 2, ',', '.') }}
+										</span>
+										<br>
+										<span  class="text-muted small">
+											<span class="font-weight-bold">Subtotal:</span> {{ number_format($producto->product->wholesale_total_packet_price , 2, ',', '.') }}
+										</span>
+										<p class="small text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 									</div>
 
 									{{-- <div class="col-md-2 col-sm-6 col-12">
@@ -88,6 +124,7 @@
 									</div> --}}
 
 									<div class="col-md-4 col-sm-6 col-12">
+										<!--
 										<div class="my-4">
 											@if(isset($respuesta1) && $respuesta1 != 0)
 											<button
@@ -143,6 +180,7 @@
 												<i class="fas fa-times mr-2"></i>Eliminar
 											</button>
 										</div>
+										-->
 									</div>
 								</div>
 							</li>

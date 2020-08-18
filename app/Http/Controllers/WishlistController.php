@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Wishlist;
+use App\Dolar;
 
 class WishlistController extends Controller
 {
@@ -21,10 +22,12 @@ class WishlistController extends Controller
 
         $carrito   = \Cart::session($user->id)->getContent();
         // dd($products);
+        $dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
     	return view('customer.wishlist')
     		->with('products', $products)
-            ->with('carrito', $carrito);
+            ->with('carrito', $carrito)
+            ->with('dolar', $dolar);
     }
 
     public function store(Request $req)

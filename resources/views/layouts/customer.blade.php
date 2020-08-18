@@ -35,56 +35,56 @@
 		</div>
 
 		<ul class="navbar-nav ml-auto">
-			@auth
-				<li class="nav-item" id="inicio">
-					<a class="nav-link" href="/home"><i class="fas fa-home mr-2" style="color: #007bff;"></i>Inicio</a>
-				</li>
-				<li class="nav-item" id="lista-de-deseos">
-					<a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" style="color: #dc3545;"></i>
-						<span class="badge badge-secondary d-none" id="wishlist_counter">0</span> Lista de deseos
-					</a>
-				</li>
-				<li class="nav-item" id="shoppingcart">
-					<a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" style="color: #28a745;"></i>
-						<span class="badge badge-danger d-none" id="cart_counter">0</span> <span class="d-none d-xl-inline">Mi </span>Carrito
-					</a>
-				</li>
-				<li class="nav-item dropdown">
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-user mr-2"></i>{{ auth()->user()->people->name }}
-					</a>
-					<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="{{ route('perfil') }}">Perfil</a>
-						{{-- <a class="dropdown-item" href="#">Historial</a> --}}
-						{{-- <a class="dropdown-item" href="#">Configuración</a> --}}
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
-					</div>
-				</li>
-			@endauth
-			@guest
-				<li class="nav-item" id="inicio">
-					<a class="nav-link" href="/"><i class="fas fa-home mr-2"></i>Inicio</a>
-				</li>
-				<li class="nav-item" id="lista-de-deseos">
-					<a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
-						<i class="fas fa-heart mr-2"></i>
-						Lista de deseos
-					</a>
-				</li>
-				<li class="nav-item" id="shoppingcart">
-					<a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
-						<i class="fas fa-shopping-cart mr-2"></i>
-						Mi Carrito
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/login" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-						<i class="fas fa-user mr-2"></i>Iniciar Sesión
-					</a>
-				</li>
-			@endguest
-		</ul>
+		   @auth
+		    <li class="nav-item" id="inicio">
+		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" style="color: black;"></i>Inicio</a>
+		    </li>
+		    <li class="nav-item" id="lista-de-deseos">
+		     <a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" style="color: black;"></i>
+		      <span class="badge badge-danger d-none" id="wishlist_counter">0</span><span style="font-size: 12px"> Lista de deseos</span>
+		     </a>
+		    </li>
+		    <li class="nav-item" id="shoppingcart">
+		     <a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" style="color: black;"></i>
+		      <span class="badge badge-danger d-none" id="cart_counter">0</span> <span style="font-size: 12px">Carrito</span>
+		     </a>
+		    </li>
+		    <li class="nav-item dropdown">
+		     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		      <i class="fas fa-user mr-2" style="color: black;"></i>{{ auth()->user()->people->name }}
+		     </a>
+		     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+		      <a class="dropdown-item" href="{{ route('perfil') }}">Perfil</a>
+		      {{-- <a class="dropdown-item" href="#">Historial</a> --}}
+		      {{-- <a class="dropdown-item" href="#">Configuración</a> --}}
+		      <div class="dropdown-divider"></div>
+		      <a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
+		     </div>
+		    </li>
+		   @endauth
+		   @guest
+		    <li class="nav-item" id="inicio">
+		     <a class="nav-link" href="/"><i class="fas fa-home mr-2"></i>Inicio</a>
+		    </li>
+		    <li class="nav-item" id="lista-de-deseos">
+		     <a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
+		      <i class="fas fa-heart mr-2"></i>
+		      Lista de deseos
+		     </a>
+		    </li>
+		    <li class="nav-item" id="shoppingcart">
+		     <a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
+		      <i class="fas fa-shopping-cart mr-2"></i>
+		      Mi Carrito
+		     </a>
+		    </li>
+		    <li class="nav-item">
+		     <a class="nav-link" href="/login" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		      <i class="fas fa-user mr-2"></i>Iniciar Sesión
+		     </a>
+		    </li>
+		   @endguest
+		  </ul>
 	</div>
 </nav>
 
@@ -101,42 +101,42 @@
 		<div class="row row-30 text-center">
 			<div class="col-md-4 col-xl-4 mt-5">
 				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="img/logo.jpg" alt="Mi puchito's" srcset="img/logo.jpg 2x"></a>
-					<p>Prometheus es una tienda virtual, dedicada a la venta de todo tipo de productos.</p>
-					<!-- Rights-->
-					<p class="rights"><span>©  </span><span class="copyright-year">2020</span><span> </span><span>Prometheus</span><span>. </span><span>Todos los derechos reservados.</span></p>
+					<p class="text-justify">Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.</p>
+					
 				</div>
 			</div>
-			<div class="col-md-4 mt-5">
-				<h5>Contácto</h5>
+			<div class="col-md-4 mt-5 mb-3">
+				<i class="far fa-address-book" style="font-size: 5em; color: #007bff;"></i>
 				<dl class="contact-list">
 					<dt>Dirección:</dt>
 					<dd>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</dd>
 				</dl>
 				<dl class="contact-list">
-					<dt>Email:</dt>
-					<dd>promemtheus@gmail.com</dd>
+					<dt><i class="far fa-envelope" style="color: #dc3545; font-size: 1.5em;" ></i></dt>
+					<dd>comercialmipuchitoca@gmail.com</dd>
 				</dl>
 				<dl class="contact-list">
-					<dt>whatsapp empresarial:</dt>
-					<dd>+58 424-3622054
+					<dt><i class="fab fa-whatsapp" style="color: #28a745; font-size: 1.5em;"></i></dt>
+					<dd><a href="https://api.whatsapp.com/send?phone=584243372191" target="_blank">0424-337-2191</a>
 					</dd>
 				</dl>
 			</div>
 			<div class="col-md-4 col-xl-4 mt-5">
-				<h5>Enlaces</h5>
+				<i class="fas fa-search" style="font-size: 4.5em;"></i>
+				<p class="font-weight-bold">Enlaces:</p>
 				<ul class="nav-list text-left">
-					<li><a class="btn" href="{{url('/')}}">Inicio</a></li>
+					<li><a class="" href="{{url('/')}}">Inicio</a></li>
 					@auth
-						<li><a class="btn" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
-						<li><a class="btn" href="{{url('shoppingcart')}}">Mi carrito</a></li>
+						<li><a class="" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
+						<li><a class="" href="{{url('shoppingcart')}}">Mi carrito</a></li>
 
 					@endauth
 					@guest
-						<li><a class="btn" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
-						<li><a class="btn" onclick="buttonPressed('cart')">Mi carrito</a></li>
+						<li><a class="" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
+						<li><a class="" onclick="buttonPressed('cart')">Mi carrito</a></li>
 						 
-						<li><a class="btn" href="{{url('login')}}">Iniciar sesión</a></li>
-						<li><a class="btn" href="{{url('register')}}">Registrarse</a></li>
+						<li><a class="" href="{{url('login')}}">Iniciar sesión</a></li>
+						<li><a class="" href="{{url('register')}}">Registrarse</a></li>
 					@endguest
 				</ul>
 			</div>
@@ -150,7 +150,8 @@
 		</div>
 		<div class="col-4 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
-				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px;">
+
+				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; overflow-y: hidden;">
 			</a>
 		</div>
 		<div class="col-4 text-center mb-3">
@@ -158,6 +159,9 @@
 				<i class="fab fa-3x fa-twitter"></i>
 			</a>
 		</div>
+    </div>
+    <div style="background-color: teal; color: black;">
+    	<p class="text-center m-0 py-3"><span>©</span>2020 Prometheus. Todos los derechos reservados</p>
     </div>
 </footer>
 

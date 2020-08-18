@@ -174,7 +174,7 @@
 											<tr>
 												<td class="d-none d-md-table-cell">{{ $compra->id }}</td>
 												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
-												<td>{{ number_format($compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold">{{number_format( ($compra->amount/$compra->dolar->price), 2, ',', '.')}}$</small></td>
+												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold">{{$compra->amount/$compra->dolar->price, 2, ',', '.'}}$</small></td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 												@else
@@ -295,19 +295,22 @@
 
 									<div class="card shadow">
 										<div class="card-body">
-											@if($producto->oferta == 1)
-											<span class="badge badge-danger rounded-circle" style="position: absolute; right: 0px; top: 5px; font-size: 1.5em;">Oferta</span>
-											@endif
+											
 											<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
+												@if($producto->oferta == 1)
+												<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+												@endif
 												<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->inventory->product_name }}</h5>
 
 												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
 												<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="font-weight-bold">{{number_format($producto->retail_total_price - $producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
-												<h6 class="font-weight-normal truncated-text text-center">Iva: <span class="font-weight-bold">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6> 
+												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="font-weight-bold">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6> 
 												
-													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
-												
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
+
+												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
+												<p class="text-center">{{ $producto->inventory->description}}</p>		
 
 											
 												
@@ -315,6 +318,7 @@
 													<div class="row text-center">
 														<div class="col-6">
 															<button 
+																id="deseos-{{ $producto->id }}"
 																data-id="{{ $producto->id }}" 
 																class="btn btn-block addToWishlist"
 																data-producto="{{ $producto->inventory->product_name }}"
@@ -323,11 +327,12 @@
 															>
 																<i class="fa fa-heart" style="color: #dc3545;"></i>
 															</button>
-															<b>Lista de Deseos</b>
+															<label for="deseos-{{ $producto->id }}">Lista de Deseos</label>
 														</div>
 														@if(isset($respuesta) && $respuesta != 0)
 														<div class="col-6">
 															<button
+																id="comprar-{{ $producto->id }}"
 																type="button"
 																class="btn btn-block addCartBtn"
 																data-id="{{ $producto->inventory->id }}"
@@ -338,12 +343,13 @@
 															>
 																<i class="fas fa-check" style="color: #28a745;"></i>
 															</button>
-															<b>Producto agregado</b>
+															<label for="comprar-{{ $producto->id }}">Producto agregado</label>
 														</div>
 														
 														@else
 														<div class="col-6">
 															<button
+																id="comprar-{{ $producto->id }}"
 																type="button"
 																class="btn btn-block addCartBtn"
 																data-id="{{ $producto->inventory->id }}"
@@ -354,7 +360,7 @@
 															>
 																<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
 															</button>
-															<b class="texto-carrito">Agregar al carrito</b>
+															<label for="comprar-{{ $producto->id }}" class="texto-carrito">Agregar al carrito</label>
 														</div>
 														@endif
 													</div>
@@ -380,35 +386,40 @@
 								@endphp
 
 								<div class="card shadow-sm">
-									@if($producto->oferta == 1)
-									<span class="badge badge-danger rounded-circle" style="position: absolute; right: 0px; top: 5px; font-size: 1.5em;">Oferta</span>
-									@endif
+									
 									<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
-									<div class="card-body text-center body-producto">
-										<h5 class="card-title font-weight-bold">{{ $producto->inventory->product_name }}</h5>
+									<div class="card-body body-producto">
+										@if($producto->oferta == 1)
+										<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+										@endif
+										<h5 class="card-title font-weight-bold text-center">{{ $producto->inventory->product_name }}</h5>
 
-										<p>
+										<p class="text-center">
 											<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->inventory->unit_type) }}<br>
 											<span class="font-weight-bold">Cantidad: </span>{{ $producto->inventory->qty_per_unit }} <br>
 											<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->wholesale_total_individual_price, 2, ',', '.') }} <br>
-											<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->wholesale_packet_price - $producto->wholesale_iva_amount), 2, ',', '.') }} <br>
-											<span class="font-weight-bold">Iva: </span>{{number_format($producto->wholesale_iva_amount, 2, ',', '.')  }} <br>
+											<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->wholesale_packet_price), 2, ',', '.') }} <br>
+											<span class="font-weight-bold small">Iva: </span>{{number_format($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit, 2, ',', '.')  }} <br>
 										</p>
 
-										<p class="lead font-weight-normal">{{ number_format($producto->wholesale_total_packet_price, 2, ',', '.') }} Bs</p>
+										<p class="lead font-weight-normal text-center">{{ number_format($producto->wholesale_total_packet_price + ($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit), 2, ',', '.') }} Bs</p>
+
+										<p class="text-right text-success">Dolares:{{ number_format($producto->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
+										<p class="text-center">{{ $producto->inventory->description}}</p>
 
 								
 										<div class="row text-center">
 
 											<div class="col-6">
-												<button data-id="{{ $producto->inventory->id }}" class="btn btn-block mb-2 addToWishlist">
+												<button id="deseos-{{ $producto->id }}" data-id="{{ $producto->inventory->id }}" class="btn btn-block mb-2 addToWishlist">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-													<b class="d-block">Lista de deseos</b>
+													<label for="deseos-{{ $producto->id }}" class="d-block">Lista de deseos</label>
 												</button>
 											</div>
 											@if(isset($respuesta) && $respuesta != 0)
 												<div class="col-6">
 													<button
+														id="comprar-{{ $producto->id }}"
 														type="button"
 														class="btn btn-block addCartBtn"
 														data-id="{{ $producto->inventory->id }}"
@@ -419,12 +430,13 @@
 													>
 														<i class="fas fa-check" style="color: #28a745;"></i>
 													</button>
-													<b>Producto agregado</b>
+													<label for="comprar-{{ $producto->id }}">Producto agregado</label>
 												</div>
 													
 											@else
 											<div class="col-6">
 												<button
+													id="comprar-{{ $producto->id }}"
 													type="button"
 													class="btn btn-block addCartBtn"
 													data-id="{{ $producto->inventory->id }}"
@@ -435,7 +447,7 @@
 												>
 													<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
 												</button>
-												<b class="texto-carrito">Agregar al carrito</b>
+												<label for="comprar-{{ $producto->id }}" class="texto-carrito">Agregar al carrito</label>
 											</div>
 											@endif
 										</div>

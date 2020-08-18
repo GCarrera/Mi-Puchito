@@ -8,6 +8,7 @@ use App\Product;
 use App\Category;
 use App\Enterprise;
 use App\Inventory;
+use App\Dolar;
 
 
 class CustomerController extends Controller
@@ -25,7 +26,7 @@ class CustomerController extends Controller
 		if (auth()->check() && auth()->user()->type == 'admin') {
 			return redirect('admin');
 		} else {
-
+			$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 			$empresas   = Enterprise::all();
 			$categories = Category::select('id', 'name')->get();
 			$search = str_replace("+", " ", $request->search); 
@@ -66,6 +67,9 @@ class CustomerController extends Controller
 			}
 			
 			$data = $data->get();
+
+			
+
 			//SI EL USUARIO ESTA AUTENTICADO NADA MAS
 			if (auth()->check()) {
 				$user = auth()->user();
@@ -76,7 +80,8 @@ class CustomerController extends Controller
 					->with('data', $data)
 					->with('categories', $categories)
 					->with('empresas', $empresas)
-					->with('carrito', $carrito);	
+					->with('carrito', $carrito)
+					->with('dolar', $dolar);	
 			}else{
 
 
@@ -85,7 +90,8 @@ class CustomerController extends Controller
 			return view('customer.index')
 					->with('data', $data)
 					->with('categories', $categories)
-					->with('empresas', $empresas);	
+					->with('empresas', $empresas)
+					->with('dolar', $dolar);	
 			}
 			
 		}
