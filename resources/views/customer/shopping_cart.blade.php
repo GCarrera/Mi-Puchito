@@ -1317,7 +1317,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				$('.detallesescondidos2').addClass('d-none')
 			}
 			
-			$('#monto').val($('#montoTotal').text())
+			//$('#monto').val($('#montoTotal').text())
 			
 		})
 
