@@ -27,6 +27,9 @@ use App\Delivery;
 use App\SaleDetail;
 use App\AddressUserDelivery;
 use Carbon\Carbon;
+use App\Dolar;
+use Illuminate\Support\Facades\Validator;
+
 
 class AdminController extends Controller
 {
@@ -35,12 +38,38 @@ class AdminController extends Controller
 		// $this->middleware('admin')->except('traer_productos');
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
 		// $empresasCount   = Enterprise::all()->count();
 		// $categoriasCount = Category::all()->count();
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
+		$now = Carbon::now()->toDateString();
+		
+		if ($request->fechas) {
+
+			$fechas = explode('-', $request->fechas);
+
+			$fecha_inicial = new Carbon($fechas[0]);
+			$fecha_final = new Carbon($fechas[1]);
+
+			$ventas = Sale::with(['deliveries', 
+			'details' => function($details) {
+				$details->with(['inventory' => function ($inventory) {
+					$inventory->select('id',	'product_name');
+				}]);
+			}, 'user' => function($user) {
+				$user->select('id', 'people_id')->with(['people' => function($people) {
+					$people->select('id', 'name');
+				}]);
+			}])
+			->whereHas('details')
+			->where('delivery', 'no')
+			->orderBy('id', 'desc')
+			->whereDate('created_at', '>=', $fecha_inicial)
+			->whereDate('created_at', '<=', $fecha_final)
+			->paginate();
+		}else{
 
 		$ventas = Sale::with(['deliveries', 
 		'details' => function($details) {
@@ -54,8 +83,11 @@ class AdminController extends Controller
 		}])
 		->whereHas('details')
 		->where('delivery', 'no')
-		->get();
-
+		->whereDate('created_at', $now)
+		->orderBy('id', 'desc')
+		->paginate();
+		}
+		
 		return view('admin.index')
 			->with('ventas', $ventas);
 			// ->with('empresasCount', $empresasCount)
@@ -74,7 +106,7 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		$almacen         = 'activar un almacen por defecto';
 
-		$inventario = Inventory::all();
+		$inventario = Inventory::orderBy('id', 'desc')->paginate();
 
 		if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
@@ -98,12 +130,14 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
 
-		$inventario = Inventory::where('status', 2)->get();
-		$productos  = Product::all();
+		$inventario = Inventory::orderBy('id', 'desc')->where('status', 2)->get();
+		$productos  = Product::paginate();
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		return view('admin.costos')
 			->with('inventario', $inventario)
-			->with('productos', $productos);
+			->with('productos', $productos)
+			->with('dolar', $dolar);
 			// ->with('empresasCount', $empresasCount)
 			// ->with('productosCount', $productosCount)
 			// ->with('salesCount', $salesCount)
@@ -128,7 +162,7 @@ class AdminController extends Controller
 			// ->with('categoriasCount', $categoriasCount);
 	}
 
-	public function delivery()
+	public function delivery(Request $request)
 	{
 		// $empresasCount   = Enterprise::all()->count();
 		// $categoriasCount = Category::all()->count();
@@ -146,19 +180,49 @@ class AdminController extends Controller
 		//	->with('estados', $estados)
 		//	->with('user_address', $user_address);
 
-		$ventas = Sale::with(['deliveries', 
-		'details' => function($details) {
-			$details->with(['inventory' => function ($inventory) {
-				$inventory->select('id',	'product_name');
-			}]);
-		}, 'user' => function($user) {
-			$user->select('id', 'people_id')->with(['people' => function($people) {
-				$people->select('id', 'name');
-			}]);
-		}])
-		->whereHas('details')
-		->where('delivery', 'si')
-		->get();
+		$now = Carbon::now()->toDateString();
+		
+		if ($request->fechas) {
+
+			$fechas = explode('-', $request->fechas);
+
+			$fecha_inicial = new Carbon($fechas[0]);
+			$fecha_final = new Carbon($fechas[1]);
+
+			$ventas = Sale::with(['deliveries', 
+			'details' => function($details) {
+				$details->with(['inventory' => function ($inventory) {
+					$inventory->select('id',	'product_name');
+				}]);
+			}, 'user' => function($user) {
+				$user->select('id', 'people_id')->with(['people' => function($people) {
+					$people->select('id', 'name');
+				}]);
+			}])
+			->whereHas('details')
+			->where('delivery', 'si')
+			->orderBy('id', 'desc')
+			->whereDate('created_at', '>=', $fecha_inicial)
+			->whereDate('created_at', '<=', $fecha_final)
+			->paginate();
+		}else{	
+
+			$ventas = Sale::with(['deliveries', 
+			'details' => function($details) {
+				$details->with(['inventory' => function ($inventory) {
+					$inventory->select('id',	'product_name');
+				}]);
+			}, 'user' => function($user) {
+				$user->select('id', 'people_id')->with(['people' => function($people) {
+					$people->select('id', 'name');
+				}]);
+			}])
+			->whereHas('details')
+			->where('delivery', 'si')
+			->orderBy('id', 'desc')
+			->whereDate('created_at', $now)
+			->paginate();
+		}
 
 		return view('admin.delivery')
 			->with('ventas', $ventas);
@@ -241,29 +305,145 @@ class AdminController extends Controller
 
 	// ------------------------------------------------------------------------------------------------
 
-	public function confirmar_pedido($id)
+	public function confirmar_pedido($id, Request $request)
 	{
 		$now = Carbon::now();
-		$venta = Sale::findOrFail($id);
+		$venta = Sale::with('details')->findOrFail($id);
 
-		$confirmacion = $venta->dispatched = $now;;
+		if ($request->confirmacion != "aprobado") {
+			//return "confirmado";
+		}else{
+
+			if ($venta->confirmacion == "aprobado") {
+				return "confirmado";
+			}
+
+
+
+			foreach ($venta->details as $detalle) {
+				//BUSCAMOS EL PRODUCTO DEL CARRO
+				$producto = Product::findOrFail($detalle->product_id);
+				$inventario = Inventory::findOrFail($producto->inventory_id);
+				//SI LA COMPRA ES AL MENOR
+				if ($detalle->type == "al-menor") {
+					
+					if ($inventario->total_qty_prod >= $detalle->quantity) {
+					
+					$inventario->total_qty_prod -= $detalle->quantity;
+
+					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
+
+	
+					}else{
+						return redirect()->back()->withErrors(['No hay productos.']);
+					}
+				}
+				//SI LA COMPRA ES AL MAYOR
+				if ($detalle->type == "al-mayor") {
+
+					if ($inventario->quantity >= $detalle->quantity) {
+						
+						$inventario->quantity -= $detalle->quantity;
+					}else {
+
+						return redirect()->back()->withErrors(['No hay productos al mayor para despachar.']);
+					} 
+				}
+
+				$inventario->save();
+					
+
+			}
+
+		}
+		$confirmacion = $venta->dispatched = $now;
+		$venta->confirmacion = $request->confirmacion;
 		$venta->save();
 
-		return $confirmacion;
+			return $venta->confirmacion;
+		
 	}
 
 	public function confirmar_pedido_delivery($id, Request $request)
 	{
+
 		$now = Carbon::now();
 
-		$venta = Sale::findOrFail($id);
+		$venta = Sale::with('details')->findOrFail($id);
 
-		$confirmacion = $venta->dispatched = $now;
-		$venta->stimated_time = $request->stimated_time;
-		$venta->save();
+		if ($request->confirmacion != "aprobado") {
+			
+		}else{
+
+			if ($venta->confirmacion == "aprobado") {
+				return "confirmado";
+			}
+
+			if ($request->stimated_time == "") {
+				return "el campo tiempo estimado es obligatorio";
+			}
+			
+			foreach ($venta->details as $detalle) {
+				//BUSCAMOS EL PRODUCTO DEL CARRO
+				$producto = Product::findOrFail($detalle->product_id);
+				$inventario = Inventory::findOrFail($producto->inventory_id);
+				//SI LA COMPRA ES AL MENOR
+				if ($detalle->type == "al-menor") {
+
+					if ($inventario->total_qty_prod >= $detalle->quantity) {
+					
+					$inventario->total_qty_prod -= $detalle->quantity;
+
+					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
+
+	
+					}else{
+						return redirect()->back()->withErrors(['No hay productos.']);
+					}
+				}
+				//SI LA COMPRA ES AL MAYOR
+				if ($detalle->type == "al-mayor") {
+
+					if ($inventario->quantity >= $detalle->quantity) {
+						
+						$inventario->quantity -= $detalle->quantity;
+					}else {
+
+						return redirect()->back()->withErrors(['No hay productos.']);
+					} 
+				}
+
+				$inventario->save();
+					
+
+			}
+		}
+
+			$confirmacion = $venta->dispatched = $now;
+			$venta->confirmacion = $request->confirmacion;
+			$venta->stimated_time = $request->stimated_time;
+			$venta->save();
+			
+
+
+			return $venta->confirmacion;
 		
+	}
 
+	public function get_dolar()
+	{
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
-		return $confirmacion;
+		return $dolar;
+	}
+
+	public function establecer_dolar(Request $request)
+	{
+		$dolar = new Dolar();
+
+		$dolar->price = $request->precio;
+		$dolar->save();
+
+		return redirect()->back()->with('success', 'Nuevo precio del dolar establecido.');
 	}
 }

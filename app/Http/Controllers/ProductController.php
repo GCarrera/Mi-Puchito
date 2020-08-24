@@ -29,7 +29,8 @@ class ProductController extends Controller
 			'iva_percent' => 'required|numeric',
 			'retail_margin_gain' => 'required|numeric',
 			'wholesale_margin_gain' => 'required|numeric',
-			'fileinput' => 'required'
+			'fileinput' => 'required',
+			'oferta' => 'required'
 		]);
 		
         if ($validator->fails()) {

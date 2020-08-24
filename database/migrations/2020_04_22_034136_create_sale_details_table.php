@@ -17,6 +17,9 @@ class CreateSaleDetailsTable extends Migration
             $table->increments('id');
             $table->string('quantity');
             $table->string('type');
+            $table->string('sub_total');
+            $table->string('iva');
+            $table->string('amount');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('sale_id');
             $table->timestamps();

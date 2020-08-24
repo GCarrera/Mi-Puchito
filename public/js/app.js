@@ -38,7 +38,7 @@ $(() => {
 	// inicializacion de componentes
 
 
-	$('table').DataTable();
+	//$('table').DataTable();
 	// $('.dataTables_length').addClass('bs-select');
 	// $('.carousel').carousel();
 	$('[data-toggle="tooltip"]').tooltip()

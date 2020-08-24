@@ -109,7 +109,7 @@
 				<div class="card shadow-sm mb-4">
 					
 					<div class="card-header d-flex justify-content-between align-items-center">
-						<a href="/categoria/{{ $d->id }}" style="color: black;">
+						<a href="{{Request::get('buytype') == 'major'? '/categoria/'.$d->id.'?buytype=major' : '/categoria/'.$d->id}}" style="color: black;">
 							<h5 class="font-weight-bold">{{ $d->name }}</h5>
 						</a>
 						{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
@@ -137,16 +137,16 @@
 									
 									<div class="card shadow">
 										
-										<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
+										<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body body-producto" id="body-producto">
 											@if($producto->product->oferta == 1)
-											<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 											@endif
 											<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->product_name }}</h5>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-											<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="font-weight-bold">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
-											<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="font-weight-bold">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> 
+											<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
+											<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> 
 											@if(Request::get('buytype') == 'minor')
 												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 											@elseif(Request::get('buytype') == 'major')
@@ -155,12 +155,11 @@
 												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
 											@endif
 											<p class="text-right text-success">Dolares:{{ number_format($producto->product->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
-											<p class="text-center">{{ $producto->description}}</p>
+
 											@auth
 											
-											<div class="">
-												<div class="row text-center">
-													<div class="col-6">
+												<div class="">
+												
 														<button 
 															id="deseos-{{ $producto->product->id }}" 
 															data-id="{{ $producto->product->id }}" 
@@ -170,50 +169,53 @@
 
 														>
 															<i class="fa fa-heart" style="color: #dc3545;"></i>
+															<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">lista de deseos</label>
 														</button>
-														<label for="deseos-{{ $producto->product->id }}" class="font-weight-bold">lista de deseos</label>
-													</div>
+														
+													
 													@if(isset($respuesta) && $respuesta != 0)
-													<div class="col-6">
+													
 														<button
 															id="comprar-{{ $producto->id }}"
 															type="button"
-															class="btn btn-block addCartBtn"
+															class="btn btn-block btn-primary addCartBtn"
 															data-id="{{ $producto->id }}"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
 															data-type="al-menor"
 															data-cantidad="1"
 														>
-															<i class="fas fa-check" style="color: #28a745;"></i>
+															<i class="fas fa-check" style=""></i>
+															<label for="comprar-{{ $producto->id }}" class="font-weight-bold"></label>
 														</button>
-														<label for="comprar-{{ $producto->id }}" class="font-weight-bold">Producto agregado</label>
-													</div>
+														
+												
 													
 													@else
-													<div class="col-6">
+													
 														<button
 														id="comprar-{{ $producto->id }}"
 															type="button"
-															class="btn btn-block addCartBtn"
+															class="btn btn-block btn-primary addCartBtn"
 															data-id="{{ $producto->id }}"
 															data-producto="{{ $producto->product_name }}"
 															data-precio="{{ $producto->product->retail_total_price }}"
 															data-type="al-menor"
 															data-cantidad="1"
 														>
-															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+															<i class="fas fa-shopping-cart" style=""></i>
+															Comprar
 														</button>
+														<!--
 														<label class="texto-carrito font-weight-bold" for="comprar-{{ $producto->id }}">Agregar al carrito</label>
-													</div>
+														-->
 													@endif
 												</div>
-											</div>
+											
 												
 											@else
 											<div class="">
-												<div class="row text-center">
-													<div class="col-6">
+												
 														<button 
 															onclick="buttonPressed('wish')" 
 															type="button" 
@@ -222,25 +224,24 @@
 															data-toggle="tooltip"
 														>
 															<i class="fa fa-heart" style="color: #dc3545;"></i>
+															<b class="text-danger">Lista de Deseos</b>
 														</button>
 
-														<b>Lista de Deseos</b>
-													</div>
-													<div class="col-6">
+												
 														<button 
 															onclick="buttonPressed('cart')" 
-															class="btn btn-block"
+															class="btn btn-block btn-primary"
 															data-title="Comprar" 
 															data-toggle="tooltip"
 														>
 															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+															<b>Comprar</b>
 														</button>
-														<b>Agregar al carrito</b>
-													</div>
-												</div>
+														
+										
 											</div>		
 											@endauth
-
+										
 										</div>
 									</div>
 
@@ -259,10 +260,10 @@
 								@endphp
 									<div class="card shadow-sm">
 										
-										<img style="height: 200px; object-fit: contain" src='storage/{{ $producto->product->image }}' class="card-img-top">
+										<img style="height: 200px; object-fit: contain" data-original='storage/{{ $producto->product->image }}' class="card-img-top">
 										<div class="card-body body-producto">
 											@if($producto->product->oferta == 1)
-											<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 											@endif
 											<h5 class="card-title font-weight-bold text-center">{{ $producto->product_name }}</h5>
 
@@ -279,37 +280,36 @@
 											<p class="text-center">{{ $producto->description}}</p>
 
 											@auth
-											<div class="row text-center">
-
-												<div class="col-6">
+											
 													<button id="deseos-{{ $producto->product->id }}"  data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
 														<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-														<label for="deseos-{{ $producto->product->id }}" class="d-block">Lista de deseos</label>
+														<label for="deseos-{{ $producto->product->id }}" class="text-danger">Lista de deseos</label>
 													</button>
-												</div>
+												
 												@if(isset($respuesta) && $respuesta != 0)
-													<div class="col-6">
+													
 														<button
 														id="comprar-{{ $producto->id }}"
 															type="button"
-														class="btn btn-block addCartBtn"
+														class="btn btn-block btn-primary addCartBtn"
 														data-id="{{ $producto->id }}"
 														data-producto="{{ $producto->product_name }}"
 														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
 														data-type="al-mayor"
 														data-cantidad="1"
 														>
-															<i class="fas fa-check" style="color: #28a745;"></i>
+															<i class="fas fa-check"></i>
+															<label for="comprar-{{ $producto->id }}"></label>
 														</button>
-														<label for="comprar-{{ $producto->id }}">Producto agregado</label>
-													</div>
+														
+												
 													
 												@else
-												<div class="col-6">
+												
 													<button
 														id="comprar-{{ $producto->id }}"
 														type="button"
-														class="btn btn-block addCartBtn"
+														class="btn btn-block btn-primary addCartBtn"
 														data-id="{{ $producto->id }}"
 														data-producto="{{ $producto->product_name }}"
 														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
@@ -317,18 +317,26 @@
 														data-cantidad="1"
 													>
 
-														<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
+														<i class="fas fa-shopping-cart mr-2"></i>
+														<label for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</label>
 													</button>
-													<label for="comprar-{{ $producto->id }}" class="texto-carrito">Agregar al carrito</label>
-												</div>
+				
 												@endif
-											</div>
+											
 											@else
-												<button  class="btn btn-block mb-2" disabled>
+												<button onclick="buttonPressed('wish')" 
+															type="button" 
+															class="btn btn-block"
+															data-title="Añadir a la lista de deseos" 
+															data-toggle="tooltip">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title= "Agregar a favoritos" style="color: #dc3545;"></i>
+													<b class="text-danger">Lista de Deseos</b>
 												</button>
-												<button type="button" class="btn btn-block" disabled>
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text" style="color: #007bff;">Comprar</span>
+												<button type="button" onclick="buttonPressed('cart')" 
+															class="btn btn-block btn-primary"
+															data-title="Comprar" 
+															data-toggle="tooltip">
+													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
 												</button>
 											@endauth
 
@@ -352,7 +360,9 @@
 				</div>
 
 			@endforelse
-
+			<div class="float-right">
+				
+			</div>
 		</div>
 	</div>
 </div>
@@ -510,7 +520,7 @@
 				}
 
 				that.removeAttr('disabled')
-				that.html('<i class="fas fa-check" style="color: #28a745;"></i>')
+				that.html('<i class="fas fa-check"></i>')
 				$('.texto-carrito').text("Producto agregado");
 				
 				

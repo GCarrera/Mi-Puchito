@@ -12,6 +12,7 @@ use App\Delivery;
 use App\SaleDetail;
 use App\AddressUserDelivery;
 use App\TravelRate;
+use DB;
 
 class SaleController extends Controller
 {
@@ -44,6 +45,9 @@ class SaleController extends Controller
 			'monto' => 'required|max:191',
 			'pay_method' => 'required',
 		]);
+		$subtotal = 0;
+		$iva = 0;
+		$total = 0;
 		
         if ($validator->fails()) {
             return redirect()->back()
@@ -53,87 +57,127 @@ class SaleController extends Controller
 		
 		$user     = auth()->user()->id;
 		$productos = \Cart::session($user)->getContent();
-		if (count($productos) > 0) {	
 
-			$code     = '20-123321213';
-			// 
 
-			$sale = new Sale();
-			$sale->code     = $code;
-			$sale->payment_type     = $req->input('pay_method');
-			$sale->amount   = $req->input('monto');
-			$sale->payment_reference_code = $req->input('numero_referencia');
-			$sale->dolar_id = $req->dolar;
-			$sale->count_product = count($productos);
-			if ($req->hasFile('fileattached')) {
-				$tiempo = time();
-				$payment_capture = explode('public/', $req->file('fileattached')->storeAs('public/capturas', $tiempo))[1];
-				$sale->attached_file = $payment_capture;
-			}
-			$sale->delivery = $req->input('delivery');
-			$sale->user_id  = $user;
-			$sale->save();
+			if (count($productos) > 0) {	
 
-			if ($req->input('delivery') == "si") {//VERIFICA SI LA OPCION SE SERVICIO DE DELIVERY ES SI
-		
-				$delivery = new Delivery();//CREA UN NUEVO DELIVERY
-				$delivery->sale_id = $sale->id;
+				$code     = '20-123321213';
+				// 
+				try{
+
+					DB::beginTransaction();
+
+					$sale = new Sale();
+					$sale->code     = $code;
+					$sale->payment_type     = $req->input('pay_method');
+					$sale->amount   = $req->input('monto');
+					
+					$sale->payment_reference_code = $req->input('numero_referencia');
+					$sale->dolar_id = $req->dolar;
+					$sale->count_product = count($productos);
+					if ($req->hasFile('fileattached')) {
+						$tiempo = time();
+						$payment_capture = explode('public/', $req->file('fileattached')->storeAs('public/capturas', $tiempo))[1];
+						$sale->attached_file = $payment_capture;
+					}
+					$sale->delivery = $req->input('delivery');
+					$sale->user_id  = $user;
+					$sale->save();
+
+					if ($req->input('delivery') == "si") {//VERIFICA SI LA OPCION SE SERVICIO DE DELIVERY ES SI
 				
-				if ($req->forma_delivery == "" && $req->input_direc_anteriores == "") {
+						$delivery = new Delivery();//CREA UN NUEVO DELIVERY
+						$delivery->sale_id = $sale->id;
+						
+						if ($req->forma_delivery == "" && $req->input_direc_anteriores == "") {
 
-					return redirect()->back()->withErrors(['Agregue alguna direccion.']);
-				}
+							return redirect()->back()->withErrors(['Agregue alguna direccion.']);
+						}
 
-				if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
-				$address_delivery = new AddressUserDelivery();
-				$address_delivery->user_id = $user;
+						if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
+						$address_delivery = new AddressUserDelivery();
+						$address_delivery->user_id = $user;
 
-					if ($req->forma_delivery == 1 ) {
-						$address_delivery->details =  $req->direc_descrip_area;
-					}else{
-						$travel = new TravelRate();
-						$travel->sector_id = $req->sector_id;
-						$travel->save();
+							if ($req->forma_delivery == 1 ) {
+								$address_delivery->details =  $req->direc_descrip_area;
+							}else{
+								$travel = new TravelRate();
+								$travel->sector_id = $req->sector_id;
+								$travel->save();
 
-						$address_delivery->details =  $req->detalles;
-						$address_delivery->travel_rate_id = $travel->id;
+								$address_delivery->details =  $req->detalles;
+								$address_delivery->travel_rate_id = $travel->id;
+							}
+
+						$address_delivery->save();
+						$delivery->address_user_delivery_id = $address_delivery->id;
+						}else {
+							//colocar direcciones anteriores
+							$delivery->address_user_delivery_id = $req->input_direc_anteriores;
+						}
+						
+						$delivery->save();
 					}
 
-				$address_delivery->save();
-				$delivery->address_user_delivery_id = $address_delivery->id;
-				}else {
-					//colocar direcciones anteriores
-					$delivery->address_user_delivery_id = $req->input_direc_anteriores;
+					foreach ($productos as $producto) {
+
+						$saleDetail = new SaleDetail();
+						$saleDetail->quantity   = $producto->quantity;
+						$saleDetail->type = $producto->attributes->sale_type;
+						$saleDetail->product_id = $producto->associatedModel->id;
+						$saleDetail->sale_id    = $sale->id;
+
+						if ($saleDetail->type == "al-mayor") {
+							
+						$saleDetail->sub_total = $producto->associatedModel->wholesale_packet_price * $producto->quantity;
+						$saleDetail->iva = ($producto->associatedModel->wholesale_iva_amount * $producto->associatedModel->inventory->qty_per_unit) * $producto->quantity;
+						$saleDetail->amount = $saleDetail->sub_total + $saleDetail->iva;
+						$subtotal += $saleDetail->sub_total;
+						$iva += $saleDetail->iva;
+						$total += $saleDetail->amount;
+						}else{
+
+						$saleDetail->sub_total = ($producto->associatedModel->retail_total_price - $producto->associatedModel->retail_iva_amount) * $producto->quantity;
+
+						$saleDetail->iva = $producto->associatedModel->retail_iva_amount * $producto->quantity;
+
+						$saleDetail->amount = $producto->associatedModel->retail_total_price * $producto->quantity;
+
+						$subtotal += $saleDetail->sub_total;
+						$iva += $saleDetail->iva;
+						$total += $saleDetail->amount;
+						}
+						
+
+						$saleDetail->save();
+					}
+
+					$sale->sub_total = $subtotal;
+					$sale->iva = $iva;
+					//$sale->amount = $total;
+					$sale->save();
+
+					if ($req->input('user_address_delivery')) {
+
+
+						$delivery = new Delivery();
+						$delivery->address_user_delivery_id = $req->input('user_address_delivery');
+						$delivery->sale_id = $saleid;
+						$delivery->save();
+					}
+
+					\Cart::session($user)->clear();
+
+					DB::commit();
+				}catch(Exception $e){
+
+					DB::rollback();
 				}
-				
-				$delivery->save();
-			}
-
-			//$saleid = $sale->lastid();
-			$saleid = $sale->id;
-
-			foreach ($productos as $producto) {
-				$saleDetail = new SaleDetail();
-				$saleDetail->quantity   = $producto->quantity;
-				$saleDetail->type = $producto->attributes->sale_type;
-				$saleDetail->product_id = $producto->associatedModel->id;
-				$saleDetail->sale_id    = $saleid;
-				$saleDetail->save();
-			}
-
-			if ($req->input('user_address_delivery')) {
-
-
-				$delivery = new Delivery();
-				$delivery->address_user_delivery_id = $req->input('user_address_delivery');
-				$delivery->sale_id = $saleid;
-				$delivery->save();
-			}
-
-			\Cart::session($user)->clear();
+		
 
 			return redirect('/perfil')->with(['success' => 'Su compra está en proceso, puede verla en sus pedidos.', 'pedidos' => true]);
-		}
+			}
+
 
 		return redirect()->back()->withErrors(['No ha cargado productos al carrito.']);
 

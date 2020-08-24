@@ -10,7 +10,20 @@
 	<!-- <script src="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
 	<script src="{{ asset('js/datatables.min.js') }}" ></script>
 	<script src="{{ asset('js/app.js') }}"></script>
+	<script src="{{ asset('js/moment.min.js') }}"></script>
+	<script src="{{ asset('js/daterangepicker.js') }}"></script>
+	<script src="{{ asset('js/jquery.lazyload.min.js') }}"></script>
+	
 	<script>
+	
+		$(document).ready(function(){
+
+			$('img').lazyload({
+				threshold: 200,
+				effect: 'fadeIn'
+			});
+		});
+
 		// Para añadir cuando no está logueado
 		function buttonPressed(button) {
 			LocalStorage = window.localStorage;
@@ -46,6 +59,27 @@
 			}
 			window.getSelection().removeRange(seleccion);
 		}
+
+		//MODAL DEL DOLAR
+
+		$('#btn_dolar').click(function(e) {
+			e.target.preventDefault;
+			$.get({
+				url : `/get_dolar`
+			})
+			.done((data) => {
+				$('#dolar-precio').text(data.price);
+				$('#modal-dolar').modal('show');
+				//console.log(data);
+			})
+			.fail((err)=> {
+				console.log(err)
+				toastr.error('Ha ocurrido un error.')
+			})
+			//
+		});
+
+		$('#fechas').daterangepicker();
 	</script>
 	@stack('scripts')
 </body>

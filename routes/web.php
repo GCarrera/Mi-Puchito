@@ -20,7 +20,7 @@ Route::post('/get_dni', 'ProfileController@getDni');
 
 Auth::routes();
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
 	Route::prefix('admin')->group(function(){
 		Route::get('/', 'AdminController@index')->name('admin');
@@ -31,7 +31,14 @@ Route::middleware(['auth'])->group(function(){
 		Route::resource('/cuentas-bancarias', 'BankAccountController');
 		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
 		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');
+		//USUARIOS
+		Route::get('/usuarios', 'UsuariosController@index')->name('usuarios');
+		Route::get('/usuarios/{id}', 'UsuariosController@show')->name('usuarios.show');
+
 	});
+	//PRECIO ACTUAL DEL DOLAR
+	Route::get('/get_dolar', 'AdminController@get_dolar');
+	Route::post('/establecer_dolar', 'AdminController@establecer_dolar');
 
 	Route::get('/home', 'CustomerController@index')->name('home');
 	Route::get('/ventas-al-mayor', 'CustomerController@al_mayor');
@@ -69,6 +76,8 @@ Route::middleware(['auth'])->group(function(){
 
 	//PDF FACTURA
 	Route::get('/get-pedido/{id}', 'FacturaController@get_pedido')->name('factura.pdf');
+
+	Route::get('/get-pedido-descarga/{id}', 'FacturaController@get_pedido_descarga')->name('factura.pdf.descarga');
 });
 Route::get('/categoria/{categoria}', 'CustomerController@categoria');
 

@@ -60,15 +60,15 @@
 										
 										<div class="">
 											
-											<img src="/storage/{{ $producto->product->image }}" style="height: 80px; position: relative; top: 0px; left: 15px;">
+											<img data-original="/storage/{{ $producto->product->image }}" style="height: 80px; position: relative; top: 0px; left: 15px;">
 											@if(isset($respuesta1) && $respuesta1 != 0)
-											<div class="alert alert-success" role="alert">
-												su producto a sido agreado al menor
+											<div class="alert alert-success" role="alert" class="font-weight-bold" style="font-size: 0.9em; margin-bottom: 0px;">
+												<b>su producto a sido agreado al menor</b>
 											</div>
 											@endif
 											@if(isset($respuesta2) && $respuesta2 != 0)
-											<div class="alert alert-success" role="alert">
-												su producto a sido agreado al menor
+											<div class="alert alert-success" role="alert" class="" style="font-size: 0.9em; margin-bottom: 0px;">
+												<b>su producto a sido agreado al mayor</b>
 											</div>
 											@endif
 										</div>

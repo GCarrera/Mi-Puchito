@@ -27,6 +27,8 @@
 	<link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
 
 	<link href="{{ asset('css/index.css') }}" rel="stylesheet">
+
+	<link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
 	<style>
 		.truncated-text {
 			text-overflow: ellipsis;

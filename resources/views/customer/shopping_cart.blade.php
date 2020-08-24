@@ -58,7 +58,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 <div style="margin-top: 4%"></div>
 
-<!--<img src="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
+<!--<img data-original="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
 <div id="img-carrito">
 	<div class="row align-items-center h-100">
 		<div class="col-12">
@@ -105,7 +105,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							
 
 										<div class="d-flex justify-content-start">
-											<img src="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
+											<img data-original="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
 											<p class="small">
 												<span class="font-weight-bold">{{ $c->name }}</span><br>
 
@@ -568,7 +568,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					</div>
 				</div>
 				
-				<div id="caja-direc-anteriores">
+				<div id="caja-direc-anteriores" style="overflow: scroll; max-height: 150px;">
 					<b style="font-size: 1.3em; margin-top: 5%;">Direcciones anteriores:</b>
 					@foreach($user_address as $address)
 					<div class="list-group">
@@ -780,7 +780,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	function subtotal_item(id) {
 		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].attributes.retail_iva_amount), typeof myCart[id].quantity)
 		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].attributes.retail_iva_amount)) * myCart[id].quantity
-		myCart[id].iva = myCart[id].attributes.retail_iva_amount * myCart[id].quantity
+		if(myCart[id].attributes.sale_type == "al-menor"){
+
+			myCart[id].iva = myCart[id].attributes.retail_iva_amount * myCart[id].quantity
+		}else{
+			myCart[id].iva = (myCart[id].associatedModel.wholesale_iva_amount * myCart[id].associatedModel.inventory.qty_per_unit) * myCart[id].quantity
+		}
+
 		$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
 		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE').format(myCart[id].iva)+',00')
 		return myCart[id].subtotal
@@ -1325,7 +1331,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// 	let reader = new FileReader()
 
 		// 	reader.onload = () => {
-		// 		$('#capture_preview').attr('src', reader.result)
+		// 		$('#capture_preview').attr('data-original', reader.result)
 		// 		$('#capture_preview').removeClass('d-none')
 
 		// 	}

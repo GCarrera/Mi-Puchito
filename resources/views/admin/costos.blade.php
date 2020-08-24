@@ -66,11 +66,9 @@
 							<thead>
 								<tr>
 									<th>PRODUCTO</th>
-									<th>COSTO (Bs)</th>
-									<!-- <th>I.V.A (%)</th> -->
-									<th>GANANCIA AL MAYOR (%)</th>
+									<th>COSTO</th>
+									<!-- <th>I.V.A (%)</th> -->				
 									<th>PRECIO AL MAYOR (Bs)</th>
-									<th>GANANCIA AL MENOR (%)</th>
 									<th>PRECIO AL MENOR (Bs)</th>
 									<th class="text-center">ACCIONES</th>
 								</tr>
@@ -78,13 +76,12 @@
 							<tbody>
 								@forelse ($productos as $pro)
 									<tr>
-										<td>{{ $pro->inventory->product_name }}</td>
-										<td>{{ $pro->cost }}</td>
-										<!-- <td>{{ $pro->iva_percent }}</td> -->
-										<td>{{ $pro->wholesale_margin_gain }}</td>
-										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }}</td>
-										<td>{{ $pro->retail_margin_gain }}</td>
-										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}</td>
+										<td class="small">{{ $pro->inventory->product_name }}</td>
+										<td>{{number_format($pro->cost, 2, ',', '.')  }}</td>
+									
+										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }}-{{ $pro->wholesale_margin_gain }}%-{{number_format($pro->wholesale_total_individual_price / $dolar->price, 2, ',', '.')}}$</td>
+									
+										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}-{{ $pro->retail_margin_gain }}%-{{number_format($pro->retail_total_price / $dolar->price, 2, ',', '.')}}$</td>
 										<td class="text-center">
 											<button class="btn mr-2 btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
 												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
@@ -101,6 +98,10 @@
 								@endforelse
 							</tbody>
 						</table>
+
+						<div class="float-right">
+							<p >{{$productos->render()}}</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -180,7 +181,9 @@
 							</div>
 							<div class="row mb-4">
 								<div class="col-12">
-									<button class="btn btn-block btn-primary calcular" type="button"><i class="fas fa-calculator mr-2"></i>Calcular Precios</button>
+									
+									<button class="d-none calcular" type="button"><i class="fas fa-calculator mr-2"></i></button>
+								
 								</div>
 							</div>
 							<div class="row mb-4">
@@ -267,7 +270,7 @@
 				<h5 class="mb-3">Imagen del producto</h5>
 				<div class="row mb-4">
 					<div class="col col-md-4">
-						<img id="imageproduct" class="img-thumbnail img-fluid shadow-sm" alt="Cargando" style="height: 200px;">
+						<img id="imageproduct" class="img-thumbnail img-fluid shadow-sm" alt="Cargando" style="width: 200px;">
 					</div>
 					<div class="col-md-8">
 						<h5 class="mb-3">Inventario</h5>
@@ -287,8 +290,8 @@
 						</div>
 
 						<div class="row mb-1">
-							<p class="col-6 font-weight-bold"><i class="fas fa-boxes mr-2"></i>¿Esta en oferta?:</p>
-							<p class="col-6 font-weight-light" id="oferta"></p>
+							
+							<label class="col-12 font-weight-light" id="oferta"></label>
 						</div>
 					</div>
 				</div>
@@ -411,7 +414,7 @@
 							</div>
 							<div class="row mb-4">
 								<div class="col-12">
-									<button class="btn btn-block btn-primary calcular" type="button"><i class="fas fa-calculator mr-2"></i>Calcular nuevos precios</button>
+									<button class="d-none calcular" type="button"><i class="fas fa-calculator mr-2"></i>Calcular nuevos precios</button>
 								</div>
 							</div>
 							<div class="row">
@@ -549,7 +552,7 @@
 				$('#foto').show();
 				$('#clearbtn').show();
 
-				$('#foto').attr('src', ev.target.result);
+				$('#foto').attr('data-original', ev.target.result);
 				$('#image_name').text(file.name)
 				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
 			}
@@ -602,9 +605,13 @@
 				// $('#empresa').text(`${data.inventory.enterprise.name}`)
 				$('#cantidadEmpaque').text(`${data.inventory.quantity} ${data.inventory.unit_type} de ${data.inventory.qty_per_unit} productos`)
 				if (data.oferta == 1) {
-					$('#oferta').text(`si`)
+					$('#oferta').text(`El producto se encuentra en oferta`)
+					$('#oferta').addClass('text-success')
+					$('#oferta').removeClass('text-danger')
 				}else{
-					$('#oferta').text(`no`)
+					$('#oferta').text(`EL producto no esta en oferta`)
+					$('#oferta').addClass('text-danger')
+					$('#oferta').removeClass('text-success')
 				}
 				
 				// $('#cantidad').text(`${data.inventory.total_qty_prod} productos`)

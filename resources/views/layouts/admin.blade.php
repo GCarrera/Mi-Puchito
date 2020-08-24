@@ -25,6 +25,9 @@
 		</div>-->
 
 		<ul class="navbar-nav ml-auto">
+			<li class="nav-item" id="dolar">
+				<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
+			</li>
 			<li class="nav-item" id="admin">
 				<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-coins mr-2	"></i>Ventas</a>
 			</li>
@@ -38,7 +41,7 @@
 				<a class="nav-link" href="{{ route('delivery') }}"><i class="fas fa-clipboard-list mr-2"></i>Delivery</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#"><i class="fas fa-users-cog mr-2"></i>Usuarios</a>
+				<a class="nav-link" href="{{ route('usuarios') }}"><i class="fas fa-users-cog mr-2"></i>Usuarios</a>
 			</li>
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,6 +58,37 @@
 		</ul>
 	</div>
 </nav>
+
+<!-- Modal DEL DOLAR -->
+<div class="modal fade" id="modal-dolar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  	<div class="modal-dialog">
+    	<div class="modal-content">
+      		<div class="modal-header">
+	        	<h5 class="modal-title" id="exampleModalLabel">Precio del dolat</h5>
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          	<span aria-hidden="true">&times;</span>
+	        	</button>
+      		</div>
+	      	<div class="modal-body">
+	       	
+			<h6 class="font-weight-bold text-success">Precio actual establecido: <span id="dolar-precio"></span></h6>
+
+			<p class="text-center">Establesca un nuevo precio.</p>
+
+			<form action="establecer_dolar" method="post">
+				@csrf
+				<div class="text-center">
+				<input type="text" placeholder="Ejem: 310000" name="precio">
+				BS
+				<button class="btn btn-primary" type="submit">Establecer</button>
+				</div>
+			</form>
+
+	      	</div>
+	      
+    	</div>
+  	</div>
+</div>
 
 <form class="d-none" id="logoutform" method="post" action="/logout">
 	@csrf

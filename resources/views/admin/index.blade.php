@@ -20,6 +20,14 @@
 					<p class="lead">{{ucfirst(Carbon::now()->isoFormat('dddd, LL'))}}</p>
 				</div>
 				<div class="card-body">
+					<!--RANGO DE FECHAS-->
+					<div class="text-right my-3">
+						<form action="/admin" method="get">
+							<input type="text" name="fechas" id="fechas">
+							<button type="submit" class="btn btn-primary">Filtrar</button>
+						</form>
+					</div>
+
 					<div class="table-responsive">
 						<table class="table text-center table-sm table-hover table-bordered">
 							<thead>
@@ -35,15 +43,26 @@
 							<tbody>
 								@forelse($ventas as $venta)
 									<tr>
-										<td>{{$venta->code}}</td>
-										<td>{{$venta->amount}}</td>
-										<td>{{$venta->user->id}}</td>
-										<td></td>
-										<td id="dispatched-{{$venta->id}}">{{$venta->dispatched}}</td>
+										<td><a href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}">FC-000{{$venta->id}}</a></td>
+										<td>{{$venta->amount}} <br> <span class="small font-weight-bold text-success">{{round(number_format($venta->amount / $venta->dolar->price, 2, ',', '.'))}}$</span></td>
+										<td><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">C-00{{$venta->user->id}}</a></td>
+										@if($venta->dispatched != null)
+										<td>{{\Carbon\Carbon::createFromTimeStamp(strtotime($venta->dispatched))->diffForHumans()}}</td>
+										@else
+										<td><b class="small font-weight-bold">Sin confirmado</b></td>
+										@endif
+										@if($venta->dispatched != null)
+										
+											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>	
+										@else
+										<td  class="small font-weight-bold">Sin confirmar</td>
+										@endif
 										<td>
 											
 											<button class="btn btn-success" data-toggle="modal" data-target="#checkModal-{{$venta->id}}"><i class="fas fa-check"></i></button>
-											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+											<!--
+											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+											-->
 											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
 												<i class="fas fa-coins"></i>
 											</button>
@@ -65,8 +84,10 @@
 									        <p>¿Esta seguro que desea confirmar el pedido?</p>
 									      	</div>
 									    	<div class="modal-footer">
-									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-									        	<button type="button" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}})">Si</button>
+									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+									        	
+									        	<button type="button" class="btn btn-danger" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'denegado')">Denegado</button>
+									        	<button type="button" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'aprobado')">Aprobado</button>
 									      	</div>
 									    </div>
 									  </div>
@@ -86,9 +107,9 @@
 												@if($venta->attached_file)
 												<div id="captura-{{$venta->id}}">
 													<h6 class="font-weight-bold">Captura</h6>
-													
+													<a href="{{ url('storage/'.$venta->attached_file) }}">
 													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
-													
+													</a>
 												</div>
 												@endif
 												@if($venta->payment_reference_code)
@@ -117,7 +138,12 @@
 
 								@endforelse
 							</tbody>
+							
 						</table>
+
+						<div class="float-right">
+							<p >{{$ventas->render()}}</p>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -146,14 +172,19 @@
 		$('#loading').fadeOut()
 	})
 
-	function hideModalCheck(id){
+	function hideModalCheck(id, confirmacion){
 		//console.log(id)
 
-		$.ajax(`/admin/confirmar-pedido/${id}`, { method: 'put' })
+		$.ajax({url: `/admin/confirmar-pedido/${id}`, type: 'put', data: {confirmacion: confirmacion} })
 			.done((res) => {
-				//console.log(res)
-				$('#dispatched-'+id).text(res);
+				console.log(res)
+				if (res == "confirmado") {
 
+					toastr.error('esta venta ya ha sido confirmada')
+				}else{
+
+				$('#dispatched-'+id).text(res);
+				}
 			})
 			.catch((err) => {
 				toastr.error('Ha ocurrido un error')

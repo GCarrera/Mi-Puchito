@@ -115,11 +115,7 @@
 					<dt><i class="far fa-envelope" style="color: #dc3545; font-size: 1.5em;" ></i></dt>
 					<dd>comercialmipuchitoca@gmail.com</dd>
 				</dl>
-				<dl class="contact-list">
-					<dt><i class="fab fa-whatsapp" style="color: #28a745; font-size: 1.5em;"></i></dt>
-					<dd><a href="https://api.whatsapp.com/send?phone=584243372191" target="_blank">0424-337-2191</a>
-					</dd>
-				</dl>
+				
 			</div>
 			<div class="col-md-4 col-xl-4 mt-5">
 				<i class="fas fa-search" style="font-size: 4.5em;"></i>
@@ -143,20 +139,30 @@
 		</div>
 	</div>
     <div class="row no-gutters social-container">
-		<div class="col-4 text-center mb-3">
+		<div class="col-3 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.facebook.com/mipuchitoca-113161223702409/">
 				<i class="fab fa-3x text-center fa-facebook"></i>
 			</a>
 		</div>
-		<div class="col-4 text-center mb-3">
+		<div class="col-2 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
 
 				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; overflow-y: hidden;">
 			</a>
 		</div>
-		<div class="col-4 text-center mb-3">
+		<div class="col-2 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://twitter.com/MipuchitoCa">
 				<i class="fab fa-3x fa-twitter"></i>
+			</a>
+		</div>
+		<div class="col-2 text-center mb-3">
+			<a class="social-inner" target="_blank" href="https://api.whatsapp.com/send?phone=584243372191">
+				<i class="fab fa-3x fa-whatsapp" style="color: #28a745;"></i>
+			</a>
+		</div>
+		<div class="col-3 text-center mb-3">
+			<a class="social-inner" target="_blank" href="https://mail.google.com/">
+				<i class="far fa-3x fa-envelope" style="color: #dc3545;" ></i>
 			</a>
 		</div>
     </div>

@@ -11,7 +11,7 @@
 	</div>
 </div>
 
-<img src="/img/banner1.png" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">
+<img data-original="/img/banner1.png" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">
 
 <div class="container-fluid my-5 animated wrapper">
 
@@ -73,22 +73,22 @@
 					
 						<div class="card-body">
 							
-							<img style="height: 200px; object-fit: contain" src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
-								
+							<img style="height: 200px; object-fit: contain" data-original='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+							@if($producto->product['oferta'] == 1)
+							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+							@endif	
 							<h5 class="card-title text-center font-weight-bold">{{ $producto->product_name }}</h5>
-							<p class="font-weight-light text-center">{{ $producto->description }}</p>
-									
-									
+														
 							<div class="text-center">
-								<span class="font-weight-light">Precio: {{ number_format($producto->product['retail_total_price '] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
+								<span class="font-weight-light">Subtotal: {{ number_format($producto->product['retail_total_price'] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
 								<br>
-								<span class="font-weight-light">I.V.A: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>
-								<span class="lead font-weight-bold"><small>Total: </small>{{ number_format($producto->product['retail_total_price'], 2, ',', '.') }} Bs</span>
+								<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>
+								<span class="font-weight-normal">Total:{{ number_format($producto->product['retail_total_price'], 2, ',', '.') }} Bs</span>
+								<p class="text-right text-success">Dolares:{{ number_format($producto->product['retail_total_price'] / $dolar->price, 2, ',', '.')}}$</p>
 							</div>
 							<!--botones de comprar y listar-->
 							@auth
-							<div class="row text-center">
-								<div class="col-6">
+						
 									<button 
 										data-id="{{ $producto->product->id }}" 
 										class="btn btn-block addToWishlist"
@@ -97,46 +97,48 @@
 
 										>
 											<i class="fa fa-heart" style="color: #dc3545;"></i>
+											<b class="text-danger">Lista de Deseos</b>
 									</button>
-										<b>Lista de Deseos</b>
-								</div>
+										
+								
 								@if(isset($respuesta) && $respuesta != 0)
-								<div class="col-6">
+								
 									<button
 										type="button"
-										class="btn btn-block addCartBtn"
+										class="btn btn-block btn-primary addCartBtn"
 										data-id="{{ $producto->id }}"
 										data-producto="{{ $producto->product_name }}"
 										data-precio="{{ $producto->product->retail_total_price }}"
 										data-type="al-menor"
 										data-cantidad="1"
 									>
-										<i class="fas fa-check" style="color: #28a745;"></i>
+										<i class="fas fa-check"></i>
+
 									</button>
-									<b>Producto agregado</b>
-								</div>
+									
+								
 								
 								@else
-								<div class="col-6">
+								
 								<button
 										type="button"
-										class="btn btn-block addCartBtn"
+										class="btn btn-block btn-primary addCartBtn"
 										data-id="{{ $producto->id }}"
 										data-producto="{{ $producto->product_name }}"
 										data-precio="{{ $producto->product['retail_total_price']}}"
 										data-type="al-menor"
 										data-cantidad="1"
 								>
-									<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+									<i class="fas fa-shopping-cart"></i>
+									<b class="texto-carrito">Comprar</b>
 								</button>
-								<b class="texto-carrito">Agregar al carrito</b>
-								</div>
+								
+							
 								@endif
-							</div>
+						
 							@else
 							<div class="">
-									<div class="row text-center">
-										<div class="col-6">
+									
 											<button 
 												onclick="buttonPressed('wish')" 
 												type="button" 
@@ -145,22 +147,22 @@
 												data-toggle="tooltip"
 											>
 												<i class="fa fa-heart" style="color: #dc3545;"></i>
+												<b class="text-danger">Lista de Deseos</b>
 											</button>
 
-											<b>Lista de Deseos</b>
-										</div>
-										<div class="col-6">
+											
+									
 											<button 
 												onclick="buttonPressed('cart')" 
-												class="btn btn-block"
+												class="btn btn-block btn-primary"
 												data-title="Comprar" 
 												data-toggle="tooltip"
 											>
 												<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+												<b>Comprar</b>
 											</button>
-											<b>Agregar al carrito</b>
-										</div>
-									</div>
+											
+						
 							</div>
 							@endauth		
 						</div>
@@ -182,47 +184,50 @@
 					<div class="card shadow-sm mb-4 w-100">
 						<div class="card-body">
 
-							<img style="height: 200px; object-fit: contain" src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+							<img style="height: 200px; object-fit: contain" data-original='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+							@if($producto->product['oferta'] == 1)
+							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+							@endif
 							<h5 class="card-title text-center font-weight-bold">{{ $producto->product_name }}</h5>
-							<p class="font-weight-light text-center">{{ $producto->description }}</p>
 							<div class="text-center">
 								<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->unit_type) }}<br>
 								<span class="font-weight-bold">Cantidad: </span>{{ $producto->qty_per_unit }} <br>
 								<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->product['wholesale_total_individual_price'], 2, ',', '.') }} <br>
 								<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->product['wholesale_packet_price'] - $producto->product['wholesale_iva_amount']), 2, ',', '.') }} <br>
 								<span class="font-weight-bold">Iva: </span>{{number_format($producto->product['wholesale_iva_amount'], 2, ',', '.')  }} <br>
+								<p class="lead font-weight-normal">Total: {{ number_format($producto->product['wholesale_total_packet_price'], 2, ',', '.') }} Bs</p>
 							</div>
-							<p class="lead font-weight-normal">{{ number_format($producto->product['wholesale_total_packet_price'], 2, ',', '.') }} Bs</p>
+							<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
+							
 							<!--BOTONES DE LISTA DE DESEOS Y COMPRAR-->
 							@auth
-							<div class="row no-gutters text-center">
-									<div class="col-6">
+		
 										<button data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
 											<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-											<b class="d-block">Lista de deseos</b>
+											<b class="d-block text-danger">Lista de deseos</b>
 										</button>
-									</div>
+								
 									@if(isset($respuesta) && $respuesta != 0)
-									<div class="col-6">
+									
 										<button
 											type="button"
-										class="btn btn-block addCartBtn"
+										class="btn btn-block btn-primary addCartBtn"
 										data-id="{{ $producto->id }}"
 										data-producto="{{ $producto->product_name }}"
 										data-precio="{{ $producto->product->wholesale_total_packet_price }}"
 										data-type="al-mayor"
 										data-cantidad="1"
 										>
-											<i class="fas fa-check" style="color: #28a745;"></i>
+											<i class="fas fa-check"></i>
 										</button>
-										<b>Producto agregado</b>
-									</div>
+										
+									
 										
 									@else
-									<div class="col-6">
+									
 										<button
 											type="button"
-											class="btn btn-block addCartBtn"
+											class="btn btn-block btn-primary addCartBtn"
 											data-id="{{ $producto->id }}"
 											data-producto="{{ $producto->product_name }}"
 											data-precio="{{ $producto->product['wholesale_total_packet_price'] }}"
@@ -231,15 +236,14 @@
 										>
 
 											<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
+											<b>Comprar</b>
 										</button>
-										<b class="texto-carrito">Agregar al carrito</b>
-									</div>
+								
 									@endif
-							</div>
+						
 							@else
 							<div class="">
-									<div class="row text-center">
-										<div class="col-6">
+									
 											<button 
 												onclick="buttonPressed('wish')" 
 												type="button" 
@@ -248,22 +252,21 @@
 												data-toggle="tooltip"
 											>
 												<i class="fa fa-heart" style="color: #dc3545;"></i>
+												<b class="text-danger">Lista de Deseos</b>
 											</button>
 
-											<b>Lista de Deseos</b>
-										</div>
-										<div class="col-6">
+										
 											<button 
 												onclick="buttonPressed('cart')" 
-												class="btn btn-block"
+												class="btn btn-block btn-primary"
 												data-title="Comprar" 
 												data-toggle="tooltip"
 											>
 												<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+												<b>Comprar</b>
 											</button>
-											<b>Agregar al carrito</b>
-										</div>
-									</div>
+											
+									
 							</div>
 							@endauth		
 						</div>
@@ -374,7 +377,7 @@
 				}
 
 				that.removeAttr('disabled')
-				that.html('<i class="fas fa-check" style="color: #28a745;"></i>')
+				that.html('<i class="fas fa-check"></i>')
 				$('.texto-carrito').text("Producto agregado");
 			})
 			.fail((err) => {

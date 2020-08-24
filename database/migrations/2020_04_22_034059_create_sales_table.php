@@ -17,9 +17,12 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->string('code');
             // $table->string('type');
+            $table->string('sub_total')->nullable();
+            $table->string('iva')->nullable();
             $table->string('amount');
             $table->dateTime('dispatched', 0)->nullable();
             $table->string('payment_reference_code')->nullable();
+            $table->string('confirmacion')->nullable();
             $table->integer('count_product');
             // $table->string('payment_capture');
             $table->string('delivery')->default('No');

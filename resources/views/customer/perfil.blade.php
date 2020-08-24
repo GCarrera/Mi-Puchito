@@ -21,10 +21,8 @@
 			<div class="card">
 				<div class="card-body p-0">
 					<div class="list-group shadow-sm" id="list-tab" role="tablist">
-						<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">
-							<i class="fas fa-user-cog icon-width"></i>Perfil
-						</a>
-						<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
+					
+						<a class="list-group-item list-group-item-action active" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
 							<i class="fas fa-road icon-width"></i>Dirección de entregas
 						</a>
 						<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">
@@ -37,6 +35,34 @@
 							<i class="fas fa-star icon-width"></i>Valoraciones
 						</a> --}}
 					</div>
+				</div>
+			</div>
+
+			<div class="card shadow">
+												
+				<div class="card-body">
+				
+					
+					<div class="row">
+						<div class="col-3 col-sm-3 col-md-1 col-lg-12 col-xl-3">
+							<div class="row">
+								<div class="col-lg-6 col-xl-12">
+								<i class="far fa-user" style="font-size: 5em;"></i>
+								</div>
+								<div class="col-lg-6 col-xl-12">
+								<button class="mt-2 btn btn-primary mt-3" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="col-9 col-sm-9 col-md-11 col-lg-12 col-xl-9">
+							<p class="font-weight-bold h4"><span>{{ $user->people->name }}</span> <span>{{ $user->people->lastname }}</span></p>
+							<p><i class="far fa-envelope" style="color: #dc3545;"></i> {{ $user->email }}</p>
+							<p><i class="fas fa-phone"></i> {{ $user->people->phone_number }}</p>
+							<p><i class="far fa-id-badge" style="color: #007bff;"></i> {{ $user->people->dni }}</p>
+						</div>
+						
+					</div>
+				
 				</div>
 			</div>
 		</div>
@@ -53,18 +79,21 @@
 				</div>
 			</div>
 
-			<div class="card mb-4 shadow-sm">
-				<div class="card-body">
-					<div class="tab-content" id="nav-tabContent">
-						<div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+			<!-- Modal PARA EDITAR EL PERFIL-->
+			<div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+			  		<div class="modal-content">
+			    		<div class="modal-header">
+				        	<h5 class="modal-title" id="exampleModalLabel">Editar Perfil</h5>
+				        	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          		<span aria-hidden="true">&times;</span>
+				        	</button>
+			      		</div>
+				      	<div class="modal-body">
+				        	
+				
 							<form action="editar_perfil" method="GET">
-								<div class="row mb-4">
-									<div class="col d-flex justify-content-between">
-										<h4 class="font-weight-light">Información personal</h4>
-										<h5></h5>
-									</div>
-								</div>
-								<hr>
+
 								<div class="row mb-2">
 									<div class="col-lg-4 col-12 mb-3">
 										<label for="dni">Cédula</label>
@@ -97,16 +126,27 @@
 										<label for="password_confirmation">Confirmación de Contraseña</label>
 										<input type="password" autocomplete="off" name="password_confirmation" id="password_confirmation" class="form-control">
 									</div>
-									<div class="col-lg-12 col-12 text-center">
+									<div class="col-lg-12 col-12 text-right">
 										<button type="submit" class="btn btn-primary">
 											<i class="fas fa-edit mr-2"></i> Guardar
 										</button>
 									</div>
 								</div>
 							</form>
-						</div>
+					
 
-						<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+				      	</div>
+			   
+			   	 	</div>
+			  	</div>
+			</div>
+
+			<div class="card mb-4 shadow-sm">
+				<div class="card-body">
+					<div class="tab-content" id="nav-tabContent">
+						
+
+						<div class="tab-pane fade show active" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 							<div class="d-flex justify-content-between mb-4 align-items-center">
 								<h4 class="font-weight-light">Direcciones de entrega</h4>
 								<button class="btn btn-primary" data-toggle="modal" data-target="#nuevaDireccion">
@@ -125,12 +165,12 @@
 									<tbody>
 										@forelse($rates as $rate)
 											<tr>
-												<td>{{ $loop->iteration }}</td>
+												<td>ADSS-00{{ $rate->id }}</td>
 												<td>{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }} 
 												{{ $rate->details }}
 												{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}</td>
 												<td>
-													<button data-id="{{ $rate->id }}" class="btn btn-warning address_edit"><i class="fas fa-edit"></i></button>
+													<button data-id="{{ $rate->id }}" class="btn btn-primary address_edit"><i class="fas fa-edit"></i></button>
 													<form action="{{route('direcciones.destroy', $rate->id)}}" method="post" class="d-inline">
 														@method('DELETE')
 														@csrf
@@ -146,6 +186,7 @@
 										@endforelse
 									</tbody>
 								</table>
+							
 							</div>
 						</div>
 
@@ -172,9 +213,9 @@
 									<tbody>
 										@forelse($pedidos as $compra)
 											<tr>
-												<td class="d-none d-md-table-cell">{{ $compra->id }}</td>
+												<td class="d-none d-md-table-cell">FC-000{{ $compra->id }}</td>
 												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
-												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold">{{$compra->amount/$compra->dolar->price, 2, ',', '.'}}$</small></td>
+												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold" style="color: #008080">{{round($compra->amount/$compra->dolar->price)}}$</small></td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 												@else
@@ -186,9 +227,27 @@
 													@endif
 												@endif
 												@if ($compra->dispatched != null)
-												<td class="d-none d-md-table-cell">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
+											
+													@if($compra->confirmacion == "denegado")
+															
+													<td class="font-weight-bold small">{{$compra->confirmacion}}
+													<button type="button" class="ml-2 btn btn-danger" data-toggle="modal" data-target="#modal-denegado">
+														<i class="fas fa-info"></i>
+													</button>
+													</td>
+													@else
+														@if($compra->delivery == "si")
+														<td class="d-none d-md-table-cell small font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
+														@else
+														<td><label class="font-weight-bold small">Puede retirar 
+														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">
+														<i class="fas fa-info"></i>
+														</button>
+														</label></td>
+														@endif
+													@endif
 												@else
-												<td class="d-none d-md-table-cell">No</td>
+												<td class="d-none d-md-table-cell"><label class="font-weight-bold small">Esperando confirmación</label></td>
 												@endif
 												
 												<td>
@@ -248,8 +307,52 @@
 												<td colspan="5">No hay información para mostrar.</td>
 											</tr>
 										@endforelse
+
+										<!-- Modal -->
+										<div class="modal fade" id="modal-direccion" tabindex="-1" aria-labelledby="modal-direccion" aria-hidden="true">
+											<div class="modal-dialog">
+										    	<div class="modal-content">
+										    		<div class="modal-header">
+										        		<h5 class="modal-title" id="exampleModalLabel">Dirección</h5>
+										        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										        		<span aria-hidden="true">&times;</span>
+										        		</button>
+										    		</div>
+											    	<div class="modal-body">
+											        <p>Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</p>
+											      	</div>
+											      	<div class="modal-footer">
+											        	
+											        	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+											      	</div>
+										    	</div>
+										  	</div>
+										</div>
+
+										<!-- Modal DENEGADO -->
+										<div class="modal fade" id="modal-denegado" tabindex="-1" aria-labelledby="modal-denegado" aria-hidden="true">
+											<div class="modal-dialog">
+										    	<div class="modal-content">
+										    		<div class="modal-header">
+										        		<h5 class="modal-title" id="exampleModalLabel">Informacion</h5>
+										        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										        		<span aria-hidden="true">&times;</span>
+										        		</button>
+										    		</div>
+											    	<div class="modal-body">
+											        <p>Para más informacion comuniquese con nosotros via whatsapp <br> +58-424-337-2191</p>
+											      	</div>
+											      	<div class="modal-footer">
+											        	
+											        	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+											      	</div>
+										    	</div>
+										  	</div>
+										</div>
+
 									</tbody>
 								</table>
+								
 							</div>
 						</div>
 						
@@ -261,14 +364,15 @@
 									<h4 class="font-weight-bold">Ofertas</h4>
 								</div>
 								<div class="col-md-3">
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" {{ Request::get('buyType') == 'major' ? 'checked' : '' }} type="radio" name="buyType" id="alMayor" value="major">
-										<label class="form-check-label" for="alMayor">al mayor</label>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input" {{ Request::get('buyType') != 'major' ? 'checked' : '' }} type="radio" name="buyType" id="alMenor" value="minor">
-										<label class="form-check-label" for="alMenor">al menor</label>
-									</div>
+									<ul class="nav nav-pills">
+										<li class="nav-item">
+											<a class="nav-link {{ Request::get('buyType') == 'major' ? 'active' : 'normal' }}" href="{{url('/perfil/?buyType=major')}}">Al mayor</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link {{ Request::get('buyType') != 'major' ? 'active' : 'normal' }}" href="{{url('/perfil/?buyType=minor')}}">Al menor</a>
+										</li>
+									</ul>
+					
 								</div>
 							</div>
 
@@ -294,29 +398,26 @@
 									@endphp
 
 									<div class="card shadow">
-										<div class="card-body">
+										<div class="card-body body-producto">
 											
-											<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
+											<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
 												@if($producto->oferta == 1)
-												<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 												@endif
 												<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->inventory->product_name }}</h5>
 
 												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-												<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="font-weight-bold">{{number_format($producto->retail_total_price - $producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
-												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="font-weight-bold">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6> 
+												<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span >{{number_format($producto->retail_total_price - $producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
+												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6> 
 												
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center"  style="margin-bottom: 0px;">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
 
-												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
-												<p class="text-center">{{ $producto->inventory->description}}</p>		
+												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>	
 
-											
-												
+														
 												<div class="">
-													<div class="row text-center">
-														<div class="col-6">
+													
 															<button 
 																id="deseos-{{ $producto->id }}"
 																data-id="{{ $producto->id }}" 
@@ -326,32 +427,33 @@
 
 															>
 																<i class="fa fa-heart" style="color: #dc3545;"></i>
+																<b for="deseos-{{ $producto->id }}" class="text-danger">Lista de Deseos</b>
 															</button>
-															<label for="deseos-{{ $producto->id }}">Lista de Deseos</label>
-														</div>
+															
+														
 														@if(isset($respuesta) && $respuesta != 0)
-														<div class="col-6">
+														
 															<button
 																id="comprar-{{ $producto->id }}"
 																type="button"
-																class="btn btn-block addCartBtn"
+																class="text-center btn btn-block btn-primary addCartBtn"
 																data-id="{{ $producto->inventory->id }}"
 																data-producto="{{ $producto->inventory->product_name }}"
 																data-precio="{{ $producto->retail_total_price }}"
 																data-type="al-menor"
 																data-cantidad="1"
 															>
-																<i class="fas fa-check" style="color: #28a745;"></i>
+																<i class="fas fa-check" ></i>
 															</button>
-															<label for="comprar-{{ $producto->id }}">Producto agregado</label>
-														</div>
+															
+														
 														
 														@else
-														<div class="col-6">
+													
 															<button
 																id="comprar-{{ $producto->id }}"
 																type="button"
-																class="btn btn-block addCartBtn"
+																class="text-center btn btn-block btn-primary addCartBtn"
 																data-id="{{ $producto->inventory->id }}"
 																data-producto="{{ $producto->inventory->product_name }}"
 																data-precio="{{ $producto->retail_total_price }}"
@@ -359,12 +461,13 @@
 																data-cantidad="1"
 															>
 																<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
+																<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar<b>
 															</button>
-															<label for="comprar-{{ $producto->id }}" class="texto-carrito">Agregar al carrito</label>
-														</div>
+															
+														
 														@endif
-													</div>
-												</div>
+												
+											</div>
 													
 
 											</div>
@@ -387,10 +490,10 @@
 
 								<div class="card shadow-sm">
 									
-									<img style="height: 200px; object-fit: contain" src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
+									<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 									<div class="card-body body-producto">
 										@if($producto->oferta == 1)
-										<span class="badge badge-danger" style="font-size: 1.5em;">Oferta</span>
+										<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 										@endif
 										<h5 class="card-title font-weight-bold text-center">{{ $producto->inventory->product_name }}</h5>
 
@@ -402,55 +505,51 @@
 											<span class="font-weight-bold small">Iva: </span>{{number_format($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit, 2, ',', '.')  }} <br>
 										</p>
 
-										<p class="lead font-weight-normal text-center">{{ number_format($producto->wholesale_total_packet_price + ($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit), 2, ',', '.') }} Bs</p>
+										<p class="lead font-weight-normal text-center">Total: {{ number_format($producto->wholesale_total_packet_price + ($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit), 2, ',', '.') }} Bs</p>
 
 										<p class="text-right text-success">Dolares:{{ number_format($producto->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
-										<p class="text-center">{{ $producto->inventory->description}}</p>
-
-								
-										<div class="row text-center">
-
-											<div class="col-6">
+		
 												<button id="deseos-{{ $producto->id }}" data-id="{{ $producto->inventory->id }}" class="btn btn-block mb-2 addToWishlist">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-													<label for="deseos-{{ $producto->id }}" class="d-block">Lista de deseos</label>
+													<b for="deseos-{{ $producto->id }}" class=" text-danger">Lista de deseos</b>
 												</button>
-											</div>
+											
 											@if(isset($respuesta) && $respuesta != 0)
-												<div class="col-6">
+										
 													<button
 														id="comprar-{{ $producto->id }}"
 														type="button"
-														class="btn btn-block addCartBtn"
+														class="text-center btn btn-block btn-primary addCartBtn"
 														data-id="{{ $producto->inventory->id }}"
 														data-producto="{{ $producto->inventory->product_name }}"
 														data-precio="{{ $producto->wholesale_total_packet_price }}"
 														data-type="al-mayor"
 														data-cantidad="1"
 													>
-														<i class="fas fa-check" style="color: #28a745;"></i>
+														<i class="fas fa-check" ></i>
 													</button>
-													<label for="comprar-{{ $producto->id }}">Producto agregado</label>
-												</div>
+												
+												
 													
 											@else
-											<div class="col-6">
+										
 												<button
 													id="comprar-{{ $producto->id }}"
 													type="button"
-													class="btn btn-block addCartBtn"
+													class="text-center btn btn-block btn-primary addCartBtn"
 													data-id="{{ $producto->inventory->id }}"
 													data-producto="{{ $producto->inventory->product_name }}"
 													data-precio="{{ $producto->wholesale_total_packet_price }}"
 													data-type="al-mayor"
 													data-cantidad="1"
 												>
-													<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
+													<i class="fas fa-shopping-cart mr-2"></i>
+													<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</b>
 												</button>
-												<label for="comprar-{{ $producto->id }}" class="texto-carrito">Agregar al carrito</label>
-											</div>
+												
+										
 											@endif
-										</div>
+										
 
 									</div>
 								</div>
@@ -459,6 +558,9 @@
 								@endif
 								</div>
 								@endforeach
+								<div class="float-right">
+									{{$productos->render()}}
+								</div>
 							</div>
 								
 						</div>

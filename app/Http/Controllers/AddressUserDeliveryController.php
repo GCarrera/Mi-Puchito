@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\AddressUserDelivery;
 use App\TravelRate;
+use DB;
 
 class AddressUserDeliveryController extends Controller
 {
@@ -29,24 +30,33 @@ class AddressUserDeliveryController extends Controller
 
 		$user_address->save();
 		*/
-		if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
-			$address_delivery = new AddressUserDelivery();
-			$address_delivery->user_id = $user_id;
+		try{
+			DB::beginTransaction();
 
-				if ($req->forma_delivery == 1 ) {
-					$address_delivery->details =  $req->direc_descrip_area;
-				}else{
-					$travel = new TravelRate();
-					$travel->sector_id = $req->sector_id;
-					$travel->save();
+			if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
+				$address_delivery = new AddressUserDelivery();
+				$address_delivery->user_id = $user_id;
 
-					$address_delivery->details =  $req->detalles;
-					$address_delivery->travel_rate_id = $travel->id;
-				}
+					if ($req->forma_delivery == 1 ) {
+						$address_delivery->details =  $req->direc_descrip_area;
+					}else{
+						$travel = new TravelRate();
+						$travel->sector_id = $req->sector_id;
+						$travel->save();
 
-			$address_delivery->save();
+						$address_delivery->details =  $req->detalles;
+						$address_delivery->travel_rate_id = $travel->id;
+					}
+
+				$address_delivery->save();
+			}
+
+			DB::commit();
+		}catch(Exception $e){
+
+			DB::rollback();
+
 		}
-
 		return back()->with('success', 'Dirección guardada correctamente.');
 	}
 
@@ -64,13 +74,22 @@ class AddressUserDeliveryController extends Controller
 
 	public function destroy($id)
 	{
-		$address = AddressUserDelivery::findOrFail($id);
-		if ($address->travel_rate_id != null) {
+		try{
+			DB::beginTransaction();
+			
+			$address = AddressUserDelivery::findOrFail($id);
+			if ($address->travel_rate_id != null) {
 
-			$rate = TravelRate::findOrFail($address->travel_rate_id);
-			$rate->delete();
+				$rate = TravelRate::findOrFail($address->travel_rate_id);
+				$rate->delete();
+			}
+			$address->delete();
+
+			DB::commit();
+		}catch(Exception $e){
+
+			DB::rollback();
 		}
-		$address->delete();
 
 		return back()->with('success', 'Direccion eliminada correctamente');
 	}

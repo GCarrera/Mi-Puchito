@@ -32,7 +32,8 @@ class CustomerController extends Controller
 			$search = str_replace("+", " ", $request->search); 
 			$data = Category::select('id', 'name')
 			->with(['inventory' => function($inventory) use($request, $search) {
-				$inventory->with(['product' => function($product) {
+				//EL TAKE DETERMINA LA CANTIDAD DE PRODUCTOS A MOSTRAR
+				$inventory->take(20)->with(['product' => function($product) {
 					if ($product != NULL) {
 					
 					}
@@ -142,7 +143,8 @@ class CustomerController extends Controller
 		$empresas   = Enterprise::all();
 
 		$products   = Product::all();
-	
+		
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		$data = Category::with(['inventory' =>  function($inventory){
 			//STATUS 1 ESPECIFICO QUE ESTE HABILITADO PARA LA VENTA
@@ -155,11 +157,11 @@ class CustomerController extends Controller
 			// \Cart::session($userId)->clear();
 			$carrito   = \Cart::session($user->id)->getContent();
 
-			return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito'));
+			return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito', 'dolar'));
 		}else{
 
 		//return $data;
-			return view('customer.category_product', compact('data','categorias', 'empresas'));
+			return view('customer.category_product', compact('data','categorias', 'empresas', 'dolar'));
 		}
 	}
 }

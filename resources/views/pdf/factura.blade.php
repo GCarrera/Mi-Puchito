@@ -30,18 +30,19 @@
                             <br>
                             <span><span class="font-weight-bold">Teléfonos empresarial:</span> 0424-3622054</span>
                             <br>
-                            <span><span class="font-weight-bold">Esta factura fue emitida:</span> {{$pedido->created_at}}</span>
+                        </div>   
+                        <div class="mt-3">
+                            <span class="float-left"><span class="font-weight-bold">Esta factura fue emitida:</span> {{$pedido->created_at}}</span>
                             
-                            <span><span class="text-danger">N°Factura:</span> <span style="font-size: 1.2em;">{{$pedido->code}}</span></span>
+                            <span class="float-right"><span class="text-danger">N°Factura:</span> <span style="font-size: 1.2em;">FC-000{{$pedido->id}}</span></span>
+                        </div>
                             <br>
-                            <span><span class="font-weight-bold">Cliente:</span> {{$pedido->user->people->name}}</span>
+                            <span><span class="font-weight-bold">Cliente:</span> {{$pedido->user->people->name}}</span><br>
                             <span><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</span>
-                        </div> 
-
 
                     <!--TABLA DE PRODUCTOS-->
     
-                    <table class="table table-striped table-bordered mt-5">
+                    <table class="table table-striped table-bordered mt-3">
                         <thead class="bg-info text-white">
                             <tr>
                                 <th>Producto</th>
@@ -58,15 +59,15 @@
             
                                 @if($producto->type == "al-mayor")
                                 <td>{{$producto->quantity . " " .$producto->product->inventory->unit_type}}</td>
-                                <td>{{$producto->product->wholesale_packet_price}}</td>
-                                <td>{{number_format($producto->product->wholesale_iva_amount * $producto->product->inventory->qty_per_unit, 2, ',', '.') }}</td>
-                                <td>{{number_format(($producto->product->wholesale_packet_price * $producto->quantity) + ($producto->product->wholesale_iva_amount * $producto->product->inventory->qty_per_unit * $producto->quantity), 2, ',', '.') }}</td>
+                                <td>{{$producto->sub_total / $producto->quantity}}</td>
+                                <td>{{number_format($producto->iva / $producto->quantity, 2, ',', '.') }}</td>
+                                <td>{{number_format($producto->amount, 2, ',', '.') }}</td>
        
                                 @else
                                 <td>{{$producto->quantity . " " .$producto->product->inventory->unit_type_menor}}</td>
-                                <td>{{$producto->product->retail_total_price - $producto->product->retail_iva_amount}}</td>
-                                <td>{{number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</td>
-                                <td>{{number_format(($producto->product->retail_total_price  * $producto->quantity), 2, ',', '.') }}</td>                         
+                                <td>{{$producto->sub_total / $producto->quantity}}</td>
+                                <td>{{number_format($producto->iva / $producto->quantity, 2, ',', '.') }}</td>
+                                <td>{{number_format(($producto->amount), 2, ',', '.') }}</td>                         
                                 @endif
                                 
                             </tr>
@@ -77,15 +78,12 @@
                     <div class="text-center" style="width: 70%; position: absolute; bottom: 0px; left: 100px;">   
                         <p class="font-weight-bold text-center" style="font-size: 1.5em;">Gracias por su compra siganos en instragram @Mipuchito.Ca</p>
                     </div>
-
-                    <span class="text-left"><span class="font-weight-bold">Subtotal:</span><span>{{number_format($subtotal, 2, ',', '.') }} Bs.<span></span>
-                    <p class="text-left"><span class="font-weight-bold">IVA:</span><span>{{number_format($iva, 2, ',', '.') }} Bs.<span></p>
-                    <span class="text-left"><span class="font-weight-bold">Total a pagar:</span><span>{{number_format($pedido->amount, 2, ',', '.')}} Bs.<span></span>
-                    <p class="text-left" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{number_format( ($pedido->amount/$pedido->dolar->price), 2, ',', '.')}}$.<span></p>
-              
-                    
-                    
-                    <br>
+                    <div class="text-right">
+                        <span class=""><span class="font-weight-bold">Subtotal:</span><span>{{number_format($pedido->sub_total, 2, ',', '.') }} Bs.<span></span>
+                        <p class=""><span class="font-weight-bold">IVA:</span><span>{{number_format($pedido->iva, 2, ',', '.') }} Bs.<span></p>
+                        <span class=""><span class="font-weight-bold">Total a pagar:</span><span>{{number_format($pedido->amount, 2, ',', '.')}} Bs.<span></span>
+                        <p class="" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{round($pedido->amount/$pedido->dolar->price)}}$.<span></p>
+                    </div>
                     
       
     </body>
