@@ -58,11 +58,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 <div style="margin-top: 4%"></div>
 
-<!--<img data-original="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
+<!--<img data-src="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
 <div id="img-carrito">
 	<div class="row align-items-center h-100">
 		<div class="col-12">
-			<h1 class="text-center text-white font-weight-bold" style="font-size: 7em;">Carrito de compra</h1>
+			<h1 class="text-center text-white font-weight-bold" style="font-size: 5em;">Carrito de compra</h1>
 		</div>
 	</div>
 </div>
@@ -105,7 +105,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							
 
 										<div class="d-flex justify-content-start">
-											<img data-original="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
+											<img data-src="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
 											<p class="small">
 												<span class="font-weight-bold">{{ $c->name }}</span><br>
 
@@ -125,7 +125,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
 											</button>
 										<p class="text-muted small text-center">CANTIDAD</p>
-										<div class="input-group mb-3 padre">
+										<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 											<div class="input-group-prepend">
 												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
@@ -162,7 +162,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										@if($c->attributes->sale_type == 'al-mayor')
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
 											<P class="text-muted small text-center">
-												<span class="preciopvp">{{ number_format(($c->attributes->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> c/u
+												<span class="preciopvp">{{ number_format(($c->attributes->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> Bs
 											</P>
 											<br>
 											{{--<span class="text-muted small">
@@ -173,14 +173,14 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->cost }}">
 											<p class="text-center">
 											<span class="text-muted small">
-												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> c/u
+												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> Bs
 											</span>
 											</p>
-											<br>
+											<!--<br>-->
 											{{-- <span class="text-muted small">
 												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{ number_format($c->attributes->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
 											</span> --}}
-											<br>
+											<!--<br>-->
 										@endif
 									</div>
 									
@@ -188,6 +188,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<p class="text-muted small text-center">DESCRIPCIÓN</p>
 										<p class="font-weight-normal precio text-center">{{ $c->associatedModel->inventory->description }}</p>
 										<br>
+										@if($c->attributes->sale_type == 'al-mayor')
+										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->associatedModel->inventory->quantity) }}</p>
+										@else
+										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->associatedModel->inventory->total_qty_prod) }}</p>
+										@endif
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
 										<p class="text-muted small">CALIFICAR</p>
@@ -263,17 +268,25 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span><span id="ivatotal">{{ number_format($ivatotal, 2, ',', '.') }}</span> Bs</span>
 						</div>
 					</div>
-					<div class="row mb-3 no-gutters">
+					<div class="row mb-1 no-gutters">
 						<div class="col-4">
 							<span class="font-weight-bold">Total:</span>
 						</div>
 						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="montoTotal">{{ number_format($total, 2, ',', '.') }}</span> Bs</span>
 						</div>
+					</div>
+					<div class="row mb-3 no-gutters">
+						<div class="col-4">
+							<span class="font-weight-bold">Total dolares:</span>
+						</div>
+						<div class="col-8 text-right">
+							<span class="font-weight-bold"><span id="montoDolares"></span> $</span>
+						</div>
 					</div>	
 					<div class="row mb-3 no-gutters">
 						<div class="col-4">
-							<span class="font-weight-bold">Dolar a:</span>
+							<span class="font-weight-bold">Precio actual del dolar:</span>
 						</div>
 						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="dolar">{{ number_format($dolar->price, 2, ',', '.') }}</span> Bs</span>
@@ -482,8 +495,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<p id="image_weigth" class="mb-3"></p>
 		
 									<p id="imgerror" class="text-danger" style="display: none;"></p>
+
 									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
-									<label for="fileattached" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+									<label for="fileattached" class="btn btn-primary mb-0"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
 									<input id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" class="form-control-file" hidden>
 								</div>		
 							</div>
@@ -660,6 +674,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 @push('scripts')
 <script>
 	var myCart = @json($cart);
+	var dolar = @json($dolar->price)
 
 	function openModanPayMethod(){
 		
@@ -824,6 +839,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(iva)+',00')
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(total)+',00')
+		$('#montoDolares').text(new Intl.NumberFormat('de-DE').format(total / dolar))
+		//$('#montoDolares').text(dolar);
 		$('#monto').val(total)
 	}
 	
@@ -1331,7 +1348,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// 	let reader = new FileReader()
 
 		// 	reader.onload = () => {
-		// 		$('#capture_preview').attr('data-original', reader.result)
+		// 		$('#capture_preview').attr('data-src', reader.result)
 		// 		$('#capture_preview').removeClass('d-none')
 
 		// 	}

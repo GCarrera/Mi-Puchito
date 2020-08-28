@@ -12,6 +12,7 @@ use App\Delivery;
 use App\SaleDetail;
 use App\AddressUserDelivery;
 use App\TravelRate;
+use App\inventory;
 use DB;
 
 class SaleController extends Controller
@@ -48,12 +49,28 @@ class SaleController extends Controller
 		$subtotal = 0;
 		$iva = 0;
 		$total = 0;
+
+		if ($req->forma_delivery == 1) {
+
+			$validator = Validator::make($req->all(), [
+            'direc_descrip_area' => 'required|max:255',
+    
+			]);
+		}else if($req->forma_delivery == 2){
+
+			$validator = Validator::make($req->all(), [
+	            'city_id' => 'required',
+	            'sector_id' => 'required',
+	            'detalles' => 'required'
+			]);
+		}
 		
         if ($validator->fails()) {
             return redirect()->back()
                         ->withErrors($validator)
                         ->withInput();
 		}
+
 		
 		$user     = auth()->user()->id;
 		$productos = \Cart::session($user)->getContent();
@@ -120,7 +137,31 @@ class SaleController extends Controller
 					}
 
 					foreach ($productos as $producto) {
+						//VALIDACION PARA LA CANTIDAD DE PRODUCTOS DISPONIBLES
+						if ($producto->attributes->sale_type == "al-menor") {
+							$stock =$producto->associatedModel->inventory->total_qty_prod - $producto->quantity;
+							if ($stock <= 0) {
+								return redirect()->back()->withErrors(['no hay suficientes '. $producto->associatedModel->inventory->product_name. " para la venta"]);
+							}
+							//RESTAMOS DEL STOCK
+							$inventario = Inventory::findOrFail($producto->associatedModel->inventory->id);
 
+							$inventario->total_qty_prod -= $producto->quantity;
+							$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
+							$inventario->save();
+
+						}else{
+							$stock =$producto->associatedModel->inventory->quantity - $producto->quantity;
+							if ($stock <= 0) {
+								return redirect()->back()->withErrors(['no hay suficientes '. $producto->associatedModel->inventory->product_name. " para la venta"]);
+							}
+							//RESTAMOS DEL STOCK
+							$inventario = Inventory::findOrFail($producto->associatedModel->inventory->id);
+
+							$inventario->quantity -= $detalle->quantity;
+							$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
+							$inventario->save();
+						}
 						$saleDetail = new SaleDetail();
 						$saleDetail->quantity   = $producto->quantity;
 						$saleDetail->type = $producto->attributes->sale_type;

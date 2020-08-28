@@ -312,13 +312,6 @@ class AdminController extends Controller
 
 		if ($request->confirmacion != "aprobado") {
 			//return "confirmado";
-		}else{
-
-			if ($venta->confirmacion == "aprobado") {
-				return "confirmado";
-			}
-
-
 
 			foreach ($venta->details as $detalle) {
 				//BUSCAMOS EL PRODUCTO DEL CARRO
@@ -326,34 +319,33 @@ class AdminController extends Controller
 				$inventario = Inventory::findOrFail($producto->inventory_id);
 				//SI LA COMPRA ES AL MENOR
 				if ($detalle->type == "al-menor") {
+
 					
-					if ($inventario->total_qty_prod >= $detalle->quantity) {
-					
-					$inventario->total_qty_prod -= $detalle->quantity;
+					$inventario->total_qty_prod += $detalle->quantity;
 
 					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
 
 	
-					}else{
-						return redirect()->back()->withErrors(['No hay productos.']);
-					}
 				}
 				//SI LA COMPRA ES AL MAYOR
 				if ($detalle->type == "al-mayor") {
 
-					if ($inventario->quantity >= $detalle->quantity) {
 						
-						$inventario->quantity -= $detalle->quantity;
-					}else {
+						$inventario->quantity += $detalle->quantity;
+						$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
 
-						return redirect()->back()->withErrors(['No hay productos al mayor para despachar.']);
-					} 
 				}
 
 				$inventario->save();
 					
 
 			}
+		}else{
+
+			if ($venta->confirmacion == "aprobado") {
+				return "confirmado";
+			}
+
 
 		}
 		$confirmacion = $venta->dispatched = $now;
@@ -373,6 +365,34 @@ class AdminController extends Controller
 
 		if ($request->confirmacion != "aprobado") {
 			
+			foreach ($venta->details as $detalle) {
+				//BUSCAMOS EL PRODUCTO DEL CARRO
+				$producto = Product::findOrFail($detalle->product_id);
+				$inventario = Inventory::findOrFail($producto->inventory_id);
+				//SI LA COMPRA ES AL MENOR
+				if ($detalle->type == "al-menor") {
+
+					
+					$inventario->total_qty_prod += $detalle->quantity;
+
+					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
+
+	
+				}
+				//SI LA COMPRA ES AL MAYOR
+				if ($detalle->type == "al-mayor") {
+
+						
+						$inventario->quantity += $detalle->quantity;
+						$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
+
+				}
+
+				$inventario->save();
+					
+
+			}
+
 		}else{
 
 			if ($venta->confirmacion == "aprobado") {
@@ -383,40 +403,6 @@ class AdminController extends Controller
 				return "el campo tiempo estimado es obligatorio";
 			}
 			
-			foreach ($venta->details as $detalle) {
-				//BUSCAMOS EL PRODUCTO DEL CARRO
-				$producto = Product::findOrFail($detalle->product_id);
-				$inventario = Inventory::findOrFail($producto->inventory_id);
-				//SI LA COMPRA ES AL MENOR
-				if ($detalle->type == "al-menor") {
-
-					if ($inventario->total_qty_prod >= $detalle->quantity) {
-					
-					$inventario->total_qty_prod -= $detalle->quantity;
-
-					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
-
-	
-					}else{
-						return redirect()->back()->withErrors(['No hay productos.']);
-					}
-				}
-				//SI LA COMPRA ES AL MAYOR
-				if ($detalle->type == "al-mayor") {
-
-					if ($inventario->quantity >= $detalle->quantity) {
-						
-						$inventario->quantity -= $detalle->quantity;
-					}else {
-
-						return redirect()->back()->withErrors(['No hay productos.']);
-					} 
-				}
-
-				$inventario->save();
-					
-
-			}
 		}
 
 			$confirmacion = $venta->dispatched = $now;

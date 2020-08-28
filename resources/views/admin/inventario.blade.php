@@ -80,7 +80,7 @@
 								@forelse ($inventario as $producto)
 									<tr>
 										<td>{{ $producto->product_name }}</td>
-										<td>{{ $producto->total_qty_prod }}</td>
+										<td id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
 										<td>{{ $producto->enterprise->name }}</td>
 										<td>{{ $producto->category->name }}</td>
 										<td>{{ $producto->created_at }}</td>
@@ -88,8 +88,72 @@
 											<button class="btn btn-warning btn-md editProduct" data-target="#editPRoduct" data-toggle="modal" data-id="{{ $producto->id }}">
 												<i class="fas fa-edit"></i>
 											</button>
+											<button class="btn btn-primary" data-toggle="modal" data-target="#modal-sumar-{{$producto->id}}">
+												<i class="fas fa-plus"></i>
+											</button>
+											<button class="btn btn-danger" data-toggle="modal" data-target="#modal-restar-{{$producto->id}}">
+												<i class="fas fa-minus"></i>
+											</button>
 										</td>
 									</tr>
+
+
+									<!-- MODAL PARA SUMAR PRODUCTOS -->
+									<div class="modal fade" id="modal-sumar-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									  	<div class="modal-dialog">
+									    	<div class="modal-content">
+									      		<div class="modal-header">
+									        		<h5 class="modal-title" id="staticBackdropLabel">Sumar productos</h5>
+									        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									          		<span aria-hidden="true">&times;</span>
+									        		</button>
+									      		</div>
+									      		<div class="modal-body">
+									      			<label for="cantidad-sumar-{{$producto->id}}">Cantidad al menor a sumar:</label>
+									        		<div class="row">
+									        			<div class="col-6">
+
+											        		<input type="text" name="cantidad_sumar" id="cantidad-sumar-{{$producto->id}}" class="form-control" placeholder="60">
+											        		
+									        			</div>
+									        			<div class="col-6">
+									        				<button class="btn btn-primary" onclick="sumar({{$producto->id}})">Agregar</button>
+									        			</div>
+									        		</div>
+									      		</div>
+
+									    	</div>
+									  	</div>
+									</div>
+
+
+									<!-- MODAL PARA RESTAR PRODUCTOS -->
+									<div class="modal fade" id="modal-restar-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									  	<div class="modal-dialog">
+									    	<div class="modal-content">
+									      		<div class="modal-header">
+									        		<h5 class="modal-title" id="staticBackdropLabel">Restar productos</h5>
+									        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									          		<span aria-hidden="true">&times;</span>
+									        		</button>
+									      		</div>
+									      		<div class="modal-body">
+									      			<label for="cantidad-sumar-{{$producto->id}}">Cantidad al menor a restar:</label>
+									        		<div class="row">
+									        			<div class="col-6">
+
+											        		<input type="text" name="cantidad_restar" id="cantidad-restar-{{$producto->id}}" class="form-control" placeholder="60">
+											        		
+									        			</div>
+									        			<div class="col-6">
+									        				<button class="btn btn-primary" onclick="restar({{$producto->id}})">Restar</button>
+									        			</div>
+									        		</div>
+									      		</div>
+
+									    	</div>
+									  	</div>
+									</div>
 								@empty
 									<tr class="text-center">
 										<td colspan="6">No hay datos registrados.</td>
@@ -324,6 +388,12 @@
 <script>
 	$(() => {
 
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+
 		$('#loading').fadeOut()
 
 		toastr.options = {
@@ -412,7 +482,47 @@
 				toastr.error('Algo a ocurrido.')
 			})
 		})
+
 	})
+		//MODAL PARA SUMAR CANTIDADES DE PRODUCTOS
+		function sumar(id){
+			console.log($('#cantidad-sumar-'+id).val())
+			
+			$.ajax({type: 'PUT', url: `/sumar-inventory/${id}`, data: {cantidad: $('#cantidad-sumar-'+id).val()}})
+				.done((res) => {
+					console.log(res)
+				
+					$('#total-productos-'+id).text(res);
+					
+				})
+				.catch((err) => {
+					toastr.error('Ha ocurrido un error')
+					console.error(err)
+				})
+			
+
+			$('#modal-sumar-'+id).modal('hide');
+		}
+
+		//MODAL PARA RESTAR CANTIDADES DE PRODUCTOS
+		function restar(id){
+			console.log($('#cantidad-sumar-'+id).val())
+			
+			$.ajax({type: 'PUT', url: `/restar-inventory/${id}`, data: {cantidad: $('#cantidad-restar-'+id).val()}})
+				.done((res) => {
+					console.log(res)
+				
+					$('#total-productos-'+id).text(res);
+					
+				})
+				.catch((err) => {
+					toastr.error('Ha ocurrido un error')
+					console.error(err)
+				})
+			
+
+			$('#modal-restar-'+id).modal('hide');
+		}
 
 </script>
 @endpush

@@ -187,10 +187,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	padding: 0px 0px 0px 0px !important;
 }
 
+#carrito-cantidades{
+	width: 50%;
+}
+
 /*LG*/
 	@media (min-width: 992px) and (max-width: 1200px) {
 		.body-producto{
 		padding-left: 0px;
 		padding-right: 0px;
+		}
+
+		#carrito-cantidades{
+			width: 100%;
+		}
+	}
+
+	@media (min-width: 1200px) {
+
+		#carrito-cantidades{
+			width: 100%;
 		}
 	}

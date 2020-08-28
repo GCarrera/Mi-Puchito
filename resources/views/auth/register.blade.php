@@ -7,7 +7,7 @@
 			<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
 		</div>
 
-		<div class="card mb-4" style="width: 400px">
+		<div class="card mb-4" style="width: 100%;">
 			<h4 class="card-header info-color white-text text-center py-3">
 				Crear cuenta
 			</h4>

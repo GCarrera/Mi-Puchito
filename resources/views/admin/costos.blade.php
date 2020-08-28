@@ -83,7 +83,7 @@
 									
 										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}-{{ $pro->retail_margin_gain }}%-{{number_format($pro->retail_total_price / $dolar->price, 2, ',', '.')}}$</td>
 										<td class="text-center">
-											<button class="btn mr-2 btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
+											<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
 												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
 											</button>
 											<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio" data-id="{{ $pro->id }}">
@@ -552,7 +552,7 @@
 				$('#foto').show();
 				$('#clearbtn').show();
 
-				$('#foto').attr('data-original', ev.target.result);
+				$('#foto').attr('data-src', ev.target.result);
 				$('#image_name').text(file.name)
 				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
 			}

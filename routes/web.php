@@ -55,7 +55,9 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::resource('/travel_rates', 'TravelRateController');
 	Route::resource('/products', 'ProductController');
 	Route::resource('/inventory', 'InventoryController');
-
+	//SUMAR PRODUCTOS EN EL STOCK
+	Route::put('/sumar-inventory/{id}', 'InventoryController@sumar_producto');
+	Route::put('/restar-inventory/{id}', 'InventoryController@restar_producto');
 	
 	Route::post('/traer_empresa', 'AdminController@traer_empresa');
 	Route::post('/editar_empresa', 'AdminController@editar_empresa');
@@ -85,8 +87,14 @@ Route::get('/traer_productos', 'AdminController@traer_productos');
 
 Route::get('/prueba', 'ShoppingCartController@prueba');
 
-Route::get('/formulario', function(){
+Route::get('/prueba', function(){
 
-	return view('Prueba');
+	return view('prueba');
+});
+
+Route::get('test', function () {
+
+    event(new App\Events\MyEvent('hello world'));
+    return "ok";
 });
 

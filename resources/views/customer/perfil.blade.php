@@ -201,21 +201,20 @@
 
 							<div class="table-responsive">
 								<table class="table text-center table-bordered table-sm table-hover">
-									<thead>
-										<th class="d-none d-md-table-cell">ID COMPRA</th>
-										<th class="d-none d-md-table-cell">PRODUCTOS</th>
-										<th>MONTO (Bs)</th>
-										<th class="d-md-table-cell">DELIVERY</th>
-										<th  class="d-none d-md-table-cell">CONFIRMADO</th>
-										
-										<th>ACCIONES</th>
+									<thead class="">
+										<th class="d-none d-md-table-cell small font-weight-bold">ID COMPRA</th>
+										<th class="d-none d-md-table-cell small font-weight-bold">PRODUCTOS</th>
+										<th class="small font-weight-bold">MONTO (Bs)</th>
+										<th class="d-md-table-cell small font-weight-bold">DELIVERY</th>
+										<th  class=" small font-weight-bold">Estado</th>
+										<th class="small font-weight-bold">ACCIONES</th>
 									</thead>
 									<tbody>
 										@forelse($pedidos as $compra)
 											<tr>
 												<td class="d-none d-md-table-cell">FC-000{{ $compra->id }}</td>
 												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
-												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold" style="color: #008080">{{round($compra->amount/$compra->dolar->price)}}$</small></td>
+												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold" style="color: #008080">{{number_format( $compra->amount/$compra->dolar->price, 2, ',', '.')}}$</small></td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 												@else
@@ -223,7 +222,7 @@
 													<td>{{$compra->stimated_time}}min</td>
 
 													@else
-													<td class=" d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
+													<td >{{ ucfirst($compra->delivery) }}</td>
 													@endif
 												@endif
 												@if ($compra->dispatched != null)
@@ -237,7 +236,7 @@
 													</td>
 													@else
 														@if($compra->delivery == "si")
-														<td class="d-none d-md-table-cell small font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
+														<td class="font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
 														@else
 														<td><label class="font-weight-bold small">Puede retirar 
 														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">
@@ -247,14 +246,14 @@
 														@endif
 													@endif
 												@else
-												<td class="d-none d-md-table-cell"><label class="font-weight-bold small">Esperando confirmación</label></td>
+												<td class=""><label class="font-weight-bold small">Esperando confirmación</label></td>
 												@endif
 												
 												<td>
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
 													-->
-													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4-{{ $compra->id }}">más</button>
+													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4-{{ $compra->id }}"><i class="fas fa-info"></i></button>
 													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 
 												</td>
@@ -272,8 +271,8 @@
 											      		</div>
 											      		<div class="modal-body">
 											      			<ul class="list-group">
-													  			<li class="list-group-item"><span class="font-weight-bold">ID COMPRA: </span>{{ $compra->code }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">PRODUCTOS: </span>{{ $compra->count_product }}</li>
+													  			<li class="list-group-item"><span class="font-weight-bold">ID COMPRA: </span>FC-000{{ $compra->id }}</li>
+																<li class="list-group-item"><span class="font-weight-bold">PRODUCTOS: </span>{{ count($compra->details) }}</li>
 																<li class="list-group-item"><span class="font-weight-bold">MONTO (Bs): </span>{{ $compra->amount }}</li>
 																<li class="list-group-item"><span class="font-weight-bold">MONTO ($): </span>{{ number_format( ($compra->amount/$compra->dolar->price), 2, ',', '.') }}</li>
 																<li class="list-group-item"><span class="font-weight-bold">DELIVERY: </span>
@@ -400,7 +399,7 @@
 									<div class="card shadow">
 										<div class="card-body body-producto">
 											
-											<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->image) }}" class="card-img-top">
+											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
 												@if($producto->oferta == 1)
 												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
@@ -490,7 +489,7 @@
 
 								<div class="card shadow-sm">
 									
-									<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->image) }}" class="card-img-top">
+									<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 									<div class="card-body body-producto">
 										@if($producto->oferta == 1)
 										<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>

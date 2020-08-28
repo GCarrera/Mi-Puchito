@@ -60,7 +60,7 @@
 -->
 <div class="container-fluid wrapper">
 	<div class="row">
-		<div class="col-lg-3 col-12">
+		<div class="col-lg-3 col-12 order-2 order-lg-1">
 			<div class="card shadow-sm ">
 				<div class="card-body">
 					<div class="form-group mb-4">
@@ -104,7 +104,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-9 col-12">
+		<div class="col-lg-9 col-12 order-1 order-lg-2">
 			@forelse ($data as $k => $d)
 				<div class="card shadow-sm mb-4">
 					
@@ -137,7 +137,7 @@
 									
 									<div class="card shadow">
 										
-										<img style="height: 200px; object-fit: contain" data-original="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
+										<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body body-producto" id="body-producto">
 											@if($producto->product->oferta == 1)
 											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
@@ -260,7 +260,7 @@
 								@endphp
 									<div class="card shadow-sm">
 										
-										<img style="height: 200px; object-fit: contain" data-original='storage/{{ $producto->product->image }}' class="card-img-top">
+										<img style="height: 200px; object-fit: contain" data-src='storage/{{ $producto->product->image }}' class="card-img-top">
 										<div class="card-body body-producto">
 											@if($producto->product->oferta == 1)
 											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>

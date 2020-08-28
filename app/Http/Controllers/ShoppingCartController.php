@@ -183,18 +183,9 @@ class ShoppingCartController extends Controller
 
 	public function prueba(Request $request)
 	{	
-		
-		$user_id  = auth()->user()->id;
-        $products = Wishlist::with('product.inventory')->where('user_id', $user_id)->get();
+		$userId = auth()->user()->id;
 
-        // dd($products);
-        $productos = Product::with(['inventory'])->where('oferta', 1)->paginate();
-        $lista = [];
-        foreach ($productos as $producto) {
-        	$lista[] = $producto;
-        }
-
-        return $lista;
+		return \Cart::session($userId)->getContent();
     	
 	}
 }

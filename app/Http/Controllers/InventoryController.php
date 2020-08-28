@@ -128,5 +128,30 @@ class InventoryController extends Controller
     public function destroy($id)
     {
         //
+
+    }
+
+    public function sumar_producto(Request $request, $id)
+    {
+
+        $inventory = Inventory::find($id);
+        $inventory->total_qty_prod += $request->cantidad;
+        $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        $inventory->save();
+
+        return $inventory->total_qty_prod;
+
+    }
+
+    public function restar_producto(Request $request, $id)
+    {
+
+        $inventory = Inventory::find($id);
+        $inventory->total_qty_prod -= $request->cantidad;
+        $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        $inventory->save();
+
+        return $inventory->total_qty_prod;
+
     }
 }

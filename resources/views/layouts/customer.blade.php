@@ -37,21 +37,21 @@
 		<ul class="navbar-nav ml-auto">
 		   @auth
 		    <li class="nav-item" id="inicio">
-		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" style="color: black;"></i>Inicio</a>
+		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" ></i>Inicio</a>
 		    </li>
 		    <li class="nav-item" id="lista-de-deseos">
-		     <a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" style="color: black;"></i>
-		      <span class="badge badge-danger d-none" id="wishlist_counter">0</span><span style="font-size: 12px"> Lista de deseos</span>
+		     <a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" ></i>
+		      <span class="badge badge-danger d-none" id="wishlist_counter">0</span><span style="font-size: 12px"> Favoritos</span>
 		     </a>
 		    </li>
 		    <li class="nav-item" id="shoppingcart">
-		     <a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" style="color: black;"></i>
+		     <a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" ></i>
 		      <span class="badge badge-danger d-none" id="cart_counter">0</span> <span style="font-size: 12px">Carrito</span>
 		     </a>
 		    </li>
 		    <li class="nav-item dropdown">
 		     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		      <i class="fas fa-user mr-2" style="color: black;"></i>{{ auth()->user()->people->name }}
+		      <i class="fas fa-user mr-2" ></i>{{ auth()->user()->people->name }}
 		     </a>
 		     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 		      <a class="dropdown-item" href="{{ route('perfil') }}">Perfil</a>
@@ -69,7 +69,7 @@
 		    <li class="nav-item" id="lista-de-deseos">
 		     <a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
 		      <i class="fas fa-heart mr-2"></i>
-		      Lista de deseos
+		      Favoritos
 		     </a>
 		    </li>
 		    <li class="nav-item" id="shoppingcart">
@@ -79,8 +79,13 @@
 		     </a>
 		    </li>
 		    <li class="nav-item">
+		     <a class="nav-link" href="{{ route('register') }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+		      <i class="fas fa-user mr-2"></i>Registrarme
+		     </a>
+		    </li>
+		    <li class="nav-item">
 		     <a class="nav-link" href="/login" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
-		      <i class="fas fa-user mr-2"></i>Iniciar Sesión
+		      <i class="fas fa-sign-in-alt mr-2"></i>Entrar
 		     </a>
 		    </li>
 		   @endguest
@@ -100,7 +105,7 @@
 	<div class="container">
 		<div class="row row-30 text-center">
 			<div class="col-md-4 col-xl-4 mt-5">
-				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="img/logo.jpg" alt="Mi puchito's" srcset="img/logo.jpg 2x"></a>
+				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="/img/pinchitos.png" alt="Mi puchito's"  style="width: 35%;"></a>
 					<p class="text-justify">Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.</p>
 					
 				</div>
@@ -123,12 +128,12 @@
 				<ul class="nav-list text-left">
 					<li><a class="" href="{{url('/')}}">Inicio</a></li>
 					@auth
-						<li><a class="" href="{{url('lista-de-deseos')}}">Lista de Deseos</a></li>
+						<li><a class="" href="{{url('lista-de-deseos')}}">Favoritos</a></li>
 						<li><a class="" href="{{url('shoppingcart')}}">Mi carrito</a></li>
 
 					@endauth
 					@guest
-						<li><a class="" onclick="buttonPressed('wish')">Lista de Deseos</a></li>
+						<li><a class="" onclick="buttonPressed('wish')">Favoritos</a></li>
 						<li><a class="" onclick="buttonPressed('cart')">Mi carrito</a></li>
 						 
 						<li><a class="" href="{{url('login')}}">Iniciar sesión</a></li>
@@ -147,7 +152,7 @@
 		<div class="col-2 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
 
-				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; overflow-y: hidden;">
+				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; right: 20px; overflow-y: hidden;">
 			</a>
 		</div>
 		<div class="col-2 text-center mb-3">
@@ -167,7 +172,7 @@
 		</div>
     </div>
     <div style="background-color: teal; color: black;">
-    	<p class="text-center m-0 py-3"><span>©</span>2020 Prometheus. Todos los derechos reservados</p>
+    	<p class="text-center text-white m-0 py-3"><span>©</span>2020 Prometheus. Todos los derechos reservados</p>
     </div>
 </footer>
 

@@ -44,7 +44,7 @@
 								@forelse($ventas as $venta)
 									<tr>
 										<td><a href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}">FC-000{{$venta->id}}</a></td>
-										<td>{{$venta->amount}} <br> <span class="small font-weight-bold text-success">{{round(number_format($venta->amount / $venta->dolar->price, 2, ',', '.'))}}$</span></td>
+										<td>{{$venta->amount}} <br> <span class="small font-weight-bold text-success">{{number_format($venta->amount / $venta->dolar->price, 2, ',', '.')}}$</span></td>
 										<td><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">C-00{{$venta->user->id}}</a></td>
 										@if($venta->dispatched != null)
 										<td>{{\Carbon\Carbon::createFromTimeStamp(strtotime($venta->dispatched))->diffForHumans()}}</td>
@@ -53,16 +53,17 @@
 										@endif
 										@if($venta->dispatched != null)
 										
-											<td id="dispatched-{{$venta->id}}">{{$venta->confirmacion}}</td>	
+											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>	
 										@else
-										<td  class="small font-weight-bold">Sin confirmar</td>
+										<td  class="small font-weight-bold" id="dispatched-{{$venta->id}}">Sin confirmar</td>
 										@endif
 										<td>
-											
+											@if($venta->dispatched != null)
 											<button class="btn btn-success" data-toggle="modal" data-target="#checkModal-{{$venta->id}}"><i class="fas fa-check"></i></button>
 											<!--
 											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 										-->
+											@endif
 											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
 												<i class="fas fa-coins"></i>
 											</button>

@@ -70,7 +70,7 @@
 								@endif
 							</div>
 							<div>
-								<a class="btn btn-link" href="{{ route('register') }}">Registrarme</a>
+								<a class="btn btn-success" href="{{ route('register') }}">Registrarme</a>
 							</div>
 						</div>
 						<div class="text-center">

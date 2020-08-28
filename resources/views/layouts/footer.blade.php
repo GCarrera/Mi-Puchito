@@ -12,17 +12,18 @@
 	<script src="{{ asset('js/app.js') }}"></script>
 	<script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/daterangepicker.js') }}"></script>
-	<script src="{{ asset('js/jquery.lazyload.min.js') }}"></script>
+	<script src="{{ asset('js/jquery.lazy.min.js') }}"></script>
 	
 	<script>
-	
-		$(document).ready(function(){
+			//LAZY LOAD
+		$(function(){
 
-			$('img').lazyload({
-				threshold: 200,
-				effect: 'fadeIn'
+			$('img').lazy({
+				effect: 'fadeIn',
 			});
-		});
+		})
+			
+		
 
 		// Para añadir cuando no está logueado
 		function buttonPressed(button) {

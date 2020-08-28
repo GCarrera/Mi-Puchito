@@ -11,25 +11,25 @@
 	</div>
 </div>
 
-<img data-original="/img/banner1.png" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">
+<img data-src="/img/banner1.png" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">
 
 <div class="container-fluid my-5 animated wrapper">
 
 	<div class="card mb-4 shadow-sm">
 		<div class="card-body">
 			<div class="row no-gutters">
-				<div class="col col-md-4">
+				<div class="col-4 col-md-2">
 					<h5 class="mt-2">{{ $data->name }}</h5>
 				</div>
-				<div class="col col-md-3">
-					<p class="mb-0 mt-2">{{ count($data->inventory) }} productos encontrados</p>
+				<div class="col col-md-5">
+					<p class="mb-0 mt-2 d-none d-md-block">{{ count($data->inventory) }} productos encontrados</p>
 				</div>
 				<div class="col col-md-2">
-					<p class="mb-0 mt-2">Usted está comprando:</p>
+					<p class="mb-0 mt-2 d-none d-md-block text-right">Usted está comprando:</p>
 				</div>
-				<div class="col col-md-3">
+				<div class="col-8 col-md-3">
 					
-						<ul class="nav nav-pills">
+						<ul class="nav nav-pills ml-md-5">
 							<li class="nav-item">
 								<a class="nav-link {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=major')}}">Al mayor</a>
 							</li>
@@ -73,7 +73,7 @@
 					
 						<div class="card-body">
 							
-							<img style="height: 200px; object-fit: contain" data-original='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+							<img style="height: 200px; object-fit: contain" data-src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
 							@if($producto->product['oferta'] == 1)
 							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 							@endif	
@@ -184,7 +184,7 @@
 					<div class="card shadow-sm mb-4 w-100">
 						<div class="card-body">
 
-							<img style="height: 200px; object-fit: contain" data-original='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+							<img style="height: 200px; object-fit: contain" data-src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
 							@if($producto->product['oferta'] == 1)
 							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 							@endif
