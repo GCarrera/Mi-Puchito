@@ -97,9 +97,9 @@
 	@csrf
 </form>
 <!--/.Navbar-->
-
+<div id="app">
 @yield('content')
-
+</div>
 
 <footer class="section footer-classic context-dark bg-image bg-light">
 	<div class="container">

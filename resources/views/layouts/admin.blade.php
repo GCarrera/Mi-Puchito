@@ -94,9 +94,9 @@
 	@csrf
 </form>
 <!--/.Navbar-->
-
+<div id="app">
 @yield('content')
-
+</div>
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
     <div class="container">
     	<p>Copyright &copy; 2020 - PrometheusV1</p>

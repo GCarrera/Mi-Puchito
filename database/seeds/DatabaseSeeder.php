@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             WarehousesTableSeeder::class,
             InventoriesTableSeeder::class,
             BankAccountsSeeder::class,
-            DolarsTableSeeder::class
+            DolarsTableSeeder::class,
+            PisoVentasTableSeeder::class
         ]);
 
     }

@@ -203,7 +203,7 @@ class SaleController extends Controller
 
 						$delivery = new Delivery();
 						$delivery->address_user_delivery_id = $req->input('user_address_delivery');
-						$delivery->sale_id = $saleid;
+						$delivery->sale_id = $sale->id;
 						$delivery->save();
 					}
 

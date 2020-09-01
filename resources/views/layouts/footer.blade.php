@@ -10,6 +10,7 @@
 	<!-- <script src="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
 	<script src="{{ asset('js/datatables.min.js') }}" ></script>
 	<script src="{{ asset('js/app.js') }}"></script>
+	<script src="{{ asset('js/scripts.js') }}"></script>
 	<script src="{{ asset('js/moment.min.js') }}"></script>
 	<script src="{{ asset('js/daterangepicker.js') }}"></script>
 	<script src="{{ asset('js/jquery.lazy.min.js') }}"></script>
