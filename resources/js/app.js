@@ -7,6 +7,19 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+require('./asset/popper.min.js');
+//require('./asset/toastr.min.js');
+require('./asset/slick.min.js');
+require('./asset/bootstrap.bundle.min.js');
+require('./asset/bootstrap-select.min.js');
+require('./asset/bootstrap-autocomplete.min.js');
+//require('./asset/datatables.min.js');
+
+require('./asset/scripts.js');
+//require('./asset/moment.min.js');
+//require('./asset/daterangepicker.min.js');
+
+require('./asset/jquery.lazy.min.js');
 
 /**
  * The following block of code may be used to automatically register your
@@ -20,7 +33,18 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('despachos-almacen', require('./view/Despachos-almacen.vue').default);
 
+import Vue from 'vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
+// Install BootstrapVue
+Vue.use(BootstrapVue)
+// Optionally install the BootstrapVue icon components plugin
+Vue.use(IconsPlugin)
+
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

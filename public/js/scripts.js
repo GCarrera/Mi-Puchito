@@ -1,5 +1,7 @@
 $(() => {
 
+	
+
 	let host = location.host;
 	let pathname = location.href;
 

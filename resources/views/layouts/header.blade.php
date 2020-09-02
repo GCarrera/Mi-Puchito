@@ -15,6 +15,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
 	<!-- Plugin styles -->
+	
 	<link href="{{ asset('css/fontawesome/css/all.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/animate.css') }}" rel="stylesheet">
 	<link href="{{ asset('slick/slick.css') }}" rel="stylesheet">

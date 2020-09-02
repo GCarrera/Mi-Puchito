@@ -25,6 +25,9 @@
 		</div>-->
 
 		<ul class="navbar-nav ml-auto">
+			<li class="nav-item" id="despachos">
+				<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
+			</li>
 			<li class="nav-item" id="dolar">
 				<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
 			</li>
@@ -94,7 +97,7 @@
 	@csrf
 </form>
 <!--/.Navbar-->
-<div id="app">
+<div id="app" style="min-height: 100%;">
 @yield('content')
 </div>
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">

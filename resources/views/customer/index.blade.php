@@ -355,6 +355,7 @@
 						<h4 class="text-center">
 							<i class="fas fa-shopping-cart fa-2x"></i><br>
 							<p class="mt-4">No hay productos disponibles para la venta.</p>
+						
 						</h4>
 					</div>
 				</div>
@@ -371,6 +372,7 @@
 
 @push('scripts')
 <script>
+
 
 	function getParameterByName(name) {
 		name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -410,7 +412,7 @@
 			"positionClass": "toast-bottom-left",
 			"timeOut": 10000
 		}
-
+		
 		$('.slickk').slick({
 			dots: true,
 			centerMode: true,
@@ -450,7 +452,7 @@
 				}
 			]
 		});
-
+	
 		$('.SearchProductNameAutoComplete').autoComplete({
 			minLength: 2,
 			resolverSettings: {
