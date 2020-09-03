@@ -7,7 +7,7 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-require('./asset/popper.min.js');
+//require('./asset/popper.min.js');
 //require('./asset/toastr.min.js');
 require('./asset/slick.min.js');
 require('./asset/bootstrap.bundle.min.js');

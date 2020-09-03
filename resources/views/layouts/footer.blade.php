@@ -1,7 +1,7 @@
 	<!-- Scripts -->
-	<!--<script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>-->
-	<!--<script src="{{ asset('js/popper.min.js') }}"></script>-->
-	<script src="{{ asset('js/toastr.js') }}"></script>
+	<script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+	<script src="{{ asset('js/popper.min.js') }}"></script>
+	<script src="{{ asset('js/toastr.js') }}"></script>-
 	<!--<script src="{{ asset('slick/slick.min.js') }}"></script>-->
 	<!--<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>-->
 	<!--<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>-->

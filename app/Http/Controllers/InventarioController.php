@@ -47,7 +47,7 @@ class InventarioController extends Controller
         return response()->json($inventory->id);
     }
 
-    public function get_inventory($id)
+    public function get_inventory($id)//WEB
     {
 
         $inventory = Inventory::with('product')->where('id', '>', $id)->get();
@@ -105,7 +105,7 @@ class InventarioController extends Controller
         
     }
 
-    public function get_precios_inventory()
+    public function get_precios_inventory()//WEB
     {
         $inventory = Inventory::with('product')->where('status', 1)->whereHas('product', function($q){ $q->where('id', '!=', null);})->get();
 

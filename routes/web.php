@@ -101,7 +101,7 @@ Route::get('test', function () {
 //DESPACHOS ALMACEN
 Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index');
 //RUTAS APIS
-Route::group(['prefix' => 'api', 'middleware' => ['api', 'cors']], function(){
+Route::group(['prefix' => 'api'], function(){
 	//USUARIO
 	Route::get('/get-id', 'UsersController@get_id');	
 	//INVENTARIO
