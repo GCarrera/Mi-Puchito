@@ -25,6 +25,9 @@
 		</div>-->
 
 		<ul class="navbar-nav ml-auto">
+			<li class="nav-item" id="piso-ventas">
+				<a class="nav-link" href="{{ route('piso.ventas.index') }}"><i class="fas fa-coins mr-2	"></i>Pisos de ventas</a>
+			</li>
 			<li class="nav-item" id="despachos">
 				<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
 			</li>
@@ -97,7 +100,7 @@
 	@csrf
 </form>
 <!--/.Navbar-->
-<div id="app" style="min-height: 100%;">
+<div id="app" style="height: 100%;">
 @yield('content')
 </div>
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">

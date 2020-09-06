@@ -8,7 +8,7 @@ class Despacho extends Model
 {
     //
     protected $fillable = [
-        'piso_venta_id', 'confirmado'
+        'piso_venta_id', 'confirmado', 'type'
     ];
 
     public function piso_venta()

@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "barryvdh/laravel-dompdf": "^0.8.6",
+        "beyondcode/laravel-websockets": "^1.6",
         "darryldecode/cart": "^4.1",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",

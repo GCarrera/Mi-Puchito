@@ -201,6 +201,7 @@ class VentasController extends Controller
 		        $venta->iva = $valor['iva'];
 		        $venta->total = $valor['total'];
 		        $venta->id_extra = $valor['id_extra'];
+		        $venta->created_at = $valor['created_at'];
 		        $venta->save();
 
 		        foreach ($valor['detalle'] as $producto) {

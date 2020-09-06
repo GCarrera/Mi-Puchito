@@ -326,7 +326,16 @@ class DespachosController extends Controller
             $producto->select('product_name');
         }, 'piso_venta'])->orderBy('id', 'desc')->paginate(1);
 
-        return response()->json($despachos);
+        return response()->json(['pagination' => [
+                                    'total' => $despachos->total(),
+                                    'current_page' => $despachos->currentPage(),
+                                    'per_page' => $despachos->perPage(),
+                                    'last_page' => $despachos->lastPage(),
+                                    'from' => $despachos->firstItem(),
+                                    'to' => $despachos->lastPage(),
+                                ],
+                                'despachos' => $despachos
+                                ]);
     }
 
     public function store(Request $request)
@@ -490,7 +499,7 @@ class DespachosController extends Controller
         $productos = Inventario::with('piso_venta')->whereHas('piso_venta', function($q)use($id){
             $q->where('piso_venta_id', $id);
             $q->where('cantidad', '>', 0);
-        })->get();
+        })->where('inventory_id', '!=' , null)->get();
         return response()->json($productos);
     }
 }
