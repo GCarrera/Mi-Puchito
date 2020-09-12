@@ -16,8 +16,8 @@
 							
 						</div>
 						<hr>
-						<span class="font-weight-bold">Ultima vez que sincronizo:</span> <span>{{count.sincronizacion.created_at}}</span> <br>
-						<span class="font-weight-bold">Ultima vez que vacio la caja:</span> <span>{{count.caja.created_at}}</span> <br>
+						<span class="font-weight-bold">Ultima vez que sincronizo:</span> <span v-if="count.sincronizacion != null">{{count.sincronizacion.created_at}}</span> <br>
+						<span class="font-weight-bold">Ultima vez que vacio la caja:</span> <span v-if="count.caja != null">{{count.caja.created_at}}</span> <br>
 					</div>
 				</div>
 			</div>

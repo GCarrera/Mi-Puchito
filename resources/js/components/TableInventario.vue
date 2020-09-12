@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<table class="table table-bordered">
+		<table class="table table-bordered table-hover table-sm table-stridped">
 			<thead>
 				<tr>
 					<th rowspan="">Producto</th>

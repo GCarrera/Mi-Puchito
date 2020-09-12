@@ -10,7 +10,7 @@
 
 		</div>
 
-		<table class="table table-bordered">
+		<table class="table table-bordered table-hover table-sm table-stridped">
 			<thead>
 				<tr>
 					<th>Factura</th>
@@ -22,7 +22,7 @@
 				</tr>
 			</thead>
 			<tbody v-show="ventas != []">
-				<tr v-for="(venta, index) in ventas" :key="index">
+				<tr v-for="(venta, index) in ventas" :key="index" :class="{'bg-danger': venta.anulado == 0 || venta.anulado == 1, 'text-white': venta.anulado == 1 || venta.anulado == 0}">
 					<td>FC-00{{venta.id_extra}}</td>
 					<td v-if="venta.type == 1">Venta</td>
 					<td v-if="venta.type == 2">Compra</td>

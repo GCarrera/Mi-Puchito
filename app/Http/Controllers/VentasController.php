@@ -291,4 +291,58 @@ class VentasController extends Controller
 			return response()->json($e);
 		}
     }
+
+    public function get_ventas_anuladas()
+    {
+    	$usuario = Auth::user()->piso_venta->id;
+
+    	$ventas = Venta::where('anulado', 0)->where('piso_venta_id', $usuario)->get();
+
+    	return response()->json($ventas);
+    }
+
+    public function actualizar_anulados(Request $request)//WEB
+    {
+    	foreach ($request->ventas as $venta) {
+    		
+    		$web = Venta::where('id_extra', $venta['id_extra'])->where('piso_venta_id', $request->piso_venta)->orderBy('id', 'desc')->first();
+    		$web->anulado = 1;
+    		$web->save();
+
+    		foreach($web->detalle as $producto){
+
+	    		$inventario = Inventario_piso_venta::where('piso_venta_id', $request->piso_venta)->where('inventario_id', $producto->id)->orderBy('id', 'desc')->first();
+	    		
+		    	if ($web->type == 1) {
+
+		    	$inventario->cantidad += $producto->pivot->cantidad;
+
+		    	}else if($web->type == 2){
+
+		    	$inventario->cantidad -= $producto->pivot->cantidad;
+
+		    	}
+
+		    	$inventario->save();
+		    	
+		    }
+    	}
+
+    	return response()->json(true);
+    }
+
+    public function actualizar_anulados_local()
+    {
+    	$usuario = Auth::user()->piso_venta->id;
+
+    	$ventas = Venta::with('detalle')->where('anulado', 0)->where('piso_venta_id', $usuario)->get();
+
+    	foreach ($ventas as $venta) {
+    		
+    		$venta->anulado = 1;
+    		$venta->save();
+    	}
+
+    	return response()->json(true);
+    }
 }

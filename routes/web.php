@@ -94,8 +94,7 @@ Route::get('/prueba', function(){
 
 Route::get('test', function () {
 
-    event(new App\Events\MyEvent('hello world'));
-    return "ok";
+    return view('welcome');
 });
 //PARA LOS PISOS DE VENTAS
 Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index');
@@ -148,7 +147,9 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('/ventas-sin-registrar/{piso_venta}/{id}', 'VentasController@ventas_sin_registrar');
 	Route::post('/registrar-ventas', 'VentasController@registrar_ventas');//WEB
 
-
+	Route::get('/get-ventas-anuladas', 'VentasController@get_ventas_anuladas');
+	Route::post('/actualizar-anulados', 'VentasController@actualizar_anulados');//WEB
+	Route::post('/actualizar-anulados-local', 'VentasController@actualizar_anulados_local');
 
 	//RESUMEN
 	Route::get('/get-piso-ventas', 'PisoVentasController@get_piso_ventas');

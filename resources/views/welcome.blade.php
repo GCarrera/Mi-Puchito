@@ -3,6 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
 
         <title>Laravel</title>
 
@@ -201,5 +204,29 @@
             </div>
         </div>
         </div>
+
+        <!-- Scripts -->
+        <script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
+        <script src="{{ asset('js/popper.min.js') }}"></script>
+        <script src="{{ asset('js/toastr.js') }}"></script>-
+        <script src="{{ asset('slick/slick.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
+        <!-- <script src="{{ asset('bootstrap-star-rating/js/star-rating.js') }}"></script> -->
+        <!-- <script src="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
+        <!--<script src="{{ asset('js/datatables.min.js') }}" ></script>-->
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/scripts.js') }}"></script>
+        <script src="{{ asset('js/moment.min.js') }}"></script>
+        <script src="{{ asset('js/daterangepicker.js') }}"></script>
+        <script src="{{ asset('js/jquery.lazy.min.js') }}"></script>
+        <script type="text/javascript">
+            
+            Echo.channel('home').listen('NewMessage', (e) => {
+                console.log(e.message)
+            })
+
+        </script>
     </body>
 </html>

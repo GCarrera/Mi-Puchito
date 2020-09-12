@@ -9,8 +9,8 @@
 			</form>
 
 		</div>
-		<table class="table table-bordered">
-			<thead>
+		<table class="table table-bordered table-hover table-sm table-stridped">
+			<thead class="">
 				<tr>
 					<th>Fecha</th>
 					<th>tipo</th>
