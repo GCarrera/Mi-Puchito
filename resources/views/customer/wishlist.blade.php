@@ -38,16 +38,16 @@
 						@php
 						if (isset($carrito)) {
 							foreach ($carrito as $item) {
-								if ($item->attributes->sale_type == "al-menor") {
+								if ($item->options->sale_type == "al-menor") {
 									# code...
-									$respuesta1 = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+									$respuesta1 = Illuminate\Support\Arr::get($item, 'model.id', 0);
 								}	
 												
 							}
 							foreach ($carrito as $item) {
-								if ($item->attributes->sale_type == "al-mayor") {
+								if ($item->options->sale_type == "al-mayor") {
 									# code...
-									$respuesta2 = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+									$respuesta2 = Illuminate\Support\Arr::get($item, 'model.id', 0);
 								}	
 												
 							}

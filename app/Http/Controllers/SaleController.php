@@ -73,7 +73,7 @@ class SaleController extends Controller
 
 		
 		$user     = auth()->user()->id;
-		$productos = \Cart::session($user)->getContent();
+		$productos = \Cart::content();
 
 
 			if (count($productos) > 0) {	
@@ -138,51 +138,51 @@ class SaleController extends Controller
 
 					foreach ($productos as $producto) {
 						//VALIDACION PARA LA CANTIDAD DE PRODUCTOS DISPONIBLES
-						if ($producto->attributes->sale_type == "al-menor") {
-							$stock =$producto->associatedModel->inventory->total_qty_prod - $producto->quantity;
+						if ($producto->options->sale_type == "al-menor") {
+							$stock = $producto->model->inventory->total_qty_prod - $producto->qty;
 							if ($stock <= 0) {
-								return redirect()->back()->withErrors(['no hay suficientes '. $producto->associatedModel->inventory->product_name. " para la venta"]);
+								return redirect()->back()->withErrors(['no hay suficientes '. $producto->model->inventory->product_name. " para la venta"]);
 							}
 							//RESTAMOS DEL STOCK
-							$inventario = Inventory::findOrFail($producto->associatedModel->inventory->id);
+							$inventario = Inventory::findOrFail($producto->model->inventory->id);
 
-							$inventario->total_qty_prod -= $producto->quantity;
+							$inventario->total_qty_prod -= $producto->qty;
 							$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
 							$inventario->save();
 
 						}else{
-							$stock =$producto->associatedModel->inventory->quantity - $producto->quantity;
+							$stock = $producto->model->inventory->quantity - $producto->qty;
 							if ($stock <= 0) {
-								return redirect()->back()->withErrors(['no hay suficientes '. $producto->associatedModel->inventory->product_name. " para la venta"]);
+								return redirect()->back()->withErrors(['no hay suficientes '. $producto->model->inventory->product_name. " para la venta"]);
 							}
 							//RESTAMOS DEL STOCK
-							$inventario = Inventory::findOrFail($producto->associatedModel->inventory->id);
+							$inventario = Inventory::findOrFail($producto->model->inventory->id);
 
-							$inventario->quantity -= $detalle->quantity;
+							$inventario->quantity -= $producto->qty;
 							$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
 							$inventario->save();
 						}
 						$saleDetail = new SaleDetail();
-						$saleDetail->quantity   = $producto->quantity;
-						$saleDetail->type = $producto->attributes->sale_type;
-						$saleDetail->product_id = $producto->associatedModel->id;
+						$saleDetail->quantity   = $producto->qty;
+						$saleDetail->type = $producto->options->sale_type;
+						$saleDetail->product_id = $producto->model->id;
 						$saleDetail->sale_id    = $sale->id;
 
 						if ($saleDetail->type == "al-mayor") {
 							
-						$saleDetail->sub_total = $producto->associatedModel->wholesale_packet_price * $producto->quantity;
-						$saleDetail->iva = ($producto->associatedModel->wholesale_iva_amount * $producto->associatedModel->inventory->qty_per_unit) * $producto->quantity;
+						$saleDetail->sub_total = $producto->model->wholesale_packet_price * $producto->qty;
+						$saleDetail->iva = ($producto->model->wholesale_iva_amount * $producto->model->inventory->qty_per_unit) * $producto->qty;
 						$saleDetail->amount = $saleDetail->sub_total + $saleDetail->iva;
 						$subtotal += $saleDetail->sub_total;
 						$iva += $saleDetail->iva;
 						$total += $saleDetail->amount;
 						}else{
 
-						$saleDetail->sub_total = ($producto->associatedModel->retail_total_price - $producto->associatedModel->retail_iva_amount) * $producto->quantity;
+						$saleDetail->sub_total = ($producto->model->retail_total_price - $producto->model->retail_iva_amount) * $producto->qty;
 
-						$saleDetail->iva = $producto->associatedModel->retail_iva_amount * $producto->quantity;
+						$saleDetail->iva = $producto->model->retail_iva_amount * $producto->qty;
 
-						$saleDetail->amount = $producto->associatedModel->retail_total_price * $producto->quantity;
+						$saleDetail->amount = $producto->model->retail_total_price * $producto->qty;
 
 						$subtotal += $saleDetail->sub_total;
 						$iva += $saleDetail->iva;
@@ -207,7 +207,7 @@ class SaleController extends Controller
 						$delivery->save();
 					}
 
-					\Cart::session($user)->clear();
+					\Cart::destroy();
 
 					DB::commit();
 				}catch(Exception $e){

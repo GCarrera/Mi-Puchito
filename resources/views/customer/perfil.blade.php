@@ -387,9 +387,9 @@
 									@php
 									if (isset($carrito)) {
 										foreach ($carrito as $item) {
-											if ($item->attributes->sale_type == "al-menor") {
+											if ($item->options->sale_type == "al-menor") {
 												# code...
-												$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 											}	
 															
 										}
@@ -478,9 +478,9 @@
 								@php
 								if (isset($carrito)) {
 									foreach ($carrito as $item) {
-										if ($item->attributes->sale_type == "al-mayor") {
+										if ($item->options->sale_type == "al-mayor") {
 											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 										}	
 														
 									}

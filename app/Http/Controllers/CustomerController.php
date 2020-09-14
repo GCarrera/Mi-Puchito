@@ -71,11 +71,10 @@ class CustomerController extends Controller
 
 			
 
-			//SI EL USUARIO ESTA AUTENTICADO NADA MAS
-			if (auth()->check()) {
-				$user = auth()->user();
+		
+				//$user = auth()->user();
 				// \Cart::session($userId)->clear();
-				$carrito   = \Cart::session($user->id)->getContent();
+				$carrito   = \Cart::content();
 
 				return view('customer.index')
 					->with('data', $data)
@@ -83,18 +82,7 @@ class CustomerController extends Controller
 					->with('empresas', $empresas)
 					->with('carrito', $carrito)
 					->with('dolar', $dolar);	
-			}else{
-
-
-			//return $data[0]->inventory[0]->product->wholesale_iva_amount;
-			
-			return view('customer.index')
-					->with('data', $data)
-					->with('categories', $categories)
-					->with('empresas', $empresas)
-					->with('dolar', $dolar);	
-			}
-			
+		
 		}
 		
 	}
@@ -152,16 +140,11 @@ class CustomerController extends Controller
 		}])->findOrFail($category);
 
 		//SI EL USUARIO ESTA AUTENTICADO NADA MAS
-		if (auth()->check()) {
-			$user = auth()->user();
+	
 			// \Cart::session($userId)->clear();
-			$carrito   = \Cart::session($user->id)->getContent();
+			$carrito   = \Cart::content();
 
-			return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito', 'dolar'));
-		}else{
-
-		//return $data;
-			return view('customer.category_product', compact('data','categorias', 'empresas', 'dolar'));
-		}
+		return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito', 'dolar'));
+		
 	}
 }

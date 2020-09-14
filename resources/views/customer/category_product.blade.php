@@ -60,9 +60,9 @@
 					@php
 					if (isset($carrito)) {
 						foreach ($carrito as $item) {
-							if ($item->attributes->sale_type == "al-menor") {
+							if ($item->options->sale_type == "al-menor") {
 								# code...
-								$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+								$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 							}	
 											
 						}
@@ -87,7 +87,6 @@
 								<p class="text-right text-success">Dolares:{{ number_format($producto->product['retail_total_price'] / $dolar->price, 2, ',', '.')}}$</p>
 							</div>
 							<!--botones de comprar y listar-->
-							@auth
 						
 									<button 
 										data-id="{{ $producto->product->id }}" 
@@ -135,36 +134,7 @@
 								
 							
 								@endif
-						
-							@else
-							<div class="">
-									
-											<button 
-												onclick="buttonPressed('wish')" 
-												type="button" 
-												class="btn btn-block"
-												data-title="Añadir a la lista de deseos" 
-												data-toggle="tooltip"
-											>
-												<i class="fa fa-heart" style="color: #dc3545;"></i>
-												<b class="text-danger">Lista de Deseos</b>
-											</button>
-
-											
-									
-											<button 
-												onclick="buttonPressed('cart')" 
-												class="btn btn-block btn-primary"
-												data-title="Comprar" 
-												data-toggle="tooltip"
-											>
-												<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
-												<b>Comprar</b>
-											</button>
-											
-						
-							</div>
-							@endauth		
+	
 						</div>
 					</div>
 
@@ -173,9 +143,9 @@
 					@php
 					if (isset($carrito)) {
 						foreach ($carrito as $item) {
-							if ($item->attributes->sale_type == "al-mayor") {
+							if ($item->options->sale_type == "al-mayor") {
 								# code...
-								$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+								$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 							}	
 											
 						}
@@ -200,8 +170,7 @@
 							<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 							
 							<!--BOTONES DE LISTA DE DESEOS Y COMPRAR-->
-							@auth
-		
+
 										<button data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
 											<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
 											<b class="d-block text-danger">Lista de deseos</b>
@@ -240,35 +209,7 @@
 										</button>
 								
 									@endif
-						
-							@else
-							<div class="">
-									
-											<button 
-												onclick="buttonPressed('wish')" 
-												type="button" 
-												class="btn btn-block"
-												data-title="Añadir a la lista de deseos" 
-												data-toggle="tooltip"
-											>
-												<i class="fa fa-heart" style="color: #dc3545;"></i>
-												<b class="text-danger">Lista de Deseos</b>
-											</button>
-
-										
-											<button 
-												onclick="buttonPressed('cart')" 
-												class="btn btn-block btn-primary"
-												data-title="Comprar" 
-												data-toggle="tooltip"
-											>
-												<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
-												<b>Comprar</b>
-											</button>
-											
-									
-							</div>
-							@endauth		
+							
 						</div>
 					</div>
 					@endif

@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
 		$user = auth()->user();
 
-		$carrito   = \Cart::session($user->id)->getContent();
+		$carrito   = \Cart::content();
 
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 

@@ -2496,8 +2496,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['id'],
   data: function data() {
@@ -21860,13 +21858,11 @@ var render = function() {
                 [
                   _c("td", [_vm._v("FC-00" + _vm._s(venta.id_extra))]),
                   _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(venta.created_at))]),
+                  _vm._v(" "),
                   venta.type == 1 ? _c("td", [_vm._v("Venta")]) : _vm._e(),
                   _vm._v(" "),
                   venta.type == 2 ? _c("td", [_vm._v("Compra")]) : _vm._e(),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(venta.sub_total))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(venta.iva))]),
                   _vm._v(" "),
                   _c("td", [_vm._v(_vm._s(venta.total))]),
                   _vm._v(" "),
@@ -22064,11 +22060,9 @@ var staticRenderFns = [
       _c("tr", [
         _c("th", [_vm._v("Factura")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Fecha")]),
+        _vm._v(" "),
         _c("th", [_vm._v("tipo")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Sub Total")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Iva")]),
         _vm._v(" "),
         _c("th", [_vm._v("Total")]),
         _vm._v(" "),

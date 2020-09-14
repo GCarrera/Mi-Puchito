@@ -12,13 +12,21 @@
 */
 
 Route::get('/', 'CustomerController@index');
-
+Route::get('/home', 'CustomerController@index')->name('home');
 // Route::get('/home', function () {
 //     return redirect('services');
 // });
 Route::post('/get_dni', 'ProfileController@getDni');
 
 Auth::routes();
+Route::get('/prueba', 'ShoppingCartController@prueba');
+
+
+Route::get('/city/{state_id}', 'ShoppingCartController@getCity');
+Route::get('/sector/{city_id}', 'ShoppingCartController@getSector');
+Route::resource('shoppingcart', 'ShoppingCartController');
+Route::get('/get_shoppingcart', 'ShoppingCartController@get_shoppingcart');
+Route::delete('/limpiar_carrito', 'ShoppingCartController@clear');
 
 Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
@@ -40,12 +48,10 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::get('/get_dolar', 'AdminController@get_dolar');
 	Route::post('/establecer_dolar', 'AdminController@establecer_dolar');
 
-	Route::get('/home', 'CustomerController@index')->name('home');
+	
 	Route::get('/ventas-al-mayor', 'CustomerController@al_mayor');
 	
-	Route::get('/city/{state_id}', 'ShoppingCartController@getCity');
-	Route::get('/sector/{city_id}', 'ShoppingCartController@getSector');
-	Route::resource('shoppingcart', 'ShoppingCartController');
+	
 	Route::resource('lista-de-deseos', 'WishlistController');
 
 	Route::get('/perfil', 'ProfileController@perfil')->name('perfil');
@@ -68,8 +74,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::post('/registrar_empresa', 'AdminController@registrar_empresa');
 	Route::post('/eliminar_empresa', 'AdminController@eliminar_empresa');
 	Route::post('/eliminar_categoria', 'AdminController@eliminar_categoria');
-	Route::get('/get_shoppingcart', 'ShoppingCartController@get_shoppingcart');
-	Route::delete('/limpiar_carrito', 'ShoppingCartController@clear');
+	
 	Route::get('/traer_ciudad/{estado}', 'TravelRateController@traer_ciudad');
 	Route::get('/traer_sectores/{ciudad}', 'TravelRateController@traer_sectores');
 	Route::get('/get_wishlist', 'WishlistController@get_wishlist');
@@ -85,13 +90,13 @@ Route::get('/categoria/{categoria}', 'CustomerController@categoria');
 
 Route::get('/traer_productos', 'AdminController@traer_productos');
 
-Route::get('/prueba', 'ShoppingCartController@prueba');
 
+/*
 Route::get('/prueba', function(){
 
 	return view('prueba');
 });
-
+*/
 Route::get('test', function () {
 
     return view('welcome');

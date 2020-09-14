@@ -20,7 +20,7 @@ class WishlistController extends Controller
         $products = Wishlist::with('product.inventory')->where('user_id', $user_id)->get();
         $user = auth()->user();
 
-        $carrito   = \Cart::session($user->id)->getContent();
+        $carrito   = \Cart::content();
         // dd($products);
         $dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 

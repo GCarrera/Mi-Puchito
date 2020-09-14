@@ -17,15 +17,16 @@ class ShoppingCartController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('customer');
+		//$this->middleware('customer')->except('prueba');
 	}
 
 	public function index()
 	{
-		$user = auth()->user();
+		$user = [];
+		//$user = auth()->user();
 		// \Cart::session($userId)->clear();
-		$data   = \Cart::session($user->id)->getContent();
-		$total  = \Cart::session($user->id)->getTotal();
+		$data   = \Cart::content();
+		$total  = \Cart::subtotal();
 		
 		$ivatotal    = 0;
 		$totalSinIva = 0;
@@ -33,22 +34,22 @@ class ShoppingCartController extends Controller
 
 		foreach ($data as $d) {
 			
-			if ($d->attributes->sale_type == 'al-mayor') {
-				$t = $d->attributes->wholesale_iva_amount * $d->quantity;
+			if ($d->options->sale_type == 'al-mayor') {
+				$t = $d->options->wholesale_iva_amount * $d->quantity;
 				$ivatotal += $t;
 				
-				$r = $d->attributes->wholesale_total_packet_price * $d->quantity;
+				$r = $d->options->wholesale_total_packet_price * $d->quantity;
 				$totalSinIva += $r;
 			} else {
-				$t = $d->attributes->retail_iva_amount * $d->quantity;
+				$t = $d->options->retail_iva_amount * $d->quantity;
 				$ivatotal+= $t;
 				
-				$r = $d->attributes->retail_pvp * $d->quantity;
+				$r = $d->options->retail_pvp * $d->quantity;
 				$totalSinIva += $r;
 			}
 		}
-
-		$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
+		$user_address = [];
+		//$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
 		$cb = BankAccount::all();
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
@@ -77,15 +78,15 @@ class ShoppingCartController extends Controller
 			->with('inventory')
 			->first();
 		
-		$userId   = auth()->user()->id;
+		//$userId   = auth()->user()->id;
 
-		$data = \Cart::session($userId)->getContent();
+		$data = \Cart::content();
 
 		//return $data;
 
 		foreach ($data as $value) {
 			//SI EL PRODUCTO YA ESTA REGISTRADO EN EL CARRO Y TIENE EL MISMO TIPO DE COMPRA QUE SI AL MAYOR O AL MENOR
-			if ($value->associatedModel->id == $producto->id && $value->attributes->sale_type == $request->input('type')) {
+			if ($value->model->id == $producto->id && $value->options->sale_type == $request->input('type')) {
 				# code...
 				return 'rejected';
 			}
@@ -95,19 +96,18 @@ class ShoppingCartController extends Controller
 
 		/*
 		if (isset($data)) {
-			if ($data->attributes->sale_type != $request->input('type')) {
+			if ($data->options->sale_type != $request->input('type')) {
 				return 'rejected';
 			}
 		}
 		*/		
 
-		\Cart::session($userId)->add([
-			'id' => $data->count() + 1,
-			'product_id' => $producto->id,
+		\Cart::add([
+			'id' => $producto->id,
 			'name'       => $producto->inventory->product_name,
+			'qty'   => $quantity,
 			'price'      => $price,
-			'quantity'   => $quantity,
-			'attributes' => [
+			'options' => 	[
 				'sale_type'  => $type,
 				'image'      => $producto->image,
 				'iva'        => $producto->iva_percent,
@@ -118,55 +118,46 @@ class ShoppingCartController extends Controller
 				'wholesale_packet_price' => $producto->wholesale_packet_price,
 				'wholesale_total_packet_price' => $producto->wholesale_total_packet_price,
 				'wholesale_quantity'     => $producto->inventory->qty_per_unit
-			],
-    		'associatedModel' => $producto
-		]);
+			]
+		])->associate($producto);
 
-		return count(\Cart::session($userId)->getContent());
+		return count(\Cart::content());
 	}
 
 	public function update(Request $request, $rowId)
 	{
-		$userId = auth()->user()->id;
-
-		$carrito = \Cart::session($userId)->get($rowId);
-	
-
-		\Cart::session($userId)->update($rowId, [
-			'quantity' => -($carrito->quantity - 1)
-		]);
+		//$userId = auth()->user()->id;
 		
-		\Cart::session($userId)->update($rowId, [
-			'quantity' => ($request->quantity -1)
+		$carrito = \Cart::update($rowId, [
+			'qty' => $request->qty
 		]);
-		
 
-		return \Cart::session($userId)->getContent();
+		return \Cart::content();
 	}
 
 	public function get_shoppingcart()
 	{
-		$userId = auth()->user()->id;
+		//$userId = auth()->user()->id;
 
-		return count(\Cart::session($userId)->getContent());
+		return count(\Cart::content());
 	}
 
 
 	public function destroy($id)
 	{
-		$userId = auth()->user()->id;
+		//$userId = auth()->user()->id;
 
-		\Cart::session($userId)->remove($id);
+		\Cart::remove($id);
 
-		return \Cart::session($userId)->getTotalQuantity();
+		return count(\Cart::content());
 	}
 
 	public function clear()
 	{
-		$userId = auth()->user()->id;
-		\Cart::session($userId)->clear();
+		//$userId = auth()->user()->id;
+		\Cart::destroy();
 
-		return \Cart::session($userId)->getTotalQuantity();
+		return count(\Cart::content());
 	}
 
 	public function getCity(Request $request)
@@ -183,9 +174,12 @@ class ShoppingCartController extends Controller
 
 	public function prueba(Request $request)
 	{	
-		$userId = auth()->user()->id;
-
-		return \Cart::session($userId)->getContent();
+		$producto = Product::with('inventory')->findOrFail(1);
+		$carrito = \Cart::content();
+		//\Cart::destroy();
+		//$carrito = \Cart::add('1', 'Product 1', 1, 9.99, ['size' => 'large'])->associate($producto);
+		return $carrito;
+		return $carrito->model->inventory;
     	
 	}
 }

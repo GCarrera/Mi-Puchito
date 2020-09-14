@@ -80,10 +80,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 					<ul class="list-group" style="">
 						@forelse ($cart as $c)
-						@if($c->attributes->sale_type != 'al-mayor')
+						@if($c->options->sale_type != 'al-mayor')
 							@php
-							$subtotal = ($c->price - $c->attributes->retail_iva_amount) * $c->quantity;
-							$iva = $c->attributes->retail_iva_amount * $c->quantity;
+							$subtotal = ($c->price - $c->options->retail_iva_amount) * $c->qty;
+							$iva = $c->options->retail_iva_amount * $c->qty;
 
 							$totalSinIva += $subtotal;
 							@endphp
@@ -91,12 +91,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<li class="list-group-item itempadre">
 								<div class="row filapadre">
 
-									<div class="d-none" data-id="{{ $c->id }}"></div>
-									<div class="d-none sale_type">{{ $c->attributes->sale_type }}</div>
+									<div class="d-none" data-id="{{ $c->rowId }}"></div>
+									<div class="d-none sale_type">{{ $c->options->sale_type }}</div>
 
 									<div class="col-md-4 col-sm-6 col-12 order-1">
 										
-										@if( $c->attributes->sale_type == 'al-mayor' )
+										@if( $c->options->sale_type == 'al-mayor' )
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
 										@else
 											<p class="text-muted small">PRODUCTO AL MENOR</p>
@@ -105,33 +105,33 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							
 
 										<div class="d-flex justify-content-start">
-											<img data-src="/storage/{{ $c->attributes->image }}" style="height: 70px;" class="mr-2">
+											<img data-src="/storage/{{ $c->options->image }}" style="height: 70px;" class="mr-2">
 											<p class="small">
 												<span class="font-weight-bold">{{ $c->name }}</span><br>
 
-												@if( $c->attributes->sale_type == 'al-mayor' )
-													<span>1 {{ $c->associatedModel->inventory->unit_type }} de {{ $c->associatedModel->inventory->qty_per_unit }} productos</span>
+												@if( $c->options->sale_type == 'al-mayor' )
+													<span>1 {{ $c->model->inventory->unit_type }} de {{ $c->model->inventory->qty_per_unit }} productos</span>
 												@endif
 											</p>
 										</div>
 
-										<button class="btn btn-danger eliminar d-sm-none" onclick="delete_item({{$c->id}})" style="position: absolute; top: 4px; right: 4px;">
+										<button class="btn btn-danger eliminar d-sm-none" onclick="delete_item('{{$c->rowId}}')" style="position: absolute; top: 4px; right: 4px;">
 												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
 										</button>
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-xs-6 col-12 order-2 padrecantidad">
-										<button class="btn btn-danger eliminar d-none d-sm-block d-md-none" onclick="delete_item({{$c->id}})" style="position: relative; top: 4px; left: 84%;">
+										<button class="btn btn-danger eliminar d-none d-sm-block d-md-none" onclick="delete_item('{{$c->rowId}}'')" style="position: relative; top: 4px; left: 84%;">
 												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
 											</button>
 										<p class="text-muted small text-center">CANTIDAD</p>
 										<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 											<div class="input-group-prepend">
-												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->id}}')"><i class="fas fa-angle-down"></i></button>
+												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 											</div>
-											<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->id}} rounded-0" value="{{ $c->quantity }}" min="1" data-carrito="{{$c->id}}">
+											<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
 											<div class="input-group-append">
-												<button class="btn btn-primary btn-sm" onclick="add('{{$c->id}}')"><i class="fas fa-angle-up"></i></button>
+												<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 											</div>
 										</div>
 									</div>
@@ -139,38 +139,38 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<div class="col-md-3 col-sm-6 col-12 order-3 padreprecio">
 										<p class="text-muted small text-center">PRECIO Bs</p>
 
-										@if($c->attributes->sale_type == 'al-mayor')
+										@if($c->options->sale_type == 'al-mayor')
 										@php
-										$ivaprimero = $c->attributes->wholesale_iva_amount * $c->associatedModel->inventory->qty_per_unit;
-										$subtotal = $c->attributes->wholesale_packet_price;
-										$iva = $ivaprimero * $c->quantity;
+										$ivaprimero = $c->options->wholesale_iva_amount * $c->model->inventory->qty_per_unit;
+										$subtotal = $c->options->wholesale_packet_price;
+										$iva = $ivaprimero * $c->qty;
 
 										$totalSinIva += $subtotal;
 										@endphp
 										<p class="small text-center">
-											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+											<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 											<br>
-											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
+											<span class="iva_product iva_product-{{$c->rowId}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
 										</p>
 										@else
 										<p class="small text-center">
-											<span class="font-weight-bold precio-{{$c->id}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+											<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 											<br>
-											<span class="iva_product iva_product-{{$c->id}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
+											<span class="iva_product iva_product-{{$c->rowId}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
 										</p>
 										@endif
-										@if($c->attributes->sale_type == 'al-mayor')
-											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->wholesale_packet_price }}">
+										@if($c->options->sale_type == 'al-mayor')
+											<input type="hidden" class="preciosiniva" value="{{ $c->options->wholesale_packet_price }}">
 											<P class="text-muted small text-center">
-												<span class="preciopvp">{{ number_format(($c->attributes->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> Bs
+												<span class="preciopvp">{{ number_format(($c->options->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> Bs
 											</P>
 											<br>
 											{{--<span class="text-muted small">
-												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{  number_format($c->attributes->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
+												<span>IVA {{ $c->options->iva }}%: <span class="iva">{{  number_format($c->options->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
 											</span>--}}
 											<br>
 										@else
-											<input type="hidden" class="preciosiniva" value="{{ $c->attributes->cost }}">
+											<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
 											<p class="text-center">
 											<span class="text-muted small">
 												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> Bs
@@ -178,7 +178,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											</p>
 											<!--<br>-->
 											{{-- <span class="text-muted small">
-												<span>IVA {{ $c->attributes->iva }}%: <span class="iva">{{ number_format($c->attributes->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
+												<span>IVA {{ $c->options->iva }}%: <span class="iva">{{ number_format($c->options->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
 											</span> --}}
 											<!--<br>-->
 										@endif
@@ -186,12 +186,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									
 									<div class="col-md-2 col-sm-5 col-12 order-4">
 										<p class="text-muted small text-center">DESCRIPCIÓN</p>
-										<p class="font-weight-normal precio text-center">{{ $c->associatedModel->inventory->description }}</p>
+										<p class="font-weight-normal precio text-center">{{ $c->model->inventory->description }}</p>
 										<br>
-										@if($c->attributes->sale_type == 'al-mayor')
-										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->associatedModel->inventory->quantity) }}</p>
+										@if($c->options->sale_type == 'al-mayor')
+										<p class="font-weight-bold small">Disponibles para la venta: {{ $c->model->inventory->quantity }}</p>
 										@else
-										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->associatedModel->inventory->total_qty_prod) }}</p>
+										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->model->inventory->total_qty_prod) }}</p>
 										@endif
 									</div>
 									{{-- <div class="col-md-2 col-sm-6 col-12">
@@ -201,7 +201,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 									<div class="col-md-1 col-sm-1 col-12 order-0 order-sm-5 d-none d-md-block">
 										<div class="w-100 text-center">
-											<button class="btn btn-danger eliminar" onclick="delete_item({{$c->id}})" style="position: absolute; top: 4px; right: 4px;">
+											<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')" style="position: absolute; top: 4px; right: 4px;">
 												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
 											</button>
 										</div>
@@ -273,7 +273,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span class="font-weight-bold">Total:</span>
 						</div>
 						<div class="col-8 text-right">
-							<span class="font-weight-bold"><span id="montoTotal">{{ number_format($total, 2, ',', '.') }}</span> Bs</span>
+							<span class="font-weight-bold"><span id="montoTotal">{{ $total }}</span> Bs</span>
 						</div>
 					</div>
 					<div class="row mb-3 no-gutters">
@@ -711,13 +711,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 
 	function substract(id) {
-		if (myCart[id].quantity == 1) {
+		if (myCart[id].qty == 1) {
 			return
 		}
-		myCart[id].quantity = parseInt(myCart[id].quantity) - 1;
-		$('.sinflechas-'+id).val(myCart[id].quantity)
+		myCart[id].qty = parseInt(myCart[id].qty) - 1;
+		$('.sinflechas-'+id).val(myCart[id].qty)
 
-		let data = {"quantity": $('.sinflechas-'+id).val()}
+		let data = {"qty": $('.sinflechas-'+id).val()}
 
 		
 		$.ajax({
@@ -736,20 +736,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 
 	function delete_item(id) {
-		// console.log(id, myCart[id])
+		console.log(id, myCart[id])
 		delete myCart[id]
 		console.log(myCart)
 		subtotal()
 	}
 
 	function add(id) {
-		myCart[id].quantity = parseInt(myCart[id].quantity) + 1
-		if (myCart[id].quantity >= parseInt(myCart[id].attributes.wholesale_quantity)) {
+		myCart[id].qty = parseInt(myCart[id].qty) + 1
+		if (myCart[id].qty >= parseInt(myCart[id].options.wholesale_qty)) {
 
 		}
-		$('.sinflechas-'+id).val(myCart[id].quantity)
+		$('.sinflechas-'+id).val(myCart[id].qty)
 
-		let data = {"quantity": $('.sinflechas-'+id).val()}
+		let data = {"qty": $('.sinflechas-'+id).val()}
 
 		
 		$.ajax({
@@ -770,11 +770,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	}
 	//CHANGE PARA EL INPUT DE LAS CANTIDADES
 	$('.input-cantidad').change(function(e){
-
-		let id = e.target.attributes[5].value
-		let data = {"quantity": e.target.value}
-
 		
+		let id = e.target.attributes[5].value
+		//$('.sinflechas-'+id).val(myCart[id].qty)
+		let data = {"qty": e.target.value}
+	
 		$.ajax({
 		    type: 'PUT',
 		    url: '/shoppingcart/'+ id,
@@ -788,18 +788,20 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		    console.log(e);
 		});
+
+		
 		
 	});
 
 
 	function subtotal_item(id) {
-		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].attributes.retail_iva_amount), typeof myCart[id].quantity)
-		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].attributes.retail_iva_amount)) * myCart[id].quantity
-		if(myCart[id].attributes.sale_type == "al-menor"){
+		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].options.retail_iva_amount), typeof myCart[id].qty)
+		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].options.retail_iva_amount)) * myCart[id].qty
+		if(myCart[id].options.sale_type == "al-menor"){
 
-			myCart[id].iva = myCart[id].attributes.retail_iva_amount * myCart[id].quantity
+			myCart[id].iva = myCart[id].options.retail_iva_amount * myCart[id].qty
 		}else{
-			myCart[id].iva = (myCart[id].associatedModel.wholesale_iva_amount * myCart[id].associatedModel.inventory.qty_per_unit) * myCart[id].quantity
+			myCart[id].iva = (myCart[id].options.wholesale_iva_amount * myCart[id].options.wholesale_quantity) * myCart[id].qty
 		}
 
 		$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
@@ -813,21 +815,22 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		let total = 0
 		// console.log(myCart)
 		for (let cart in myCart) {
-			if (myCart[cart].attributes.sale_type == "al-mayor") {
+			//console.log("carrito "+myCart[cart])
+			if (myCart[cart].options.sale_type == "al-mayor") {
 
-				subtotal += (myCart[cart].price * parseInt(myCart[cart].quantity))
+				subtotal += (myCart[cart].price * parseInt(myCart[cart].qty))
+	
+				iva += parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity) * myCart[cart].qty)
 
-				iva += parseInt((myCart[cart].attributes.wholesale_iva_amount * myCart[cart].associatedModel.inventory.qty_per_unit) * myCart[cart].quantity)
+				total += (myCart[cart].price + parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity))) * myCart[cart].qty
 
-				total += (myCart[cart].price + parseInt((myCart[cart].attributes.wholesale_iva_amount * myCart[cart].associatedModel.inventory.qty_per_unit))) * myCart[cart].quantity
+			}else if(myCart[cart].options.sale_type == "al-menor"){
 
-			}else if(myCart[cart].attributes.sale_type == "al-menor"){
-
-			total += myCart[cart].price * myCart[cart].quantity
-			// console.log(myCart[cart].price, myCart[cart].quantity, parseInt(myCart[cart].attributes.retail_iva_amount))
-			subtotal += (myCart[cart].price * parseInt(myCart[cart].quantity)) - (parseInt(myCart[cart].attributes.retail_iva_amount) * parseInt(myCart[cart].quantity))
+			total += myCart[cart].price * myCart[cart].qty
+			// console.log(myCart[cart].price, myCart[cart].qty, parseInt(myCart[cart].options.retail_iva_amount))
+			subtotal += (myCart[cart].price * parseInt(myCart[cart].qty)) - (parseInt(myCart[cart].options.retail_iva_amount) * parseInt(myCart[cart].qty))
 			// console.log("subtotal: ", subtotal)
-			iva += parseInt(myCart[cart].attributes.retail_iva_amount * myCart[cart].quantity)
+			iva += parseInt(myCart[cart].options.retail_iva_amount * myCart[cart].qty)
 			}
 
 
@@ -973,7 +976,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// 	$.ajax(`/shoppingcart/${id}`, {
 		// 		method: 'put',
 		// 		data: {
-		// 			quantity: cantidad,
+		// 			qty: cantidad,
 		// 			sale_type: tipo_compra
 		// 		},
 		// 		beforeSend(){

@@ -36,20 +36,31 @@
 		</div>
 
 		<ul class="navbar-nav ml-auto">
-		   @auth
+		   
 		    <li class="nav-item" id="inicio">
 		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" ></i>Inicio</a>
 		    </li>
 		    <li class="nav-item" id="lista-de-deseos">
+		    @guest
+		    <li class="nav-item" id="lista-de-deseos">
+				<a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
+					<i class="fas fa-heart mr-2"></i>
+					Favoritos
+				</a>
+			</li>
+			@endguest
+			@auth
 		     <a class="nav-link" href="/lista-de-deseos"><i class="fas fa-heart mr-2" ></i>
 		      <span class="badge badge-danger d-none" id="wishlist_counter">0</span><span style="font-size: 12px"> Favoritos</span>
 		     </a>
 		    </li>
+		    @endauth
 		    <li class="nav-item" id="shoppingcart">
 		     <a class="nav-link" href="/shoppingcart"><i class="fas fa-shopping-cart mr-2" ></i>
 		      <span class="badge badge-danger d-none" id="cart_counter">0</span> <span style="font-size: 12px">Carrito</span>
 		     </a>
 		    </li>
+		   @auth
 		    <li class="nav-item dropdown">
 		     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		      <i class="fas fa-user mr-2" ></i>{{ auth()->user()->people->name }}
@@ -64,21 +75,7 @@
 		    </li>
 		   @endauth
 		   @guest
-		    <li class="nav-item" id="inicio">
-		     <a class="nav-link" href="/"><i class="fas fa-home mr-2"></i>Inicio</a>
-		    </li>
-		    <li class="nav-item" id="lista-de-deseos">
-		     <a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
-		      <i class="fas fa-heart mr-2"></i>
-		      Favoritos
-		     </a>
-		    </li>
-		    <li class="nav-item" id="shoppingcart">
-		     <a class="nav-link disabled" data-toggle="tooltip" data-title="Inicia sesión para usar esta función" href="#">
-		      <i class="fas fa-shopping-cart mr-2"></i>
-		      Mi Carrito
-		     </a>
-		    </li>
+	
 		    <li class="nav-item">
 		     <a class="nav-link" href="{{ route('register') }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
 		      <i class="fas fa-user mr-2"></i>Registrarme

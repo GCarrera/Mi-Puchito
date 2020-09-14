@@ -126,9 +126,9 @@
 								@php
 								if (isset($carrito)) {
 									foreach ($carrito as $item) {
-										if ($item->attributes->sale_type == "al-menor") {
+										if ($item->options->sale_type == "al-menor") {
 											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 										}	
 														
 									}
@@ -156,8 +156,6 @@
 											@endif
 											<p class="text-right text-success">Dolares:{{ number_format($producto->product->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
 
-											@auth
-											
 												<div class="">
 												
 														<button 
@@ -169,7 +167,7 @@
 
 														>
 															<i class="fa fa-heart" style="color: #dc3545;"></i>
-															<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">lista de deseos</label>
+															<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">Agregar a favoritos</label>
 														</button>
 														
 													
@@ -211,36 +209,7 @@
 														-->
 													@endif
 												</div>
-											
-												
-											@else
-											<div class="">
-												
-														<button 
-															onclick="buttonPressed('wish')" 
-															type="button" 
-															class="btn btn-block"
-															data-title="Añadir a la lista de deseos" 
-															data-toggle="tooltip"
-														>
-															<i class="fa fa-heart" style="color: #dc3545;"></i>
-															<b class="text-danger">Lista de Deseos</b>
-														</button>
 
-												
-														<button 
-															onclick="buttonPressed('cart')" 
-															class="btn btn-block btn-primary"
-															data-title="Comprar" 
-															data-toggle="tooltip"
-														>
-															<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
-															<b>Comprar</b>
-														</button>
-														
-										
-											</div>		
-											@endauth
 										
 										</div>
 									</div>
@@ -250,9 +219,9 @@
 								@php
 								if (isset($carrito)) {
 									foreach ($carrito as $item) {
-										if ($item->attributes->sale_type == "al-mayor") {
+										if ($item->options->sale_type == "al-mayor") {
 											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'associatedModel.id', 0);
+											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 										}	
 														
 									}
@@ -279,11 +248,9 @@
 											<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 											<p class="text-center">{{ $producto->description}}</p>
 
-											@auth
-											
 													<button id="deseos-{{ $producto->product->id }}"  data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
 														<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-														<label for="deseos-{{ $producto->product->id }}" class="text-danger">Lista de deseos</label>
+														<label for="deseos-{{ $producto->product->id }}" class="text-danger">Agregar a favoritos</label>
 													</button>
 												
 												@if(isset($respuesta) && $respuesta != 0)
@@ -322,23 +289,7 @@
 													</button>
 				
 												@endif
-											
-											@else
-												<button onclick="buttonPressed('wish')" 
-															type="button" 
-															class="btn btn-block"
-															data-title="Añadir a la lista de deseos" 
-															data-toggle="tooltip">
-													<i class="fa fa-heart" data-toggle="tooltip" data-title= "Agregar a favoritos" style="color: #dc3545;"></i>
-													<b class="text-danger">Lista de Deseos</b>
-												</button>
-												<button type="button" onclick="buttonPressed('cart')" 
-															class="btn btn-block btn-primary"
-															data-title="Comprar" 
-															data-toggle="tooltip">
-													<i class="fas fa-shopping-cart mr-2"></i><span class="text">Comprar</span>
-												</button>
-											@endauth
+
 
 										</div>
 									</div>
@@ -480,7 +431,7 @@
 		})
 
 
-		// saber si hay elementos en la lista de deseos
+		// saber si hay elementos en la Agregar a favoritos
 		$.get('/get_wishlist', (res) => {
 			if (res > 0) {
 				$('#wishlist_counter').removeClass('d-none')
