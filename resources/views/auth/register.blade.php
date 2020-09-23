@@ -53,7 +53,7 @@
 							<div class="input-group-text"><i class="fas fa-envelope"></i></div>
 						</div>
 
-						<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">	
+						<input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email">
 
 						@error('email')
 							<span class="invalid-feedback" role="alert">
@@ -101,7 +101,7 @@
 
 					<label for="password-confirm">{{ __('Confirme Contraseña') }}</label>
 					<div class="input-group mb-4">
-						
+
 						<div class="input-group-prepend">
 							<div class="input-group-text"><i class="fas fa-lock"></i></div>
 						</div>
@@ -129,6 +129,9 @@
 					<div  class="mb-3">
 						¿Ya tienes una cuenta? <a href="/login">Inicia sesión</a>
 					</div>
+					<div  class="mb-3 text-center">
+						 <a href="/">Inicio</a>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -138,8 +141,8 @@
 
 @push('scripts')
 <script>
-	
-	$(() => { 
+
+	$(() => {
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -170,7 +173,7 @@
 			"positionClass": "toast-bottom-left",
 		}
 
-		$('#icon-eye-password').click((e) => {	
+		$('#icon-eye-password').click((e) => {
 			if ($('#password').val()) {
 				if ($('#icon-eye-password').hasClass('fa-eye')) {
 					$('#password').removeAttr('type');
@@ -192,10 +195,10 @@
 				$('#password-confirm').attr('type', 'password');
 				$('#password-confirm').val('');
 			}
-		});	
+		});
 
 		/*------------------------------ Confirmar contraseña --------------------------------------*/
-		$('#icon-eye-password-confirm').click((e) => {	
+		$('#icon-eye-password-confirm').click((e) => {
 			if ($('#password').val()) {
 				if ($('#icon-eye-password-confirm').hasClass('fa-eye')) {
 					$('#password-confirm').removeAttr('type');
