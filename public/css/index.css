@@ -1,0 +1,212 @@
+@font-face {
+	src: url('/public/fonts/Roboto/Roboto-Regular.ttf');
+	font-weight: 400;
+	font-family: 'Roboto';
+}
+
+@font-face {
+	src: url('/public/fonts/Roboto/Roboto-Light.ttf');
+	font-weight: 200;
+	font-family: 'Roboto';
+}
+
+@font-face {
+	src: url('/public/fonts/Roboto/Roboto-BoldItalic.ttf');
+	font-weight: 600;
+	font-family: 'Roboto';
+}
+
+
+html, body {
+	height: 100% !important;
+	background: radial-gradient(white, #c4c4c4);
+	font-family: "Roboto" !important;
+	font-size: .95em;
+	/*margin: 0;*/
+  	/*margin-bottom: 60px;*/
+}
+
+.fondo-login {
+	height: 100%;
+	/*background-image: url('/img/fondologin.jpg');
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;*/
+}
+
+.card, .btn, .form-control, .input-group-text, .file-input-wrapper, .SearchProductNameAutoComplete, .modal-content, .modal_loader  {
+	border-radius: 0.50rem;
+}
+
+.input-group > .form-control:not(:last-child), .input-group > .custom-select:not(:last-child) {
+	border-top-right-radius: 0.50rem;
+	border-bottom-right-radius: 0.50rem;
+}
+
+.card > .card-body > .list-group:first-child .list-group-item:first-child {
+	border-top-left-radius: 0.50rem;
+  	border-top-right-radius: 0.50rem;
+}
+
+.card > .card-body > .list-group:last-child .list-group-item:last-child {
+	border-bottom-left-radius: 0.50rem;
+  	border-bottom-right-radius: 0.50rem;
+}
+
+.rounded-lg {
+	border-radius: 0.50rem !important;
+}
+
+.navbar {
+  box-shadow: 0 0.2rem 0.7rem rgba(0, 0, 0, 0.5) !important;
+}
+
+.precio:not(.no) {
+	font-size: 1.1em
+}
+
+.file-input-wrapper {
+	padding: 10px;
+	width: 100%;
+	border: 1px solid #D0D0D0;
+	text-align: center;
+}
+
+#fileinput {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.rounded-circle {
+	z-index: 1000
+}
+
+.icon-width {
+	width: 30px
+}
+
+.rounder-icon-password-input {
+	border-top-right-radius: 0.50rem !important; 
+	border-bottom-right-radius: 0.50rem !important;
+}
+
+.loading {
+	overflow-y: hidden;
+	height: 100%;
+	width: 100%;
+	z-index: 9999;
+	background-color: #e7e7e7;
+	position: fixed;
+	top: 0px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.modal_loader {
+	height: 100%;
+	width: 100%;
+	z-index: 9999;
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #e7e7e7;
+}
+
+.wrapper {
+	min-height: calc(100% - 4rem);
+}
+
+#sticky-footer {
+  	width: 100%;
+  	text-align: center;
+  	height: 4rem
+	/*position: absolute;
+  	bottom: 0;*/
+	/*flex-shrink: none;*/
+  	/*height: 60px*/
+}
+
+/*.dropdown-menu {
+	z-index: 10000;
+}*/
+
+/*.bg {
+	background:
+	-webkit-linear-gradient(rgba(135, 60, 255, 1), rgba(135, 60, 255, 0.0) 0%),
+	-webkit-linear-gradient(-45deg, rgba(120, 155, 255, 0.9) 45%, rgba(55, 230, 235, 1) 0%);
+}*/
+
+/*VISTA PRINCIPIAL*/
+
+#background-top{
+	background-image: url('../img/supermarket.jpg');
+	background-position: top center;
+	background-size: cover;
+	max-width: 100%;
+	height: 35%;
+	margin-top: 4%;
+}
+
+/*VISTA CARRITO*/
+
+#img-carrito{
+	height: 470px; 
+	background-image: url('/public/img/banner2.jpg'); 
+	background-position: center; 
+	position: relative;
+}
+
+#img-carrito:before {
+  content:'';
+  position: absolute;
+        top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.filapadre{
+background: #ffffff;
+background: -moz-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, #ffffff), color-stop(41%, #ffffff), color-stop(100%, #ebf4ff));
+background: -webkit-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -o-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: -ms-linear-gradient(left, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+background: linear-gradient(to right, #ffffff 0%, #ffffff 41%, #ebf4ff 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ebf4ff', GradientType=1 );
+}
+
+.itempadre{
+	padding: 0px 0px 0px 0px !important;
+}
+
+#carrito-cantidades{
+	width: 50%;
+}
+
+/*LG*/
+	@media (min-width: 992px) and (max-width: 1200px) {
+		.body-producto{
+		padding-left: 0px;
+		padding-right: 0px;
+		}
+
+		#carrito-cantidades{
+			width: 100%;
+		}
+	}
+
+	@media (min-width: 1200px) {
+
+		#carrito-cantidades{
+			width: 100%;
+		}
+	}
+
