@@ -1,20 +1,20 @@
 	<!-- Scripts -->
-	<script src="{{ asset('js/jquery-3.4.1.min.js') }}"></script>
-	<script src="{{ asset('js/popper.min.js') }}"></script>
-	<script src="{{ asset('js/toastr.js') }}"></script>-
-	<script src="{{ asset('slick/slick.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-	<script src="{{ asset('js/bootstrap-autocomplete.min.js') }}"></script>
-	<!-- <script src="{{ asset('bootstrap-star-rating/js/star-rating.js') }}"></script> -->
-	<!-- <script src="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
-	<!--<script src="{{ asset('js/datatables.min.js') }}" ></script>-->
-	<script src="{{ asset('js/app.js') }}"></script>
-	<script src="{{ asset('js/scripts.js') }}"></script>
-	<script src="{{ asset('js/moment.min.js') }}"></script>
-	<script src="{{ asset('js/daterangepicker.js') }}"></script>
-	<script src="{{ asset('js/jquery.lazy.min.js') }}"></script>
-	
+	<script src="{{ asset('public/js/jquery-3.4.1.min.js') }}"></script>
+	<script src="{{ asset('public/js/popper.min.js') }}"></script>
+	<script src="{{ asset('public/js/toastr.js') }}"></script>-
+	<script src="{{ asset('public/slick/slick.min.js') }}"></script>
+	<script src="{{ asset('public/js/bootstrap.bundle.min.js') }}"></script>
+	<script src="{{ asset('public/js/bootstrap-select.min.js') }}"></script>
+	<script src="{{ asset('public/js/bootstrap-autocomplete.min.js') }}"></script>
+	<!-- <script src="{{ asset('public/bootstrap-star-rating/js/star-rating.js') }}"></script> -->
+	<!-- <script src="{{ asset('public/bootstrap-star-rating/themes/krajee-fas/theme.min.js') }}" ></script> -->
+	<!--<script src="{{ asset('public/js/datatables.min.js') }}" ></script>-->
+	<script src="{{ asset('public/js/app.js') }}"></script>
+	<script src="{{ asset('public/js/scripts.js') }}"></script>
+	<script src="{{ asset('public/js/moment.min.js') }}"></script>
+	<script src="{{ asset('public/js/daterangepicker.js') }}"></script>
+	<script src="{{ asset('public/js/jquery.lazy.min.js') }}"></script>
+
 	<script>
 			//LAZY LOAD
 		$(function(){
@@ -23,8 +23,8 @@
 				effect: 'fadeIn',
 			});
 		})
-			
-		
+
+
 
 		// Para añadir cuando no está logueado
 		function buttonPressed(button) {
@@ -33,7 +33,7 @@
 			console.log(LocalStorage.getItem('buttonPressed'))
 			window.location = '/login'
 		}
-		
+
 		function soloNumeros(e){
 			var key = window.event ? e.which : e.keyCode;
 			if (key < 48 || key > 57) {

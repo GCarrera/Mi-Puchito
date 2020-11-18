@@ -15,21 +15,21 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> --}}
 
 	<!-- Plugin styles -->
-	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/fontawesome/css/all.min.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/animate.css') }}" rel="stylesheet">
-	<link href="{{ asset('slick/slick.css') }}" rel="stylesheet">
-	<link href="{{ asset('slick/slick-theme.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/bootstrap-select.css') }}" rel="stylesheet">
-	<!-- <link href="{{ asset('bootstrap-star-rating/css/star-rating.css') }}" rel="stylesheet"> -->
-	<!-- <link href="{{ asset('bootstrap-star-rating/themes/krajee-fas/theme.min.css') }}" rel="stylesheet"> -->
-	<link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/fontawesome/css/all.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/animate.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/slick/slick.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/slick/slick-theme.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/bootstrap.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/toastr.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/bootstrap-select.css') }}" rel="stylesheet">
+	<!-- <link href="{{ asset('public/bootstrap-star-rating/css/star-rating.css') }}" rel="stylesheet"> -->
+	<!-- <link href="{{ asset('public/bootstrap-star-rating/themes/krajee-fas/theme.min.css') }}" rel="stylesheet"> -->
+	<link href="{{ asset('public/css/datatables.min.css') }}" rel="stylesheet">
 
-	<link href="{{ asset('css/index.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/index.css') }}" rel="stylesheet">
 
-	<link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
+	<link href="{{ asset('public/css/daterangepicker.css') }}" rel="stylesheet">
 	<style>
 		.truncated-text {
 			text-overflow: ellipsis;
