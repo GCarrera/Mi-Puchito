@@ -4,7 +4,7 @@
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 	<a class="navbar-brand" href="/">
-		 <img src="/img/pinchitos.png" width="35" height="35" class="d-inline-block align-top" alt="">
+		 <img src="public/img/pinchitos.png" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
 	<a href="/shoppingcart" class="ml-auto">
 	<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
@@ -16,7 +16,7 @@
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-	
+
 		<div class="col-md-6 col-sm-12 col-xs-12">
 			@if(Request::get('buytype') == 'major')
 			<form action="" method="GET" class="my-2 my-lg-0">
@@ -31,12 +31,12 @@
 							<i class="fas fa-search"></i>
 						</button>
 					</div>
-				</div>		
+				</div>
 			</form>
 		</div>
 
 		<ul class="navbar-nav ml-auto">
-		   
+
 		    <li class="nav-item" id="inicio">
 		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" ></i>Inicio</a>
 		    </li>
@@ -75,7 +75,7 @@
 		    </li>
 		   @endauth
 		   @guest
-	
+
 		    <li class="nav-item">
 		     <a class="nav-link" href="{{ route('register') }}" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
 		      <i class="fas fa-user mr-2"></i>Registrarme
@@ -105,7 +105,7 @@
 			<div class="col-md-4 col-xl-4 mt-5">
 				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="/img/pinchitos.png" alt="Mi puchito's"  style="width: 35%;"></a>
 					<p class="text-justify">Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.</p>
-					
+
 				</div>
 			</div>
 			<div class="col-md-4 mt-5 mb-3">
@@ -118,7 +118,7 @@
 					<dt><i class="far fa-envelope" style="color: #dc3545; font-size: 1.5em;" ></i></dt>
 					<dd>comercialmipuchitoca@gmail.com</dd>
 				</dl>
-				
+
 			</div>
 			<div class="col-md-4 col-xl-4 mt-5">
 				<i class="fas fa-search" style="font-size: 4.5em;"></i>
@@ -133,7 +133,7 @@
 					@guest
 						<li><a class="" onclick="buttonPressed('wish')">Favoritos</a></li>
 						<li><a class="" onclick="buttonPressed('cart')">Mi carrito</a></li>
-						 
+
 						<li><a class="" href="{{url('login')}}">Iniciar sesión</a></li>
 						<li><a class="" href="{{url('register')}}">Registrarse</a></li>
 					@endguest
@@ -150,7 +150,7 @@
 		<div class="col-2 text-center mb-3">
 			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
 
-				<img src="/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; right: 20px; overflow-y: hidden;">
+				<img src="public/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; right: 20px; overflow-y: hidden;">
 			</a>
 		</div>
 		<div class="col-2 text-center mb-3">
