@@ -67,7 +67,7 @@
 								<tr>
 									<th>PRODUCTO</th>
 									<th>COSTO</th>
-									<!-- <th>I.V.A (%)</th> -->				
+									<!-- <th>I.V.A (%)</th> -->
 									<th>PRECIO AL MAYOR (Bs)</th>
 									<th>PRECIO AL MENOR (Bs)</th>
 									<th class="text-center">ACCIONES</th>
@@ -78,9 +78,9 @@
 									<tr>
 										<td class="small">{{ $pro->inventory->product_name }}</td>
 										<td>{{number_format($pro->cost, 2, ',', '.')  }}</td>
-									
+
 										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }}-{{ $pro->wholesale_margin_gain }}%-{{number_format($pro->wholesale_total_individual_price / $dolar->price, 2, ',', '.')}}$</td>
-									
+
 										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}-{{ $pro->retail_margin_gain }}%-{{number_format($pro->retail_total_price / $dolar->price, 2, ',', '.')}}$</td>
 										<td class="text-center">
 											<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
@@ -153,11 +153,11 @@
 						</div>
 						<div class="col-12 col-md-3 mb-2">
 							<label for="cost">Costo total del producto</label>
-							<input type="text" onkeypress="soloNumeros(event)" class="form-control costo" name="cost" id="cost" onkeyup="calcularPrecio()" required>
+							<input type="text" onkeypress="soloNumeros(event, this)" class="form-control costo" name="cost" id="cost" onkeyup="calcularPrecio()" required>
 						</div>
 						<div class="col-12 col-md-3">
-							<label for="iva_percent">Tipo de I.V.A</label><br>
-							<select name="iva_percent" id="iva_percent" class="selectp	icker border form-control iva" data-width="100%" required>
+							<label for="iva_percent" class="d-none">Tipo de I.V.A</label><br>
+							<select name="iva_percent" id="iva_percent" class="selectp	icker border form-control iva d-none" data-width="100%" required>
 								<option value="24">24%</option>
 								<option value="20">20%</option>
 								<option value="16">16%</option>
@@ -181,25 +181,25 @@
 							</div>
 							<div class="row mb-4">
 								<div class="col-12">
-									
+
 									<button class="d-none calcular" type="button"><i class="fas fa-calculator mr-2"></i></button>
-								
+
 								</div>
 							</div>
 							<div class="row mb-4">
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al menor</h5>
-										PVP: <span class="precio font-weight-light total_retail_price">0</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_retail_price">0</span> Bs<br>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_retail_price">0</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_retail_price">0</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_retail_price">0</span> Bs<br>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="text-right">
 										<h5 class="mb-4">Precio al mayor</h5>
-										PVP: <span class="precio font-weight-light total_wholesale_price">0</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_wholesale_price">0</span> Bs<br>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_wholesale_price">0</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_wholesale_price">0</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_wholesale_price">0</span> Bs</span><br>
 										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
 									</div>
@@ -290,7 +290,7 @@
 						</div>
 
 						<div class="row mb-1">
-							
+
 							<label class="col-12 font-weight-light" id="oferta"></label>
 						</div>
 					</div>
@@ -373,8 +373,8 @@
 							<input type="text" pattern="^[0-9]+([,][0-9]+)?$" class="form-control costo" name="cost" id="cost_edit" required>
 						</div>
 						<div class="col-12 col-md-3">
-							<label for="iva_percent">Tipo de I.V.A</label><br>
-							<select name="iva_percent" onchange="calcularPrecio()" id="iva_percent_edit" class="border custom-select form-control iva" required>
+							<label for="iva_percent" class="d-none">Tipo de I.V.A</label><br>
+							<select name="iva_percent" onchange="calcularPrecio()" id="iva_percent_edit" class="border custom-select form-control iva d-none" required>
 								<option value="24">24%</option>
 								<option value="20">20%</option>
 								<option value="16">16%</option>
@@ -421,16 +421,16 @@
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al menor</h5>
-										PVP: <span class="precio font-weight-light total_retail_price">0,00</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_retail_price">0,00</span> Bs<br>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_retail_price">0,00</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_retail_price">0,00</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_retail_price">0,00</span> Bs<br>
 									</div>
 								</div>
 								<div class="col-6">
 									<div class="text-right">
 										<h5 class="mb-4">Precio al mayor</h5>
-										PVP: <span class="precio font-weight-light total_wholesale_price">0,00</span> Bs<br>
-										IVA: <span class="precio font-weight-light iva_wholesale_price">0,00</span> Bs<br>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_wholesale_price">0,00</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_wholesale_price">0,00</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_wholesale_price">0,00</span> Bs</span><br>
 										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
 									</div>
@@ -472,7 +472,7 @@
 	}
 
 	$(() => {
-		
+
 		let form = {
 			inventoryid: null,
 			costo: '0.00',
@@ -511,7 +511,7 @@
 				toastr.error("{{ $error }}")
             @endforeach
 		@endif()
-		
+
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
 
@@ -532,14 +532,14 @@
 			let ext_length = allowed_ext.length
 
 			for (let i = 0; i < ext_length; i++){
-				
+
 				if (!file.type.includes(allowed_ext[i])) {
 					if (ext_length - 1 == i) {
 						$('#imgerror').text('Este formato no está permitido.')
 						$('#imgerror').show()
 
 						return
-					} 
+					}
 				}
 				else {
 					break
@@ -548,7 +548,7 @@
 
 			reader.onload = (ev) => {
 				$('#imgerror').hide()
-					
+
 				$('#foto').show();
 				$('#clearbtn').show();
 
@@ -584,7 +584,7 @@
 			return Number(result_porcentaje)
 		}
 
-		
+
 
 		$('.btninfo').click(function() {
 			let id = $(this).data('id')
@@ -613,13 +613,13 @@
 					$('#oferta').addClass('text-danger')
 					$('#oferta').removeClass('text-success')
 				}
-				
+
 				// $('#cantidad').text(`${data.inventory.total_qty_prod} productos`)
 				// $('#iva').text(`${data.iva_percent}%`)
 				// $('#ganancia_al_menor').text(`${data.retail_margin_gain}%`)
-				// $('#precio_al_menor').text(`${new Intl.NumberFormat().format(data.retail_total_price)} Bs`)
+				// $('#precio_al_menor').text(`${new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(data.retail_total_price)} Bs`)
 				// $('#ganancia_al_mayor').text(`${data.wholesale_margin_gain}%`)
-				// $('#precio_al_mayor').text(`${new Intl.NumberFormat().format(data.wholesale_total_individual_price)} Bs`)
+				// $('#precio_al_mayor').text(`${new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(data.wholesale_total_individual_price)} Bs`)
 
 				$('#modal_loader').fadeOut()
 			})
@@ -634,7 +634,7 @@
 
 
 		$('.btnedit').click(function() {
-			
+
 			let id = $(this).data('id')
 
 			$('#editarForm').attr('action', `/products/${id}`)
@@ -668,7 +668,7 @@
 
 					$('#ofertaEdit2').removeAttr('checked')
 					$('#ofertaEdit1').attr('checked', true);
-					
+
 				}else{
 
 					$('#ofertaEdit1').removeAttr('checked', true);
@@ -724,8 +724,12 @@
 				$('#calcular').html('<i class="fas fa-calculator mr-2"></i> Calcular')
 
 				// Calcular precio total al menor y margen de ganancia
+				//console.log(form.costo);
 				let costo      = form.costo
-				let sin_puntos = costo.replace(/\./g, '')
+				var patron = /(?:\d{1,9}|\(\d{1,9}\))[.]\d{2}/;
+
+				//let sin_puntos = costo.replace(/\./g, '')
+				let sin_puntos = costo
 				let precio     = + sin_puntos.replace(/,/g, '.')
 				let iva_percent = + form.iva
 				let retail_margin_gain    = + form.ganancia_al_menor
@@ -741,11 +745,11 @@
 				let price_iva_menor = calcular_iva(iva_percent, precio_menor_total)
 				let price_iva_mayor = calcular_iva(iva_percent, precio_mayor_total)
 
-				$('.total_retail_price').text(new Intl.NumberFormat().format(precio_menor_total))
-				$('.iva_retail_price').text(new Intl.NumberFormat().format(price_iva_menor))
+				$('.total_retail_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total))
+				$('.iva_retail_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(price_iva_menor))
 
 				let totalmenor = parseFloat(precio_menor_total) + parseFloat(price_iva_menor)
-				$('.total_amount_retail_price').text(new Intl.NumberFormat().format(totalmenor))
+				$('.total_amount_retail_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(totalmenor))
 
 				// $('#retail_total_price').val(precio_menor.toFixed(2))
 				$('.retail_iva_amount').val(price_iva_menor.toFixed(2))
@@ -753,23 +757,24 @@
 
 
 
-				$('.total_wholesale_price').text(new Intl.NumberFormat().format(precio_mayor_total.toFixed(2)))
-				$('.iva_wholesale_price').text(new Intl.NumberFormat().format(price_iva_mayor.toFixed(2)))
+				$('.total_wholesale_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_mayor_total.toFixed(2)))
+				$('.iva_wholesale_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(price_iva_mayor.toFixed(2)))
 
 				let totalmayor = parseFloat(precio_mayor_total) + parseFloat(price_iva_mayor)
-				$('.total_amount_wholesale_price').text(new Intl.NumberFormat().format(totalmayor.toFixed(2)))
+				$('.total_amount_wholesale_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(totalmayor.toFixed(2)))
 
 				$('.wholesale_iva_amount').val(price_iva_mayor.toFixed(2))
 				$('.wholesale_total_individual_price').val(totalmayor.toFixed(2))
 
 				// precio total con iva
 				let total2 = totalmayor * response.qty_per_unit
-				// $('#total2_amount_wholesale_price').text(new Intl.NumberFormat().format(total2.toFixed(2)))
+				// $('#total2_amount_wholesale_price').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(total2.toFixed(2)))
 				$('.wholesale_total_packet_price').val(total2.toFixed(2))
-				
+
 				// precio total mayir  sin iva
 				let total3 = precio_mayor_total * response.qty_per_unit
 				$('.wholesale_packet_price').val(total3.toFixed(2))
+
 			})
 			.fail((err) => {
 				console.error(err)
