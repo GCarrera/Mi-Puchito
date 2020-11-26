@@ -19,7 +19,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 3) El sistema hace los cálculos matemáticos pertinentes para mostrar el precio y demás.(LISTO)
 
-4) El usuario una vez dispuesto a cancelar por los productos debe llenar 2 formularios: 
+4) El usuario una vez dispuesto a cancelar por los productos debe llenar 2 formularios:
 
 4.1) Uno donde indica la dirección a donde se le enviarán los productos (en caso de que así lo quiera).(LISTO)
 
@@ -83,6 +83,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						@if($c->options->sale_type != 'al-mayor')
 							@php
 							$subtotal = ($c->price - $c->options->retail_iva_amount) * $c->qty;
+							$subtotal = $subtotal*$dolar->price;
 							$iva = $c->options->retail_iva_amount * $c->qty;
 
 							$totalSinIva += $subtotal;
@@ -95,14 +96,14 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<div class="d-none sale_type">{{ $c->options->sale_type }}</div>
 
 									<div class="col-md-4 col-sm-6 col-12 order-1">
-										
+
 										@if( $c->options->sale_type == 'al-mayor' )
 											<p class="text-muted small">PRODUCTO AL MAYOR</p>
 										@else
 											<p class="text-muted small">PRODUCTO AL MENOR</p>
-											
+
 										@endif
-							
+
 
 										<div class="d-flex justify-content-start">
 											<img data-src="/storage/{{ $c->options->image }}" style="height: 70px;" class="mr-2">
@@ -135,14 +136,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											</div>
 										</div>
 									</div>
-									
+
 									<div class="col-md-3 col-sm-6 col-12 order-3 padreprecio">
 										<p class="text-muted small text-center">PRECIO Bs</p>
 
 										@if($c->options->sale_type == 'al-mayor')
 										@php
 										$ivaprimero = $c->options->wholesale_iva_amount * $c->model->inventory->qty_per_unit;
-										$subtotal = $c->options->wholesale_packet_price;
+										$subtotal = $c->options->wholesale_packet_price * $dolar->price;
+										//$subtotal = $c->options->wholesale_packet_price;
 										$iva = $ivaprimero * $c->qty;
 
 										$totalSinIva += $subtotal;
@@ -162,7 +164,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										@if($c->options->sale_type == 'al-mayor')
 											<input type="hidden" class="preciosiniva" value="{{ $c->options->wholesale_packet_price }}">
 											<P class="text-muted small text-center">
-												<span class="preciopvp">{{ number_format(($c->options->wholesale_total_packet_price + $iva), 2, ',', '.') }}</span> Bs
+												<span class="preciopvp">{{ number_format(($dolar->price*($c->options->wholesale_total_packet_price + $iva)), 2, ',', '.') }}</span> Bs
 											</P>
 											<br>
 											{{--<span class="text-muted small">
@@ -173,7 +175,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
 											<p class="text-center">
 											<span class="text-muted small">
-												<span class="preciopvp">{{ number_format($c->price, 2, ',', '.') }}</span> Bs
+												<span class="preciopvp">{{ number_format($dolar->price*$c->price, 2, ',', '.') }}</span> Bs
 											</span>
 											</p>
 											<!--<br>-->
@@ -183,7 +185,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 											<!--<br>-->
 										@endif
 									</div>
-									
+
 									<div class="col-md-2 col-sm-5 col-12 order-4">
 										<p class="text-muted small text-center">DESCRIPCIÓN</p>
 										<p class="font-weight-normal precio text-center">{{ $c->model->inventory->description }}</p>
@@ -257,7 +259,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span>Subtotal:</span>
 						</div>
 						<div class="col-8 text-right">
-							<span><span id="totalSinIva">{{ number_format($totalSinIva, 2, ',', '.') }} </span> Bs.</span>
+							<span><span id="totalSinIva">{{ number_format($totalSinIva*$dolar->price, 2, ',', '.') }} </span> Bs.</span>
 						</div>
 					</div>
 					<div class="row mb-1 no-gutters">
@@ -283,7 +285,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="montoDolares"></span> $</span>
 						</div>
-					</div>	
+					</div>
 					<div class="row mb-3 no-gutters">
 						<div class="col-4">
 							<span class="font-weight-bold">Precio actual del dolar:</span>
@@ -291,7 +293,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="dolar">{{ number_format($dolar->price, 2, ',', '.') }}</span> Bs</span>
 						</div>
-					</div>					
+					</div>
 					<!--<div class="row mb-1">
 						<div class="col">
 							<span>Descuento:</span>
@@ -387,7 +389,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<hr>
 
 						<div class="row mb-4">
-						
+
 							<div class="col">
 								<label for="pay_method">Selecciona el método de pago</label>
 								<div class="form-check">
@@ -449,7 +451,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<h6 class="col-6"><b>Cuenta: </b> <i id="account-{{$loop->iteration}}">{{ str_replace("-", "", $c->account_number) }} </i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('account-{{$loop->iteration}}')"></i></h6>
 							<h6 class="col-3"><b>Banco: </b> <i id="code-{{$loop->iteration}}">{{ $c->bank }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-{{$loop->iteration}}')"></i></h6>
 							<h6 class="col-6"><b>Cedula: </b><i id="dni-{{$loop->iteration}}">{{ $c->dni }}</i> <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-{{$loop->iteration}}')"></i></h6>
-	
+
 						</div>
 					</div>
 					@endif
@@ -470,8 +472,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</div>
 					</div>
 				@endforelse
-					
-				<hr>	
+
+				<hr>
 
 				<h6 class="font-weight-light">Información del pago</h6>
 				<div class="row">
@@ -493,13 +495,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
 									<p id="image_name" class="mt-3 mb-1"></p>
 									<p id="image_weigth" class="mb-3"></p>
-		
+
 									<p id="imgerror" class="text-danger" style="display: none;"></p>
 
 									<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
 									<label for="fileattached" class="btn btn-primary mb-0"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
 									<input id="fileattached" name="fileattached" type="file" accept="image/*,application/pdf" class="form-control-file" hidden>
-								</div>		
+								</div>
 							</div>
 							<div class="tab-pane fade" id="reference-number" role="tabpanel" aria-labelledby="reference-number-tab">
 								<div class="col-12">
@@ -540,10 +542,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						<label for="state_id">Estado</label><br>
 						<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
 						@foreach ($collection as $item)
-							
+
 						@endforeach
 					</div> --}}
-					
+
 					<div class="col-12">
 						<label for="forma_delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
 						<select name="forma_delivery" class="selectpicker mb-2 border form-control" id="forma-delivery">
@@ -581,7 +583,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</div>
 					</div>
 				</div>
-				
+
 				<div id="caja-direc-anteriores" style="overflow: scroll; max-height: 150px;">
 					<b style="font-size: 1.3em; margin-top: 5%;">Direcciones anteriores:</b>
 					@foreach($user_address as $address)
@@ -595,7 +597,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				</div>
 
 				<div class="row" id="">
-					
+
 					<div class=" mx-auto py-5 sr-only" id="direccion_loader">
 						<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
 					</div>
@@ -677,7 +679,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	var dolar = @json($dolar->price)
 
 	function openModanPayMethod(){
-		
+
 			$('#pay_method_modal').modal('show');
 		}
 
@@ -702,7 +704,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 			$('#detallesescondidos').addClass('d-none').removeClass('d-block')
 			$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
-				
+
 		}
 	}
 
@@ -719,7 +721,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		let data = {"qty": $('.sinflechas-'+id).val()}
 
-		
+
 		$.ajax({
 		    type: 'PUT',
 		    url: '/shoppingcart/'+ id,
@@ -751,7 +753,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		let data = {"qty": $('.sinflechas-'+id).val()}
 
-		
+
 		$.ajax({
 		    type: 'PUT',
 		    url: '/shoppingcart/'+ id,
@@ -765,16 +767,16 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		    console.log(e);
 		});
-		
-		
+
+
 	}
 	//CHANGE PARA EL INPUT DE LAS CANTIDADES
 	$('.input-cantidad').change(function(e){
-		
+
 		let id = e.target.attributes[5].value
 		//$('.sinflechas-'+id).val(myCart[id].qty)
 		let data = {"qty": e.target.value}
-	
+
 		$.ajax({
 		    type: 'PUT',
 		    url: '/shoppingcart/'+ id,
@@ -789,8 +791,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		    console.log(e);
 		});
 
-		
-		
+
+
 	});
 
 
@@ -804,8 +806,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			myCart[id].iva = (myCart[id].options.wholesale_iva_amount * myCart[id].options.wholesale_quantity) * myCart[id].qty
 		}
 
-		$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
-		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE').format(myCart[id].iva)+',00')
+		$('.precio-'+id).text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].subtotal*dolar))
+		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].iva*dolar))
+		/*$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
+		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE').format(myCart[id].iva)+',00')*/
 		return myCart[id].subtotal
 	}
 
@@ -819,7 +823,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			if (myCart[cart].options.sale_type == "al-mayor") {
 
 				subtotal += (myCart[cart].price * parseInt(myCart[cart].qty))
-	
+
 				iva += parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity) * myCart[cart].qty)
 
 				total += (myCart[cart].price + parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity))) * myCart[cart].qty
@@ -834,37 +838,43 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			}
 
 
-			
+
 		}
 		console.log("total: ", subtotal)
 		console.log("total: ", total)
-		$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
+		$('#totalSinIva').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(subtotal*dolar))
+
+		$('#ivatotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(iva*dolar))
+		$('#montoTotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total*dolar))
+		$('#montoDolares').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total))
+
+		/*$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
 
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE').format(iva)+',00')
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE').format(total)+',00')
-		$('#montoDolares').text(new Intl.NumberFormat('de-DE').format(total / dolar))
+		$('#montoDolares').text(new Intl.NumberFormat('de-DE').format(total / dolar))*/
 		//$('#montoDolares').text(dolar);
 		$('#monto').val(total)
 	}
-	
+
 	$(() => {
 		subtotal()
-		
+
 		@if ($errors->any())
 			@foreach ($errors->all() as $error)
 				toastr.error("{{ $error }}")
             @endforeach
 		@endif()
 
-		$('#state_id').on('change', function() { 
-			var state_id = $('#state_id').val(); 
+		$('#state_id').on('change', function() {
+			var state_id = $('#state_id').val();
 			$.ajax({
 				url: "city/"+state_id,
 				type: "GET",
 				dataType: "json",
 				error: function(element){
 				//console.log(element);
-				}, 
+				},
 				success: function(respuesta){
 					$("#city_id").html('<option value="" selected="true"> Seleccione una opción </option>');
 					respuesta.forEach(element => {
@@ -875,15 +885,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		})
 
-		$('#city_id').on('change', function() { 
-			var city_id = $('#city_id').val(); 
+		$('#city_id').on('change', function() {
+			var city_id = $('#city_id').val();
 			$.ajax({
 				url: "sector/"+city_id,
 				type: "GET",
 				dataType: "json",
 				error: function(error){
 				//console.log(error);
-				}, 
+				},
 				success: function(respuesta){
 					console.log(respuesta)
 					$("#sector_id").html('<option value="" selected="true"> Seleccione una opción </option>');
@@ -922,7 +932,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						$('#imgerror').show()
 
 						return
-					} 
+					}
 				} else {
 
 
@@ -1066,9 +1076,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// 		let formatedprecio1 = $(el).text().replace(/\./g, '')
 		// 		let formatedprecio2 = formatedprecio1.replace(',', '.')
 		// 		let cantidad        = $(el).parents('.filapadre').children('.padrecantidad').children('.padre').children('.sinflechas').val()
-				
+
 		// 		let r = formatedprecio2 * cantidad
-				
+
 		// 		result += parseFloat(r)
 		// 		// debugger
 		// 	})
@@ -1100,7 +1110,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 		$('.add, .sinflechas').on('click keyup', (e) => {
 			// let result = calcularPrecio(e, 'sumar')
-			
+
 			// $(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
 
 			// let total = calcularPrecioTotal()
@@ -1116,7 +1126,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		$('.substract').click((e) => {
 			console.log(e)
 			myCart.find((el) => {
-				
+
 			})
 			// let result = calcularPrecio(e, 'restar')
 			// $(e.target).parents('.filapadre').children('.padreprecio').children('.precio').text(result)
@@ -1262,7 +1272,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				}
 			}else if($('#forma-delivery').val() == 1){
 				$('#address-descrip').text($('#direc-descrip-area').val());
-				
+
 				$('#address-descrip').addClass('d-block').removeClass('d-none');
 				$('#modalDelivery').modal('hide');
 
@@ -1277,10 +1287,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			console.log($('#forma-delivery').val());
 		})
 
-	
+
 		$('#pay_method').change(function() {
 			let valor = $(this).val()
-			
+
 			if ( valor == '2' || valor == '3' ) {
 				$('#enviarPago').attr('disabled', true)
 				$('#pay_method_modal').modal('show')
@@ -1295,9 +1305,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					}
 				}
 			}
-			
+
 		})
-		
+
 		$('#pay_method-2').click(function() {
 			$('#enviarPago').attr('disabled', false);
 			$('.detallesescondidos2').addClass('d-none')//OCULTAMOS LA INFORMACION DE LA DIRECCION
@@ -1311,25 +1321,25 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			$('#image_weigth').text('')
 			$('#clearbtn').hide()
 		})
-		
+
 
 		$('#listo2').click(() => {
 			//SI NO HAY CAPTURA Y SI HAY REFERENCIA
 			if ($('#fileattached').val() == "" && $('#referencia').val() != "") {
-				
+
 				$('.detallesescondidos2').removeClass('d-none')
 				$('#numero_referencia').val($('#referencia').val())
 				$('#nooperacion').text($('#referencia').val())
 				$('#enviarPago').removeAttr('disabled')
-				
+
 			}
 			//SI NO HAY REFERENCIA Y HAY CAPTURA
 			if ($('#referencia').val() == "" && $('#fileattached').val() != "") {
-				
-				
+
+
 				$('.detallesescondidos2').addClass('d-none')
 				$('#enviarPago').removeAttr('disabled')
-				
+
 			}
 			//SI HAY REFERENCIA Y CAPTURA
 			if ($('#referencia').val() != "" && $('#fileattached').val() != "") {
@@ -1342,9 +1352,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 				$('.detallesescondidos2').addClass('d-none')
 			}
-			
+
 			//$('#monto').val($('#montoTotal').text())
-			
+
 		})
 
 		// $('#customFile').change(function(e) {

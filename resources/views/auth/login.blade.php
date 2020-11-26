@@ -5,7 +5,7 @@
 
 			<div class="mb-3 d-flex justify-content-center">
 				<a href="/">
-					<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+					<img src="{{ asset('public/img/pinchitos.png') }}" style="width: 200px; ">
 				</a>
 			</div>
 
@@ -106,7 +106,7 @@
 			switch (val) {
 				case 'wish':
 					toastr.info('Para añadir a la lista de deseos por favor Inicie Sesión')
-					localStorage.removeItem('buttonPressed');					
+					localStorage.removeItem('buttonPressed');
 					break;
 				case 'cart':
 					toastr.info('Para añadir al carrito de compra por favor Inicie Sesión')

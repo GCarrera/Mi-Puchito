@@ -103,7 +103,7 @@
 	<div class="container">
 		<div class="row row-30 text-center">
 			<div class="col-md-4 col-xl-4 mt-5">
-				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="/img/pinchitos.png" alt="Mi puchito's"  style="width: 35%;"></a>
+				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="public/img/pinchitos.png" alt="Mi puchito's"  style="width: 35%;"></a>
 					<p class="text-justify">Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.</p>
 
 				</div>

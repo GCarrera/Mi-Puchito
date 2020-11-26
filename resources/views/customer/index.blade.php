@@ -146,16 +146,19 @@
 											<h6 class="card-title font-weight-bold truncated-text text-center"> <b> {{ $producto->product_name }}</b> </h6>
 
 											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-											<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6>
+											{{--<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> Subtotal para venta--}}
 											{{-- <h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> --}}
 											@if(Request::get('buytype') == 'minor')
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
+												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
 											@elseif(Request::get('buytype') == 'major')
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price * $dolar->price, 2, ',', '.') }} BsS</p>
+												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} BsS</p>--}}
 											@else
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} Bs</p>
+												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
+												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
 											@endif
-											<p class="text-right text-success">Dolares:{{ number_format($producto->product->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
+											<p class="text-center text-success">Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</p>
 
 												<div class="">
 {{--
@@ -249,7 +252,7 @@
 												<span class="font-weight-bold small">Iva: </span>{{number_format($producto->product->wholesale_iva_amount * $producto->qty_per_unit, 2, ',', '.')  }} <br>
 											</p>
 
-											<p class="lead font-weight-normal text-center">{{ number_format($producto->product->wholesale_total_packet_price + ($producto->product->wholesale_iva_amount * $producto->qty_per_unit), 2, ',', '.') }} Bs</p>
+											<p class="lead font-weight-normal text-center">{{ number_format($producto->product->wholesale_total_packet_price + ($producto->product->wholesale_iva_amount * $producto->qty_per_unit), 2, ',', '.') }} BsS</p>
 											<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 											<p class="text-center">{{ $producto->description}}</p>
 

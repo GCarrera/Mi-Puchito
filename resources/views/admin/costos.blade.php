@@ -79,7 +79,7 @@
 										<td class="small">{{ $pro->inventory->product_name }}</td>
 										<td>{{number_format($pro->cost, 2, ',', '.')  }}</td>
 
-										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }}-{{ $pro->wholesale_margin_gain }}%-{{number_format($pro->wholesale_total_individual_price / $dolar->price, 2, ',', '.')}}$</td>
+										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }} - {{ $pro->wholesale_margin_gain }}% - {{number_format($pro->wholesale_total_individual_price / $dolar->price, 2, ',', '.')}}$</td>
 
 										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}-{{ $pro->retail_margin_gain }}%-{{number_format($pro->retail_total_price / $dolar->price, 2, ',', '.')}}$</td>
 										<td class="text-center">
@@ -522,8 +522,8 @@
 			let filesize = file.size / 1024
 
 			// validaciones del archivo
-			if (filesize > 150) {
-				$('#imgerror').text('La imagen excede los 150kb permitidos.')
+			if (filesize > 1500) {
+				$('#imgerror').text('La imagen excede los 1500kb permitidos.')
 				$('#imgerror').show()
 				return
 			}
@@ -596,6 +596,8 @@
 				}
 			})
 			.done((data) => {
+
+				console.log(data.image);
 
 				$('#imageproduct').attr('src', `/storage/${data.image}`)
 				$('#nombre_producto').text(`${data.inventory.product_name}`)
