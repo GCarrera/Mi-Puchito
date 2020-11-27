@@ -45,7 +45,7 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
 		$now = Carbon::now()->toDateString();
-		
+
 		if ($request->fechas) {
 
 			$fechas = explode('-', $request->fechas);
@@ -53,7 +53,7 @@ class AdminController extends Controller
 			$fecha_inicial = new Carbon($fechas[0]);
 			$fecha_final = new Carbon($fechas[1]);
 
-			$ventas = Sale::with(['deliveries', 
+			$ventas = Sale::with(['deliveries',
 			'details' => function($details) {
 				$details->with(['inventory' => function ($inventory) {
 					$inventory->select('id',	'product_name');
@@ -71,7 +71,7 @@ class AdminController extends Controller
 			->paginate();
 		}else{
 
-		$ventas = Sale::with(['deliveries', 
+		$ventas = Sale::with(['deliveries',
 		'details' => function($details) {
 			$details->with(['inventory' => function ($inventory) {
 				$inventory->select('id',	'product_name');
@@ -87,7 +87,7 @@ class AdminController extends Controller
 		->orderBy('id', 'desc')
 		->paginate();
 		}
-		
+
 		return view('admin.index')
 			->with('ventas', $ventas);
 			// ->with('empresasCount', $empresasCount)
@@ -106,7 +106,7 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		$almacen         = 'activar un almacen por defecto';
 
-		$inventario = Inventory::orderBy('id', 'desc')->paginate();
+		$inventario = Inventory::orderBy('id', 'desc')->all();
 
 		if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
@@ -131,7 +131,7 @@ class AdminController extends Controller
 		// $salesCount      = Sale::all()->count();
 
 		$inventario = Inventory::orderBy('id', 'desc')->where('status', 2)->get();
-		$productos  = Product::paginate();
+		$productos  = Product::all();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		return view('admin.costos')
@@ -181,7 +181,7 @@ class AdminController extends Controller
 		//	->with('user_address', $user_address);
 
 		$now = Carbon::now()->toDateString();
-		
+
 		if ($request->fechas) {
 
 			$fechas = explode('-', $request->fechas);
@@ -189,7 +189,7 @@ class AdminController extends Controller
 			$fecha_inicial = new Carbon($fechas[0]);
 			$fecha_final = new Carbon($fechas[1]);
 
-			$ventas = Sale::with(['deliveries', 
+			$ventas = Sale::with(['deliveries',
 			'details' => function($details) {
 				$details->with(['inventory' => function ($inventory) {
 					$inventory->select('id',	'product_name');
@@ -205,9 +205,9 @@ class AdminController extends Controller
 			->whereDate('created_at', '>=', $fecha_inicial)
 			->whereDate('created_at', '<=', $fecha_final)
 			->paginate();
-		}else{	
+		}else{
 
-			$ventas = Sale::with(['deliveries', 
+			$ventas = Sale::with(['deliveries',
 			'details' => function($details) {
 				$details->with(['inventory' => function ($inventory) {
 					$inventory->select('id',	'product_name');
@@ -320,24 +320,24 @@ class AdminController extends Controller
 				//SI LA COMPRA ES AL MENOR
 				if ($detalle->type == "al-menor") {
 
-					
+
 					$inventario->total_qty_prod += $detalle->quantity;
 
 					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
 
-	
+
 				}
 				//SI LA COMPRA ES AL MAYOR
 				if ($detalle->type == "al-mayor") {
 
-						
+
 						$inventario->quantity += $detalle->quantity;
 						$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
 
 				}
 
 				$inventario->save();
-					
+
 
 			}
 		}else{
@@ -353,7 +353,7 @@ class AdminController extends Controller
 		$venta->save();
 
 			return $venta->confirmacion;
-		
+
 	}
 
 	public function confirmar_pedido_delivery($id, Request $request)
@@ -364,7 +364,7 @@ class AdminController extends Controller
 		$venta = Sale::with('details')->findOrFail($id);
 
 		if ($request->confirmacion != "aprobado") {
-			
+
 			foreach ($venta->details as $detalle) {
 				//BUSCAMOS EL PRODUCTO DEL CARRO
 				$producto = Product::findOrFail($detalle->product_id);
@@ -372,24 +372,24 @@ class AdminController extends Controller
 				//SI LA COMPRA ES AL MENOR
 				if ($detalle->type == "al-menor") {
 
-					
+
 					$inventario->total_qty_prod += $detalle->quantity;
 
 					$inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
 
-	
+
 				}
 				//SI LA COMPRA ES AL MAYOR
 				if ($detalle->type == "al-mayor") {
 
-						
+
 						$inventario->quantity += $detalle->quantity;
 						$inventario->total_qty_prod = $inventario->quantity * $inventario->qty_per_unit;
 
 				}
 
 				$inventario->save();
-					
+
 
 			}
 
@@ -402,18 +402,18 @@ class AdminController extends Controller
 			if ($request->stimated_time == "") {
 				return "el campo tiempo estimado es obligatorio";
 			}
-			
+
 		}
 
 			$confirmacion = $venta->dispatched = $now;
 			$venta->confirmacion = $request->confirmacion;
 			$venta->stimated_time = $request->stimated_time;
 			$venta->save();
-			
+
 
 
 			return $venta->confirmacion;
-		
+
 	}
 
 	public function get_dolar()

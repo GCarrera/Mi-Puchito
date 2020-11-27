@@ -162,9 +162,7 @@
 							</tbody>
 
 						</table>
-						<div class="float-right">
-							<p >{{$inventario->render()}}</p>
-						</div>
+
 					</div>
 				</div>
 			</div>

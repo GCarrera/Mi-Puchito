@@ -99,9 +99,6 @@
 							</tbody>
 						</table>
 
-						<div class="float-right">
-							<p >{{$productos->render()}}</p>
-						</div>
 					</div>
 				</div>
 			</div>
