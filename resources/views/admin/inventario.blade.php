@@ -64,8 +64,8 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						
-						<table class="table table-sm table-hover table-bordered">
+
+						<table class="table table-sm table-hover table-bordered" id="inventario-table">
 							<thead>
 								<tr>
 									<th>PRODUCTO</th>
@@ -114,7 +114,7 @@
 									        			<div class="col-6">
 
 											        		<input type="text" name="cantidad_sumar" id="cantidad-sumar-{{$producto->id}}" class="form-control" placeholder="60">
-											        		
+
 									        			</div>
 									        			<div class="col-6">
 									        				<button class="btn btn-primary" onclick="sumar({{$producto->id}})">Agregar</button>
@@ -143,7 +143,7 @@
 									        			<div class="col-6">
 
 											        		<input type="text" name="cantidad_restar" id="cantidad-restar-{{$producto->id}}" class="form-control" placeholder="60">
-											        		
+
 									        			</div>
 									        			<div class="col-6">
 									        				<button class="btn btn-primary" onclick="restar({{$producto->id}})">Restar</button>
@@ -160,7 +160,7 @@
 									</tr>
 								@endforelse
 							</tbody>
-							
+
 						</table>
 						<div class="float-right">
 							<p >{{$inventario->render()}}</p>
@@ -242,7 +242,7 @@
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
-						
+
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="number" min="0" class="form-control" name="cant_prod" id="cant_prod" required>
@@ -386,6 +386,27 @@
 
 @push('scripts')
 <script>
+	$(document).ready( function () {
+		$('#inventario-table').DataTable({
+			"language": {
+    		"search": "Buscar:",
+				"emptyTable": "No se consigio nada",
+				"info": "",
+				"infoEmpty": "",
+				"infoFiltered": "",
+				"lengthMenu": "Ver _MENU_ Filas",
+				"loadingRecords": "Cargando...",
+				"processing": "Procesando...",
+				"zeroRecords": "No se consigio nada",
+				"paginate": {
+	        "first":      "Primero",
+	        "last":       "Ultimo",
+	        "next":       "Siguiente",
+	        "previous":   "Anterior"
+			   }
+			}
+		});
+	} );
 	$(() => {
 
 		$.ajaxSetup({
@@ -412,7 +433,7 @@
 				toastr.error("{{ $error }}")
             @endforeach
 		@endif()
-		
+
 		$('.ProductNameAutoComplete').autoComplete({
 			minLength: 2,
 			resolverSettings: {
@@ -424,13 +445,13 @@
 
 		$('#cantidad, #cant_prod, #cantidad_edit, #cant_prod_edit').on('keyup change', function() {
 			// logica para calcular los totales
-			
+
 
 			let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
 			let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
 
 			let productos_totales = cantidad * cant_prod
-			
+
 			$('.cantidad_producto').text(`${productos_totales} productos`)
 			$('#cantidad_producto_hd').val(productos_totales)
 			$('#cantidad_producto_hd_edit').val(productos_totales)
@@ -472,7 +493,7 @@
 				let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
 
 				let productos_totales = cantidad * cant_prod
-				
+
 				$('#cantidad_producto_hd_edit').val(productos_totales)
 
 				$('#modal_loader').fadeOut()
@@ -487,19 +508,19 @@
 		//MODAL PARA SUMAR CANTIDADES DE PRODUCTOS
 		function sumar(id){
 			console.log($('#cantidad-sumar-'+id).val())
-			
+
 			$.ajax({type: 'PUT', url: `/sumar-inventory/${id}`, data: {cantidad: $('#cantidad-sumar-'+id).val()}})
 				.done((res) => {
 					console.log(res)
-				
+
 					$('#total-productos-'+id).text(res);
-					
+
 				})
 				.catch((err) => {
 					toastr.error('Ha ocurrido un error')
 					console.error(err)
 				})
-			
+
 
 			$('#modal-sumar-'+id).modal('hide');
 		}
@@ -507,19 +528,19 @@
 		//MODAL PARA RESTAR CANTIDADES DE PRODUCTOS
 		function restar(id){
 			console.log($('#cantidad-sumar-'+id).val())
-			
+
 			$.ajax({type: 'PUT', url: `/restar-inventory/${id}`, data: {cantidad: $('#cantidad-restar-'+id).val()}})
 				.done((res) => {
 					console.log(res)
-				
+
 					$('#total-productos-'+id).text(res);
-					
+
 				})
 				.catch((err) => {
 					toastr.error('Ha ocurrido un error')
 					console.error(err)
 				})
-			
+
 
 			$('#modal-restar-'+id).modal('hide');
 		}

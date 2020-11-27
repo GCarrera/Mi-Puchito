@@ -137,8 +137,8 @@
 
 									<div class="card border-info shadow">
 											{{-- OTRA VEZ LA IMAGEN DEL CARRUCEL --}}
-										<img style="height: 200px; object-fit: contain" data-src="{{ url('
-										img/'.$producto->product->image) }}" class="card-img-top">
+										{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}" class="card-img-top"> --}}
+										<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
 										<div class="card-body body-producto" id="body-producto">
 											@if($producto->product->oferta == 1)
 											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
@@ -238,7 +238,8 @@
 										{{-- AQUI EL CARRUSEL DE IMAGENES  --}}
 
 
-										<img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}"class="card-img-top">
+										<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}"class="card-img-top">
+										{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}"class="card-img-top"> --}}
 										<div class="card-body body-producto">
 											@if($producto->product->oferta == 1)
 											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>

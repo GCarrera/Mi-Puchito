@@ -33,7 +33,7 @@ class InventoryController extends Controller
     public function store(Request $req)
     {
         $validator = Validator::make($req->all(), [
-            'product_name' => 'required|max:191',
+            'product_name' => 'required|max:191|unique:App\Inventory,product_name',
             'description' => 'nullable|max:191',
             'cantidad' => 'required|max:191',
             'tipo_unidad' => 'required|max:191',
@@ -41,7 +41,7 @@ class InventoryController extends Controller
             'category' => 'required|integer',
             'enterprise' => 'required|integer',
 		]);
-		
+
         if ($validator->fails()) {
             return redirect()->back()
                         ->withErrors($validator)
@@ -95,7 +95,7 @@ class InventoryController extends Controller
             'category' => 'required|integer',
             'enterprise' => 'required|integer',
 		]);
-		
+
         if ($validator->fails()) {
             return redirect()->back()
                         ->withErrors($validator)

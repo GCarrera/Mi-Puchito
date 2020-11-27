@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="icon" href="{{ asset('public/favicon.ico') }}">
+	<link rel="icon" href="{{ asset('pubic/favicon.ico') }}">
 
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
@@ -30,6 +30,8 @@
 	<link href="{{ asset('public/css/index.css') }}" rel="stylesheet">
 
 	<link href="{{ asset('public/css/daterangepicker.css') }}" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 	<style>
 		.truncated-text {
 			text-overflow: ellipsis;

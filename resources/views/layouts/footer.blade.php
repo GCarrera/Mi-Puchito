@@ -15,6 +15,8 @@
 <script src="{{ asset('public/js/daterangepicker.js') }}"></script>
 <script src="{{ asset('public/js/jquery.lazy.min.js') }}"></script>
 
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
 <script>
 
 	var comma = false;

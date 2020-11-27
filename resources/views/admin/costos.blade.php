@@ -62,7 +62,7 @@
 				<div class="card-body">
 					<div class="table-responsive">
 
-						<table class="table table-sm table-hover table-bordered text-center">
+						<table class="table table-sm table-hover table-bordered text-center" id="costos-table">
 							<thead>
 								<tr>
 									<th>PRODUCTO</th>
@@ -370,7 +370,7 @@
 						</div>
 						<div class="col-12 col-md-3 mb-2">
 							<label for="cost">Costo</label>
-							<input type="text" pattern="^[0-9]+([,][0-9]+)?$" class="form-control costo" name="cost" id="cost_edit" required>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control costo" name="cost" id="cost_edit" required>
 						</div>
 						<div class="col-12 col-md-3">
 							<label for="iva_percent" class="d-none">Tipo de I.V.A</label><br>
@@ -466,6 +466,28 @@
 
 @push('scripts')
 <script>
+
+$(document).ready( function () {
+	$('#costos-table').DataTable({
+		"language": {
+			"search": "Buscar:",
+			"emptyTable": "No se consigio nada",
+			"info": "",
+			"infoEmpty": "",
+			"infoFiltered": "",
+			"lengthMenu": "Ver _MENU_ Filas",
+			"loadingRecords": "Cargando...",
+			"processing": "Procesando...",
+			"zeroRecords": "No se consigio nada",
+			"paginate": {
+				"first":      "Primero",
+				"last":       "Ultimo",
+				"next":       "Siguiente",
+				"previous":   "Anterior"
+			 }
+		}
+	});
+} );
 
 	function calcularPrecio() {
 		$('.calcular').trigger('click')
@@ -599,7 +621,7 @@
 
 				console.log(data.image);
 
-				$('#imageproduct').attr('src', `/storage/${data.image}`)
+				$('#imageproduct').attr('src', `/storage/app/public/${data.image}`)
 				$('#nombre_producto').text(`${data.inventory.product_name}`)
 				// $('#descripcion_producto').text(`${data.inventory.description}`)
 				$('#almacen').text(`Almacen: ${data.inventory.warehouse.name}`)
