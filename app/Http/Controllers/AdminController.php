@@ -106,7 +106,7 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		$almacen         = 'activar un almacen por defecto';
 
-		$inventario = Inventory::orderBy('id', 'desc')->all();
+		$inventario = Inventory::orderBy('id', 'desc')->get();
 
 		if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
