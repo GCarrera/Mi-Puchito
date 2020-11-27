@@ -65,7 +65,7 @@
 				<div class="card-body">
 					<div class="table-responsive">
 
-						<table class="table table-sm table-hover table-bordered" id="inventario-table">
+						<table class="table table-sm table-hover table-bordered text-center" id="inventario-table">
 							<thead>
 								<tr>
 									<th>PRODUCTO</th>
@@ -79,7 +79,7 @@
 							<tbody>
 								@forelse ($inventario as $producto)
 									<tr>
-										<td>{{ $producto->product_name }}</td>
+										<td class="small">{{ $producto->product_name }}</td>
 										<td id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
 										<td>{{ $producto->enterprise->name }}</td>
 										<td>{{ $producto->category->name }}</td>
