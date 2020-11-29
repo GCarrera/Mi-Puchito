@@ -143,7 +143,7 @@
 													</div>
 													<div class="col-12 col-md-3 mb-2">
 														<label for="cost">Costo</label>
-														<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control costo" name="cost" value="{{$pro->cost}}" onchange='calcularPrecioModalPrecio(this, {{$pro->inventory->qty_per_unit}}, {{ $pro->id }})' id="cost_edit_{{ $pro->id }}" required>
+														<input type="text" pattern="^[0-9]+([\.][0-9]+)?$" class="form-control costo" name="cost" value="{{$pro->cost}}" onchange='calcularPrecioModalPrecio(this, {{$pro->inventory->qty_per_unit}}, {{ $pro->id }})' id="cost_edit_{{ $pro->id }}" required>
 													</div>
 													<div class="col-12 col-md-3">
 														<label for="iva_percent" class="d-none">Tipo de I.V.A</label><br>
