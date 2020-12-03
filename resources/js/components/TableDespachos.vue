@@ -183,6 +183,10 @@
 
 				return pagesArray;
 			}////////////////////////////////////////////////7
+		},
+		created(){
+			console.log('created');
+			this.get_despachos(this.id);
 		}
 	}
 </script>

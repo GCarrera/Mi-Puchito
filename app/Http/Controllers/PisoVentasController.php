@@ -23,6 +23,42 @@ class PisoVentasController extends Controller
     	return view('admin.piso_ventas');
     }
 
+    public function ventas_mostrar($id)
+    {
+      $ventas = Venta::with('detalle')->where('piso_venta_id', $id)->where('type', 1)->get();
+      $piso_ventas = Piso_venta::where('id', $id)->get();
+    	return view('admin.piso_ventas_ventas')
+      ->with('piso_venta', $piso_ventas)
+			->with('ventas', $ventas);
+    }
+
+    public function inventario_mostrar($id)
+    {
+      $inventario = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->get();
+      $piso_ventas = Piso_venta::where('id', $id)->get();
+    	return view('admin.piso_ventas_inventario')
+      ->with('piso_venta', $piso_ventas)
+			->with('inventario', $inventario);
+    }
+
+    public function despachos_mostar($id)
+    {
+      $despachos = Despacho::where('piso_venta_id', $id)->where('type', 1)->get();
+      $piso_ventas = Piso_venta::where('id', $id)->get();
+    	return view('admin.piso_ventas_despachos')
+      ->with('piso_venta', $piso_ventas)
+			->with('despachos', $despachos);
+    }
+
+    public function retiros_mostrar($id)
+    {
+      $retiros = Despacho::where('piso_venta_id', $id)->where('type', 2)->get();
+      $piso_ventas = Piso_venta::where('id', $id)->get();
+    	return view('admin.piso_ventas_retiros')
+      ->with('piso_venta', $piso_ventas)
+			->with('retiros', $retiros);
+    }
+
     public function precios()
     {
         return view('admin.piso_ventas_precios');
@@ -44,10 +80,12 @@ class PisoVentasController extends Controller
     	$date = Carbon::now();
     	$mes = $date->month;
 
-    	$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count();
-    	//$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', "10")->count();
-      return response()->json(['ventas' => $ventas]);
-    	$compras = Venta::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count();
+    	//$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count(); --> Cuenta solo el mes en transcurso
+    	$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->count(); // --> Cuanta todas
+      //return response()->json(['ventas' => $ventas]);
+    	//$compras = Venta::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count(); --> Cuenta las compras
+      //$inventario = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count();
+    	$compras = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count(); // --> Cuenta cada producto diferente
     	$despachos = Despacho::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count();
     	$retiros = Despacho::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count();
 
@@ -55,14 +93,14 @@ class PisoVentasController extends Controller
 
         $caja = Vaciar_caja::where('piso_venta_id', $id)->orderBy('id', 'desc')->first();
 
-    	/*return response()->json([
-    							'ventas' => $ventas,
-    							'compras' => $compras,
-    							'despachos' => $despachos,
-    							'retiros' => $retiros,
-                                'sincronizacion' => $sincronizacion,
-                                'caja' => $caja
-    							]);*/
+    	return response()->json([
+				'ventas' => $ventas,
+				'compras' => $compras,
+				'despachos' => $despachos,
+				'retiros' => $retiros,
+        'sincronizacion' => $sincronizacion,
+        'caja' => $caja
+			]);
     }
 
     public function ventas_compras($id, Request $request)
@@ -74,13 +112,36 @@ class PisoVentasController extends Controller
     		//$fecha_f = new Carbon($request->fecha_f);
 
 
-    		$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereDate('created_at','>=', $request->fecha_i)->whereDate('created_at','<=', $request->fecha_f)->orderBy('id', 'desc')->paginate(1);
+    		$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereDate('created_at','>=', $request->fecha_i)->whereDate('created_at','<=', $request->fecha_f)->orderBy('id', 'desc')->paginate(10);
     	}else{
 
 	    	$date = Carbon::now();
 	    	$mes = $date->month;
 
-	    	$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(1);
+	    	//$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(10); -->trae un solo mes
+	    	$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->orderBy('id', 'desc')->paginate(10);
+        //return response()->json("else");
+	    }
+
+    	return response()->json($ventas);
+    }
+
+    public function all_ventas_compras($id, Request $request)
+    {
+    	if ($request->fecha_i != 0 && $request->fecha_f != 0) {
+        //return response()->json($request->fecha_i);
+
+    		//$fecha_i = new Carbon($request->fecha_i);
+    		//$fecha_f = new Carbon($request->fecha_f);
+
+
+    		$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereDate('created_at','>=', $request->fecha_i)->whereDate('created_at','<=', $request->fecha_f)->orderBy('id', 'desc')->paginate(10);
+    	}else{
+
+	    	$date = Carbon::now();
+	    	$mes = $date->month;
+
+	    	$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(10);
         //return response()->json("else");
 	    }
 
@@ -94,13 +155,31 @@ class PisoVentasController extends Controller
     		$fecha_i = new Carbon($request->fecha_i);
     		$fecha_f = new Carbon($request->fecha_f);
 
-    		$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->whereDate('created_at','>=', $fecha_i)->whereDate('created_at','<=', $fecha_f)->orderBy('id', 'desc')->paginate(1);
+    		$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->where('type', '1')->whereDate('created_at','>=', $fecha_i)->whereDate('created_at','<=', $fecha_f)->orderBy('id', 'desc')->paginate(10);
     	}else{
 
 	    	$date = Carbon::now();
 	    	$mes = $date->month;
 
-	    	$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(1);
+	    	$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->where('type', '1')->orderBy('id', 'desc')->paginate(10);
+    	}
+    	return response()->json($despachos);
+    }
+
+    public function despachos_retiros_retiros($id, Request $request)
+    {
+    	if ($request->fecha_i != 0 && $request->fecha_f != 0) {
+
+    		$fecha_i = new Carbon($request->fecha_i);
+    		$fecha_f = new Carbon($request->fecha_f);
+
+    		$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->where('type', '2')->whereDate('created_at','>=', $fecha_i)->whereDate('created_at','<=', $fecha_f)->orderBy('id', 'desc')->paginate(10);
+    	}else{
+
+	    	$date = Carbon::now();
+	    	$mes = $date->month;
+
+	    	$despachos = Despacho::with('productos')->where('piso_venta_id', $id)->where('type', '2')->orderBy('id', 'desc')->paginate(10);
     	}
     	return response()->json($despachos);
     }
@@ -108,7 +187,7 @@ class PisoVentasController extends Controller
     public function productos_piso_venta($id)
     {
 
-    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->orderBy('cantidad', 'desc')->paginate(1);
+    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->orderBy('cantidad', 'desc')->paginate(10);
 
     	return response()->json($productos);
     }

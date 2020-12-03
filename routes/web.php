@@ -103,6 +103,10 @@ Route::get('test', function () {
 });
 //PARA LOS PISOS DE VENTAS
 Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index');
+Route::get('/piso-ventas/ventas/{id}', 'PisoVentasController@ventas_mostrar');
+Route::get('/piso-ventas/inventario/{id}', 'PisoVentasController@inventario_mostrar');
+Route::get('/piso-ventas/despachos/{id}', 'PisoVentasController@despachos_mostar');
+Route::get('/piso-ventas/retiros/{id}', 'PisoVentasController@retiros_mostrar');
 Route::get('/piso-ventas-precio', 'PisoVentasController@precios')->name('piso.ventas.precios');
 Route::get('/piso-ventas-anclar', 'PisoVentasController@anclar')->name('piso.ventas.anclar');
 //DESPACHOS ALMACEN
@@ -164,7 +168,9 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('/get-piso-ventas', 'PisoVentasController@get_piso_ventas');
 	Route::get('/resumen/{id}', 'PisoVentasController@resumen');
 	Route::get('/ventas-compras/{id}', 'PisoVentasController@ventas_compras');
+	Route::get('/all-ventas-compras/{id}', 'PisoVentasController@all_ventas_compras');
 	Route::get('/despachos-retiros/{id}', 'PisoVentasController@despachos_retiros');
+	Route::get('/despachos-retiros-retiros/{id}', 'PisoVentasController@despachos_retiros_retiros');
 	Route::get('/productos-piso-venta/{id}', 'PisoVentasController@productos_piso_venta');
 
 	//CAJA REFRESCAR

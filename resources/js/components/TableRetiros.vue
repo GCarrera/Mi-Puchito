@@ -1,81 +1,59 @@
 <template>
 	<div>
+		<!--RANGO DE FECHAS-->
+		<div class="text-right my-3">
+			<form action="/admin" method="get" @submit.prevent="filtrar">
+				<input type="date" v-model="fecha_inicial">
+				<input type="date" v-model="fecha_final" >
+				<button type="submit" class="btn btn-primary">Filtrar</button>
+			</form>
+
+		</div>
 		<table class="table table-bordered table-hover table-sm table-stridped">
-			<thead>
+			<thead class="">
 				<tr>
-					<th rowspan="">Producto</th>
-					<th>Cantidad</th>
-					<th>Precio</th>
+					<th>Fecha</th>
+					<th>tipo</th>
+					<th>Confirmado</th>
 					<th>Acciones</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(producto, index) in productos" :key="index">
-					<td>{{producto.inventario.name}}</td>
-					<td>{{producto.cantidad}}</td>
-					<td>{{producto.inventario.precio.total_menor}}</td>
+				<tr v-for="(despacho, index) in despachos" :key="index">
+					<td>{{despacho.created_at}} {{despacho.id}}</td>
+					<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>
+					<td v-if="despacho.confirmado == null" class="small font-weight-bold">No se ah confirmado</td>
+					<td v-else class="small font-weight-bold">{{despacho.confirmado == 1 ? "confirmado" : "negado"}}</td>
 					<td>
-						<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>
+						<button class="btn btn-primary" data-toggle="modal" :data-target="'#modalVer-'+despacho.id">Ver</button>
 					</td>
 
 					<!-- Modal PARA VER LOS DETALLES -->
-					<div class="modal fade" :id="'verDetalles'+producto.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  	<div class="modal-dialog modal-lg">
+					<div class="modal fade" :id="'modalVer-'+despacho.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  	<div class="modal-dialog">
 					    	<div class="modal-content">
 					      		<div class="modal-header">
-					        		<h5 class="modal-title" id="exampleModalLabel">Detalles del producto</h5>
+					        		<h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
 					        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          		<span aria-hidden="true">&times;</span>
 					        		</button>
 					      		</div>
 					      		<div class="modal-body">
 
-					      			<h5 class="text-center font-weight-bold">{{producto.inventario.name}}</h5>
-
-					      			<table class="table table-bordered">
-
-					      				<thead>
-					      					<tr>
-					      						<th>propiedades</th>
-					      						<th>Valores</th>
-
-					      					</tr>
-					      				</thead>
-
-					      				<tbody>
-					      					<tr>
-					      						<th>Cantidad</th>
-					      						<td>{{producto.cantidad}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<th>Unidad</th>
-					      						<td>{{producto.inventario.unit_type_menor}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<td>Subtotal</td>
-					      						<td>{{producto.inventario.precio.sub_total_menor}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<td>Iva</td>
-					      						<td>{{producto.inventario.precio.iva_menor}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<td>Total</td>
-					      						<td>{{producto.inventario.precio.total_menor}}</td>
-
-					      					</tr>
-
-
-					      				</tbody>
-					      			</table>
+					      		<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Producto</th>
+										<th>cantidad</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="(product, index) in despacho.productos" :key="index">
+										<td>{{product.product_name}}</td>
+										<td>{{product.pivot.cantidad}}</td>
+									</tr>
+								</tbody>
+							</table>
 
 					      		</div>
 					      		<div class="modal-footer">
@@ -86,9 +64,10 @@
 					</div>
 				</tr>
 
-				<tr v-if="productos == []">
-					<td class="text-center">No hay productos registrados</td>
+				<tr v-if="despachos.length == 0">
+					<h3 class="text-center">No hay retiros registrados</h3>
 				</tr>
+
 			</tbody>
 		</table>
 
@@ -121,7 +100,7 @@
 		props: ['id'],
 		data(){
 			return{
-				productos: [],
+				despachos: [],
 				pagination: {//PAGINACION DE RIMORSOFT
 				 'total' : 0,
    				'current_page' : 0,
@@ -130,26 +109,28 @@
                 'from' : 0,
                 'to' : 0
 				},
-				offset: 5
+				offset: 5,
+				fecha_inicial: 0,
+				fecha_final: 0
 			}
 		},
 		methods:{
-			get_productos(id){
+			get_retiros(id){
 
-				axios.get('/api/productos-piso-venta/'+id).then(response => {
-
-					this.productos = response.data.data;
+				axios.get('/api/despachos-retiros-retiros/'+id, {params:{fecha_i: this.fecha_inicial, fecha_f: this.fecha_final}}).then(response => {
+					console.log("respuesta");
+					this.despachos = response.data.data;
+					console.log(this.despachos.length);
 					this.pagination = response.data;
-					console.log(response.data);
 				}).catch(e => {
 					console.log(e.response)
 				});
 			},
 			getKeeps(page){
 
-				axios.get('/api/productos-piso-venta/'+this.id+'?page='+page).then(response => {
+				axios.get('/api/despachos_retiros_retiros/'+this.id+'?page='+page, {params:{fecha_i: this.fecha_inicial, fecha_f: this.fecha_final}}).then(response => {
 					console.log(response.data)
-					this.productos = response.data.data;
+					this.despachos = response.data.data;
 					this.pagination = response.data;
 
 				}).catch(e => {
@@ -160,11 +141,16 @@
 			changePage(page){//PAGINACION DE RIMORSOft
 				this.pagination.current_page = page;
 				this.getKeeps(page);
+			},
+			filtrar(){
+				if (this.fecha_inicial != 0 && this.fecha_final != 0) {
+					this.get_despachos(this.id);
+				}
 			}
 		},
 		watch:{
 			id: function(val){
-				this.get_productos(val);
+				this.get_despachos(val);
 			}
 		},
 		computed: {//PAGINACION DE RIMORSOFT
@@ -196,10 +182,11 @@
 				}
 
 				return pagesArray;
-			}
+			}////////////////////////////////////////////////7
 		},
 		created(){
-			this.get_productos(this.id);
+			console.log('created');
+			this.get_retiros(this.id);
 		}
 	}
 </script>

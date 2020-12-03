@@ -151,10 +151,20 @@
 			showModalDetalles(id){
 				$('#modal-detalles-'+id).modal('show');
 			},
+			get_all_ventas(id){
+
+				axios.get('/api/all-ventas-compras/'+id).then(response => {
+					this.ventas = response.data.data;
+					this.pagination = response.data;
+				}).catch(e => {
+					console.log(e.response)
+				});
+			},
 			get_ventas(id){
 
 				axios.get('/api/ventas-compras/'+id, {params:{fecha_i: this.fecha_inicial, fecha_f: this.fecha_final}}).then(response => {
 					this.ventas = response.data.data;
+					console.log(this.response);
 					this.pagination = response.data;
 				}).catch(e => {
 					console.log(e.response)
@@ -222,7 +232,7 @@
 			}////////////////////////////////////////////////7
 		},
 		created(){
-
+			this.get_ventas(this.id);
 		}
 	}
 </script>
