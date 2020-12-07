@@ -325,6 +325,11 @@ class DespachosController extends Controller
     	return view('admin.index_almacen');
     }
 
+    public function new_despacho()
+    {
+      return view('admin.new_despacho');
+    }
+
     public function get_datos_create()
     {
         $piso_ventas = Piso_venta::all();
@@ -339,7 +344,7 @@ class DespachosController extends Controller
 
         $despachos = Despacho::with(['productos' => function($producto){
             $producto->select('product_name');
-        }, 'piso_venta'])->orderBy('id', 'desc')->paginate(1);
+        }, 'piso_venta'])->orderBy('id', 'desc')->paginate(10);
 
         return response()->json(['pagination' => [
                                     'total' => $despachos->total(),

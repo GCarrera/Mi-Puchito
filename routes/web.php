@@ -111,6 +111,7 @@ Route::get('/piso-ventas-precio', 'PisoVentasController@precios')->name('piso.ve
 Route::get('/piso-ventas-anclar', 'PisoVentasController@anclar')->name('piso.ventas.anclar');
 //DESPACHOS ALMACEN
 Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index');
+Route::get('/nuevo-despacho', 'DespachosController@new_despacho');
 //RUTAS APIS
 Route::group(['prefix' => 'api'], function(){
 	//USUARIO
