@@ -71,6 +71,13 @@ class PisoVentasController extends Controller
 
     public function get_piso_ventas(){
     	$piso_ventas = Piso_venta::all();
+      foreach ($piso_ventas as $key => $value) {
+        $usuario = $value['id'];
+        $sincronizacion = Sincronizacion::where('piso_venta_id', $usuario)->orderBy('id', 'desc')->first();
+        $pos = $usuario-1;
+        $carbon = new Carbon($sincronizacion['created_at']);
+        $piso_ventas[$pos]['sincro'] = $sincronizacion;
+      }
 
     	return response()->json($piso_ventas);
     }

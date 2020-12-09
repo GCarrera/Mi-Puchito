@@ -91,6 +91,8 @@
 						      <small>{{piso.dinero}}</small>
 						    </div>
 						    <p class="mb-1">{{piso.ubicacion}}</p>
+								<small v-if="piso.sincro != null" class="text-muted">Ultima Actualización: {{piso.sincro.created_at}}</small>
+								<small v-else class="text-muted">Ultima Actualización: No a Actualizado Nunca</small>
 						  </a>
 						</div>
 					</div>
