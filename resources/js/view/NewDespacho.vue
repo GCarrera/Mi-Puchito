@@ -6,7 +6,7 @@
          <h1 class="text-center">Nuevo Despacho</h1>
          <div class="mb-3">
 
-           <form action="/despachos-almacen" method="post" @submit.prevent="despachar()"><!--Formulario-->
+           <form action="/despachos-almacen" method="post" @submit.prevent="despachar()" onkeydown="return event.key != 'Enter';"><!--Formulario-->
 
 
              <input type="hidden" name="tipo" value="1"><!--ESTABLECER SI ES UN DESPACHO O UN RETIRO-->
