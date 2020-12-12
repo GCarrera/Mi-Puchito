@@ -42,6 +42,11 @@ Vue.component('piso-ventas-retiros', require('./view/PisoVentasRetiros.vue').def
 Vue.component('new-despacho', require('./view/NewDespacho.vue').default);
 
 import Vue from 'vue'
+import {ModalPlugin, PaginationPlugin, AlertPlugin } from 'bootstrap-vue'
+
+Vue.use(ModalPlugin)
+Vue.use(PaginationPlugin)
+Vue.use(AlertPlugin)
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 // Install BootstrapVue
