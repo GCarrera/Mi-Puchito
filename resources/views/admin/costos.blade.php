@@ -29,23 +29,31 @@
 						<table class="table table-sm table-hover table-bordered text-center" id="costos-table">
 							<thead>
 								<tr>
-									<th>PRODUCTO</th>
-									<th>COSTO</th>
-									<!-- <th>I.V.A (%)</th> -->
-									<th>PRECIO AL MAYOR (Bs)</th>
-									<th>PRECIO AL MENOR (Bs)</th>
-									<th class="text-center">ACCIONES</th>
+									<th class="small">PRODUCTO</th>
+									<th class="small">COSTO</th>
+									<!-- <th class="small">I.V.A (%)</th> -->
+									<th class="small">PRECIO AL MAYOR</th>
+									<th class="small">PRECIO AL MENOR</th>
+									<th class="text-center small">ACCIONES</th>
 								</tr>
 							</thead>
 							<tbody>
 								@forelse ($productos as $pro)
 									<tr>
 										<td class="small">{{ $pro->inventory->product_name }}</td>
-										<td>{{number_format($pro->cost, 2, ',', '.')  }}</td>
+										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
 
-										<td>{{ number_format($pro->wholesale_total_individual_price, 2, ',', '.') }} - {{ $pro->wholesale_margin_gain }}% - {{number_format($pro->wholesale_total_individual_price / $dolar->price, 2, ',', '.')}}$</td>
+										<td>
+											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 2, ',', '.')}}</span>">
+												{{ number_format($pro->wholesale_total_individual_price*$dolar->price, 2, ',', '.') }} BsS
+											</span>
+										</td>
 
-										<td>{{ number_format($pro->retail_total_price, 2, ',', '.') }}-{{ $pro->retail_margin_gain }}%-{{number_format($pro->retail_total_price / $dolar->price, 2, ',', '.')}}$</td>
+										<td>
+											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 2, ',', '.')}}</span>">
+												{{ number_format($pro->retail_total_price*$dolar->price, 2, ',', '.') }} BsS
+											</span>
+										</td>
 										<td class="text-center">
 											<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
 												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
@@ -56,7 +64,7 @@
 											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio" data-id="{{ $pro->id }}">
 												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
 											</button>-->
-											<button class="btn btn-warning btn-md" onclick='showEdit({{ $pro->id }})'>
+											<button class="btn btn-success btn-md" onclick='showEdit({{ $pro->id }})'>
 												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
 											</button>
 										</td>
@@ -442,6 +450,7 @@ $(document).ready( function () {
 			 }
 		}
 	});
+
 } );
 
 	function calcularPrecio() {
