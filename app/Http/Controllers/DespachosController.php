@@ -372,12 +372,26 @@ class DespachosController extends Controller
             $despacho->id_extra = $despacho->id;
             $despacho->save();
 
+
+
             foreach ($request->productos as $producto) {
                 $detalles = new Despacho_detalle();
                 $detalles->despacho_id = $despacho->id;
                 $detalles->cantidad = $producto['cantidad'];
                 $detalles->inventory_id = $producto['id'];
                 $detalles->save();
+
+                //RESTAR DE INVENTORY
+                try {
+
+                  $inventary = DB::table('inventories')->where('id', $producto['id'])->decrement('total_qty_prod', $producto['cantidad']);
+
+                  DB::commit();
+
+                } catch (Exception $e) {
+                  DB::rollback();
+                  return response()->json($e);
+                }
 
                 //REGISTRAR EN INVENTARIO Y PRECIO FALTA
                 //SUMAMOS AL STOCK
