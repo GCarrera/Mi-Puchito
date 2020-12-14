@@ -26,7 +26,7 @@
 					<td>{{venta.created_at}}</td>
 					<td v-if="venta.type == 1">Venta</td>
 					<td v-if="venta.type == 2">Compra</td>
-					<td>{{venta.total}}</td>
+					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total)}}</td>
 					<td>
 						<button type="button" class="btn btn-primary" @click="showModalDetalles(venta.id)">Ver</button>
 					</td>
@@ -50,8 +50,8 @@
 							      			<tr>
 							      				<th>Producto</th>
 							      				<th>Cantidad</th>
-							      				<th>Subtotal</th>
-							      				<th>Iva</th>
+							      				<!--<th>Subtotal</th>-->
+							      				<!--<th>Iva</th>-->
 							      				<th>Total</th>
 							      			</tr>
 						      			</thead>
@@ -60,9 +60,9 @@
 						      				<tr v-for="(producto, index) in venta.detalle" :key="index">
 						      					<td>{{producto.name}}</td>
 						      					<td>{{producto.pivot.cantidad}}</td>
-						      					<td>{{producto.pivot.sub_total}}</td>
-						      					<td>{{producto.pivot.iva}}</td>
-						      					<td>{{producto.pivot.total}}</td>
+						      					<!--<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.pivot.sub_total)}}</td>-->
+						      					<!--<td>{{producto.pivot.iva}}</td>-->
+						      					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.pivot.total)}}</td>
 						      				</tr>
 						      			</tbody>
 
@@ -74,18 +74,18 @@
 						      			</div>
 
 						      			<div class="col-md-2 text-right">
-						      				<span class="font-weight-bold">Sub total:</span><br>
-						      				<span class="font-weight-bold">iva:</span><br>
+						      				<!--<span class="font-weight-bold">Sub total:</span><br>
+						      				<span class="font-weight-bold">iva:</span><br>-->
 						      				<br>
 						      				<span class="font-weight-bold">Total:</span>
 
 						      			</div>
 
 						      			<div class="col-md-3">
-						      				<span>{{venta.sub_total}}</span><br>
-							      			<span>{{venta.iva}}</span><br>
+						      				<!--<span>{{venta.sub_total}}</span><br>
+							      			<span>{{venta.iva}}</span><br>-->
 							   				<br>
-							      			<span>{{venta.total}}</span>
+							      			<span>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total)}}</span>
 						      			</div>
 
 						      		</div>
