@@ -41,7 +41,7 @@
 
                <div class="form-group col-md-1">
                  <label class="text-center" for="">Acción:</label><br>
-                 <button class="btn btn-primary btn-block" type="button" @click="agregar_producto" :disabled="disabled_nuevo">Agregar</button>
+                 <button class="btn btn-primary btn-block" type="button" @click="agregar_producto" :disabled="disabled_nuevo"><i class="fas fa-plus" data-toggle="tooltip" data-title="Agregar"></i></button>
                </div>
              </div>
 
