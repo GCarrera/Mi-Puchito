@@ -85,13 +85,16 @@
 										<td>{{ $producto->category->name }}</td>
 										<td>{{ $producto->created_at }}</td>
 										<td class="text-center">
-											<button class="btn btn-warning btn-md editProduct" data-target="#editPRoduct" data-toggle="modal" data-id="{{ $producto->id }}">
+											<!--<button class="btn btn-warning btn-sm editProduct" data-target="#editPRoduct" data-toggle="modal" data-id="{{ $producto->id }}">
 												<i class="fas fa-edit"></i>
+											</button>-->
+											<button class="btn btn-warning btn-sm" onclick='showEdit({{ $producto->id }})'>
+												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
 											</button>
-											<button class="btn btn-primary" data-toggle="modal" data-target="#modal-sumar-{{$producto->id}}">
+											<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-sumar-{{$producto->id}}">
 												<i class="fas fa-plus"></i>
 											</button>
-											<button class="btn btn-danger" data-toggle="modal" data-target="#modal-restar-{{$producto->id}}">
+											<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-restar-{{$producto->id}}">
 												<i class="fas fa-minus"></i>
 											</button>
 										</td>
@@ -384,6 +387,94 @@
 
 @push('scripts')
 <script>
+function showEdit(id) {
+	$('#editPRoduct').modal('show');
+
+	$('#form_edit').attr('action', `/inventory/${id}`)
+
+	$.get({
+		url: `/inventory/${id}`,
+		beforeSend(){
+			$('#modal_loader').show()
+		}
+	})
+	.done((response) => {
+		console.log(response)
+
+		$('#product_name_edit').val(response.product_name)
+
+		$('#enterprise_edit').val(response.enterprise_id)
+		$('#enterprise_edit').change()
+
+		$('#category_edit').val(response.category_id)
+		$('#category_edit').change()
+
+		$('#cantidad_edit').val(response.quantity)
+
+		$('#tipo_unidad_edit').val(response.unit_type)
+		$('#tipo_unidad_edit').change()
+
+		$('#cant_prod_edit').val(response.qty_per_unit)
+
+		$('#description_edit').val(response.description)
+
+		let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
+		let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
+
+		let productos_totales = cantidad * cant_prod
+
+		$('#cantidad_producto_hd_edit').val(productos_totales)
+
+		$('#modal_loader').fadeOut()
+	})
+	.fail((err) => {
+		console.error(err)
+		toastr.error('Algo a ocurrido.')
+	})
+};
+//COSTOS
+	/*$('#editarForm').attr('action', `/products/${id}`)
+
+	$.get({
+		url : `/products/${id}`,
+		beforeSend(){
+			$('#modal_loader_edit').show()
+		}
+	})
+	.done((data) => {
+
+		$('#product_edit').val(data.id)
+		$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
+
+		$('#cost_edit').val(data.cost)
+
+		$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
+
+		$('#retail_margin_gain_edit').val(data.retail_margin_gain)
+		//ESTABLECEMOS EL CHECK DE LAS OFERTAS
+		if (data.oferta == 1) {
+
+			$('#ofertaEdit2').removeAttr('checked');
+			$('#ofertaEdit1').attr('checked', true);
+
+		}else{
+
+			$('#ofertaEdit1').removeAttr('checked', true);
+			$('#ofertaEdit2').attr('checked', true);
+
+		}
+
+		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+
+		$('#modal_loader_edit').fadeOut();
+
+	})
+	.fail((err)=> {
+		console.log(err)
+		toastr.error('Ha ocurrido un error.')
+	})
+}*/
+
 	$(document).ready( function () {
 		$('#inventario-table').DataTable({
 			"language": {
