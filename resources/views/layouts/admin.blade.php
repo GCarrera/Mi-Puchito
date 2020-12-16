@@ -81,7 +81,7 @@
 
 			<p class="text-center">Establesca un nuevo precio.</p>
 
-			<form action="establecer_dolar" method="post">
+			<form action="{{ action('AdminController@establecer_dolar')}}" method="post">
 				@csrf
 				<div class="text-center">
 				<input type="text" placeholder="Ejem: 310000" name="precio">
