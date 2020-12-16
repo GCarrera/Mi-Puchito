@@ -671,6 +671,7 @@ $(document).ready( function () {
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
 
+			var input = e.target;
 			// imagen de preview
 			let file   = e.target.files[0];
 			let reader = new FileReader();
@@ -702,7 +703,19 @@ $(document).ready( function () {
 				}
 			}
 
-			reader.onload = (ev) => {
+			reader.onload = function(){
+				$('#imgerror').hide();
+				$('#foto').show();
+				$('#clearbtn').show();
+		    var dataURL = reader.result;
+		    var output = document.getElementById('foto');
+		    output.src = dataURL;
+				$('#image_name').text(file.name)
+				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
+		  };
+		  reader.readAsDataURL(input.files[0]);
+
+			/*reader.onload = (ev) => {
 				$('#imgerror').hide()
 
 				$('#foto').show();
@@ -711,7 +724,7 @@ $(document).ready( function () {
 				$('#foto').attr('data-src', ev.target.result);
 				$('#image_name').text(file.name)
 				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
-			}
+			}*/
 
 			$('#clearbtn').click(() => {
 				$('#imgerror').text('')
