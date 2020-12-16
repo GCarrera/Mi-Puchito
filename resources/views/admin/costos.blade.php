@@ -13,7 +13,7 @@
 
 <div class="container-fluid animated wrapper" style="margin-top: 90px">
 
-	<button class="btn btn-primary btn-lg rounded-circle btn-open-modal" data-target="#marcarPrecio" data-toggle="modal" style="position: fixed; bottom: 30px; right: 30px">
+	<button class="btn btn-primary btn-lg rounded-circle" onclick="showMarcar()" style="position: fixed; bottom: 30px; right: 30px">
 		<i class="fas fa-plus"></i>
 	</button>
 
@@ -90,6 +90,142 @@
 
 
 <!-- MODALES -->
+<!-- Modal marcar precio producto -->
+<div class="modal fade" id="marcarPrecio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg " role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Marcado de precios</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="/products" method="post" enctype="multipart/form-data">
+				@csrf
+				<div class="modal-body">
+
+					<input type="hidden" class="retail_total_price" name="retail_total_price">
+					<input type="hidden" class="wholesale_total_individual_price" name="wholesale_total_individual_price">
+					<input type="hidden" class="wholesale_total_packet_price" name="wholesale_total_packet_price">
+					<input type="hidden" class="wholesale_packet_price" name="wholesale_packet_price">
+
+					<input type="hidden" class="retail_iva_amount" name="retail_iva_amount" value="0.00">
+					<input type="hidden" class="wholesale_iva_amount" name="wholesale_iva_amount" value="0.00">
+
+					<input type="hidden" class="producto_cantidad_total">
+					<input type="hidden" class="producto_cantidad_mayor">
+					<input type="hidden" id="qty_per_unit_val">
+
+					<p class="small mb-3"><i class="fas fa-info-circle mr-2"></i>Todos los campos son requeridos</p>
+
+					<div class="form-row mb-4 padre1">
+						<div class="col-12 col-md-6 mb-2 primercol">
+							<label for="product">Productos sin marcar</label><br>
+							<select name="product" id="product" class="selectpicker border form-control product" data-live-search="true" data-width="100%" required>
+								<option disabled selected>Selecciona un producto</option>
+								@foreach ($inventario as $p)
+									<option value="{{ $p->id }}">{{ $p->product_name }}</option>
+								@endforeach
+							</select>
+						</div>
+						<div class="col-12 col-md-3 mb-2">
+							<label for="cost">Costo total del producto</label>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" onkeyup='calcularPrecioModalPrecioMarcar(this)' class="form-control costo" name="cost" id="costMarcar" required>
+						</div>
+						<div class="col-12 col-md-3">
+							<label for="iva_percent" class="d-none">Tipo de I.V.A</label><br>
+							<select name="iva_percent" id="iva_percent" class="selectp	icker border form-control iva d-none" data-width="100%" required>
+								<option value="24">24%</option>
+								<option value="20">20%</option>
+								<option value="16">16%</option>
+								<option value="8">8%</option>
+								<option selected value="0">0%</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-row mb-4">
+						<div class="col-md-6 col-12">
+							<div class="row mb-4">
+								<div class="col-12 col-md-6 mb-2">
+									<label for="wholesale_margin_gain">Ganancia al mayor (%)</label>
+									<input type="number" onkeyup='calcularPrecioModalMayorMarcar(this)' onchange='calcularPrecioModalMayorMarcar(this)' maxlength="2" class="form-control ganancia_al_mayor" id="wholesale_margin_gain_marcar" name="wholesale_margin_gain" required>
+								</div>
+								<div class="col-12 col-md-6">
+									<label for="retail_margin_gain">Ganancia al menor (%)</label>
+									<input type="number" onkeyup='calcularPrecioModalMenorMarcar(this)' onchange='calcularPrecioModalMenorMarcar(this)' maxlength="2" class="form-control ganancia_al_menor" id="retail_margin_gain_marcar" name="retail_margin_gain" required>
+								</div>
+							</div>
+							<div class="row mb-4">
+								<div class="col-12">
+
+									<button class="d-none calcular" type="button"><i class="fas fa-calculator mr-2"></i></button>
+
+								</div>
+							</div>
+							<div class="row mb-4">
+								<div class="col-6">
+									<div class="text-right">
+										<h5 class="mb-4">Precio al mayor</h5>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_wholesale_price">0</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_wholesale_price">0</span> <!--Bs<br>-->
+										TOT: <span class="precio font-weight-light total_amount_wholesale_price" id="totalMayorMarcar">0</span> Bs</span><br>
+										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
+									</div>
+								</div>
+
+								<div class="col-6">
+									<div>
+										<h5 class="mb-4">Precio al menor</h5>
+										<!--PVP:--> <span class="d-none precio font-weight-light total_retail_price">0</span> <!--Bs<br>-->
+										<!--IVA:--> <span class="d-none precio font-weight-light iva_retail_price">0</span> <!--Bs<br>-->
+										TOT: <span class="precio font-weight-light total_amount_retail_price" id="totalMenorMarcar">0</span> Bs<br>
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="col-md-6 col-12 text-center">
+							<label>Imágen del producto</label><br>
+							<div class="file-input-wrapper">
+								<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="foto">
+								<p id="image_name" class="mt-3 mb-1"></p>
+								<p id="image_weigth" class="mb-3"></p>
+
+								<p id="imgerror" class="text-danger" style="display: none;"></p>
+								<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
+								<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+								<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*" required>
+							</div>
+
+							<div>
+								<p>¿Esta en oferta el producto?</p>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="oferta" id="oferta1" value="1">
+									<label class="form-check-label" for="oferta1">
+									Si
+									</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="radio" name="oferta" id="oferta2" value="0">
+									<label class="form-check-label" for="oferta2">
+									No
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
+					<button type="submit" id="sendform" class="btn btn-primary"><i class="fas fa-shopping-cart mr-2"></i>A vender</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
 {{-- Modal ver info de producto marcdo --}}
 <!-- Modal -->
@@ -369,6 +505,10 @@
 		})
 	}
 
+	function showMarcar() {
+		$('#marcarPrecio').modal('show');
+	}
+
 function calcularPrecioModalPrecio(e) {
 	console.log('calcularPrecioModalPrecio');
 	var costo = e.value;
@@ -395,6 +535,32 @@ function calcularPrecioModalPrecio(e) {
 	}
 }
 
+function calcularPrecioModalPrecioMarcar(e) {
+	console.log('calcularPrecioModalPrecioMarcar');
+	var costo = e.value;
+	var qty_per_unit = $('#qty_per_unit_val_marcar').val();
+
+	if ($("#wholesale_margin_gain_marcar").val() != null) {
+		var gMayor = $("#wholesale_margin_gain_marcar").val();
+		result_porcentaje  = (parseFloat(costo)*gMayor)/100;
+		result_porcentaje = result_porcentaje.toFixed(2);
+		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
+		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(2));
+		$('.wholesale_packet_price').val(total2.toFixed(2));
+		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_mayor_total));
+	}
+	if ($("#retail_margin_gain_edit").val() != null) {
+		var gMenor = $("#retail_margin_gain_edit").val();
+		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
+		result_porcentaje = result_porcentaje.toFixed(2);
+		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+		$('.retail_total_price').val(precio_menor_total.toFixed(2));
+		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+	}
+}
+
 function calcularPrecioModalMayor(e) {
 	console.log('calcularPrecioModalMayor');
 	var gMayor = e.value;
@@ -409,6 +575,23 @@ function calcularPrecioModalMayor(e) {
 		$('.wholesale_total_packet_price').val(total2.toFixed(2));
 		$('.wholesale_packet_price').val(total2.toFixed(2));
 		$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+	}
+}
+
+function calcularPrecioModalMayorMarcar(e) {
+	console.log('calcularPrecioModalMayorMarcar');
+	var gMayor = e.value;
+	var qty_per_unit = $('#qty_per_unit_val').val();
+	if ($("#costMarcar").val() != null) {
+		var costo = $("#costMarcar").val();
+		result_porcentaje = (parseFloat(costo)*gMayor)/100;
+		result_porcentaje = result_porcentaje.toFixed(2);
+		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+		$('.wholesale_total_individual_price').val(precio_menor_total.toFixed(2));
+		var total2 = parseFloat(precio_menor_total).toFixed(2) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(2));
+		$('.wholesale_packet_price').val(total2.toFixed(2));
+		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
 	}
 }
 
@@ -431,6 +614,28 @@ function calcularPrecioModalMenor(e) {
 		$('.wholesale_total_packet_price').val(total2.toFixed(2));
 		$('.wholesale_packet_price').val(total2.toFixed(2));
 		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+	}
+}
+
+function calcularPrecioModalMenorMarcar(e) {
+	console.log('calcularPrecioModalMenorMarcar');
+	var gMenor = e.value;
+	var qty_per_unit = $('.qty_per_unit_val').val();
+	if ($("#costMarcar").val() != null) {
+		var costo = $("#costMarcar").val();
+		var gMayor = $("#wholesale_margin_gain_marcar").val()
+		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
+		result_porcentaje = result_porcentaje.toFixed(2);
+		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+		result_porcentaje_mayor = (parseFloat(costo)*gMayor)/100;
+		result_porcentaje_mayor = result_porcentaje_mayor.toFixed(2);
+		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje_mayor);
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
+		$('.retail_total_price').val(precio_menor_total.toFixed(2));
+		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(2));
+		$('.wholesale_packet_price').val(total2.toFixed(2));
+		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
 	}
 }
 
@@ -462,6 +667,63 @@ $(document).ready( function () {
 	}
 
 	$(() => {
+
+		$('#fileinput').change((e) => {
+			// $('#sendBtn').removeClass('d-none')
+
+			// imagen de preview
+			let file   = e.target.files[0];
+			let reader = new FileReader();
+
+			let filesize = file.size / 1024
+
+			// validaciones del archivo
+			if (filesize > 15000) {
+				$('#imgerror').text('La imagen excede los 15000kb permitidos.')
+				$('#imgerror').show()
+				return
+			}
+
+			let allowed_ext = ['png', 'jpeg', 'gif']
+			let ext_length = allowed_ext.length
+
+			for (let i = 0; i < ext_length; i++){
+
+				if (!file.type.includes(allowed_ext[i])) {
+					if (ext_length - 1 == i) {
+						$('#imgerror').text('Este formato no está permitido.')
+						$('#imgerror').show()
+
+						return
+					}
+				}
+				else {
+					break
+				}
+			}
+
+			reader.onload = (ev) => {
+				$('#imgerror').hide()
+
+				$('#foto').show();
+				$('#clearbtn').show();
+
+				$('#foto').attr('data-src', ev.target.result);
+				$('#image_name').text(file.name)
+				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
+			}
+
+			$('#clearbtn').click(() => {
+				$('#imgerror').text('')
+				$('#fileinput').val('')
+				$('#foto').hide()
+				$('#image_name').text('')
+				$('#image_weigth').text('')
+				$('#clearbtn').hide()
+			})
+
+			reader.readAsDataURL(file);
+		});
 
 		let form = {
 			inventoryid: null,
