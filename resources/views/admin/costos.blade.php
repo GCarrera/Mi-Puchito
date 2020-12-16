@@ -38,6 +38,7 @@
 								</tr>
 							</thead>
 							<tbody>
+								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
 								@forelse ($productos as $pro)
 									<tr>
 										<td class="small">{{ $pro->inventory->product_name }}</td>
@@ -50,7 +51,7 @@
 										</td>
 
 										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 2, ',', '.')}}</span>">
+											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->retail_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->retail_total_price, 2, ',', '.')}}</span>">
 												{{ number_format($pro->retail_total_price*$dolar->price, 2, ',', '.') }} BsS
 											</span>
 										</td>
@@ -234,11 +235,11 @@
 							<div class="row mb-4">
 								<div class="col-12 col-md-4 mb-2">
 									<label for="wholesale_margin_gain">Ganancia al mayor (%)</label>
-									<input type="number" class="form-control ganancia_al_mayor" id="wholesale_margin_gain_edit" onkeyup='calcularPrecioModalMayor(this)' name="wholesale_margin_gain" required>
+									<input type="number" class="form-control ganancia_al_mayor" id="wholesale_margin_gain_edit" onkeyup='calcularPrecioModalMayor(this)' onchange='calcularPrecioModalMayor(this)' name="wholesale_margin_gain" required>
 								</div>
 								<div class="col-12 col-md-4">
 									<label for="retail_margin_gain">Ganancia al menor (%)</label>
-									<input type="number" class="form-control ganancia_al_menor" id="retail_margin_gain_edit" onkeyup='calcularPrecioModalMenor(this)' name="retail_margin_gain" required>
+									<input type="number" class="form-control ganancia_al_menor" id="retail_margin_gain_edit" onkeyup='calcularPrecioModalMenor(this)' onchange='calcularPrecioModalMenor(this)' name="retail_margin_gain" required>
 								</div>
 
 								<div class="col-md-4">
@@ -369,6 +370,7 @@
 	}
 
 function calcularPrecioModalPrecio(e) {
+	console.log('calcularPrecioModalPrecio');
 	var costo = e.value;
 	var qty_per_unit = $('.qty_per_unit_val').val();
 
@@ -394,6 +396,7 @@ function calcularPrecioModalPrecio(e) {
 }
 
 function calcularPrecioModalMayor(e) {
+	console.log('calcularPrecioModalMayor');
 	var gMayor = e.value;
 	var qty_per_unit = $('.qty_per_unit_val').val();
 	if ($("#cost_edit").val() != null) {
@@ -410,6 +413,7 @@ function calcularPrecioModalMayor(e) {
 }
 
 function calcularPrecioModalMenor(e) {
+	console.log('calcularPrecioModalMenor');
 	var gMenor = e.value;
 	var qty_per_unit = $('.qty_per_unit_val').val();
 	if ($("#cost_edit").val() != null) {
