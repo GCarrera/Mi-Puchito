@@ -17,7 +17,7 @@ class CreateInventarioPisoVentasTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('inventario_id');
             $table->unsignedBigInteger('piso_venta_id');
-            $table->integer('cantidad');
+            $table->decimal('cantidad', 20, 3);
             $table->timestamps();
 
             $table->foreign('inventario_id')->references('id')->on('inventarios');

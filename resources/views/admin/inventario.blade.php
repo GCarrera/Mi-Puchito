@@ -240,13 +240,15 @@
 								<option selected value="caja">Caja</option>
 								<option value="saco">Saco</option>
 								<option value="granel">Granel</option>
+								<option value="cesta">Cesta</option>
+								<option value="bolsa">Bolsa</option>
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
 
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
-							<input type="number" min="0" class="form-control" name="cant_prod" id="cant_prod" required>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod" required>
 							<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>
 						</div>
 						{{-- <div class="col-md-3 col-12">
@@ -352,12 +354,15 @@
 								<option value="bulto">Bulto</option>
 								<option value="caja">Caja</option>
 								<option value="saco">Saco</option>
+								<option value="granel">Granel</option>
+								<option value="cesta">Cesta</option>
+								<option value="bolsa">Bolsa</option>
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
-							<input type="number" min="0" class="form-control" name="cant_prod" id="cant_prod_edit" required>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod_edit" required>
 							<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>
 						</div>
 					</div>

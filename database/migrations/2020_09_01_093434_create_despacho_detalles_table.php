@@ -17,8 +17,8 @@ class CreateDespachoDetallesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('despacho_id');
             //$table->unsignedBigInteger('articulo_id');
-            
-            $table->integer('cantidad');
+
+            $table->decimal('cantidad', 12, 3);
             $table->unsignedInteger('inventory_id');
             $table->timestamps();
 
