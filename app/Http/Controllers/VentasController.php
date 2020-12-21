@@ -191,6 +191,74 @@ class VentasController extends Controller
     {
 
     	try{
+        /*"{"ventas":
+          [
+            {"id":1,"sub_total":"10240000.00","iva":0,"total":"10240000.00","piso_venta_id":1,"type":"1","id_extra":1,"anulado":null,"created_at":"2020-12-21 12:44:23","updated_at":"2020-12-21 12:44:23","detalle":
+              [
+                {
+                  "id":1,"name":"Harina P.A.N 1 kg","quanty":null,"unit_type_mayor":"bulto","unit_type_menor":"Kg","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:42","updated_at":"2020-12-21 12:41:42","inventory_id":1,
+                  "pivot":{"venta_id":1,"inventario_id":1,"cantidad":"2.00","sub_total":"2360000.00","iva":0,"total":"2360000.00"},
+                  "precio":{"id":1,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"1.18","total_menor":"1.18","iva_mayor":0,"sub_total_mayor":"27.12","total_mayor":"27.12","oferta":0,"inventario_id":1,"created_at":"2020-12-21 12:41:42","updated_at":"2020-12-21 12:42:22"}
+                },
+
+                {
+                  "id":2,"name":"Mayonesa Kraft 445 gr","quanty":null,"unit_type_mayor":"caja","unit_type_menor":"envase","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:42","updated_at":"2020-12-21 12:41:42","inventory_id":2,
+                  "pivot":{"venta_id":1,"inventario_id":2,"cantidad":"1.00","sub_total":"2220000.00","iva":0,"total":"2220000.00"},
+                  "precio":{"id":2,"costo":2,"iva_porc":0,"iva_menor":0,"sub_total_menor":"2.22","total_menor":"2.22","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":2,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+
+                {
+                  "id":3,"name":"Arroz Mary 1 kg","quanty":null,"unit_type_mayor":"bulto","unit_type_menor":"Kg","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":3,
+                  "pivot":{"venta_id":1,"inventario_id":3,"cantidad":"1.00","sub_total":"780000.00","iva":0,"total":"780000.00"},
+                  "precio":{"id":3,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"0.78","total_menor":"0.78","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":3,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+
+                {
+                  "id":4,"name":"Pasta Mary 1Kg","quanty":null,"unit_type_mayor":"bulto","unit_type_menor":"Kg","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":4,
+                  "pivot":{"venta_id":1,"inventario_id":4,"cantidad":"1.00","sub_total":"940000.00","iva":0,"total":"940000.00"},
+                  "precio":{"id":4,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"0.94","total_menor":"0.94","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":4,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+
+                {
+                  "id":5,"name":"Salchichas Viena Ahulux","quanty":null,"unit_type_mayor":"caja","unit_type_menor":"paquete","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":5,
+                  "pivot":{"venta_id":1,"inventario_id":5,"cantidad":"1.00","sub_total":"3190000.00","iva":0,"total":"3190000.00"},
+                  "precio":{"id":5,"costo":2,"iva_porc":0,"iva_menor":0,"sub_total_menor":"3.19","total_menor":"3.19","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":5,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+
+                {
+                  "id":6,"name":"Nestea Limon 90grs","quanty":null,"unit_type_mayor":"caja","unit_type_menor":"paquete","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":7,
+                  "pivot":{"venta_id":1,"inventario_id":6,"cantidad":"1.00","sub_total":"750000.00","iva":0,"total":"750000.00"},
+                  "precio":{"id":6,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"0.75","total_menor":"0.75","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":6,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                }
+              ]
+            },
+
+            {"id":2,"sub_total":"7133500.00","iva":0,"total":"7133500.00","piso_venta_id":1,"type":"1","id_extra":2,"anulado":null,"created_at":"2020-12-21 12:45:24","updated_at":"2020-12-21 12:45:24",
+              "detalle":
+              [
+                {
+                  "id":7,"name":"Leche  liquida purisima","quanty":null,"unit_type_mayor":"caja","unit_type_menor":"Lt","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":8,
+                  "pivot":{"venta_id":2,"inventario_id":7,"cantidad":"1.00","sub_total":"1320000.00","iva":0,"total":"1320000.00"},
+                  "precio":{"id":7,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"1.32","total_menor":"1.32","iva_mayor":0,"sub_total_mayor":"35.40","total_mayor":"35.40","oferta":0,"inventario_id":7,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+                {
+                  "id":8,"name":"Alas de pollo","quanty":null,"unit_type_mayor":"caja","unit_type_menor":"gr","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":9,
+                  "pivot":{"venta_id":2,"inventario_id":8,"cantidad":"1.55","sub_total":"3828500.00","iva":0,"total":"3828500.00"},
+                  "precio":{"id":8,"costo":2,"iva_porc":0,"iva_menor":0,"sub_total_menor":"2.47","total_menor":"2.47","iva_mayor":0,"sub_total_mayor":"0.00","total_mayor":"0.00","oferta":0,"inventario_id":8,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+                {
+                  "id":9,"name":"Papel Luciano Blanco","quanty":null,"unit_type_mayor":"bulto","unit_type_menor":"Paquete","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":11,
+                  "pivot":{"venta_id":2,"inventario_id":9,"cantidad":"1.00","sub_total":"1040000.00","iva":0,"total":"1040000.00"},
+                  "precio":{"id":9,"costo":1,"iva_porc":0,"iva_menor":0,"sub_total_menor":"1.04","total_menor":"1.04","iva_mayor":0,"sub_total_mayor":"10.56","total_mayor":"10.56","oferta":0,"inventario_id":9,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:22"}
+                },
+                {
+                  "id":11,"name":"Comino puro","quanty":null,"unit_type_mayor":"bulto","unit_type_menor":"gramos","qty_per_unit":null,"status":"1","total_qty_prod":null,"piso_venta_id":1,"id_extra":null,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:41:43","inventory_id":161,
+                  "pivot":{"venta_id":2,"inventario_id":11,"cantidad":"0.10","sub_total":"945000.00","iva":0,"total":"945000.00"},
+                  "precio":{"id":11,"costo":6,"iva_porc":0,"iva_menor":0,"sub_total_menor":"9.45","total_menor":"9.45","iva_mayor":0,"sub_total_mayor":"34650.00","total_mayor":"34650.00","oferta":0,"inventario_id":11,"created_at":"2020-12-21 12:41:43","updated_at":"2020-12-21 12:42:23"}
+                }
+              ]
+            }
+          ],"piso_venta_id":1}"*/
 
 			DB::beginTransaction();
 			foreach ($request->ventas as $valor) {
@@ -247,7 +315,8 @@ class VentasController extends Controller
 		            $detalles->save();
 
 		            //RESTAMOS DEL STOCK
-		            $inventario = Inventario_piso_venta::where('piso_venta_id', $request->piso_venta_id)->where('inventario_id', $articulo->id)->whereHas('inventario', function($q){
+                $idArticuloConsulta = $articulo['id'];
+		            $inventario = Inventario_piso_venta::where('piso_venta_id', $request->piso_venta_id)->where('inventario_id', $idArticuloConsulta)->whereHas('inventario', function($q){
 		            	//$q->where('inventory_id', $producto['inventory_id']);
 		            })->orderBy('id', 'desc')->first();
 		            //SI NO ENCUENTRA EL PRODUCTO QUE LO REGISTRE
