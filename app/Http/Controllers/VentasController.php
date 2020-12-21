@@ -320,8 +320,8 @@ class VentasController extends Controller
 		            	//$q->where('inventory_id', $producto['inventory_id']);
 		            })->orderBy('id', 'desc')->first();
 		            //SI NO ENCUENTRA EL PRODUCTO QUE LO REGISTRE
-
-		            if ($inventario['id'] == null) {
+                $leng = isset($inventario['id']) ? $inventario['id'] : null;
+		            if ($leng == null) {
                         //REGISTRA LA CANTIDAD EN EL INVENTARIO DEL PISO DE VENTA
                         $inventario = new Inventario_piso_venta();
                         $inventario->inventario_id = $articulo->id;
