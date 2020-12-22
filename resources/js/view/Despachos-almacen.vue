@@ -26,8 +26,8 @@
              <tr>
                <th>Fecha</th>
                <th>Piso de venta</th>
-               <th>Tipo</th>
-               <th>Confirmado</th>
+               <!--<th>Tipo</th>-->
+               <th>Estado</th>
                <th>Acciones</th>
              </tr>
            </thead>
@@ -35,9 +35,10 @@
              <tr v-for="(despacho, index) in despachos" :key="index">
                <td>{{despacho.created_at}} {{despacho.id}}</td>
                <td>{{despacho.piso_venta.nombre}}</td>
-               <th>{{despacho.type == 1? "despacho" : "retiro"}}</th>
-               <td v-if="despacho.confirmado == null" class="small font-weight-bold">No se ah confirmado</td>
-               <td v-else class="small font-weight-bold">{{despacho.confirmado == 1 ? "confirmado" : "negado"}}</td>
+               <!--<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>-->
+               <td v-if="despacho.confirmado == null" class="small font-weight-bold text-secondary">Pendiente</td>
+               <td v-else-if="despacho.confirmado == 1" class="small font-weight-bold text-success">Confirmado</td>
+               <td v-else class="small font-weight-bold text-danger">Negado</td>
                <td>
                  <button class="btn btn-primary" @click="showModalDetalles(despacho)">Ver</button>
                  <!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalVer">Ver</button>-->
@@ -305,6 +306,7 @@
    },
    methods:{
      showModalDetalles(id){
+       console.log(id);
        this.dataModal = id;
        $('#modalVer').modal('show');
      },
