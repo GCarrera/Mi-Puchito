@@ -32,6 +32,15 @@ class PisoVentasController extends Controller
 			->with('ventas', $ventas);
     }
 
+    public function cajas_mostrar($id)
+    {
+      $ventas = Vaciar_caja::where('piso_venta_id', $id)->get();
+      $piso_ventas = Piso_venta::where('id', $id)->get();
+    	return view('admin.piso_ventas_cajas')
+      ->with('piso_venta', $piso_ventas)
+			->with('cajas', $ventas);
+    }
+
     public function inventario_mostrar($id)
     {
       $inventario = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->get();
@@ -133,6 +142,27 @@ class PisoVentasController extends Controller
     	return response()->json($ventas);
     }
 
+    public function cajas($id, Request $request)
+    {
+      //return response()->json($id);
+    	if ($request->fecha_i != 0 && $request->fecha_f != 0) {
+        //return response()->json('$request->fecha_i');
+
+    		$ventas = Vaciar_caja::where('piso_venta_id', $id)->whereDate('created_at','>=', $request->fecha_i)->whereDate('created_at','<=', $request->fecha_f)->orderBy('id', 'desc')->paginate(10);
+    	}else{
+        //return response()->json('$request->fecha_i');
+
+	    	$date = Carbon::now();
+	    	$mes = $date->month;
+
+	    	//$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(10); -->trae un solo mes
+	    	$ventas = Vaciar_caja::where('piso_venta_id', $id)->orderBy('id', 'desc')->paginate(10);
+        //return response()->json("else");
+	    }
+
+    	return response()->json($ventas);
+    }
+
     public function all_ventas_compras($id, Request $request)
     {
     	if ($request->fecha_i != 0 && $request->fecha_f != 0) {
@@ -149,6 +179,23 @@ class PisoVentasController extends Controller
 	    	$mes = $date->month;
 
 	    	$ventas = Venta::with('detalle')->where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(10);
+        //return response()->json("else");
+	    }
+
+    	return response()->json($ventas);
+    }
+
+    public function all_cajas($id, Request $request)
+    {
+    	if ($request->fecha_i != 0 && $request->fecha_f != 0) {
+
+    		$ventas = Vaciar_caja::where('piso_venta_id', $id)->whereDate('created_at','>=', $request->fecha_i)->whereDate('created_at','<=', $request->fecha_f)->orderBy('id', 'desc')->paginate(10);
+    	}else{
+
+	    	$date = Carbon::now();
+	    	$mes = $date->month;
+
+	    	$ventas = Vaciar_caja::where('piso_venta_id', $id)->whereMonth('created_at', $mes)->orderBy('id', 'desc')->paginate(10);
         //return response()->json("else");
 	    }
 

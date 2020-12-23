@@ -13,7 +13,7 @@
 				<tr v-for="(producto, index) in productos" :key="index">
 					<td>{{producto.inventario.name}}</td>
 					<td>{{producto.cantidad}}</td>
-					<td>{{producto.inventario.precio.total_menor}}</td>
+					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
 					<td>
 						<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>
 					</td>
@@ -36,7 +36,7 @@
 
 					      				<thead>
 					      					<tr>
-					      						<th>propiedades</th>
+					      						<th>Propiedades</th>
 					      						<th>Valores</th>
 
 					      					</tr>
@@ -44,18 +44,18 @@
 
 					      				<tbody>
 					      					<tr>
-					      						<th>Cantidad</th>
+					      						<td>Cantidad:</td>
 					      						<td>{{producto.cantidad}}</td>
 
 					      					</tr>
 
 					      					<tr>
-					      						<th>Unidad</th>
+					      						<td>Unidad</td>
 					      						<td>{{producto.inventario.unit_type_menor}}</td>
 
 					      					</tr>
 
-					      					<tr>
+					      					<!--<tr>
 					      						<td>Subtotal</td>
 					      						<td>{{producto.inventario.precio.sub_total_menor}}</td>
 
@@ -65,11 +65,11 @@
 					      						<td>Iva</td>
 					      						<td>{{producto.inventario.precio.iva_menor}}</td>
 
-					      					</tr>
+					      					</tr>-->
 
 					      					<tr>
 					      						<td>Total</td>
-					      						<td>{{producto.inventario.precio.total_menor}}</td>
+					      						<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
 
 					      					</tr>
 

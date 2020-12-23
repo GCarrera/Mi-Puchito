@@ -36,6 +36,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('despachos-almacen', require('./view/Despachos-almacen.vue').default);
 Vue.component('piso-ventas', require('./view/PisoVentas.vue').default);
 Vue.component('piso-ventas-ventas', require('./view/PisoVentasVentas.vue').default);
+Vue.component('piso-ventas-cajas', require('./view/PisoVentasCajas.vue').default);
 Vue.component('piso-ventas-inventario', require('./view/PisoVentasInventario.vue').default);
 Vue.component('piso-ventas-despachos', require('./view/PisoVentasDespachos.vue').default);
 Vue.component('piso-ventas-retiros', require('./view/PisoVentasRetiros.vue').default);
