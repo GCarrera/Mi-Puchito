@@ -56,7 +56,10 @@
 											</span>
 										</td>
 										<td class="text-center">
-											<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
+											<button class="btn btn-primary btn-md" onclick='showInfo({{ $pro->id }})'>
+												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
+											</button>
+											<!--<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
 												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
 											</button>
 											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio-{{$pro->id}}" data-id="{{ $pro->id }}">
@@ -265,6 +268,11 @@
 						<div class="row mb-1">
 							<p class="col-6 font-weight-bold"><i class="fas fa-boxes mr-2"></i>Cantidad por empaque:</p>
 							<p class="col-6 font-weight-light" id="cantidadEmpaque">...</p>
+						</div>
+
+						<div class="row mb-1">
+							<p class="col-6 font-weight-bold"><i class="fas fa-clock mr-2"></i>Ultima Modificación:</p>
+							<p class="col-6 font-weight-light" id="ultimaActualizacion">...</p>
 						</div>
 
 						<div class="row mb-1">
@@ -503,6 +511,46 @@
 			console.log(err)
 			toastr.error('Ha ocurrido un error.')
 		})
+	}
+
+	function showInfo(id) {
+		$('#detailModal').modal('show');
+
+		$.get({
+			url : `/products/${id}`,
+			beforeSend(){
+				$('#modal_loader').show()
+			}
+		})
+		.done((data) => {
+
+			console.log(data);
+
+			$('#imageproduct').attr('src', `/storage/app/public/${data.image}`)
+			$('#nombre_producto').text(`${data.inventory.product_name}`)
+			// $('#descripcion_producto').text(`${data.inventory.description}`)
+			$('#almacen').text(`Almacen: ${data.inventory.warehouse.name}`)
+			$('#categoria_producto').text(`${data.inventory.category.name}`)
+			// $('#empresa').text(`${data.inventory.enterprise.name}`)
+			$('#cantidadEmpaque').text(`${data.inventory.quantity} ${data.inventory.unit_type} de ${data.inventory.qty_per_unit} productos`)
+			$('#ultimaActualizacion').text(`${data.updated_at}`)
+			if (data.oferta == 1) {
+				$('#oferta').text(`El producto se encuentra en oferta`)
+				$('#oferta').addClass('text-success')
+				$('#oferta').removeClass('text-danger')
+			}else{
+				$('#oferta').text(`EL producto no esta en oferta`)
+				$('#oferta').addClass('text-danger')
+				$('#oferta').removeClass('text-success')
+			}
+
+			$('#modal_loader').fadeOut()
+		})
+		.fail((err)=> {
+			console.log(err)
+			toastr.error('Ha ocurrido un error.')
+		})
+
 	}
 
 	function showMarcar() {
