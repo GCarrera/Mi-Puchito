@@ -259,7 +259,7 @@ class DespachosController extends Controller
 
             foreach ($request->despachos as $valor) {
 
-                $despacho = Despacho::with('productos')->where('id_extra', $valor['id_extra'])->where('piso_venta_id', $request->piso_venta_id)->first();
+                $despacho = Despacho::with('productos')->where('id_extra', $valor['id_extra'])->where('piso_venta_id', $valor['piso_venta_id'])->first();
                 $despacho->confirmado = $valor['confirmado'];
                 $despacho->save();
 
