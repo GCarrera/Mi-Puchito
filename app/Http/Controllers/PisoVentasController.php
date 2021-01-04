@@ -95,19 +95,21 @@ class PisoVentasController extends Controller
     {
     	$date = Carbon::now();
     	$mes = $date->month;
+    	$dia = $date->day;
 
     	//$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count(); --> Cuenta solo el mes en transcurso
     	$ventas = Venta::where('piso_venta_id', $id)->where('type', 1)->count(); // --> Cuanta todas
       //return response()->json(['ventas' => $ventas]);
     	//$compras = Venta::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count(); --> Cuenta las compras
-      //$inventario = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count();
+      //$inventario = Inventaario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count();
     	$compras = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count(); // --> Cuenta cada producto diferente
     	$despachos = Despacho::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count();
     	$retiros = Despacho::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count();
 
         $sincronizacion = Sincronizacion::where('piso_venta_id', $id)->orderBy('id', 'desc')->first();
 
-        $caja = Vaciar_caja::where('piso_venta_id', $id)->orderBy('id', 'desc')->first();
+      $caja = Vaciar_caja::where('piso_venta_id', $id)->whereDay('created_at', $dia)->count();
+      //$caja = Vaciar_caja::where('piso_venta_id', $id)->orderBy('id', 'desc')->first();
 
     	return response()->json([
 				'ventas' => $ventas,

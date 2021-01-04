@@ -13,6 +13,7 @@
 							<span><span class="font-weight-bold">Nombre:</span> {{piso_venta_selected.nombre}}</span> <br>
 							<span><span class="font-weight-bold">Lugar:</span> {{piso_venta_selected.ubicacion}}</span> <br>
 							<span><span class="font-weight-bold">Dinero:</span> {{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(piso_venta_selected.dinero)}}</span> <br>
+							<span class="font-weight-bold">Cajas Vaciadas Hoy:</span> <span v-if="count.caja != null">{{count.caja}} <a v-bind:href="url_cajas" class="fas fa-search text-secondary" title="Ver Detalles"></a></span>
 						</div>
 						<hr>
 						<!--<span class="font-weight-bold">Ultima vez que sincronizo:</span> <span v-if="count.sincronizacion != null">{{count.sincronizacion.created_at}}</span> <br>
@@ -27,18 +28,21 @@
 							<h1 class="text-center font-italic">Resumen de {{piso_venta_selected.nombre}}</h1>
 						<!--DATOS GLOBALES-->
 						<div class="row text-white text-center">
-							<div class="col-md-4" style="line-height: 5em; font-size: 1.5em;">
+							<div class="col-md-3" style="line-height: 5em; font-size: 1.5em;">
 								<a v-bind:href="url_ventas" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Ventas: {{count.ventas}}</a>
 							</div>
-							<div class="col-md-4" style="line-height: 5em; font-size: 1.5em;">
+							<div class="col-md-3" style="line-height: 5em; font-size: 1.5em;">
 								<a v-bind:href="url_inventario" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Inventario: {{count.compras}}</a>
 							</div>
-							<div class="col-md-4" style="line-height: 5em; font-size: 1.5em;">
+							<div class="col-md-3" style="line-height: 5em; font-size: 1.5em;">
 								<a v-bind:href="url_despachos" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Despachos: {{count.despachos}}</a>
+							</div>
+							<div class="col-md-3" style="line-height: 5em; font-size: 1.5em;">
+								<a v-bind:href="url_retiros" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Retiros: {{count.retiros}}</a>
 							</div>
 						</div>
 
-						<div class="row text-white text-center">
+						<!--<div class="row text-white text-center">
 							<div class="col-md-6" style="line-height: 5em; font-size: 1.5em;">
 								<a v-bind:href="url_cajas" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Caja: {{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(piso_venta_selected.dinero)}}</a>
 							</div>
@@ -46,7 +50,7 @@
 								<a v-bind:href="url_retiros" class="btn btn-secondary btn-lg" tabindex="-1" role="button" aria-disabled="true">Retiros: {{count.retiros}}</a>
 
 							</div>
-						</div>
+						</div>-->
 						<!--<div v-if="tipo != null" class="mt-3" id="vista">
 							<div class="card shadow">
 								<div class="card-body">
