@@ -262,7 +262,7 @@ class PisoVentasController extends Controller
     {
 
       //return response()->json($request);
-      $productos = Inventario_piso_venta::where('piso_venta_id', $request->id);
+      $productos = Inventario_piso_venta::where('piso_venta_id', $request->id)->get();
 
       return response()->json($productos);
     }
