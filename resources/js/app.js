@@ -43,20 +43,20 @@ Vue.component('piso-ventas-retiros', require('./view/PisoVentasRetiros.vue').def
 Vue.component('new-despacho', require('./view/NewDespacho.vue').default);
 
 import Vue from 'vue'
-import {ModalPlugin, PaginationPlugin, AlertPlugin } from 'bootstrap-vue'
+import {ModalPlugin, PaginationPlugin, AlertPlugin, BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
 Vue.use(ModalPlugin)
 Vue.use(PaginationPlugin)
 Vue.use(AlertPlugin)
 //import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 // Install BootstrapVue
-//Vue.use(BootstrapVue)
+Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
-//Vue.use(IconsPlugin)
+Vue.use(IconsPlugin)
 
-//import 'bootstrap/dist/css/bootstrap.css'
-//import 'bootstrap-vue/dist/bootstrap-vue.css'
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
