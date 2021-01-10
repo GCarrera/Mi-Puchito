@@ -260,9 +260,7 @@ class PisoVentasController extends Controller
 
     public function auditoria(Request $request)
     {
-
-      //return response()->json($request);
-      $productos = Inventario_piso_venta::where('piso_venta_id', $request->id)->get();
+      $productos = Inventario_piso_venta::with('inventario.inventory_id')->where('piso_venta_id', $id)->where('piso_venta_id', $request->id)->get();
 
       return response()->json($productos);
     }
