@@ -102,7 +102,7 @@ class PisoVentasController extends Controller
       //return response()->json(['ventas' => $ventas]);
     	//$compras = Venta::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count(); --> Cuenta las compras
       //$inventario = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count();
-    	$compras = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->where('cantidad', '>', 0)->orderBy('id', 'desc')->count(); // --> Cuenta cada producto diferente
+    	$compras = Inventario_piso_venta::with('inventario')->where('piso_venta_id', $id)->orderBy('id', 'desc')->count(); // --> Cuenta cada producto diferente
     	$despachos = Despacho::where('piso_venta_id', $id)->where('type', 1)->whereMonth('created_at', $mes)->count();
     	$retiros = Despacho::where('piso_venta_id', $id)->where('type', 2)->whereMonth('created_at', $mes)->count();
 
@@ -243,7 +243,7 @@ class PisoVentasController extends Controller
     public function productos_piso_venta($id)
     {
 
-    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->where('cantidad', '>', 0)->orderBy('cantidad', 'desc')->paginate(10);
+    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->orderBy('cantidad', 'desc')->paginate(10);
 
     	return response()->json($productos);
     }
