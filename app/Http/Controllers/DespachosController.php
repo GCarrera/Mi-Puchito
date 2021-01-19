@@ -284,7 +284,15 @@ class DespachosController extends Controller
                                 })->where('piso_venta_id', $despacho->piso_venta_id)->orderBy('id', 'desc')->first();
 
                                 $inventario->cantidad -= $detalle['pivot']['cantidad'];
+                                $inventario->sincronizacion = 2;
                                 $inventario->save();
+                            } else {
+                              $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($detalle, $despacho){
+                                  $q->where('inventory_id', $detalle['id']);
+                              })->where('piso_venta_id', $despacho->piso_venta_id)->orderBy('id', 'desc')->first();
+
+                              $inventario->sincronizacion = 2;
+                              $inventario->save();
                             }
 
                     }else if($despacho->type == 2){
@@ -301,6 +309,7 @@ class DespachosController extends Controller
                                     $q->where('inventory_id', $detalle['id']);
                                 })->where('piso_venta_id', $despacho->piso_venta_id)->orderBy('id', 'desc')->first();
                                 $inventario->cantidad += $detalle['pivot']['cantidad'];
+                                $inventario->sincronizacion = 2;
                                 $inventario->save();
                             }
 
@@ -431,14 +440,17 @@ class DespachosController extends Controller
                     $inventario->inventario_id = $articulo->id;
                     $inventario->piso_venta_id = $despacho['piso_venta_id'];
                     $inventario->cantidad = $producto['cantidad'];
+                    $inventario->sincronizacion = 1;
                     $inventario->save();
                 }else{
                     //SI ES UN DESPACHO O UN RETIRO
                     if($despacho->type == 1){
                         $inventario->cantidad += $producto['cantidad'];
+                        $inventario->sincronizacion = 1;
                         $inventario->save();
                     }else{
                         $inventario->cantidad -= $producto['cantidad'];
+                        $inventario->sincronizacion = 1;
                         $inventario->save();
                     }
                 }

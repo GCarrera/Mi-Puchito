@@ -12,7 +12,8 @@
 			<tbody>
 				<tr v-for="(producto, index) in productos" :key="index">
 					<td>{{producto.inventario.name}}</td>
-					<td>{{producto.cantidad}}</td>
+					<td v-if="producto.sincronizacion == 1"><b-badge variant="warning">{{producto.cantidad}}</b-badge></td>
+					<td v-else><b-badge variant="success">{{producto.cantidad}}</b-badge></td>
 					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
 					<td>
 						<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>
