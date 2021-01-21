@@ -64,7 +64,20 @@
                </tbody>
              </table>
 
-             <button type="submit" class="btn btn-primary" :disabled="productos.length <= 0">Despachar</button>
+               <span v-if="loading == false">
+                 <button type="submit" class="btn btn-primary" :disabled="productos.length <= 0">
+                   Despachar
+                 </button>
+               </span>
+
+               <span v-if="loading == true">
+                 <button type="submit" class="btn btn-primary" :disabled="true">
+                   <div class="spinner-border text-light text-center" role="status" v-if="loading == true">
+                     <span class="sr-only">Cargando...</span>
+                   </div>
+                 </button>
+               </span>
+
 
            </form>
 
@@ -85,6 +98,7 @@
    },
    data(){
      return{
+       loading: false,
        despachos: [],
        piso_ventas: [],
        inventario: [],
@@ -194,11 +208,16 @@
      },
      despachar(){
 
+       this.loading = true;
+
+       //console.log(this.productos);
+
        axios.post('/api/despachos', {productos: this.productos, piso_venta: this.piso_venta}).then(response => {
          console.log(response)
          this.articulo = {id: 0, nombre: "", cantidad: ""};
          this.despachos.splice(0,0, response.data);
          this.productos = [];
+         this.loading = false;
          window.location="/despachos-almacen";
        }).catch(e => {
 
@@ -213,8 +232,9 @@
        console.log('disabled_nuevo');
        console.log(this.articulo.id);
        console.log(this.articulo.cantidad);
+       var validation = parseFloat(this.disponibles)-parseFloat(this.articulo.cantidad);
 
-       if (this.articulo.id != 0 && this.articulo.cantidad != ""){
+       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0){
 
          return false;
        }else{
