@@ -190,10 +190,12 @@ class VentasController extends Controller
     public function registrar_ventas(Request $request) //WEB
     {
 
-    	try{        
+    	try{
 
 			DB::beginTransaction();
 			foreach ($request->ventas as $valor) {
+
+        $idPisoVenta = $request->piso_venta_id;
 
 		    	$venta = new Venta();
 		        $venta->piso_venta_id = $request->piso_venta_id;
@@ -212,7 +214,7 @@ class VentasController extends Controller
 		            $detalles->cantidad = $producto['pivot']['cantidad'];
 		            //BUSCAMOS EL ID QUE TIENE INVENTARIO EN LA WEB CON EL PRODUCTO
 		            if ($producto['inventory_id'] !== null) {
-		           		$articulo = Inventario::select('id')->where('inventory_id', $producto['inventory_id'])->orderBy('id', 'desc')->first();
+		           		$articulo = Inventario::select('id')->where('inventory_id', $producto['inventory_id'])->where('piso_venta_id', $idPisoVenta)->orderBy('id', 'desc')->first();
 		            	$detalles->inventario_id = $articulo['id'];
 		            }else{
 
