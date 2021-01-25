@@ -36,7 +36,7 @@
 
                <div class="form-group col-md-2">
                  <label for="cantidad">Cantidad al menor:</label>
-                 <input type="number" name="cantidad" id="cantidad" placeholder="Cantidad" class="form-control" v-model="articulo.cantidad">
+                 <input type="number" name="cantidad" id="cantidad" placeholder="Cantidad" class="form-control" v-model="articulo.cantidad" ref="cantidad" v-on:keyup.enter="agregar_producto_enter">
                </div>
 
                <div class="form-group col-md-1">
@@ -145,8 +145,17 @@
    },
    methods:{
      setFocus(){
-       //this.$refs.cantidad.focus();
+       this.$refs.cantidad.focus();
        console.log("setFocus");
+     },
+     agregar_producto_enter(){
+       var validation = parseFloat(this.disponibles)-parseFloat(this.articulo.cantidad);
+
+       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0){
+
+         this.agregar_producto();
+
+       }
      },
      get_datos(){
        console.log("get_datos");
