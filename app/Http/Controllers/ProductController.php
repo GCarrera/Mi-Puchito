@@ -123,7 +123,7 @@ class ProductController extends Controller
 
 				$precio = Precio::where('inventario_id', $producto['id'])->orderBy('id', 'desc')->first();
 				if (isset($precio['id'])) {
-					$precio->costo = $productcost;
+					$precio->costo = $product->cost;
 					$precio->iva_porc = $product->iva_percent;
 					$precio->iva_menor = $product->retail_iva_amount;
 					$precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
@@ -134,7 +134,7 @@ class ProductController extends Controller
 					$precio->save();
 				} else {
 					$precio = new Precio();
-					$precio->costo = $productcost;
+					$precio->costo = $product->cost;
 					$precio->iva_porc = $product->iva_percent;
 					$precio->iva_menor = $product->retail_iva_amount;
 					$precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
