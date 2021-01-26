@@ -35,13 +35,13 @@ class ProductController extends Controller
 			'fileinput' => 'required',
 			'oferta' => 'required'
 		]);
-		
+
         if ($validator->fails()) {
             return redirect()->back()
                         ->withErrors($validator)
                         ->withInput();
 		}
-		
+
 		$product = new Product();
 		$inventory = Inventory::find($req->input('product'));
 
@@ -96,7 +96,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
 			$product = Product::find($id);
-			
+
 			$product->cost                   = $req->input('cost');
 			$product->iva_percent            = $req->input('iva_percent');
 			$product->retail_margin_gain     = $req->input('retail_margin_gain');
@@ -115,13 +115,13 @@ class ProductController extends Controller
 			$product->save();
 
 			//PISOS DE VENTA
-			
+
 			$inventarios = Inventario::with('inventory')->where('inventory_id', $product->inventory_id)->get();
 
 			foreach ($inventarios as $producto) {
 
 				$precio = Precio::where('inventario_id', $producto['id'])->orderBy('id', 'desc')->first();
-	            $precio->costo = $product->cost;
+	            $precio->costo = $req->input('cost');
 	            $precio->iva_porc = $product->iva_percent;
 	            $precio->iva_menor = $product->retail_iva_amount;
 	            $precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
@@ -131,7 +131,7 @@ class ProductController extends Controller
 	            $precio->total_mayor = $precio->sub_total_mayor + $precio->iva_mayor;
 	            $precio->save();
 			}
-			
+
 			DB::commit();
 
 			return redirect()->back()->with('success', 'Producto editado exitosamente.');
