@@ -96,6 +96,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
 			$product = Product::find($id);
+			$productcost = $req->input('cost');
 
 			$product->cost                   = $req->input('cost');
 			$product->iva_percent            = $req->input('iva_percent');
@@ -121,7 +122,7 @@ class ProductController extends Controller
 			foreach ($inventarios as $producto) {
 
 				$precio = Precio::where('inventario_id', $producto['id'])->orderBy('id', 'desc')->first();
-	            $precio->costo = $req->input('cost');
+	            $precio->costo = $productcost;
 	            $precio->iva_porc = $product->iva_percent;
 	            $precio->iva_menor = $product->retail_iva_amount;
 	            $precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
