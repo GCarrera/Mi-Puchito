@@ -98,6 +98,7 @@
    },
    data(){
      return{
+       toastCount: 0,
        loading: false,
        despachos: [],
        piso_ventas: [],
@@ -144,6 +145,17 @@
      }
    },
    methods:{
+     makeToast(variant = null) {
+      this.toastCount++
+      this.$bvToast.toast(`Estamos procesando el despacho por espere un momento, gracias`, {
+        title: 'Excelente!!!',
+        autoHideDelay: 5000,
+        variant: variant,
+        solid: true,
+        //toaster: 'b-toaster-bottom-left',
+
+      })
+    },
      setFocus(){
        this.$refs.cantidad.focus();
        console.log("setFocus");
@@ -218,6 +230,7 @@
      despachar(){
 
        this.loading = true;
+       this.makeToast('info');
 
        //console.log(this.productos);
 
