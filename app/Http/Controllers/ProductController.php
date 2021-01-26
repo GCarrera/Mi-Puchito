@@ -122,15 +122,30 @@ class ProductController extends Controller
 			foreach ($inventarios as $producto) {
 
 				$precio = Precio::where('inventario_id', $producto['id'])->orderBy('id', 'desc')->first();
-	            $precio->costo = $productcost;
-	            $precio->iva_porc = $product->iva_percent;
-	            $precio->iva_menor = $product->retail_iva_amount;
-	            $precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
-	            $precio->total_menor = $product->retail_total_price;
-	            $precio->iva_mayor = $product->wholesale_iva_amount * $producto['inventory']['qty_per_unit'];
-	            $precio->sub_total_mayor = $product->wholesale_packet_price;
-	            $precio->total_mayor = $precio->sub_total_mayor + $precio->iva_mayor;
-	            $precio->save();
+				if ($precio['id'] == null) {
+						$precio = new Precio();
+						$precio->costo = $productcost;
+						$precio->iva_porc = $product->iva_percent;
+						$precio->iva_menor = $product->retail_iva_amount;
+						$precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
+						$precio->total_menor = $product->retail_total_price;
+						$precio->iva_mayor = $product->wholesale_iva_amount * $producto['inventory']['qty_per_unit'];
+						$precio->sub_total_mayor = $product->wholesale_packet_price;
+						$precio->total_mayor = $precio->sub_total_mayor + $precio->iva_mayor;
+						$precio->oferta = '0';
+						$precio->inventario_id = $producto['id'];
+						$precio->save();
+				} else {
+					$precio->costo = $productcost;
+					$precio->iva_porc = $product->iva_percent;
+					$precio->iva_menor = $product->retail_iva_amount;
+					$precio->sub_total_menor = $product->retail_total_price - $product->retail_iva_amount;
+					$precio->total_menor = $product->retail_total_price;
+					$precio->iva_mayor = $product->wholesale_iva_amount * $producto['inventory']['qty_per_unit'];
+					$precio->sub_total_mayor = $product->wholesale_packet_price;
+					$precio->total_mayor = $precio->sub_total_mayor + $precio->iva_mayor;
+					$precio->save();
+				}
 			}
 
 			DB::commit();
