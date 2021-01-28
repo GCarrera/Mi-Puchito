@@ -480,6 +480,7 @@ class DespachosController extends Controller
             $despacho = new Despacho();
             $despacho->piso_venta_id = $request->piso_venta;
             $despacho->type = 2;
+            $despacho->confirmado = 1;
             $despacho->save();
 
             $despacho->id_extra = $despacho->id;
@@ -489,40 +490,39 @@ class DespachosController extends Controller
                 $detalles = new Despacho_detalle();
                 $detalles->despacho_id = $despacho->id;
                 $detalles->cantidad = $producto['cantidad'];
-                $detalles->inventory_id = $producto['id'];
-                $detalles->save();
+                $detalles->inventory_id = $producto['modelo']['inventario']['inventory_id'];
                 $detalles->save();
                 //SUMAMOS DE INVENTORY DE PROMETHEUS
-                $inventario = Inventory::findOrFail($producto['id']);
+                $inventario = Inventory::findOrFail($producto['modelo']['inventario']['inventory_id']);
                 $inventario->total_qty_prod += $producto['cantidad'];
                 $inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
                 $inventario->save();
 
                 //SUMAMOS AL STOCK
                 $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($producto){
-                    $q->where('inventory_id', $producto['id']);
+                    $q->where('inventory_id', $producto['modelo']['inventario']['inventory_id']);
                 })->where('piso_venta_id', $despacho['piso_venta_id'])->orderBy('id', 'desc')->first();
                 //SI NO ENCUENTRA EL PRODUCTO LO REGISTRA
                 if ($inventario['id'] == null) {
                     $articulo = new Inventario();
-                    $articulo->name = $producto['modelo']['product_name'];
-                    $articulo->unit_type_mayor = $producto['modelo']['unit_type'];
-                    $articulo->unit_type_menor = $producto['modelo']['unit_type_menor'];
-                    $articulo->inventory_id = $producto['id'];
-                    $articulo->status = $producto['modelo']['status'];
+                    $articulo->name = $producto['modelo']['inventario']['product_name'];
+                    $articulo->unit_type_mayor = $producto['modelo']['inventario']['unit_type_mayor'];
+                    $articulo->unit_type_menor = $producto['modelo']['inventario']['unit_type_menor'];
+                    $articulo->inventory_id = $producto['modelo']['inventario']['inventory_id'];
+                    $articulo->status = $producto['modelo']['inventario']['status'];
                     $articulo->piso_venta_id = $request->piso_venta;
                     $articulo->save();
                     //REGISTRAMOS LOS PRECIOS
                     $precio = new Precio();
-                    $precio->costo = $producto['modelo']['product']['cost'];
-                    $precio->iva_porc = $producto['modelo']['product']['iva_percent'];
-                    $precio->iva_menor = $producto['modelo']['product']['retail_iva_amount'];
-                    $precio->sub_total_menor = $producto['modelo']['product']['retail_total_price'] - $producto['modelo']['product']['retail_iva_amount'];
-                    $precio->total_menor = $producto['modelo']['product']['retail_total_price'];
-                    $precio->iva_mayor = $producto['modelo']['product']['wholesale_iva_amount'] * $producto['modelo']['qty_per_unit'];
-                    $precio->sub_total_mayor = $producto['modelo']['product']['wholesale_packet_price'];
+                    $precio->costo = $producto['modelo']['inventario']['precio']['costo'];
+                    $precio->iva_porc = $producto['modelo']['inventario']['precio']['iva_porc'];
+                    $precio->iva_menor = $producto['modelo']['inventario']['precio']['iva_menor'];
+                    $precio->sub_total_menor = $producto['modelo']['inventario']['precio']['total_menor'] - $producto['modelo']['inventario']['precio']['iva_menor'];
+                    $precio->total_menor = $producto['modelo']['inventario']['precio']['total_menor'];
+                    $precio->iva_mayor = $producto['modelo']['inventario']['precio']['iva_mayor']; //* $producto['modelo']['qty_per_unit'];
+                    $precio->sub_total_mayor = $producto['modelo']['inventario']['precio']['sub_total_mayor'];
                     $precio->total_mayor = $precio->sub_total_mayor + $precio->iva_mayor;
-                    $precio->oferta = $producto['modelo']['product']['oferta'];
+                    $precio->oferta = $producto['modelo']['inventario']['precio']['oferta'];
                     $precio->inventario_id = $articulo->id;
                     $precio->save();
                     //$precio->costo =

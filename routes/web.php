@@ -30,6 +30,7 @@ Route::delete('/limpiar_carrito', 'ShoppingCartController@clear');
 
 Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
+// ------------------------------------- ADMIN ----------------------------------------//
 	Route::prefix('admin')->group(function(){
 		Route::get('/', 'AdminController@index')->name('admin');
 		Route::get('/inventario', 'AdminController@inventario')->name('inventario');
@@ -113,7 +114,7 @@ Route::get('/piso-ventas-anclar', 'PisoVentasController@anclar')->name('piso.ven
 //DESPACHOS ALMACEN
 Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index');
 Route::get('/nuevo-despacho', 'DespachosController@new_despacho');
-//RUTAS APIS
+//---------------------------------------RUTAS APIS-----------------------------------------------//
 Route::group(['prefix' => 'api'], function(){
 	//PISOS DE VENTAS
 	Route::post('/piso-venta-cantidad-edit', 'PisoVentasController@cantidad_edit');
@@ -147,6 +148,7 @@ Route::group(['prefix' => 'api'], function(){
 	//DESPACHOS ALMACEN
 	Route::get('/despachos-datos-create', 'DespachosController@get_datos_create');
 	Route::post('/despachos', 'DespachosController@store');
+	Route::post('/store-retiro', 'DespachosController@store_retiro');
 	Route::get('/get-despachos-almacen', 'DespachosController@get_despachos_almacen');
 	Route::post('/despachos-retiro', 'DespachosController@store_retiro');
 	Route::get('/inventario-piso-venta/{id}', 'DespachosController@get_datos_inventario_piso_venta');
