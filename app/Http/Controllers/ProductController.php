@@ -112,6 +112,7 @@ class ProductController extends Controller
 			$product->wholesale_total_packet_price     = $req->input('wholesale_total_packet_price');
 			$product->wholesale_iva_amount   = $req->input('wholesale_iva_amount');
 			$product->inventory_id           = $product->inventory_id;
+			$product->oferta			           = $req->input('oferta');
 
 			$product->save();
 
