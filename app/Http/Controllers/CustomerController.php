@@ -21,27 +21,28 @@ class CustomerController extends Controller
 	}
 
 	public function index(Request $request)
-	{	
-		
+	{
+
 		if (auth()->check() && auth()->user()->type == 'admin') {
 			return redirect('admin');
 		} else {
 			$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 			$empresas   = Enterprise::all();
 			$categories = Category::select('id', 'name')->get();
-			$search = str_replace("+", " ", $request->search); 
+			$search = str_replace("+", " ", $request->search);
 			$data = Category::select('id', 'name')
 			->with(['inventory' => function($inventory) use($request, $search) {
+				$inventory->where('status', 1);
 				//EL TAKE DETERMINA LA CANTIDAD DE PRODUCTOS A MOSTRAR
 				$inventory->take(20)->with(['product' => function($product) {
 					if ($product != NULL) {
-					
+
 					}
 				}]);
 				if ($request->enterprise) {
 					$inventory->where('enterprise_id', $request->enterprise);
 				}
-				
+
 				if ($search) {
 					$inventory->where('product_name', 'like', '%'.$search.'%')
 					->orWhereHas('category_p', function($categ) use($search) {
@@ -61,17 +62,17 @@ class CustomerController extends Controller
 				}
 				$inventory->whereHas('product');
 			});
-	
+
 			if ($request->category) {
 				$data = $data->where('id', $request->category);
 				return response()->json($data);
 			}
-			
+
 			$data = $data->get();
 
-			
 
-		
+
+
 				//$user = auth()->user();
 				// \Cart::session($userId)->clear();
 				$carrito   = \Cart::content();
@@ -81,10 +82,10 @@ class CustomerController extends Controller
 					->with('categories', $categories)
 					->with('empresas', $empresas)
 					->with('carrito', $carrito)
-					->with('dolar', $dolar);	
-		
+					->with('dolar', $dolar);
+
 		}
-		
+
 	}
 
 	public function al_mayor()
@@ -131,7 +132,7 @@ class CustomerController extends Controller
 		$empresas   = Enterprise::all();
 
 		$products   = Product::all();
-		
+
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		$data = Category::with(['inventory' =>  function($inventory){
@@ -140,11 +141,11 @@ class CustomerController extends Controller
 		}])->findOrFail($category);
 
 		//SI EL USUARIO ESTA AUTENTICADO NADA MAS
-	
+
 			// \Cart::session($userId)->clear();
 			$carrito   = \Cart::content();
 
 		return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito', 'dolar'));
-		
+
 	}
 }
