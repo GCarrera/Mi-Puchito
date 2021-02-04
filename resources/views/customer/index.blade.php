@@ -61,7 +61,7 @@
 <div class="container-fluid wrapper">
 	<div class="row">
 		<div class="col-lg-3 col-12 order-2 order-lg-1">
-			<div class="card shadow-sm ">
+			<!--<div class="card shadow-sm ">
 				<div class="card-body">
 					<div class="form-group mb-4">
 						<label for="empresas">Usted está comprando:</label>
@@ -71,7 +71,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div>-->
 			<div class="card shadow-sm mb-4">
 				<div class="card-header">
 					<h5>Filtrado de productos</h5>
@@ -106,76 +106,187 @@
 		</div>
 		<div class="col-lg-9 col-12 order-1 order-lg-2">
 			@forelse ($data as $k => $d)
-				<div class="card shadow-sm mb-4">
+				@if (count($d->inventory) > 0)
 
-					<div class="card-header d-flex justify-content-between align-items-center">
-						<a href="{{Request::get('buytype') == 'major'? '/categoria/'.$d->id.'?buytype=major' : '/categoria/'.$d->id}}" style="color: black;">
-							<h5 class="font-weight-bold">{{ $d->name }}</h5>
-						</a>
-						{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
-					</div>
+					<div class="card shadow-sm mb-4">
 
-					<div class="card-body bg-light">
+						<div class="card-header d-flex justify-content-between align-items-center">
+							<a href="{{Request::get('buytype') == 'major'? '/categoria/'.$d->id.'?buytype=major' : '/categoria/'.$d->id}}" style="color: black;">
+								<h5 class="font-weight-bold">{{ $d->name }}</h5>
+							</a>
+							{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
+						</div>
 
-						<div class="slickk">
-							@foreach ($d->inventory as $producto)
+						<div class="card-body bg-light">
+
+							<div class="slickk">
+								@foreach ($d->inventory as $producto)
 
 
-								@if(Request::get('buytype') != 'major')
-								<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
-								@php
-								if (isset($carrito)) {
-									foreach ($carrito as $item) {
-										if ($item->options->sale_type == "al-menor") {
-											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+									@if(Request::get('buytype') != 'major')
+									<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+									@php
+									if (isset($carrito)) {
+										foreach ($carrito as $item) {
+											if ($item->options->sale_type == "al-menor") {
+												# code...
+												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+											}
+
 										}
-
 									}
-								}
-								@endphp
+									@endphp
 
-									<div class="card border-info shadow">
-											{{-- OTRA VEZ LA IMAGEN DEL CARRUCEL --}}
-										{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}" class="card-img-top"> --}}
-										<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
-										<div class="card-body body-producto" id="body-producto">
-											@if($producto->product->oferta == 1)
-											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
-											@endif
-											<h6 class="card-title font-weight-bold truncated-text text-center"> <b> {{ $producto->product_name }}</b> </h6>
+										<div class="card border-info shadow">
+												{{-- OTRA VEZ LA IMAGEN DEL CARRUCEL --}}
+											{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}" class="card-img-top"> --}}
+											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
+											<div class="card-body body-producto" id="body-producto">
+												@if($producto->product->oferta == 1)
+												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+												@endif
+												<h6 class="card-title font-weight-bold truncated-text text-center"> <b> {{ $producto->product_name }}</b> </h6>
 
-											{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-											{{--<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> Subtotal para venta--}}
-											{{-- <h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> --}}
-											@if(Request::get('buytype') == 'minor')
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
-												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
-											@elseif(Request::get('buytype') == 'major')
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price * $dolar->price, 2, ',', '.') }} BsS</p>
-												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} BsS</p>--}}
-											@else
-												<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
-												{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
-											@endif
-											<p class="text-center text-success">Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</p>
+												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
+												{{--<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> Subtotal para venta--}}
+												{{-- <h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> --}}
+												@if(Request::get('buytype') == 'minor')
+													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
+													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
+												@elseif(Request::get('buytype') == 'major')
+													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price * $dolar->price, 2, ',', '.') }} BsS</p>
+													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} BsS</p>--}}
+												@else
+													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
+													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
+												@endif
+												<p class="text-center text-success">Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</p>
 
-												<div class="">
-{{--
-														<button
-															id="deseos-{{ $producto->product->id }}"
-															data-id="{{ $producto->product->id }}"
-															class="btn btn-block addToWishlist"
-															data-producto="{{ $producto->product_name }}"
-															data-precio="{{ $producto->product->retail_total_price }}"
+													<div class="">
+	{{--
+															<button
+																id="deseos-{{ $producto->product->id }}"
+																data-id="{{ $producto->product->id }}"
+																class="btn btn-block addToWishlist"
+																data-producto="{{ $producto->product_name }}"
+																data-precio="{{ $producto->product->retail_total_price }}"
 
-														>
-															<i class="fa fa-heart" style="color: #dc3545;"></i>
-															<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">Agregar a favoritos</label>
-														</button>
- --}}
+															>
+																<i class="fa fa-heart" style="color: #dc3545;"></i>
+																<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">Agregar a favoritos</label>
+															</button>
+	 --}}
+
+														@if(isset($respuesta) && $respuesta != 0)
+
+															<button
+																id="comprar-{{ $producto->id }}"
+																type="button"
+																class="btn btn-block btn-primary addCartBtn"
+																data-id="{{ $producto->id }}"
+																data-producto="{{ $producto->product_name }}"
+																data-precio="{{ $producto->product->retail_total_price }}"
+																data-type="al-menor"
+																data-cantidad="1"
+															>
+																<i class="fas fa-check" style=""></i>
+																<label for="comprar-{{ $producto->id }}" class="font-weight-bold"></label>
+															</button>
+
+
+
+														@else
+
+															<button
+															id="comprar-{{ $producto->id }}"
+																type="button"
+																class="btn btn-block btn-primary addCartBtn"
+																data-id="{{ $producto->id }}"
+																data-producto="{{ $producto->product_name }}"
+																data-precio="{{ $producto->product->retail_total_price }}"
+																data-type="al-menor"
+																data-cantidad="1"
+															>
+																<i class="fas fa-shopping-cart" style=""></i>
+																Comprar
+															</button>
+															<!--
+															<label class="texto-carrito font-weight-bold" for="comprar-{{ $producto->id }}">Agregar al carrito</label>
+															-->
+														@endif
+													</div>
+
+
+											</div>
+										</div>
+
+									@else
+									<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+									@php
+									if (isset($carrito)) {
+										foreach ($carrito as $item) {
+											if ($item->options->sale_type == "al-mayor") {
+												# code...
+												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+											}
+
+										}
+									}
+									@endphp
+										<div class="card border-info  shadow-sm">
+
+
+
+											{{-- AQUI EL CARRUSEL DE IMAGENES  --}}
+
+
+											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}"class="card-img-top">
+											{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}"class="card-img-top"> --}}
+											<div class="card-body body-producto">
+												@if($producto->product->oferta == 1)
+												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+												@endif
+												<h6 class="card-title font-weight-bold text-center"> <b>  {{ $producto->product_name }}</b> </h6>
+												<p class="text-center">
+													<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->unit_type) }}<br>
+													<span class="font-weight-bold">Cantidad: </span>{{ $producto->qty_per_unit }} <br>
+													<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} <br>
+													<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->product->wholesale_packet_price), 2, ',', '.') }} <br>
+													<span class="font-weight-bold small">Iva: </span>{{number_format($producto->product->wholesale_iva_amount * $producto->qty_per_unit, 2, ',', '.')  }} <br>
+												</p>
+
+												<p class="lead font-weight-normal text-center">{{ number_format($producto->product->wholesale_total_packet_price + ($producto->product->wholesale_iva_amount * $producto->qty_per_unit), 2, ',', '.') }} BsS</p>
+												<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
+												<p class="text-center">{{ $producto->description}}</p>
+
+
+													{{-- booton de favoritos --}}
+														{{-- <button id="deseos-{{ $producto->product->id }}"  data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
+															<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
+															<label for="deseos-{{ $producto->product->id }}" class="text-danger">Agregar a favoritos</label>
+														</button> --}}
+
+
 
 													@if(isset($respuesta) && $respuesta != 0)
+
+															<button
+															id="comprar-{{ $producto->id }}"
+																type="button"
+															class="btn btn-block btn-primary addCartBtn"
+															data-id="{{ $producto->id }}"
+															data-producto="{{ $producto->product_name }}"
+															data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+															data-type="al-mayor"
+															data-cantidad="1"
+															>
+																<i class="fas fa-check"></i>
+																<label for="comprar-{{ $producto->id }}"></label>
+															</button>
+
+
+
+													@else
 
 														<button
 															id="comprar-{{ $producto->id }}"
@@ -183,135 +294,29 @@
 															class="btn btn-block btn-primary addCartBtn"
 															data-id="{{ $producto->id }}"
 															data-producto="{{ $producto->product_name }}"
-															data-precio="{{ $producto->product->retail_total_price }}"
-															data-type="al-menor"
+															data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+															data-type="al-mayor"
 															data-cantidad="1"
 														>
-															<i class="fas fa-check" style=""></i>
-															<label for="comprar-{{ $producto->id }}" class="font-weight-bold"></label>
+
+															<i class="fas fa-shopping-cart mr-2"></i>
+															<label for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</label>
 														</button>
 
-
-
-													@else
-
-														<button
-														id="comprar-{{ $producto->id }}"
-															type="button"
-															class="btn btn-block btn-primary addCartBtn"
-															data-id="{{ $producto->id }}"
-															data-producto="{{ $producto->product_name }}"
-															data-precio="{{ $producto->product->retail_total_price }}"
-															data-type="al-menor"
-															data-cantidad="1"
-														>
-															<i class="fas fa-shopping-cart" style=""></i>
-															Comprar
-														</button>
-														<!--
-														<label class="texto-carrito font-weight-bold" for="comprar-{{ $producto->id }}">Agregar al carrito</label>
-														-->
 													@endif
-												</div>
 
 
+											</div>
 										</div>
-									</div>
+									@endif
+								@endforeach
+							</div>
 
-								@else
-								<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
-								@php
-								if (isset($carrito)) {
-									foreach ($carrito as $item) {
-										if ($item->options->sale_type == "al-mayor") {
-											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
-										}
-
-									}
-								}
-								@endphp
-									<div class="card border-info  shadow-sm">
-
-
-
-										{{-- AQUI EL CARRUSEL DE IMAGENES  --}}
-
-
-										<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}"class="card-img-top">
-										{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}"class="card-img-top"> --}}
-										<div class="card-body body-producto">
-											@if($producto->product->oferta == 1)
-											<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
-											@endif
-											<h6 class="card-title font-weight-bold text-center"> <b>  {{ $producto->product_name }}</b> </h6>
-											<p class="text-center">
-												<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->unit_type) }}<br>
-												<span class="font-weight-bold">Cantidad: </span>{{ $producto->qty_per_unit }} <br>
-												<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} <br>
-												<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->product->wholesale_packet_price), 2, ',', '.') }} <br>
-												<span class="font-weight-bold small">Iva: </span>{{number_format($producto->product->wholesale_iva_amount * $producto->qty_per_unit, 2, ',', '.')  }} <br>
-											</p>
-
-											<p class="lead font-weight-normal text-center">{{ number_format($producto->product->wholesale_total_packet_price + ($producto->product->wholesale_iva_amount * $producto->qty_per_unit), 2, ',', '.') }} BsS</p>
-											<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
-											<p class="text-center">{{ $producto->description}}</p>
-
-
-												{{-- booton de favoritos --}}
-													{{-- <button id="deseos-{{ $producto->product->id }}"  data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
-														<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-														<label for="deseos-{{ $producto->product->id }}" class="text-danger">Agregar a favoritos</label>
-													</button> --}}
-
-
-
-												@if(isset($respuesta) && $respuesta != 0)
-
-														<button
-														id="comprar-{{ $producto->id }}"
-															type="button"
-														class="btn btn-block btn-primary addCartBtn"
-														data-id="{{ $producto->id }}"
-														data-producto="{{ $producto->product_name }}"
-														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
-														data-type="al-mayor"
-														data-cantidad="1"
-														>
-															<i class="fas fa-check"></i>
-															<label for="comprar-{{ $producto->id }}"></label>
-														</button>
-
-
-
-												@else
-
-													<button
-														id="comprar-{{ $producto->id }}"
-														type="button"
-														class="btn btn-block btn-primary addCartBtn"
-														data-id="{{ $producto->id }}"
-														data-producto="{{ $producto->product_name }}"
-														data-precio="{{ $producto->product->wholesale_total_packet_price }}"
-														data-type="al-mayor"
-														data-cantidad="1"
-													>
-
-														<i class="fas fa-shopping-cart mr-2"></i>
-														<label for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</label>
-													</button>
-
-												@endif
-
-
-										</div>
-									</div>
-								@endif
-							@endforeach
 						</div>
-
 					</div>
-				</div>
+
+				@endif
+
 			@empty
 
 				<div class="card shadow-sm mb-4">
