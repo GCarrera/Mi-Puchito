@@ -104,7 +104,12 @@ class ProductController extends Controller
 			// $product->retail_pvp             = $req->input('retail_pvp');
 			$product->retail_total_price     = $req->input('retail_total_price');
 			$product->retail_iva_amount      = $req->input('retail_iva_amount');
-			$product->image                  = $product->image;
+			if ($req->file('fileinputedit') != null) {
+				$product->image                  = explode('public/', $req->file('fileinputedit')->store('public'))[1];
+			} else {
+				$product->image                  = $product->image;
+			}
+
 			$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
 			// $product->wholesale_pvp          = $req->input('wholesale_pvp');
 			$product->wholesale_packet_price = $req->input('wholesale_packet_price');

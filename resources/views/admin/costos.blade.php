@@ -320,7 +320,7 @@
 
 <!-- Modal EDITAR precio producto -->
 <div class="modal fade" id="editarPrecio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog " role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Editar precio del producto</h5>
@@ -375,7 +375,7 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-12">
+						<div class="col-md-6 col-12">
 							<div class="row mb-4">
 								<div class="col-12 col-md-4 mb-2">
 									<label for="wholesale_margin_gain">Ganancia al mayor (%)</label>
@@ -386,28 +386,13 @@
 									<input type="number" class="form-control ganancia_al_menor" id="retail_margin_gain_edit" onkeyup='calcularPrecioModalMenor(this)' onchange='calcularPrecioModalMenor(this)' name="retail_margin_gain" required>
 								</div>
 
-								<div class="col-md-4">
-									<p>¿Esta en oferta el producto?</p>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit1" value="1">
-										<label class="form-check-label" for="oferta1">
-										Si
-										</label>
-									</div>
-									<div class="form-check form-check-inline">
-										<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit2" value="0">
-										<label class="form-check-label" for="oferta2">
-										No
-										</label>
-									</div>
-								</div>
 							</div>
 							<div class="row mb-4">
 								<div class="col-12">
 									<button class="d-none calcular" type="button"><i class="fas fa-calculator mr-2"></i>Calcular nuevos precios</button>
 								</div>
 							</div>
-							<div class="row">
+							<div class="row mb-4">
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al mayor</h5>
@@ -424,6 +409,36 @@
 										<!--IVA:--> <!--<span class="d-none precio font-weight-light iva_retail_price">0,00</span> Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_retail_price" id="totalMenor">0,00</span> Bs<br>
 									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-6 col-12 text-center">
+							<label>Imágen del producto</label><br>
+							<div class="file-input-wrapper">
+								<img class="img-fluid img-thumbnail shadow" style="height: 200px;" id="fotoeditold">
+								<img class="img-fluid img-thumbnail shadow" style="height: 200px; display: none" id="fotoedit">
+								<p id="image_nameedit" class="mt-3 mb-1"></p>
+								<p id="image_weigthedit" class="mb-3"></p>
+
+								<p id="imgerroredit" class="text-danger" style="display: none;"></p>
+								<button id="clearbtnedit" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
+								<label for="fileinputedit" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
+								<input id="fileinputedit" name="fileinputedit" type="file" accept="image/*" class="d-none">
+							</div>
+							<div class="">
+								<p>¿Esta en oferta el producto?</p>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit1" value="1">
+									<label class="form-check-label" for="oferta1">
+									Si
+									</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input class="form-check-input ofertaEdit" type="radio" name="oferta" id="ofertaEdit2" value="0">
+									<label class="form-check-label" for="oferta2">
+									No
+									</label>
 								</div>
 							</div>
 						</div>
@@ -458,6 +473,8 @@
 			}
 		})
 		.done((data) => {
+			console.log("data del producto:");
+			console.log(data);
 
 			$('#product_edit').val(data.id)
 			$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
@@ -481,6 +498,7 @@
 
 				$('#ofertaEdit1').removeAttr('checked', true);
 				$('#ofertaEdit2').attr('checked', true);
+				$('#fotoeditold').attr('src', '../storage/app/public/'+data.image);
 
 			}
 
@@ -715,6 +733,77 @@ $(document).ready( function () {
 	}
 
 	$(() => {
+
+		$('#fileinputedit').change((e) => {
+			// $('#sendBtn').removeClass('d-none')
+
+			var input = e.target;
+			// imagen de preview
+			let file   = e.target.files[0];
+			let reader = new FileReader();
+
+			let filesize = file.size / 1024
+
+			// validaciones del archivo
+			if (filesize > 15000) {
+				$('#imgerroredit').text('La imagen excede los 15000kb permitidos.')
+				$('#imgerroredit').show()
+				return
+			}
+
+			let allowed_ext = ['png', 'jpeg', 'gif']
+			let ext_length = allowed_ext.length
+
+			for (let i = 0; i < ext_length; i++){
+
+				if (!file.type.includes(allowed_ext[i])) {
+					if (ext_length - 1 == i) {
+						$('#imgerroredit').text('Este formato no está permitido.')
+						$('#imgerroredit').show()
+
+						return
+					}
+				}
+				else {
+					break
+				}
+			}
+
+			reader.onload = function(){
+				$('#imgerroredit').hide();
+				$('#fotoeditold').hide();
+				$('#fotoedit').show();
+				$('#clearbtnedit').show();
+		    var dataURL = reader.result;
+		    var output = document.getElementById('fotoedit');
+		    output.src = dataURL;
+				$('#image_nameedit').text(file.name)
+				$('#image_weigthedit').text(`${ filesize.toFixed(2) } kb`)
+		  };
+		  reader.readAsDataURL(input.files[0]);
+
+			/*reader.onload = (ev) => {
+				$('#imgerroredit').hide()
+
+				$('#fotoedit').show();
+				$('#clearbtnedit').show();
+
+				$('#fotoedit').attr('data-src', ev.target.result);
+				$('#image_nameedit').text(file.name)
+				$('#image_weigthedit').text(`${ filesize.toFixed(2) } kb`)
+			}*/
+
+			$('#clearbtnedit').click(() => {
+				$('#imgerroredit').text('')
+				$('#fileinputedit').val('')
+				$('#fotoedit').hide()
+				$('#image_nameedit').text('')
+				$('#image_weigthedit').text('')
+				$('#clearbtnedit').hide()
+			})
+
+			reader.readAsDataURL(file);
+		});
 
 		$('#fileinput').change((e) => {
 			// $('#sendBtn').removeClass('d-none')
