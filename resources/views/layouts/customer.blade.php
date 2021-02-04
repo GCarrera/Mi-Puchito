@@ -17,7 +17,7 @@
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
 
-		<div class="col-md-6 col-sm-12 col-xs-12">
+		<div class="col-md-5 col-sm-12 col-xs-12">
 			@if(Request::get('buytype') == 'major')
 			<form action="" method="GET" class="my-2 my-lg-0">
 			<input type="hidden" name="buytype" value="major">
