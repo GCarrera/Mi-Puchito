@@ -153,7 +153,7 @@
             function getDefaults() {
                 return {
                     tapToDismiss: true,
-                    toastClass: 'toast',
+                    toastClass: 'alert',
                     containerId: 'toast-container',
                     debug: false,
 
@@ -172,10 +172,10 @@
 
                     extendedTimeOut: 1000,
                     iconClasses: {
-                        error: 'toast-error',
-                        info: 'toast-info',
-                        success: 'toast-success',
-                        warning: 'toast-warning'
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning'
                     },
                     iconClass: 'toast-info',
                     positionClass: 'toast-top-right',
