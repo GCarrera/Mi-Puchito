@@ -150,7 +150,7 @@ Route::group(['prefix' => 'api'], function(){
 	Route::post('/despachos', 'DespachosController@store');
 	Route::post('/store-retiro', 'DespachosController@store_retiro');
 	Route::get('/get-despachos-almacen', 'DespachosController@get_despachos_almacen');
-	Route::post('/despachos-retiro', 'DespachosController@store_retiro');
+	//Route::post('/despachos-retiro', 'DespachosController@store_retiro');
 	Route::get('/inventario-piso-venta/{id}', 'DespachosController@get_datos_inventario_piso_venta');
 
 	//VENTAS
