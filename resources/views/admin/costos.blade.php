@@ -198,7 +198,7 @@
 								<p id="imgerror" class="text-danger" style="display: none;"></p>
 								<button id="clearbtn" type="button" class="btn btn-primary" style="display: none"><i class="fas fa-trash mr-2"></i>Limpiar</button>
 								<label for="fileinput" class="btn btn-primary"><i class="fas fa-folder-open mr-2"></i>Buscar</label>
-								<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*" required>
+								<input id="fileinput" id="fileinput" name="fileinput" type="file" accept="image/*">
 							</div>
 
 							<div>

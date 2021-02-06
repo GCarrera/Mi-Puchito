@@ -32,7 +32,6 @@ class ProductController extends Controller
 			'iva_percent' => 'required|numeric',
 			'retail_margin_gain' => 'required|numeric',
 			'wholesale_margin_gain' => 'required|numeric',
-			'fileinput' => 'required',
 			'oferta' => 'required'
 		]);
 
@@ -59,7 +58,11 @@ class ProductController extends Controller
 		// $product->retail_pvp             = $req->input('retail_pvp');
 		$product->retail_total_price     = $retail_total_price;
 		$product->retail_iva_amount      = $retail_iva_amount;
-		$product->image                  = explode('public/', $req->file('fileinput')->store('public'))[1];
+		if ($req->file('fileinput') != null) {
+			$product->image                = explode('public/', $req->file('fileinput')->store('public'))[1];
+		} else {
+			$product->image                = "default.jpeg";
+		}
 		$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
 		// $product->wholesale_pvp          = $req->input('wholesale_pvp');
 		$product->wholesale_packet_price = $req->input('wholesale_packet_price');
