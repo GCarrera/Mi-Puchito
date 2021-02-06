@@ -286,13 +286,26 @@ class DespachosController extends Controller
                                 $inventario->cantidad -= $detalle['pivot']['cantidad'];
                                 $inventario->sincronizacion = 2;
                                 $inventario->save();
-                            } else {
-                              $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($detalle, $despacho){
+                            } elseif ($despacho->confirmado === 1) {
+                              /*$inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($detalle, $despacho){
                                   $q->where('inventory_id', $detalle['id']);
-                              })->where('piso_venta_id', $despacho->piso_venta_id)->orderBy('id', 'desc')->first();
+                              })->where('piso_venta_id', $despacho->piso_venta_id)->orderBy('id', 'desc')->first();*/
 
-                              $inventario->sincronizacion = 2;
-                              $inventario->save();
+                              $select = Inventario::where('inventory_id', $detalle['id'])->where('piso_venta_id', $despacho->piso_venta_id)->first();
+                              $selectdos = Inventario_piso_venta::where('piso_venta_id', $despacho->piso_venta_id)->where('inventario_id', $select->id)->first();
+
+                              if (isset($selectdos['id'])) {
+                                $selectdos->sincronizacion = 2;
+                                $selectdos->save();
+                              } else {
+                                /*$inventariopisoventa = new Inventario_piso_venta();
+                                $inventariopisoventa->inventario_id = $select->id;
+                                $inventariopisoventa->piso_venta_id = $despacho->piso_venta_id;
+                                $inventariopisoventa->cantidad = $detalle['pivot']['cantidad'];
+                                $inventariopisoventa->sincronizacion = 2;
+                                $inventariopisoventa->save();*/
+                              }
+
                             }
 
                     }else if($despacho->type == 2){
