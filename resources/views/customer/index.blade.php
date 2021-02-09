@@ -120,8 +120,14 @@
 						<div class="card-body bg-light">
 
 							<div class="slickk">
+
+								@php
+									$count = 1;
+								@endphp
 								@foreach ($d->inventory as $producto)
 
+									<!--break($count == 5)-->
+									@break($count == 5)
 
 									@if(Request::get('buytype') != 'major')
 									<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
@@ -309,6 +315,10 @@
 											</div>
 										</div>
 									@endif
+
+									@php
+										$count++;
+									@endphp
 								@endforeach
 							</div>
 

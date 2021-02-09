@@ -10,7 +10,7 @@
 	</div>
 </div>
 
-<div class="container-fluid wrapper" style="margin-top: 90px">	
+<div class="container-fluid wrapper" style="margin-top: 90px">
 	<div class="row">
 		<div class="col">
 			<div class="card shadow-sm">
@@ -52,8 +52,8 @@
 										<td><b class="small font-weight-bold">No se ha confirmado</b></td>
 										@endif
 										@if($venta->dispatched != null)
-										
-											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>	
+
+											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>
 										@else
 										<td  class="small font-weight-bold" id="dispatched-{{$venta->id}}">Sin confirmar</td>
 										@endif
@@ -84,17 +84,17 @@
 									    	<div class="modal-body" >
 									        <p>¿Esta seguro que desea confirmar el pedido?</p>
 									        <label for="stimated_time">Tiempo estimado de llegada (min)</label>
-							
+
 											<input type="text" id="stimated_time_{{$venta->id}}" class="form-control" name="stimated_time" placeholder="Ejm: 30" pattern="^[0-9]{2}:[0-9]{2}$" required>
 											<i class="font-weight-bold">Minutos</i>
 									      	</div>
 									    	<div class="modal-footer">
 									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-									        	
+
 									        	<button type="button" class="btn btn-danger" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'denegado')">Denegado</button>
 									        	<button type="button" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'aprobado')">Aprobado</button>
 									      	</div>
-									
+
 									    </div>
 									  </div>
 									</div>
@@ -113,8 +113,8 @@
 												@if($venta->attached_file)
 												<div id="captura-{{$venta->id}}">
 													<h6 class="font-weight-bold">Captura</h6>
-													<a href="{{ url('storage/'.$venta->attached_file) }}">
-													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
+													<a href="{{ url('storage/app/public/'.$venta->attached_file) }}">
+													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/app/public/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
 													</a>
 												</div>
 												@endif
@@ -169,7 +169,7 @@
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
-	
+
 	function openModal(id) {
 
 		$('#modalDetails-'+id).modal('show')
@@ -203,7 +203,7 @@
 
 		$('#checkModal-'+id).modal('hide');
 	}
-	
+
 	/*
 	$(() => {
 

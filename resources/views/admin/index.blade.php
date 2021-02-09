@@ -11,7 +11,7 @@
 </div>
 
 
-<div class="container-fluid wrapper" style="margin-top: 90px">	
+<div class="container-fluid wrapper" style="margin-top: 90px">
 	<div class="row">
 		<div class="col">
 			<div class="card shadow-sm">
@@ -53,8 +53,8 @@
 										<td><b class="small font-weight-bold">Sin confirmado</b></td>
 										@endif
 										@if($venta->dispatched != null)
-										
-											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>	
+
+											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>
 										@else
 										<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">Sin confirmar</td>
 										@endif
@@ -69,7 +69,7 @@
 											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
 												<i class="fas fa-coins"></i>
 											</button>
-											
+
 										</td>
 									</tr>
 
@@ -89,7 +89,7 @@
 									      	</div>
 									    	<div class="modal-footer">
 									        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-									        	
+
 									        	<button type="button" class="btn btn-danger" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'denegado')">Denegado</button>
 									        	<button type="button" class="btn btn-primary" id="btn-confir-pedido" onclick="hideModalCheck({{$venta->id}}, 'aprobado')">Aprobado</button>
 									      	</div>
@@ -111,8 +111,8 @@
 												@if($venta->attached_file)
 												<div id="captura-{{$venta->id}}">
 													<h6 class="font-weight-bold">Captura</h6>
-													<a href="{{ url('storage/'.$venta->attached_file) }}">
-													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
+													<a href="{{ url('storage/app/public/'.$venta->attached_file) }}">
+													<img class="img-fluid img-thumbnail shadow" src="{{ url('storage/app/public/'.$venta->attached_file) }}" alt="captura del pago" style="height: 250px; width: 100%;" id="foto">
 													</a>
 												</div>
 												@endif
@@ -142,7 +142,7 @@
 
 								@endforelse
 							</tbody>
-							
+
 						</table>
 
 						<div class="float-right">
@@ -166,7 +166,7 @@
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
-	
+
 	function openModal(id) {
 
 		$('#modalDetails-'+id).modal('show')
@@ -200,7 +200,7 @@
 	}
 
 
-	
+
 
 </script>
 @endpush

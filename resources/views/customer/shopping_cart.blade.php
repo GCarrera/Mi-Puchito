@@ -916,8 +916,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			let filesize = file.size / 1024
 
 			// validaciones del archivo
-			if (filesize > 150) {
-				$('#imgerror').text('La imagen excede los 150kb permitidos.')
+			if (filesize > 15000) {
+				$('#imgerror').text('La imagen excede los 15000kb permitidos.')
 				$('#imgerror').show()
 				return
 			}
