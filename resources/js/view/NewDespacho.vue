@@ -161,9 +161,10 @@
        console.log("setFocus");
      },
      agregar_producto_enter(){
+
        var validation = parseFloat(this.disponibles)-parseFloat(this.articulo.cantidad);
 
-       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0){
+       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0 && this.articulo.cantidad > 0){
 
          this.agregar_producto();
 
