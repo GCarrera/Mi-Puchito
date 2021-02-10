@@ -83,7 +83,7 @@ class PisoVentasController extends Controller
       foreach ($piso_ventas as $key => $value) {
         $usuario = $value['id'];
         $sincronizacion = Sincronizacion::where('piso_venta_id', $usuario)->orderBy('id', 'desc')->first();
-        if ($sincronizacion['created_at'] != null) {
+        if (isset($sincronizacion['created_at'])) {
           $pos = $usuario-1;
           $carbon = new Carbon($sincronizacion['created_at']);
           $piso_ventas[$pos]['sincro'] = $sincronizacion;
