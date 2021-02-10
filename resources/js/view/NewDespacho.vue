@@ -36,7 +36,7 @@
 
                <div class="form-group col-md-2">
                  <label for="cantidad">Cantidad al menor:</label>
-                 <input type="number" name="cantidad" id="cantidad" placeholder="Cantidad" class="form-control" v-model="articulo.cantidad" ref="cantidad" v-on:keyup.enter="agregar_producto_enter">
+                 <input type="number" min="1" pattern="^[0-9]+([.][0-9]+)?$" name="cantidad" id="cantidad" placeholder="Cantidad" class="form-control" v-model="articulo.cantidad" ref="cantidad" v-on:keyup.enter="agregar_producto_enter">
                </div>
 
                <div class="form-group col-md-1">
@@ -256,7 +256,7 @@
        console.log(this.articulo.cantidad);
        var validation = parseFloat(this.disponibles)-parseFloat(this.articulo.cantidad);
 
-       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0){
+       if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0 && this.articulo.cantidad > 0){
 
          return false;
        }else{
