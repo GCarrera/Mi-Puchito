@@ -149,9 +149,9 @@
 											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
 												@if($producto->product->oferta == 1)
-												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+												<small><span class="badge badge-primary mb-2" style="font-size: 1.5em;">Oferta</span></small>
 												@endif
-												<h6 class="card-title font-weight-bold truncated-text text-center"> <b> {{ $producto->product_name }}</b> </h6>
+												<p class="truncated-text text-center"> {{ $producto->product_name }} </p>
 
 												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
 												{{--<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> Subtotal para venta--}}
@@ -166,7 +166,7 @@
 													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
 													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
 												@endif
-												<p class="text-center text-success">Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</p>
+												<p class="text-left text-success"><small>Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</small></p>
 
 													<div class="">
 	{{--

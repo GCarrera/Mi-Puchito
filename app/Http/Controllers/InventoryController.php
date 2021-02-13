@@ -125,10 +125,12 @@ class InventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Inventory $inventory)
     {
-        //
+        $inventory->delete();
 
+        //return $inventory;
+        return redirect()->back()->with('success', 'Producto eliminado exitosamente.');
     }
 
     public function sumar_producto(Request $request, $id)

@@ -12,7 +12,6 @@
 								<div class="card shadow">
 									<div class="card-body">
 										<h4 class="text-center">Inventario</h4>
-										<small><b-badge variant="warning">En Espera</b-badge> - <b-badge variant="success">Al dia</b-badge></small>
 										<tableInventario :id="dataInventario"/>
 									</div>
 								</div>

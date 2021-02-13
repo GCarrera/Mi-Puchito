@@ -63,7 +63,7 @@
 					</p>
 				</div>
 				<div class="card-body">
-					<div class="table-responsive">
+					<div class="table-responsive-xl">
 
 						<table class="table table-sm table-hover table-bordered text-center" id="inventario-table">
 							<thead>
@@ -73,90 +73,36 @@
 									<th>EMPRESA</th>
 									<th>CATEGORIA</th>
 									<th>FECHA</th>
-									<th class="text-center">ACCIONES</th>
+									<th class="text-center" style="width: 88px;">ACCIONES</th>
 								</tr>
 							</thead>
 							<tbody>
 								@forelse ($inventario as $producto)
 									<tr>
 										<td class="small">{{ $producto->product_name }}</td>
-										<td id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
-										<td>{{ $producto->enterprise->name }}</td>
-										<td>{{ $producto->category->name }}</td>
-										<td>{{ $producto->created_at }}</td>
-										<td class="text-center">
+										<td class="small" id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
+										<td class="small">{{ $producto->enterprise->name }}</td>
+										<td class="small">{{ $producto->category->name }}</td>
+										<td class="small">{{ $producto->created_at }}</td>
+										<td class="small text-center">
 											<!--<button class="btn btn-warning btn-sm editProduct" data-target="#editPRoduct" data-toggle="modal" data-id="{{ $producto->id }}">
 												<i class="fas fa-edit"></i>
 											</button>-->
-											<button class="btn btn-warning btn-sm" onclick='showEdit({{ $producto->id }})'>
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
+											<button class="btn btn-info btn-sm" onclick='showEdit({{ $producto->id }})'>
+												<i class="fas fa-edit fa-xs" data-toggle="tooltip" data-title="Editar"></i>
 											</button>
-											<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-sumar-{{$producto->id}}">
-												<i class="fas fa-plus"></i>
+											<button class="btn btn-success btn-sm" onclick='showPlus({{ $producto->id }}, "{{ $producto->product_name }}")'>
+												<i class="fas fa-plus fa-xs" data-toggle="tooltip" data-title="Sumar"></i>
 											</button>
-											<button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal-restar-{{$producto->id}}">
-												<i class="fas fa-minus"></i>
+											<button class="btn btn-warning btn-sm" onclick='showMinus({{ $producto->id }}, "{{ $producto->product_name }}")'>
+												<i class="fas fa-minus fa-xs" data-toggle="tooltip" data-title="Restar"></i>
+											</button>
+											<button class="btn btn-danger btn-sm" onclick='showDelete({{ $producto->id }}, "{{ $producto->product_name }}")'>
+												<i class="fas fa-trash fa-xs" data-toggle="tooltip" data-title="Eliminar"></i>
 											</button>
 										</td>
 									</tr>
 
-
-									<!-- MODAL PARA SUMAR PRODUCTOS -->
-									<div class="modal fade" id="modal-sumar-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									  	<div class="modal-dialog">
-									    	<div class="modal-content">
-									      		<div class="modal-header">
-									        		<h5 class="modal-title" id="staticBackdropLabel">Sumar productos</h5>
-									        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									          		<span aria-hidden="true">&times;</span>
-									        		</button>
-									      		</div>
-									      		<div class="modal-body">
-									      			<label for="cantidad-sumar-{{$producto->id}}">Cantidad al menor a sumar:</label>
-									        		<div class="row">
-									        			<div class="col-6">
-
-											        		<input type="text" name="cantidad_sumar" id="cantidad-sumar-{{$producto->id}}" class="form-control" placeholder="60">
-
-									        			</div>
-									        			<div class="col-6">
-									        				<button class="btn btn-primary" onclick="sumar({{$producto->id}})">Agregar</button>
-									        			</div>
-									        		</div>
-									      		</div>
-
-									    	</div>
-									  	</div>
-									</div>
-
-
-									<!-- MODAL PARA RESTAR PRODUCTOS -->
-									<div class="modal fade" id="modal-restar-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									  	<div class="modal-dialog">
-									    	<div class="modal-content">
-									      		<div class="modal-header">
-									        		<h5 class="modal-title" id="staticBackdropLabel">Restar productos</h5>
-									        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									          		<span aria-hidden="true">&times;</span>
-									        		</button>
-									      		</div>
-									      		<div class="modal-body">
-									      			<label for="cantidad-sumar-{{$producto->id}}">Cantidad al menor a restar:</label>
-									        		<div class="row">
-									        			<div class="col-6">
-
-											        		<input type="text" name="cantidad_restar" id="cantidad-restar-{{$producto->id}}" class="form-control" placeholder="60">
-
-									        			</div>
-									        			<div class="col-6">
-									        				<button class="btn btn-primary" onclick="restar({{$producto->id}})">Restar</button>
-									        			</div>
-									        		</div>
-									      		</div>
-
-									    	</div>
-									  	</div>
-									</div>
 								@empty
 									<tr class="text-center">
 										<td colspan="6">No hay datos registrados.</td>
@@ -228,9 +174,23 @@
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
 						</div>
 						<div class="col-md-2 col-12 mb-3">
-							<label for="tipo_unidad_menor">Unidad al menor</label>
-							<input type="text" class="form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" required>
-							<small class="text-muted text-help">Tipo de unidad en la que se vendera al menor</small>
+							<label for="tipo_unidad_menor">Presentación</label>
+							<select class="selectpicker border form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" data-width="100%" required>
+								<option disabled>Selecciona</option>
+								<option value="Kg">Kg</option>
+								<option value="Unidad">Unidad</option>
+								<option value="Lata">Lata</option>
+								<option value="Empaque">Empaque</option>
+								<option value="Tasa">Tasa</option>
+								<option value="Granel">Granel</option>
+								<option value="Bolsa">Bolsa</option>
+								<option value="Sobre">Sobre</option>
+								<option value="Papeleta">Papeleta</option>
+								<option value="Caja">Caja</option>
+								<option value="Otros">Otros</option>
+							</select>
+							<!--<input type="text" class="form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" required>-->
+							<!--<small class="text-muted text-help">Tipo de unidad en la que se vendera al menor</small>-->
 						</div>
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
@@ -249,7 +209,7 @@
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod" required>
-							<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>
+							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
 						</div>
 						{{-- <div class="col-md-3 col-12">
 							<label for="whole_sale_quantity">Cantidad de venta al mayor</label>
@@ -388,6 +348,91 @@
 	</div>
 </div>
 
+<!-- Modal DELETE poducto -->
+<div class="modal fade" id="deletePRoduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalName"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="form_delete" method="post">
+				@csrf
+				@method('delete')
+
+				<div class="modal-body">
+
+					<p>Esta seguro que desea eliminar el producto <span id="deleteModalNameSpan"></span>??	</p>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					<button type="submit" class="btn btn-primary">Borrar</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+<!-- MODAL PARA SUMAR PRODUCTOS -->
+<div class="modal fade" id="modal-sumar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="plusModalName"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="cantidad-sumar">Cantidad al menor a sumar:</label>
+						<div class="row">
+							<div class="col-6">
+
+								<input type="text" name="cantidad_sumar" id="cantidad-sumar" class="form-control" placeholder="60">
+
+							</div>
+							<div class="col-6">
+								<button class="btn btn-primary" id="plusModalButton">Agregar</button>
+							</div>
+						</div>
+					</div>
+
+			</div>
+		</div>
+</div>
+
+
+<!-- MODAL PARA RESTAR PRODUCTOS -->
+<div class="modal fade" id="modal-restar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="minusModalName"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<label for="cantidad-restar">Cantidad al menor a restar:</label>
+						<div class="row">
+							<div class="col-6">
+
+								<input type="text" name="cantidad_restar" id="cantidad-restar" class="form-control" placeholder="60">
+
+							</div>
+							<div class="col-6">
+								<button class="btn btn-primary" id="minusModalButton">Restar</button>
+							</div>
+						</div>
+					</div>
+
+			</div>
+		</div>
+</div>
 @endsection
 
 @push('scripts')
@@ -437,6 +482,69 @@ function showEdit(id) {
 		toastr.error('Algo a ocurrido.')
 	})
 };
+
+function showDelete(id, name) {
+	$('#deletePRoduct').modal('show');
+
+	$('#form_delete').attr('action', `/inventory/${id}`);
+
+	$('#deleteModalName').html(name)
+	$('#deleteModalNameSpan').html(name)
+
+};
+
+function showPlus(id, name) {
+	$('#modal-sumar').modal('show');
+
+	$('#plusModalName').html(name);
+	$('#plusModalButton').click(function () {
+		console.log($('#cantidad-sumar').val())
+
+		$.ajax({type: 'PUT', url: `/sumar-inventory/${id}`, data: {cantidad: $('#cantidad-sumar').val()}})
+			.done((res) => {
+				console.log(res)
+
+				//$('#cantidad-sumar').val('');
+				$('#total-productos-'+id).text(res);
+				location.reload();
+
+			})
+			.catch((err) => {
+				toastr.error('Ha ocurrido un error')
+				console.error(err)
+			})
+
+
+		$('#modal-sumar').modal('hide');
+	});
+
+};
+
+function showMinus(id, name) {
+	$('#modal-restar').modal('show');
+
+	$('#minusModalName').html(name);
+	$('#minusModalButton').click(function () {
+		console.log($('#cantidad-restar').val());
+
+		$.ajax({type: 'PUT', url: `/restar-inventory/${id}`, data: {cantidad: $('#cantidad-restar').val()}})
+			.done((res) => {
+				console.log(res)
+
+				$('#total-productos-'+id).text(res);
+				location.reload();
+
+			})
+			.catch((err) => {
+				toastr.error('Ha ocurrido un error')
+				console.error(err)
+			})
+
+
+		$('#modal-restar').modal('hide');
+	});
+
+};
 //COSTOS
 	/*$('#editarForm').attr('action', `/products/${id}`)
 
@@ -484,6 +592,7 @@ function showEdit(id) {
 		$('#inventario-table').DataTable({
 			"language": {
     		"search": "Buscar:",
+    		"scrollX": true,
 				"emptyTable": "No se consigio nada",
 				"info": "",
 				"infoEmpty": "",
@@ -599,45 +708,6 @@ function showEdit(id) {
 		})
 
 	})
-		//MODAL PARA SUMAR CANTIDADES DE PRODUCTOS
-		function sumar(id){
-			console.log($('#cantidad-sumar-'+id).val())
-
-			$.ajax({type: 'PUT', url: `/sumar-inventory/${id}`, data: {cantidad: $('#cantidad-sumar-'+id).val()}})
-				.done((res) => {
-					console.log(res)
-
-					$('#total-productos-'+id).text(res);
-
-				})
-				.catch((err) => {
-					toastr.error('Ha ocurrido un error')
-					console.error(err)
-				})
-
-
-			$('#modal-sumar-'+id).modal('hide');
-		}
-
-		//MODAL PARA RESTAR CANTIDADES DE PRODUCTOS
-		function restar(id){
-			console.log($('#cantidad-sumar-'+id).val())
-
-			$.ajax({type: 'PUT', url: `/restar-inventory/${id}`, data: {cantidad: $('#cantidad-restar-'+id).val()}})
-				.done((res) => {
-					console.log(res)
-
-					$('#total-productos-'+id).text(res);
-
-				})
-				.catch((err) => {
-					toastr.error('Ha ocurrido un error')
-					console.error(err)
-				})
-
-
-			$('#modal-restar-'+id).modal('hide');
-		}
 
 </script>
 @endpush

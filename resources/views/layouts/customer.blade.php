@@ -4,7 +4,7 @@
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 	<a class="navbar-brand" href="/">
-		 <img src="public/img/pinchitos.png" width="35" height="35" class="d-inline-block align-top" alt="">
+		 <img src="{{ asset('public/img/pinchitos.png') }}" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
 	<a href="/shoppingcart" class="ml-auto">
 	<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
@@ -99,79 +99,81 @@
 @yield('content')
 
 
-<footer class="section footer-classic context-dark bg-image bg-light">
-	<div class="container">
-		<div class="row row-30 text-center">
-			<div class="col-md-4 col-xl-4 mt-5">
-				<div class="pr-xl-4"><a class="brand" href="index.html"><img class="brand-logo-light" src="public/img/pinchitos.png" alt="Mi puchito's"  style="width: 35%;"></a>
-					<p class="text-justify">Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.</p>
-
+<!-- Footer -->
+<footer class="">
+	<div class="footer-top bg-dark">
+		<div class="container bg-dark">
+			<div class="row">
+				<div class="col-md-4 col-lg-4 footer-about wow fadeInUp">
+					<img class="logo-footer" src="{{ asset('public/img/pinchitos.png') }}" alt="logo-footer" data-at2x="public/img/pinchitos.png">
+					<p>
+						Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.
+					</p>
 				</div>
-			</div>
-			<div class="col-md-4 mt-5 mb-3">
-				<i class="far fa-address-book" style="font-size: 5em; color: #007bff;"></i>
-				<dl class="contact-list">
-					<dt>Dirección:</dt>
-					<dd>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</dd>
-				</dl>
-				<dl class="contact-list">
-					<dt><i class="far fa-envelope" style="color: #dc3545; font-size: 1.5em;" ></i></dt>
-					<dd>comercialmipuchitoca@gmail.com</dd>
-				</dl>
+				<div class="col-md-4 col-lg-4 offset-lg-1 footer-contact wow fadeInDown">
+					<h3>Dirección:</h3>
+						<p>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</p>
+						<p>comercialmipuchitoca@gmail.com</p>
+				</div>
+				<div class="col-md-4 col-lg-3 footer-social wow fadeInUp">
+					<h3>Enlaces</h3>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a href="{{url('/')}}">Inicio</a>
+						</li>
+						@auth
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a href="{{url('lista-de-deseos')}}">Favoritos</a>
+						</li>
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a href="{{url('shoppingcart')}}">Mi carrito</a>
+						</li>
+						@endauth
+						@guest
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a onclick="buttonPressed('wish')">Favoritos</a>
+						</li>
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a onclick="buttonPressed('cart')">Mi carrito</a>
+						</li>
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a href="{{url('login')}}">Iniciar sesión</a>
+						</li>
+						<li class="list-group-item list-group-item-action bg-dark">
+							<a href="{{url('register')}}">Registrarse</a>
+						</li>
+						@endguest
+					</ul>
+				</div>
 
-			</div>
-			<div class="col-md-4 col-xl-4 mt-5">
-				<i class="fas fa-search" style="font-size: 4.5em;"></i>
-				<p class="font-weight-bold">Enlaces:</p>
-				<ul class="nav-list text-left">
-					<li><a class="" href="{{url('/')}}">Inicio</a></li>
-					@auth
-						<li><a class="" href="{{url('lista-de-deseos')}}">Favoritos</a></li>
-						<li><a class="" href="{{url('shoppingcart')}}">Mi carrito</a></li>
-
-					@endauth
-					@guest
-						<li><a class="" onclick="buttonPressed('wish')">Favoritos</a></li>
-						<li><a class="" onclick="buttonPressed('cart')">Mi carrito</a></li>
-
-						<li><a class="" href="{{url('login')}}">Iniciar sesión</a></li>
-						<li><a class="" href="{{url('register')}}">Registrarse</a></li>
-					@endguest
-				</ul>
 			</div>
 		</div>
 	</div>
-    <div class="row no-gutters social-container">
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" target="_blank" href="https://www.facebook.com/mipuchitoca-113161223702409/">
-				<i class="fab fa-3x text-center fa-facebook"></i>
-			</a>
-		</div>
-		<div class="col-2 text-center mb-3">
-			<a class="social-inner" target="_blank" href="https://www.instagram.com/mipuchito.ca/">
+	<div class="footer-bottom">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 footer-copyright">
+					<p>&copy; 2021 Prometheus. Todos los derechos reservados</p>
+				</div>
+				<div class="col-md-1 footer-copyright align-middle">
+					<p><a target="_blank" href="https://www.facebook.com/mipuchitoca-113161223702409/"><i class="fab fa-facebook fa-lg"></i></a></p>
+				</div>
+				<div class="col-md-1 footer-copyright align-middle">
+					<p><a target="_blank" href="https://www.instagram.com/mipuchito.ca/"><i class="fab fa-instagram fa-lg"></i></a></p>
+				</div>
+				<div class="col-md-1 footer-copyright align-middle">
+					<p><a target="_blank" href="https://twitter.com/MipuchitoCa"><i class="fab fa-twitter fa-lg"></i></a></p>
+				</div>
+				<div class="col-md-1 footer-copyright align-middle">
+					<p><a target="_blank" href="https://api.whatsapp.com/send?phone=584243372191"><i class="fab fa-whatsapp fa-lg"></i></a></p>
+				</div>
+				<div class="col-md-1 footer-copyright align-middle">
+					<p><a target="_blank" href="https://mail.google.com/"><i class="fab fa-google-plus-g fa-lg"></i></a></p>
+				</div>
 
-				<img src="public/img/icon-instagram.svg" alt="" width="100" height="80" style="position: relative; top: -30px; right: 20px; overflow-y: hidden;">
-			</a>
+			</div>
 		</div>
-		<div class="col-2 text-center mb-3">
-			<a class="social-inner" target="_blank" href="https://twitter.com/MipuchitoCa">
-				<i class="fab fa-3x fa-twitter"></i>
-			</a>
-		</div>
-		<div class="col-2 text-center mb-3">
-			<a class="social-inner" target="_blank" href="https://api.whatsapp.com/send?phone=584243372191">
-				<i class="fab fa-3x fa-whatsapp" style="color: #28a745;"></i>
-			</a>
-		</div>
-		<div class="col-3 text-center mb-3">
-			<a class="social-inner" target="_blank" href="https://mail.google.com/">
-				<i class="far fa-3x fa-envelope" style="color: #dc3545;" ></i>
-			</a>
-		</div>
-    </div>
-    <div style="background-color: teal; color: black;">
-    	<p class="text-center text-white m-0 py-3"><span>©</span>2020 Prometheus. Todos los derechos reservados</p>
-    </div>
+	</div>
 </footer>
 
 @include('layouts.footer')

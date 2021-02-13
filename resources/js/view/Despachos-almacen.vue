@@ -41,6 +41,8 @@
                <td v-else class="small font-weight-bold text-danger">Negado</td>
                <td>
                  <button class="btn btn-primary" @click="showModalDetalles(despacho)">Ver</button>
+                 <a :href="'/get-despacho/'+despacho.id" role="button" class="btn btn-primary" target="_blank">Imprimir</a>
+                 <!--<button class="btn btn-primary" @click="showPdf(despacho)">Imprimir</button>-->
                  <!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalVer">Ver</button>-->
 
                </td>
@@ -309,6 +311,16 @@
        console.log(id);
        this.dataModal = id;
        $('#modalVer').modal('show');
+     },
+
+     showPdf(data){
+       console.log(data);
+       //axios.get('/get-despacho/', {data: data.id}).then(response => {
+       axios.get('/get-despacho/'+data.id).then(response => {
+         console.log(response);
+       }).catch(e => {
+         console.log(e.response)
+       });
      },
 
      get_despachos(){

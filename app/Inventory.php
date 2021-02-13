@@ -3,11 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
 
-class Inventory extends Model implements Buyable 
+class Inventory extends Model implements Buyable
 {
-    protected $fillable = ['product_name', 'quantity', 'status', 'margin_gain', 'iva', 'category_id', 'warehouse_id', 'enterprise_id', 'qty_per_unit'];
+  use SoftDeletes;
+
+    protected $fillable = ['product_name', 'quantity', 'status', 'margin_gain', 'iva', 'category_id', 'warehouse_id', 'enterprise_id', 'qty_per_unit', 'total_qty_prod'];
 
     public function category()
     {

@@ -1,5 +1,21 @@
 <template>
 	<div>
+		<div class="mb-3 row justify-content-between">
+			<div class="col-md-3">
+				<!--<button class="btn btn-primary" type="button" @click="refrescar">Refrescar</button>-->
+				<small><b-badge variant="warning">En Espera</b-badge> - <b-badge variant="success">Al dia</b-badge></small>
+			</div>
+			<div class="col-md-3">
+				<div class="form-inline">
+					<div class="form-group">
+						<input type="text" v-model="search" class="form-control d-inline" placeholder="Buscar producto" @change="get_productos(id)">
+						<button type="button" class="btn btn-primary" @click="get_productos(id)">Buscar</button>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
 		<table class="table table-bordered table-hover table-sm table-stridped">
 			<thead>
 				<tr>
@@ -16,76 +32,11 @@
 					<td v-else><b-badge variant="success">{{producto.cantidad}}</b-badge></td>
 					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
 					<td>
-						<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>
+						<!--<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>-->
+						<b-button id="details-btn" @click="showDetail(producto)" v-b-tooltip.hover title="Ver Detalles"><i class="fas fa-eye"></i></b-button>
 						<b-button id="show-btn" @click="showModal(producto.id, producto.cantidad)" v-b-tooltip.hover title="Editar Cantidad"><i class="fas fa-edit"></i></b-button>
 					</td>
 
-					<!-- Modal PARA VER LOS DETALLES -->
-					<div class="modal fade" :id="'verDetalles'+producto.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					  	<div class="modal-dialog modal-lg">
-					    	<div class="modal-content">
-					      		<div class="modal-header">
-					        		<h5 class="modal-title" id="exampleModalLabel">Detalles del producto</h5>
-					        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					          		<span aria-hidden="true">&times;</span>
-					        		</button>
-					      		</div>
-					      		<div class="modal-body">
-
-					      			<h5 class="text-center font-weight-bold">{{producto.inventario.name}}</h5>
-
-					      			<table class="table table-bordered">
-
-					      				<thead>
-					      					<tr>
-					      						<th>Propiedades</th>
-					      						<th>Valores</th>
-
-					      					</tr>
-					      				</thead>
-
-					      				<tbody>
-					      					<tr>
-					      						<td>Cantidad:</td>
-					      						<td>{{producto.cantidad}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<td>Unidad</td>
-					      						<td>{{producto.inventario.unit_type_menor}}</td>
-
-					      					</tr>
-
-					      					<!--<tr>
-					      						<td>Subtotal</td>
-					      						<td>{{producto.inventario.precio.sub_total_menor}}</td>
-
-					      					</tr>
-
-					      					<tr>
-					      						<td>Iva</td>
-					      						<td>{{producto.inventario.precio.iva_menor}}</td>
-
-					      					</tr>-->
-
-					      					<tr>
-					      						<td>Total</td>
-					      						<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
-
-					      					</tr>
-
-
-					      				</tbody>
-					      			</table>
-
-					      		</div>
-					      		<div class="modal-footer">
-					        		<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-					      		</div>
-					    	</div>
-					  	</div>
-					</div>
 				</tr>
 
 				<tr v-if="productos == []">
@@ -94,6 +45,64 @@
 			</tbody>
 		</table>
 
+		<!-- MODAL PARA VER DETALLES -->
+		<b-modal ref="detail-modal" size="md" title="Detalles del producto">
+      <div class="d-block text-center">
+				<h5 class="text-center font-weight-bold">{{detailInventario.name}}</h5>
+				<table class="table table-bordered">
+
+					<thead>
+						<tr>
+							<th>Propiedades</th>
+							<th>Valores</th>
+
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr>
+							<td>Cantidad:</td>
+							<td>{{detail.cantidad}}</td>
+
+						</tr>
+
+						<tr>
+							<td>Unidad</td>
+							<td>{{detailInventario.unit_type_menor}}</td>
+
+						</tr>
+
+						<!--<tr>
+							<td>Subtotal</td>
+							<td>{{producto.inventario.precio.sub_total_menor}}</td>
+
+						</tr>
+
+						<tr>
+							<td>Iva</td>
+							<td>{{producto.inventario.precio.iva_menor}}</td>
+
+						</tr>-->
+
+						<tr>
+							<td>Total</td>
+							<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(detailPrecio.total_menor)}}</td>
+
+						</tr>
+
+
+					</tbody>
+				</table>
+      </div>
+			<template #modal-footer="{ cancel }">
+	      <!-- Emulate built in modal footer ok and cancel button actions -->
+	      <b-button size="sm" variant="primary" @click="cancel()">
+	        Cerrar
+	      </b-button>
+	    </template>
+    </b-modal>
+
+		<!-- MODAL PARA MODIFICAR CANTIDAD -->
 		<b-modal ref="my-modal" size="sm" title="Modificar cantidad" @ok="handleOk">
       <div class="d-block text-center">
 				<form ref="form" @submit.stop.prevent="handleSubmit">
@@ -162,9 +171,13 @@
 		props: ['id'],
 		data(){
 			return{
+				search: null,
 				cantidad:"",
 				idCantidad:"",
 				productos: [],
+				detail: [],
+				detailInventario: [],
+				detailPrecio: [],
 				pagination: {//PAGINACION DE RIMORSOFT
 				 'total' : 0,
    				'current_page' : 0,
@@ -214,13 +227,37 @@
 				this.cantidad = cant;
         this.$refs['my-modal'].show()
       },
+			showDetail(data) {
+
+				this.detail = data;
+				this.detailInventario = data.inventario;
+				this.detailPrecio = data.inventario.precio;
+
+				console.log(this.detail);
+
+        this.$refs['detail-modal'].show()
+      },
 			get_productos(id){
 
-				axios.get('/api/productos-piso-venta/'+id).then(response => {
+				/*axios.get('http://localhost/pisos_de_venta/public/api/get-inventario', {params:{search: this.search}}).then(response => {
+					//console.log(response.data);
+					this.per_page = response.data.per_page;
+					this.total_paginas = response.data.total;
+					this.total_productos = response.data.total;
+					this.productos = response.data.data
+					console.log("total productos");
+					console.log(this.total_productos)
+				}).catch(e => {
+					console.log(e.response)
+				});*/
+
+				axios.get('/api/productos-piso-venta/'+id, {params:{search: this.search}}).then(response => {
 
 					this.productos = response.data.data;
+					//this.detail = this.productos[0];
 					this.pagination = response.data;
-					console.log(response.data);
+					console.log('get_productos');
+					console.log(response);
 				}).catch(e => {
 					console.log(e.response)
 				});

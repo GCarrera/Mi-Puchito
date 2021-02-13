@@ -84,6 +84,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
 	//PDF FACTURA
 	Route::get('/get-pedido/{id}', 'FacturaController@get_pedido')->name('factura.pdf');
+	Route::get('/get-despacho/{data}', 'FacturaController@get_despacho')->name('despacho.pdf');
 
 	Route::get('/get-pedido-descarga/{id}', 'FacturaController@get_pedido_descarga')->name('factura.pdf.descarga');
 });

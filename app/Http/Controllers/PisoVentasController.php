@@ -242,10 +242,17 @@ class PisoVentasController extends Controller
     	return response()->json($despachos);
     }
 
-    public function productos_piso_venta($id)
+    public function productos_piso_venta($id, Request $request)
     {
 
-    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->orderBy('cantidad', 'desc')->paginate(10);
+    	$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->whereHas('inventario', function($q)use($request){
+         // $q->where('name', 'quo');
+          if ($request->search != null) {
+
+              $q->where('name', 'like', '%'.$request->search.'%');
+          }
+
+      })->orderBy('cantidad', 'desc')->paginate(10);
 
     	return response()->json($productos);
     }
