@@ -105,7 +105,7 @@
 		<div class="container bg-dark">
 			<div class="row">
 				<div class="col-md-4 col-lg-4 footer-about wow fadeInUp">
-					<img class="logo-footer" src="{{ asset('public/img/pinchitos.png') }}" alt="logo-footer" data-at2x="public/img/pinchitos.png">
+					<img class="logo-footer" src="{{ asset('public/img/pinchitos-inv.png') }}" alt="logo-footer" data-at2x="public/img/pinchitos.png">
 					<p>
 						Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.
 					</p>
