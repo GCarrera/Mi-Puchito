@@ -234,11 +234,15 @@
 					</div>-->
 
 					<div class="form-row mb-4">
-						<div class="col-8">
+						<div class="col-3">
+							<label for="stock_min">Stock Minimo</label>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="stock_min" id="stock_min" required>
+						</div>
+						<div class="col-6">
 							<label for="description">Descripción del producto</label>
 							<textarea name="description" id="description" rows="3" class="form-control"></textarea>
 						</div>
-						<div class="col-4 text-right">
+						<div class="col-3 text-right">
 							<h5>Cantidad Total</h5>
 							<p class="lead cantidad_producto">-</p>
 						</div>
@@ -323,13 +327,17 @@
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod_edit" required>
-							<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>
+							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
 						</div>
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-12">
-							<label for="description">Descripción del producto</label>
+						<div class="col-4">
+							<label for="stock_min_edit">Stock Minimo</label>
+							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="stock_min" id="stock_min_edit" required>
+						</div>
+						<div class="col-8">
+							<label for="description_edit">Descripción del producto</label>
 							<textarea name="description" id="description_edit" rows="3" class="form-control"></textarea>
 						</div>
 						<!--<div class="col-4 text-right">
@@ -467,6 +475,7 @@ function showEdit(id) {
 		$('#cant_prod_edit').val(response.qty_per_unit)
 
 		$('#description_edit').val(response.description)
+		$('#stock_min_edit').val(response.stock_min)
 
 		let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
 		let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()

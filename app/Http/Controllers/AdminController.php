@@ -29,6 +29,7 @@ use App\AddressUserDelivery;
 use Carbon\Carbon;
 use App\Dolar;
 use Illuminate\Support\Facades\Validator;
+use App\Inventario_piso_venta;
 
 
 class AdminController extends Controller
@@ -121,6 +122,83 @@ class AdminController extends Controller
 			// ->with('productosCount', $productosCount)
 			// ->with('salesCount', $salesCount)
 			// ->with('categoriasCount', $categoriasCount);
+	}
+
+	public function faltantes()
+	{
+
+		$almacen = 'activar un almacen por defecto';
+
+		$inventario = Inventory::orderBy('id', 'desc')->get();
+
+		$inventariotwo = [];
+
+		foreach ($inventario as $key => $value) {
+			if ($value["stock_min"] >= $value["total_qty_prod"]) {
+				$value["ubicacion"] = "Almacen Central";
+				$value["codigo"] = str_pad("AC-".$value["id"], 4, "0", STR_PAD_LEFT);
+				//array_push($inventariotwo, $value);
+				$inventariotwo[] = $value;
+			}
+
+			$pisos = Inventario_piso_venta::whereHas('inventario', function($q)use($value){
+					$q->where('inventory_id', $value['id']);
+			})->first();
+
+			if (!empty($pisos['id'])){
+				$pisop = [];
+				if ($value["stock_min"] >= $pisos["cantidad"]) {
+					switch ($pisos["piso_venta_id"]) {
+						case '1':
+							$pisop["ubicacion"] = "Abasto I";
+							$pisop["codigo"] = str_pad("AI-".$value["id"], 4, "0", STR_PAD_LEFT);
+							break;
+
+						case '2':
+							$pisop["ubicacion"] = "Mi Puchito C.A";
+							$pisop["codigo"] = str_pad("MPCA-".$value["id"], 4, "0", STR_PAD_LEFT);
+							break;
+
+						case '3':
+							$pisop["ubicacion"] = "Abasto III";
+							$pisop["codigo"] = str_pad("AIII-".$value["id"], 4, "0", STR_PAD_LEFT);
+							break;
+
+						case '4':
+							$pisop["ubicacion"] = "Abasto II";
+							$pisop["codigo"] = str_pad("AII-".$value["id"], 4, "0", STR_PAD_LEFT);
+							break;
+
+					}
+
+					$pisop["total_qty_prod"] = $pisos["cantidad"];
+					$pisop["product_name"] = $value["product_name"];
+
+					$inventariotwo[] = $pisop;
+					//array_push($inventariotwo, $value);
+				}
+			}
+		}
+
+		if (count($inventario) > 0) {
+			$almacen = $inventario[0]->warehouse->name;
+		}
+
+		/*$productos = Inventario_piso_venta::with('inventario.precio')->where('piso_venta_id', $id)->orderBy('cantidad', 'desc');
+
+		foreach ($productos as $key => $value) {
+			if (isset($value["cantidad"])) {
+				if ($value["stock_min"] >= $value["total_qty_prod"]) {
+					$value["ubicacion"] = "Almacen Central";
+					$inventariotwo[] = $value;
+				}
+			}
+		}*/
+
+			return view('admin.faltantes')
+			->with('inventario', $inventariotwo)
+			->with('almacen', $almacen);
+
 	}
 
 	public function compra_venta()

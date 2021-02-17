@@ -32,8 +32,10 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
 // ------------------------------------- ADMIN ----------------------------------------//
 	Route::prefix('admin')->group(function(){
-		Route::get('/', 'AdminController@index')->name('admin');
+
+		Route::get('/', 'AdminController@index')->name('admin')->middleware('admin');
 		Route::get('/inventario', 'AdminController@inventario')->name('inventario');
+		Route::get('/faltantes', 'AdminController@faltantes')->name('faltantes');
 		Route::get('/venta', 'AdminController@compra_venta')->name('venta');
 		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias');
 		Route::get('/delivery', 'AdminController@delivery')->name('delivery');

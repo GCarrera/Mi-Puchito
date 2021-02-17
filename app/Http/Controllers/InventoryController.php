@@ -37,6 +37,7 @@ class InventoryController extends Controller
             'description' => 'nullable|max:191',
             'cantidad' => 'required|max:191',
             'tipo_unidad' => 'required|max:191',
+            'stock_min' => 'required|max:191',
             'cant_prod' => 'required|max:191',
             'category' => 'required|integer',
             'enterprise' => 'required|integer',
@@ -60,6 +61,7 @@ class InventoryController extends Controller
         $inventory->category_id    = $req->input('category');
         $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
         $inventory->enterprise_id  = $req->input('enterprise');
+        $inventory->stock_min  = $req->input('stock_min');
 
         $inventory->save();
 
@@ -90,6 +92,7 @@ class InventoryController extends Controller
             'product_name' => 'required|max:191',
             'description' => 'nullable|max:191',
             'cantidad' => 'required|max:191',
+            'stock_min' => 'required|max:191',
             'tipo_unidad' => 'required|max:191',
             'cant_prod' => 'required|max:191',
             'category' => 'required|integer',
@@ -113,6 +116,7 @@ class InventoryController extends Controller
         $inventory->category_id    = $req->input('category');
         $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
         $inventory->enterprise_id  = $req->input('enterprise');
+        $inventory->stock_min      = $req->input('stock_min');
 
         $inventory->save();
 

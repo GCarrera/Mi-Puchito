@@ -45,14 +45,14 @@
 										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
 
 										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 2, ',', '.')}}</span>">
-												{{ number_format($pro->wholesale_total_individual_price*$dolar->price, 2, ',', '.') }} BsS
+											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 3, ',', '.')}}</span>">
+												{{ number_format($pro->wholesale_total_individual_price*$dolar->price, 3, ',', '.') }} BsS
 											</span>
 										</td>
 
 										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->retail_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->retail_total_price, 2, ',', '.')}}</span>">
-												{{ number_format($pro->retail_total_price*$dolar->price, 2, ',', '.') }} BsS
+											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->retail_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->retail_total_price, 3, ',', '.')}}</span>">
+												{{ number_format($pro->retail_total_price*$dolar->price, 3, ',', '.') }} BsS
 											</span>
 										</td>
 										<td class="text-center">
@@ -505,22 +505,23 @@
 			var costo = data.cost;
 			var gMayor = data.wholesale_margin_gain;
 			result_porcentaje  = (parseFloat(costo)*gMayor)/100;
-			result_porcentaje = result_porcentaje.toFixed(2);
+			result_porcentaje = result_porcentaje.toFixed(3);
 			precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-			$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
-			var total2 = parseFloat(precio_mayor_total).toFixed(2) * data.inventory.qty_per_unit;
-			$('.wholesale_total_packet_price').val(total2.toFixed(2));
+			$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+			var total2 = parseFloat(precio_mayor_total).toFixed(3) * data.inventory.qty_per_unit;
+			$('.wholesale_total_packet_price').val(total2.toFixed(3));
 			$('.qty_per_unit_val').val(data.inventory.qty_per_unit);
-			$('.wholesale_packet_price').val(total2.toFixed(2));
-			$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_mayor_total));
+			$('.wholesale_packet_price').val(total2.toFixed(3));
+			$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_mayor_total));
 
 			var gMenor = data.retail_margin_gain;
 			result_porcentaje  = (parseFloat(costo)*gMenor)/100;
-			result_porcentaje = result_porcentaje.toFixed(2);
+			result_porcentaje = result_porcentaje.toFixed(3);
 			precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-			$('.retail_total_price').val(precio_menor_total.toFixed(2));
+			//$('.retail_total_price').val(precio_menor_total.toFixed(3));
+			$('.retail_total_price').val(precio_menor_total.toFixed(3));
 
-			$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+			$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 
 			$('#modal_loader_edit').fadeOut();
 
@@ -583,21 +584,22 @@ function calcularPrecioModalPrecio(e) {
 	if ($("#wholesale_margin_gain_edit").val() != null) {
 		var gMayor = $("#wholesale_margin_gain_edit").val();
 		result_porcentaje  = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
-		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_mayor_total));
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+		var total2 = parseFloat(precio_mayor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_mayor_total));
 	}
 	if ($("#retail_margin_gain_edit").val() != null) {
 		var gMenor = $("#retail_margin_gain_edit").val();
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.retail_total_price').val(precio_menor_total.toFixed(2));
-		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		//$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
@@ -609,21 +611,22 @@ function calcularPrecioModalPrecioMarcar(e) {
 	if ($("#wholesale_margin_gain_marcar").val() != null) {
 		var gMayor = $("#wholesale_margin_gain_marcar").val();
 		result_porcentaje  = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
-		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_mayor_total));
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+		var total2 = parseFloat(precio_mayor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_mayor_total));
 	}
 	if ($("#retail_margin_gain_edit").val() != null) {
 		var gMenor = $("#retail_margin_gain_edit").val();
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.retail_total_price').val(precio_menor_total.toFixed(2));
-		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		//$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
@@ -634,13 +637,13 @@ function calcularPrecioModalMayor(e) {
 	if ($("#cost_edit").val() != null) {
 		var costo = $("#cost_edit").val();
 		result_porcentaje = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.wholesale_total_individual_price').val(precio_menor_total.toFixed(2));
-		var total2 = parseFloat(precio_menor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		$('.wholesale_total_individual_price').val(precio_menor_total.toFixed(3));
+		var total2 = parseFloat(precio_menor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
@@ -651,13 +654,13 @@ function calcularPrecioModalMayorMarcar(e) {
 	if ($("#costMarcar").val() != null) {
 		var costo = $("#costMarcar").val();
 		result_porcentaje = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		$('.wholesale_total_individual_price').val(precio_menor_total.toFixed(2));
-		var total2 = parseFloat(precio_menor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		$('.wholesale_total_individual_price').val(precio_menor_total.toFixed(3));
+		var total2 = parseFloat(precio_menor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMayorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
@@ -669,17 +672,17 @@ function calcularPrecioModalMenor(e) {
 		var costo = $("#cost_edit").val();
 		var gMayor = $("#wholesale_margin_gain_edit").val()
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
 		result_porcentaje_mayor = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje_mayor = result_porcentaje_mayor.toFixed(2);
+		result_porcentaje_mayor = result_porcentaje_mayor.toFixed(3);
 		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje_mayor);
-		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
-		$('.retail_total_price').val(precio_menor_total.toFixed(2));
-		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+		$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		var total2 = parseFloat(precio_mayor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
@@ -691,17 +694,17 @@ function calcularPrecioModalMenorMarcar(e) {
 		var costo = $("#costMarcar").val();
 		var gMayor = $("#wholesale_margin_gain_marcar").val()
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
-		result_porcentaje = result_porcentaje.toFixed(2);
+		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
 		result_porcentaje_mayor = (parseFloat(costo)*gMayor)/100;
-		result_porcentaje_mayor = result_porcentaje_mayor.toFixed(2);
+		result_porcentaje_mayor = result_porcentaje_mayor.toFixed(3);
 		precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje_mayor);
-		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(2));
-		$('.retail_total_price').val(precio_menor_total.toFixed(2));
-		var total2 = parseFloat(precio_mayor_total).toFixed(2) * qty_per_unit;
-		$('.wholesale_total_packet_price').val(total2.toFixed(2));
-		$('.wholesale_packet_price').val(total2.toFixed(2));
-		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
+		$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+		$('.retail_total_price').val(precio_menor_total.toFixed(3));
+		var total2 = parseFloat(precio_mayor_total).toFixed(3) * qty_per_unit;
+		$('.wholesale_total_packet_price').val(total2.toFixed(3));
+		$('.wholesale_packet_price').val(total2.toFixed(3));
+		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
 }
 
