@@ -37,7 +37,19 @@
 									<th class="text-center small">ACCIONES</th>
 								</tr>
 							</thead>
-							{{var_dump($productos)}}
+							<tbody>
+								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
+								@forelse ($productos as $pro)
+									<tr>
+										{{var_dump($pro)}}
+									</tr>
+
+								@empty
+									<tr>
+										<td class="text-center" colspan="7">No hay productos marcados</td>
+									</tr>
+								@endforelse
+							</tbody>
 						</table>
 
 					</div>
