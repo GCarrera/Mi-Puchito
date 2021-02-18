@@ -43,7 +43,7 @@
 								@forelse ($productos as $pro)
 									<tr>
 <<<<<<< HEAD
-										<td class="small">{{ /*$pro->inventory->product_name*/ }}</td>
+										<td class="small"></td>
 										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
 
 										<td>
