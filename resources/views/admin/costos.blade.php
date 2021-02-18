@@ -38,11 +38,9 @@
 								</tr>
 							</thead>
 							<tbody>
-								{{$inventario}}
 								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
 								@forelse ($productos as $pro)
 									<tr>
-<<<<<<< HEAD
 										<td class="small"></td>
 										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
 
