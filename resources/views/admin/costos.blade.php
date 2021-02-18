@@ -41,7 +41,7 @@
 								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
 								@forelse ($productos as $pro)
 									<tr>
-										{{var_dump($pro)}}
+										{{$pro}}
 									</tr>
 
 								@empty
