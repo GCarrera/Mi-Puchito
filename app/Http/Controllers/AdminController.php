@@ -209,7 +209,8 @@ class AdminController extends Controller
 		// $salesCount      = Sale::all()->count();
 
 		$inventario = Inventory::orderBy('id', 'desc')->where('status', 2)->get();
-		$productos  = Product::all();
+		$productos  = Product::whith('details');
+		//$productos  = Product::all();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		return view('admin.costos')

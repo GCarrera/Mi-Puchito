@@ -41,7 +41,7 @@
 								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
 								@forelse ($productos as $pro)
 									<tr>
-										<td class="small">{{ $inventario[$pro->inventory_id] }}</td>
+										<td class="small">{{ $pro->inventory->product_name }}</td>
 										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
 
 										<td>
