@@ -37,49 +37,7 @@
 									<th class="text-center small">ACCIONES</th>
 								</tr>
 							</thead>
-							<tbody>
-								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
-								@forelse ($productos as $pro)
-									<tr>
-										<td class="small">{{ $pro->inventory->product_name }}</td>
-										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
-
-										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 3, ',', '.')}}</span>">
-												{{ number_format($pro->wholesale_total_individual_price*$dolar->price, 3, ',', '.') }} BsS
-											</span>
-										</td>
-
-										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->retail_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->retail_total_price, 3, ',', '.')}}</span>">
-												{{ number_format($pro->retail_total_price*$dolar->price, 3, ',', '.') }} BsS
-											</span>
-										</td>
-										<td class="text-center">
-											<button class="btn btn-primary btn-md" onclick='showInfo({{ $pro->id }})'>
-												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
-											</button>
-											<!--<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
-												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
-											</button>
-											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio-{{$pro->id}}" data-id="{{ $pro->id }}">
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
-											</button>-->
-											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio" data-id="{{ $pro->id }}">
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
-											</button>-->
-											<button class="btn btn-success btn-md" onclick='showEdit({{ $pro->id }})'>
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
-											</button>
-										</td>
-									</tr>
-
-								@empty
-									<tr>
-										<td class="text-center" colspan="7">No hay productos marcados</td>
-									</tr>
-								@endforelse
-							</tbody>
+							{{var_dump($productos)}}
 						</table>
 
 					</div>
