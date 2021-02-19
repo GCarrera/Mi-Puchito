@@ -43,6 +43,18 @@ class LoginController extends Controller
             return '/admin';
         }
 
+        if (auth()->user()->type == 'costos') {
+            return '/admin/venta';
+        }
+
+        if (auth()->user()->type == 'almacen') {
+            return '/despachos-almacen';
+        }
+
+        if (auth()->user()->type == 'operador') {
+            return '/admin';
+        }
+
         return '/home';
     }
 }

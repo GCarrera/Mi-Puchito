@@ -12,7 +12,7 @@
 */
 
 Route::get('/', 'CustomerController@index');
-Route::get('/home', 'CustomerController@index')->name('home');
+Route::get('/home', 'CustomerController@index')->name('home')->middleware('customer');
 // Route::get('/home', function () {
 //     return redirect('services');
 // });
@@ -33,17 +33,17 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 // ------------------------------------- ADMIN ----------------------------------------//
 	Route::prefix('admin')->group(function(){
 
-		Route::get('/', 'AdminController@index')->name('admin')->middleware('admin');
-		Route::get('/inventario', 'AdminController@inventario')->name('inventario');
-		Route::get('/faltantes', 'AdminController@faltantes')->name('faltantes');
-		Route::get('/venta', 'AdminController@compra_venta')->name('venta');
-		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias');
-		Route::get('/delivery', 'AdminController@delivery')->name('delivery');
-		Route::resource('/cuentas-bancarias', 'BankAccountController');
+		Route::get('/', 'AdminController@index')->name('admin')->middleware('operador');
+		Route::get('/delivery', 'AdminController@delivery')->name('delivery')->middleware('operador');
+		Route::get('/usuarios', 'UsuariosController@index')->name('usuarios')->middleware('operador');
+		Route::get('/inventario', 'AdminController@inventario')->name('inventario')->middleware('almacen');
+		Route::get('/faltantes', 'AdminController@faltantes')->name('faltantes')->middleware('almacen');
+		Route::get('/venta', 'AdminController@compra_venta')->name('venta')->middleware('costos');
+		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias')->middleware('admin');
+		Route::resource('/cuentas-bancarias', 'BankAccountController')->middleware('admin');
 		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
 		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');
 		//USUARIOS
-		Route::get('/usuarios', 'UsuariosController@index')->name('usuarios');
 		Route::get('/usuarios/{id}', 'UsuariosController@show')->name('usuarios.show');
 
 	});
@@ -106,7 +106,7 @@ Route::get('test', function () {
     return view('welcome');
 });
 //PARA LOS PISOS DE VENTAS
-Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index');
+Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index')->middleware('almacen');
 Route::get('/piso-ventas/ventas/{id}', 'PisoVentasController@ventas_mostrar');
 Route::get('/piso-ventas/inventario/{id}', 'PisoVentasController@inventario_mostrar');
 Route::get('/piso-ventas/despachos/{id}', 'PisoVentasController@despachos_mostar');
@@ -115,7 +115,7 @@ Route::get('/piso-ventas/cajas/{id}', 'PisoVentasController@cajas_mostrar');
 Route::get('/piso-ventas-precio', 'PisoVentasController@precios')->name('piso.ventas.precios');
 Route::get('/piso-ventas-anclar', 'PisoVentasController@anclar')->name('piso.ventas.anclar');
 //DESPACHOS ALMACEN
-Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index');
+Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index')->middleware('almacen');
 Route::get('/nuevo-despacho', 'DespachosController@new_despacho');
 //---------------------------------------RUTAS APIS-----------------------------------------------//
 Route::group(['prefix' => 'api'], function(){

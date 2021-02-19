@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CustomerMiddleware
+class AlmacenMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,10 @@ class CustomerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->type == 'customer') {
-            return $next($request);
-        }
+      if (auth()->check() && auth()->user()->type == 'almacen' || auth()->user()->type == 'admin' || auth()->user()->type == 'costos') {
+          return $next($request);
+      }
 
-        return redirect('/admin');
+      return redirect('/home');
     }
 }

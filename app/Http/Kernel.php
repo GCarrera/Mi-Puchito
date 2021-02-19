@@ -64,6 +64,9 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
+        'almacen' => \App\Http\Middleware\AlmacenMiddleware::class,
+        'costos' => \App\Http\Middleware\CostosMiddleware::class,
+        'operador' => \App\Http\Middleware\OperadorMiddleware::class,
         'customer' => \App\Http\Middleware\CustomerMiddleware::class,
         'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
         "cors" => \App\Http\Middleware\Cors::class,

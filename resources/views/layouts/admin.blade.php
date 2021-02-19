@@ -24,50 +24,148 @@
 			</form>
 		</div>-->
 
-		<ul class="navbar-nav ml-auto">
-			<li class="nav-item" id="piso-ventas">
-				<a class="nav-link" href="{{ route('piso.ventas.index') }}"><i class="fas fa-coins mr-2	"></i>Pisos de ventas</a>
-			</li>
-			<li class="nav-item" id="despachos">
-				<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
-			</li>
-			<li class="nav-item" id="dolar">
-				<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
-			</li>
-			<li class="nav-item" id="admin">
-				<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-coins mr-2	"></i>Ventas</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fas fa-clipboard-list mr-2"></i>Almacen
-				</a>
-				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
-					<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
-				</div>
-			</li>
-			<li class="nav-item" id="venta">
-				<a class="nav-link" href="{{ route('venta') }}"><i class="fas fa-clipboard-list mr-2"></i>Costos</a>
-			</li>
-			<li class="nav-item" id="delivery">
-				<a class="nav-link" href="{{ route('delivery') }}"><i class="fas fa-clipboard-list mr-2"></i>Delivery</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="{{ route('usuarios') }}"><i class="fas fa-users-cog mr-2"></i>Usuarios</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fas fa-user mr-2"></i>admin
-				</a>
-				<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-					{{-- <a class="dropdown-item" href="/admin/cuentas-bancarias">Códigos de descuentos</a> --}}
-					<a class="dropdown-item" href="/admin/cuentas-bancarias">Cuentas Bancarias</a>
-					<a class="dropdown-item" href="{{ route('empresa_categorias') }}">Empresas y Categorias</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
-				</div>
-			</li>
-		</ul>
+		@switch(auth()->user()->type)
+		    @case("admin")
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item" id="piso-ventas">
+							<a class="nav-link" href="{{ route('piso.ventas.index') }}"><i class="fas fa-coins mr-2	"></i>Pisos de ventas</a>
+						</li>
+						<li class="nav-item" id="despachos">
+							<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
+						</li>
+						<li class="nav-item" id="dolar">
+							<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
+						</li>
+						<li class="nav-item" id="admin">
+							<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-coins mr-2	"></i>Ventas</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-clipboard-list mr-2"></i>Almacen
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
+								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+							</div>
+						</li>
+						<li class="nav-item" id="venta">
+							<a class="nav-link" href="{{ route('venta') }}"><i class="fas fa-clipboard-list mr-2"></i>Costos</a>
+						</li>
+						<li class="nav-item" id="delivery">
+							<a class="nav-link" href="{{ route('delivery') }}"><i class="fas fa-clipboard-list mr-2"></i>Delivery</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('usuarios') }}"><i class="fas fa-users-cog mr-2"></i>Usuarios</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-user mr-2"></i>admin
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								{{-- <a class="dropdown-item" href="/admin/cuentas-bancarias">Códigos de descuentos</a> --}}
+								<a class="dropdown-item" href="/admin/cuentas-bancarias">Cuentas Bancarias</a>
+								<a class="dropdown-item" href="{{ route('empresa_categorias') }}">Empresas y Categorias</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
+							</div>
+						</li>
+					</ul>
+		        @break
+
+		    @case("costos")
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item" id="piso-ventas">
+							<a class="nav-link" href="{{ route('piso.ventas.index') }}"><i class="fas fa-coins mr-2	"></i>Pisos de ventas</a>
+						</li>
+						<li class="nav-item" id="despachos">
+							<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
+						</li>
+						<li class="nav-item" id="dolar">
+							<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-clipboard-list mr-2"></i>Almacen
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
+								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+							</div>
+						</li>
+						<li class="nav-item" id="venta">
+							<a class="nav-link" href="{{ route('venta') }}"><i class="fas fa-clipboard-list mr-2"></i>Costos</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-user mr-2"></i>Costos
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
+							</div>
+						</li>
+					</ul>
+		        @break
+
+					@case("almacen")
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-coins mr-2"></i>Pisos de ventas
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="/piso-ventas/inventario/1">Abasto I</a>
+								<a class="dropdown-item" href="/piso-ventas/inventario/2">Mi Puchito C.A.</a>
+								<a class="dropdown-item" href="/piso-ventas/inventario/3">Abasto III</a>
+								<a class="dropdown-item" href="/piso-ventas/inventario/4">Abasto II</a>
+							</div>
+						</li>
+						<li class="nav-item" id="despachos">
+							<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-clipboard-list mr-2"></i>Almacen
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
+								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-user mr-2"></i>Almacen
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
+							</div>
+						</li>
+					</ul>
+					@break
+
+				@case("operador")
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item" id="admin">
+							<a class="nav-link" href="{{ route('admin') }}"><i class="fas fa-coins mr-2	"></i>Ventas</a>
+						</li>
+						<li class="nav-item" id="delivery">
+							<a class="nav-link" href="{{ route('delivery') }}"><i class="fas fa-clipboard-list mr-2"></i>Delivery</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ route('usuarios') }}"><i class="fas fa-users-cog mr-2"></i>Usuarios</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-user mr-2"></i>Operador
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
+							</div>
+						</li>
+					</ul>
+					@break
+
+		@endswitch
+
 	</div>
 </nav>
 

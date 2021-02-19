@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class CustomerMiddleware
+class OperadorMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,10 @@ class CustomerMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->type == 'customer') {
-            return $next($request);
-        }
+      if (auth()->check() && auth()->user()->type == 'operador' || auth()->user()->type == 'admin') {
+          return $next($request);
+      }
 
-        return redirect('/admin');
+      return redirect('/home');
     }
 }
