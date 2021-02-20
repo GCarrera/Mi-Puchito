@@ -240,7 +240,7 @@
 						</div>
 						<div class="col-6">
 							<label for="description">Descripción del producto</label>
-							<textarea name="description" id="description" rows="3" class="form-control"></textarea>
+							<textarea name="description" id="description" rows="3" class="form-control" required></textarea>
 						</div>
 						<div class="col-3 text-right">
 							<h5>Cantidad Total</h5>

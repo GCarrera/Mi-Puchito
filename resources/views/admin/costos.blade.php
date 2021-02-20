@@ -210,7 +210,7 @@
 									</label>
 								</div>
 								<div class="form-check form-check-inline">
-									<input class="form-check-input" type="radio" name="oferta" id="oferta2" value="0">
+									<input class="form-check-input" type="radio" name="oferta" id="oferta2" value="0" checked>
 									<label class="form-check-label" for="oferta2">
 									No
 									</label>
