@@ -541,6 +541,20 @@ function showMinus(id, name) {
 			}
 		});
 
+		$('#cantidad, #cant_prod, #cantidad_edit, #cant_prod_edit').on('keyup change', function() {
+			// logica para calcular los totales
+
+
+			let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
+			let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
+
+			let productos_totales = cantidad * cant_prod
+
+			$('.cantidad_producto').text(`${productos_totales} productos`)
+			$('#cantidad_producto_hd').val(productos_totales)
+			$('#cantidad_producto_hd_edit').val(productos_totales)
+		});
+
 	})
 
 </script>
