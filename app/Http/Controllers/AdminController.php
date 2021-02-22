@@ -105,13 +105,13 @@ class AdminController extends Controller
 		// $categoriasCount = count($categorias);
 		// $salesCount      = Sale::all()->count();
 		// $productosCount  = Product::all()->count();
-		$almacen         = 'activar un almacen por defecto';
+		$almacen         = '01-Cagua';
 
 		$inventario = Inventory::orderBy('id', 'desc')->get();
 
-		if (count($inventario) > 0) {
+		/*if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
-		}
+		}*/
 
 		return view('admin.inventario')
 			->with('inventario', $inventario)
@@ -209,8 +209,8 @@ class AdminController extends Controller
 		// $salesCount      = Sale::all()->count();
 
 		$inventario = Inventory::orderBy('id', 'desc')->where('status', 2)->get();
-		$productos  = Product::has('inventory')->get();
 		//$productos  = Product::all();
+		$productos  = Product::has('inventory')->get();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		return view('admin.costos')

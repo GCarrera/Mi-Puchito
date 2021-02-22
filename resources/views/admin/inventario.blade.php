@@ -17,42 +17,6 @@
 		<i class="fas fa-plus"></i>
 	</button>
 
-
-	{{-- <div class="row mb-5">
-		<div class="col">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $productosCount }} Productos</h5>
-					<i class="fas fa-chart-line fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $empresasCount }} Empresas</h5>
-					<i class="fas fa-building fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $categoriasCount }} Categorias</h5>
-					<i class="fas fa-clipboard-list fa-2x"></i>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card bg-primary text-white shadow-sm">
-				<div class="card-body d-flex justify-content-between">
-					<h5>{{ $salesCount }} Ventas</h5>
-					<i class="fas fa-cash-register fa-2x"></i>
-				</div>
-			</div>
-		</div>
-	</div> --}}
-
 	<div class="row mb-5">
 		<div class="col">
 			<div class="card shadow-sm">
@@ -85,9 +49,6 @@
 										<td class="small">{{ $producto->category->name }}</td>
 										<td class="small">{{ $producto->created_at }}</td>
 										<td class="small text-center">
-											<!--<button class="btn btn-warning btn-sm editProduct" data-target="#editPRoduct" data-toggle="modal" data-id="{{ $producto->id }}">
-												<i class="fas fa-edit"></i>
-											</button>-->
 											<button class="btn btn-info btn-sm" onclick='showEdit({{ $producto->id }})'>
 												<i class="fas fa-edit fa-xs" data-toggle="tooltip" data-title="Editar"></i>
 											</button>
@@ -118,9 +79,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 
 <!-- MODALES -->
 <!-- Modal añadir poducto -->
@@ -189,8 +147,6 @@
 								<option value="Caja">Caja</option>
 								<option value="Otros">Otros</option>
 							</select>
-							<!--<input type="text" class="form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" required>-->
-							<!--<small class="text-muted text-help">Tipo de unidad en la que se vendera al menor</small>-->
 						</div>
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
@@ -209,29 +165,8 @@
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod" required>
-							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
 						</div>
-						{{-- <div class="col-md-3 col-12">
-							<label for="whole_sale_quantity">Cantidad de venta al mayor</label>
-							<input type="number" class="form-control" name="whole_sale_quantity" id="whole_sale_quantity" required>
-						</div> --}}
 					</div>
-
-					<!--<div class="form-row mb-4">
-						<div class="col-md-4 col-12">
-							<label for="cant_prod_um">Cantidad por unidad de medida</label>
-							<input type="number" class="form-control" name="cant_prod_um" id="cant_prod_um" required>
-						</div>
-						<div class="col-md-4 col-12">
-							<label for="unidad_medida">Unidad de medida</label><br>
-							<select name="unidad_medida" id="unidad_medida" class="selectpicker border form-control" data-width="100%">
-								<option disabled selected>Selecciona</option>
-								<option value="KG">Kilos</option>
-								<option value="L">Litros</option>
-							</select>
-						</div>
-
-					</div>-->
 
 					<div class="form-row mb-4">
 						<div class="col-3">
@@ -327,7 +262,6 @@
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod_edit" required>
-							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
 						</div>
 					</div>
 
@@ -340,10 +274,6 @@
 							<label for="description_edit">Descripción del producto</label>
 							<textarea name="description" id="description_edit" rows="3" class="form-control"></textarea>
 						</div>
-						<!--<div class="col-4 text-right">
-							<h5>Cantidad Total</h5>
-							<p class="lead cantidad_producto">-</p>
-						</div>-->
 					</div>
 
 				</div>
@@ -554,48 +484,6 @@ function showMinus(id, name) {
 	});
 
 };
-//COSTOS
-	/*$('#editarForm').attr('action', `/products/${id}`)
-
-	$.get({
-		url : `/products/${id}`,
-		beforeSend(){
-			$('#modal_loader_edit').show()
-		}
-	})
-	.done((data) => {
-
-		$('#product_edit').val(data.id)
-		$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
-
-		$('#cost_edit').val(data.cost)
-
-		$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
-
-		$('#retail_margin_gain_edit').val(data.retail_margin_gain)
-		//ESTABLECEMOS EL CHECK DE LAS OFERTAS
-		if (data.oferta == 1) {
-
-			$('#ofertaEdit2').removeAttr('checked');
-			$('#ofertaEdit1').attr('checked', true);
-
-		}else{
-
-			$('#ofertaEdit1').removeAttr('checked', true);
-			$('#ofertaEdit2').attr('checked', true);
-
-		}
-
-		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
-
-		$('#modal_loader_edit').fadeOut();
-
-	})
-	.fail((err)=> {
-		console.log(err)
-		toastr.error('Ha ocurrido un error.')
-	})
-}*/
 
 	$(document).ready( function () {
 		$('#inventario-table').DataTable({
@@ -652,69 +540,6 @@ function showMinus(id, name) {
 				url: '/traer_productos',
 			}
 		});
-
-
-
-		$('#cantidad, #cant_prod, #cantidad_edit, #cant_prod_edit').on('keyup change', function() {
-			// logica para calcular los totales
-
-
-			let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
-			let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
-
-			let productos_totales = cantidad * cant_prod
-
-			$('.cantidad_producto').text(`${productos_totales} productos`)
-			$('#cantidad_producto_hd').val(productos_totales)
-			$('#cantidad_producto_hd_edit').val(productos_totales)
-		})
-
-		$('.editProduct').click(function(e){
-
-			let id = $(this).data('id')
-
-			$('#form_edit').attr('action', `/inventory/${id}`)
-
-			$.get({
-				url: `/inventory/${id}`,
-				beforeSend(){
-					$('#modal_loader').show()
-				}
-			})
-			.done((response) => {
-				console.log(response)
-
-				$('#product_name_edit').val(response.product_name)
-
-				$('#enterprise_edit').val(response.enterprise_id)
-				$('#enterprise_edit').change()
-
-				$('#category_edit').val(response.category_id)
-				$('#category_edit').change()
-
-				$('#cantidad_edit').val(response.quantity)
-
-				$('#tipo_unidad_edit').val(response.unit_type)
-				$('#tipo_unidad_edit').change()
-
-				$('#cant_prod_edit').val(response.qty_per_unit)
-
-				$('#description_edit').val(response.description)
-
-				let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
-				let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
-
-				let productos_totales = cantidad * cant_prod
-
-				$('#cantidad_producto_hd_edit').val(productos_totales)
-
-				$('#modal_loader').fadeOut()
-			})
-			.fail((err) => {
-				console.error(err)
-				toastr.error('Algo a ocurrido.')
-			})
-		})
 
 	})
 

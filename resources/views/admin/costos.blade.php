@@ -31,14 +31,12 @@
 								<tr>
 									<th class="small">PRODUCTO</th>
 									<th class="small">COSTO</th>
-									<!-- <th class="small">I.V.A (%)</th> -->
 									<th class="small">PRECIO AL MAYOR</th>
 									<th class="small">PRECIO AL MENOR</th>
 									<th class="text-center small">ACCIONES</th>
 								</tr>
 							</thead>
 							<tbody>
-								<!-- retail_total_price retail_margin_gain wholesale_margin_gain wholesale_total_individual_price -->
 								@forelse ($productos as $pro)
 									<tr>
 										<td class="small">{{ $pro->inventory->product_name }}</td>
@@ -59,15 +57,6 @@
 											<button class="btn btn-primary btn-md" onclick='showInfo({{ $pro->id }})'>
 												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
 											</button>
-											<!--<button class="btn btn-primary btn-md btninfo" data-toggle="modal" data-target="#detailModal" data-id="{{ $pro->id }}">
-												<i class="fas fa-info-circle" data-toggle="tooltip" data-title="Detalles"></i>
-											</button>
-											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio-{{$pro->id}}" data-id="{{ $pro->id }}">
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
-											</button>-->
-											<!--<button class="btn btn-warning btn-md btnedit" data-toggle="modal" data-target="#editarPrecio" data-id="{{ $pro->id }}">
-												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
-											</button>-->
 											<button class="btn btn-success btn-md" onclick='showEdit({{ $pro->id }})'>
 												<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
 											</button>
@@ -88,9 +77,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 
 <!-- MODALES -->
 <!-- Modal marcar precio producto -->
@@ -170,18 +156,13 @@
 								<div class="col-6">
 									<div class="text-right">
 										<h5 class="mb-4">Precio al mayor</h5>
-										<!--PVP:--> <span class="d-none precio font-weight-light total_wholesale_price">0</span> <!--Bs<br>-->
-										<!--IVA:--> <span class="d-none precio font-weight-light iva_wholesale_price">0</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_wholesale_price" id="totalMayorMarcar">0</span> Bs</span><br>
-										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
 									</div>
 								</div>
 
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al menor</h5>
-										<!--PVP:--> <span class="d-none precio font-weight-light total_retail_price">0</span> <!--Bs<br>-->
-										<!--IVA:--> <span class="d-none precio font-weight-light iva_retail_price">0</span> <!--Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_retail_price" id="totalMenorMarcar">0</span> Bs<br>
 									</div>
 								</div>
@@ -282,32 +263,6 @@
 					</div>
 				</div>
 
-				<!-- <h5 class="mb-3">Precios</h5>
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-chart-line mr-2"></i>I.V.A:</p>
-					<p class="col-6 font-weight-light" id="iva">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-chart-bar mr-2"></i>Ganancia al menor:</p>
-					<p class="col-6 font-weight-light" id="ganancia_al_menor">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-cash-register mr-2"></i>Precio al menor:</p>
-					<p class="col-6 font-weight-light" id="precio_al_menor">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-chart-bar mr-2"></i>Ganancia al mayor:</p>
-					<p class="col-6 font-weight-light" id="ganancia_al_mayor">...</p>
-				</div>
-
-				<div class="row mb-1">
-					<p class="col-6 font-weight-bold"><i class="fas fa-cash-register mr-2"></i>Precio al mayor:</p>
-					<p class="col-6 font-weight-light" id="precio_al_mayor">...</p>
-				</div> -->
-
 			</div>
 
 			<div class="modal-footer">
@@ -396,17 +351,12 @@
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al mayor</h5>
-										<!--PVP <span class="d-none precio font-weight-light total_wholesale_price">0,00</span> Bs<br>-->
-										<!--IVA <span class="d-none precio font-weight-light iva_wholesale_price">0,00</span> Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_wholesale_price" id="totalMayor">0,00</span> Bs</span><br>
-										<!-- TOT2: <span class="precio font-weight-light" id="total2_amount_wholesale_price">0,00</span> Bs</span><br> -->
 									</div>
 								</div>
 								<div class="col-6">
 									<div>
 										<h5 class="mb-4">Precio al menor</h5>
-										<!--PVP:--> <!--<span class="d-none precio font-weight-light total_retail_price">0,00</span> Bs<br>-->
-										<!--IVA:--> <!--<span class="d-none precio font-weight-light iva_retail_price">0,00</span> Bs<br>-->
 										TOT: <span class="precio font-weight-light total_amount_retail_price" id="totalMenor">0,00</span> Bs<br>
 									</div>
 								</div>
@@ -481,10 +431,6 @@
 
 			$('#cost_edit').val(data.cost)
 
-			/*$('#iva_percent_edit').val(data.iva_percent)
-			$('#iva_percent_edit').change()
-			form.iva = data.iva_percent*/
-
 			$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
 
 			$('#retail_margin_gain_edit').val(data.retail_margin_gain)
@@ -518,7 +464,6 @@
 			result_porcentaje  = (parseFloat(costo)*gMenor)/100;
 			result_porcentaje = result_porcentaje.toFixed(3);
 			precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-			//$('.retail_total_price').val(precio_menor_total.toFixed(3));
 			$('.retail_total_price').val(precio_menor_total.toFixed(3));
 
 			$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
@@ -547,10 +492,8 @@
 
 			$('#imageproduct').attr('src', `/storage/app/public/${data.image}`)
 			$('#nombre_producto').text(`${data.inventory.product_name}`)
-			// $('#descripcion_producto').text(`${data.inventory.description}`)
 			$('#almacen').text(`Almacen: ${data.inventory.warehouse.name}`)
 			$('#categoria_producto').text(`${data.inventory.category.name}`)
-			// $('#empresa').text(`${data.inventory.enterprise.name}`)
 			$('#cantidadEmpaque').text(`${data.inventory.quantity} ${data.inventory.unit_type} de ${data.inventory.qty_per_unit} productos`)
 			$('#ultimaActualizacion').text(`${data.updated_at}`)
 			if (data.oferta == 1) {
@@ -597,7 +540,6 @@ function calcularPrecioModalPrecio(e) {
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
 		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		//$('.retail_total_price').val(precio_menor_total.toFixed(3));
 		$('.retail_total_price').val(precio_menor_total.toFixed(3));
 		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
@@ -624,7 +566,6 @@ function calcularPrecioModalPrecioMarcar(e) {
 		result_porcentaje  = (parseFloat(costo)*gMenor)/100;
 		result_porcentaje = result_porcentaje.toFixed(3);
 		precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
-		//$('.retail_total_price').val(precio_menor_total.toFixed(3));
 		$('.retail_total_price').val(precio_menor_total.toFixed(3));
 		$('#totalMenorMarcar').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
 	}
@@ -738,7 +679,6 @@ $(document).ready( function () {
 	$(() => {
 
 		$('#fileinputedit').change((e) => {
-			// $('#sendBtn').removeClass('d-none')
 
 			var input = e.target;
 			// imagen de preview
@@ -785,17 +725,6 @@ $(document).ready( function () {
 		  };
 		  reader.readAsDataURL(input.files[0]);
 
-			/*reader.onload = (ev) => {
-				$('#imgerroredit').hide()
-
-				$('#fotoedit').show();
-				$('#clearbtnedit').show();
-
-				$('#fotoedit').attr('data-src', ev.target.result);
-				$('#image_nameedit').text(file.name)
-				$('#image_weigthedit').text(`${ filesize.toFixed(2) } kb`)
-			}*/
-
 			$('#clearbtnedit').click(() => {
 				$('#imgerroredit').text('')
 				$('#fileinputedit').val('')
@@ -809,7 +738,6 @@ $(document).ready( function () {
 		});
 
 		$('#fileinput').change((e) => {
-			// $('#sendBtn').removeClass('d-none')
 
 			var input = e.target;
 			// imagen de preview
@@ -855,17 +783,6 @@ $(document).ready( function () {
 		  };
 		  reader.readAsDataURL(input.files[0]);
 
-			/*reader.onload = (ev) => {
-				$('#imgerror').hide()
-
-				$('#foto').show();
-				$('#clearbtn').show();
-
-				$('#foto').attr('data-src', ev.target.result);
-				$('#image_name').text(file.name)
-				$('#image_weigth').text(`${ filesize.toFixed(2) } kb`)
-			}*/
-
 			$('#clearbtn').click(() => {
 				$('#imgerror').text('')
 				$('#fileinput').val('')
@@ -886,18 +803,6 @@ $(document).ready( function () {
 			ganancia_al_menor: '0.00'
 		}
 
-		$('.btn-open-modal').on('click', function() {
-			form.costo = '0.00'
-			form.ganancia_al_mayor = '0.00'
-			form.ganancia_al_menor = '0.00'
-			$('#cost').val('')
-			$('#wholesale_margin_gain').val('')
-			$('#retail_margin_gain').val('')
-
-			$('.calcular').trigger('click')
-			$('#marcarPrecio').modal('show')
-		})
-
 		$('#loading').fadeOut()
 
 		toastr.options = {
@@ -917,123 +822,7 @@ $(document).ready( function () {
             @endforeach
 		@endif()
 
-		function calcular_precio(precio, margen_ganancia){
-			// let precio_articulo   = costo / cantidad
-			let result_porcentaje  = (precio / 100) * margen_ganancia
-
-			return Number(precio + result_porcentaje)
-		}
-
-		function calcular_iva(iva, precio){
-			let result_porcentaje = (precio / 100) * iva
-
-			return Number(result_porcentaje)
-		}
-
-
-		$('.btninfo').click(function() {
-			let id = $(this).data('id')
-
-			$.get({
-				url : `/products/${id}`,
-				beforeSend(){
-					$('#modal_loader').show()
-				}
-			})
-			.done((data) => {
-
-				console.log(data.image);
-
-				$('#imageproduct').attr('src', `/storage/app/public/${data.image}`)
-				$('#nombre_producto').text(`${data.inventory.product_name}`)
-				// $('#descripcion_producto').text(`${data.inventory.description}`)
-				$('#almacen').text(`Almacen: ${data.inventory.warehouse.name}`)
-				$('#categoria_producto').text(`${data.inventory.category.name}`)
-				// $('#empresa').text(`${data.inventory.enterprise.name}`)
-				$('#cantidadEmpaque').text(`${data.inventory.quantity} ${data.inventory.unit_type} de ${data.inventory.qty_per_unit} productos`)
-				if (data.oferta == 1) {
-					$('#oferta').text(`El producto se encuentra en oferta`)
-					$('#oferta').addClass('text-success')
-					$('#oferta').removeClass('text-danger')
-				}else{
-					$('#oferta').text(`EL producto no esta en oferta`)
-					$('#oferta').addClass('text-danger')
-					$('#oferta').removeClass('text-success')
-				}
-
-				// $('#cantidad').text(`${data.inventory.total_qty_prod} productos`)
-				// $('#iva').text(`${data.iva_percent}%`)
-				// $('#ganancia_al_menor').text(`${data.retail_margin_gain}%`)
-				// $('#precio_al_menor').text(`${new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(data.retail_total_price)} Bs`)
-				// $('#ganancia_al_mayor').text(`${data.wholesale_margin_gain}%`)
-				// $('#precio_al_mayor').text(`${new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(data.wholesale_total_individual_price)} Bs`)
-
-				$('#modal_loader').fadeOut()
-			})
-			.fail((err)=> {
-				console.log(err)
-				toastr.error('Ha ocurrido un error.')
-			})
-		})
-
-
-
 		//-------------- data binding -------------------
-
-
-		$('.btnedit').click(function() {
-
-			let id = $(this).data('id')
-
-			$('#editarForm').attr('action', `/products/${id}`)
-
-			$.get({
-				url : `/products/${id}`,
-				beforeSend(){
-					$('#modal_loader_edit').show()
-				}
-			})
-			.done((data) => {
-
-				console.log(data.inventory.product_name);
-
-				$('#product_edit').val(data.id)
-				$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
-				form.inventoryid = data.id
-
-				$('#cost_edit').val(data.cost)
-				form.costo = data.cost
-
-				/*$('#iva_percent_edit').val(data.iva_percent)
-				$('#iva_percent_edit').change()
-				form.iva = data.iva_percent*/
-
-				$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
-				form.ganancia_al_mayor = data.wholesale_margin_gain
-
-				$('#retail_margin_gain_edit').val(data.retail_margin_gain)
-				form.ganancia_al_menor = data.retail_margin_gain
-				//ESTABLECEMOS EL CHECK DE LAS OFERTAS
-				if (data.oferta == 1) {
-
-					$('#ofertaEdit2').removeAttr('checked');
-					$('#ofertaEdit1').attr('checked', true);
-
-				}else{
-
-					$('#ofertaEdit1').removeAttr('checked', true);
-					$('#ofertaEdit2').attr('checked', true);
-
-				}
-
-				$('#modal_loader_edit').fadeOut()
-			})
-			.fail((err)=> {
-				console.log(err)
-				toastr.error('Ha ocurrido un error.')
-			})
-		})
-
 
 		$('.product').change((e) => {
 			form.inventoryid = e.target.value
@@ -1041,16 +830,12 @@ $(document).ready( function () {
 		$('.costo').keyup((e) => {
 			form.costo = e.target.value
 		})
-		/*$('.iva').change((e) => {
-			form.iva = e.target.value
-		})*/
 		$('.ganancia_al_mayor').on('change keyup', (e) => {
 			form.ganancia_al_mayor = e.target.value
 		})
 		$('.ganancia_al_menor').on('change keyup', (e) => {
 			form.ganancia_al_menor = e.target.value
 		})
-
 
 		// ---------------- end data binding -------------
 

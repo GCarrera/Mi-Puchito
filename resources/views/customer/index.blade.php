@@ -11,67 +11,14 @@
 	</div>
 </div>
 
-
-{{-- <div id="carouselExampleIndicators" class="carousel slide mt-5" data-ride="carousel">
-	<ol class="carousel-indicators">
-		<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
-		<li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
-	</ol>
-	<div class="carousel-inner">
-		<div class="carousel-item active">
-			<img src="/img/banner1.png" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="/img/banner2.jpg" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="/img/banner3.jpg" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="/img/banner4.jpg" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="/img/banner5.jpg" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-		<div class="carousel-item">
-			<img src="/img/banner6.jpg" style="height: 470px" class="d-block w-100" alt="...">
-		</div>
-	</div>
-	<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-		<span class="sr-only">Previous</span>
-	</a>
-	<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-		<span class="carousel-control-next-icon" aria-hidden="true"></span>
-		<span class="sr-only">Next</span>
-	</a>
-</div> --}}
-
 <div id="background-top">
 
 </div>
 
-<!--
-<img src="img/amazon.jpg" alt="" class="img-fluid mt-5" style="background-size: cover; background-position: center; height: 30%;">
--->
 <div class="container-fluid wrapper">
 	<div class="row">
 		<div class="col-lg-3 col-12 order-2 order-lg-1">
-			<!--<div class="card shadow-sm ">
-				<div class="card-body">
-					<div class="form-group mb-4">
-						<label for="empresas">Usted está comprando:</label>
-						<div class="nav-list">
-							<a class="list-group-item list-group-item-action {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{Request::get('enterprise') != null ? url('?buytype=major&enterprise='. Request::get('enterprise')) : url('?buytype=major')}}">Al mayor</a>
-							<a class="list-group-item list-group-item-action {{ Request::get('buytype') != 'major' ? 'active' : 'normal' }}" href="{{url('?buytype=minor')}}">Al menor</a>
-						</div>
-					</div>
-				</div>
-			</div>-->
+
 			<div class="card shadow-sm mb-4">
 				<div class="card-header">
 					<h5>Filtrado de productos</h5>
@@ -114,7 +61,6 @@
 							<a href="{{Request::get('buytype') == 'major'? '/categoria/'.$d->id.'?buytype=major' : '/categoria/'.$d->id}}" style="color: black;">
 								<h5 class="font-weight-bold">{{ $d->name }}</h5>
 							</a>
-							{{-- <a href="/categoria/{{ $k }}" class="btn btn-primary">Ver todos</a> --}}
 						</div>
 
 						<div class="card-body bg-light">
@@ -126,7 +72,6 @@
 								@endphp
 								@foreach ($d->inventory as $producto)
 
-									<!--break($count == 5)-->
 									@break($count == 5)
 
 									@if(Request::get('buytype') != 'major')
@@ -135,7 +80,6 @@
 									if (isset($carrito)) {
 										foreach ($carrito as $item) {
 											if ($item->options->sale_type == "al-menor") {
-												# code...
 												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 											}
 
@@ -145,7 +89,6 @@
 
 										<div class="card border-info shadow">
 												{{-- OTRA VEZ LA IMAGEN DEL CARRUCEL --}}
-											{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}" class="card-img-top"> --}}
 											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
 												@if($producto->product->oferta == 1)
@@ -153,35 +96,16 @@
 												@endif
 												<p class="truncated-text text-center"> {{ $producto->product_name }} </p>
 
-												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-												{{--<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span class="">{{number_format($producto->product->retail_total_price - $producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> Subtotal para venta--}}
-												{{-- <h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</span></h6> --}}
 												@if(Request::get('buytype') == 'minor')
 													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
-													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
 												@elseif(Request::get('buytype') == 'major')
 													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price * $dolar->price, 2, ',', '.') }} BsS</p>
-													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->wholesale_total_individual_price, 2, ',', '.') }} BsS</p>--}}
 												@else
 													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
-													{{--<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }} BsS</p>--}}
 												@endif
 												<p class="text-left text-success"><small>Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</small></p>
 
 													<div class="">
-	{{--
-															<button
-																id="deseos-{{ $producto->product->id }}"
-																data-id="{{ $producto->product->id }}"
-																class="btn btn-block addToWishlist"
-																data-producto="{{ $producto->product_name }}"
-																data-precio="{{ $producto->product->retail_total_price }}"
-
-															>
-																<i class="fa fa-heart" style="color: #dc3545;"></i>
-																<label for="deseos-{{ $producto->product->id }}" class="text-danger font-weight-bold">Agregar a favoritos</label>
-															</button>
-	 --}}
 
 														@if(isset($respuesta) && $respuesta != 0)
 
@@ -216,9 +140,6 @@
 																<i class="fas fa-shopping-cart" style=""></i>
 																Comprar
 															</button>
-															<!--
-															<label class="texto-carrito font-weight-bold" for="comprar-{{ $producto->id }}">Agregar al carrito</label>
-															-->
 														@endif
 													</div>
 
@@ -232,7 +153,6 @@
 									if (isset($carrito)) {
 										foreach ($carrito as $item) {
 											if ($item->options->sale_type == "al-mayor") {
-												# code...
 												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 											}
 
@@ -247,7 +167,6 @@
 
 
 											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}"class="card-img-top">
-											{{-- <img style="height: 200px; object-fit: contain" data-src="{{ url('img/'.$producto->product->image) }}"class="card-img-top"> --}}
 											<div class="card-body body-producto">
 												@if($producto->product->oferta == 1)
 												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
@@ -265,15 +184,6 @@
 												<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 												<p class="text-center">{{ $producto->description}}</p>
 
-
-													{{-- booton de favoritos --}}
-														{{-- <button id="deseos-{{ $producto->product->id }}"  data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
-															<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-															<label for="deseos-{{ $producto->product->id }}" class="text-danger">Agregar a favoritos</label>
-														</button> --}}
-
-
-
 													@if(isset($respuesta) && $respuesta != 0)
 
 															<button
@@ -289,8 +199,6 @@
 																<i class="fas fa-check"></i>
 																<label for="comprar-{{ $producto->id }}"></label>
 															</button>
-
-
 
 													@else
 
@@ -558,14 +466,6 @@
 				$('#tipo_prod')[0].setCustomValidity('Selecciona una opción')
 			}
 		})
-
-	 //    $('.star-rating').rating({
-	 //    	displayOnly: true,
-		// 	theme: 'krajee-fas',
-		// 	containerClass: 'is-star',
-		// 	starCaptions: {1: 'Muy malo', 2: 'Malo', 3: 'Más o menos', 4: 'Bueno', 5: 'Excelente'},
-		// 	starCaptionClasses: {1: 'text-danger', 2: 'text-warning', 3: 'text-info', 4: 'text-primary', 5: 'text-success'},
-		// });
 
 	})
 
