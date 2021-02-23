@@ -109,9 +109,9 @@ class AdminController extends Controller
 
 		$inventario = Inventory::orderBy('id', 'desc')->get();
 
-		/*if (count($inventario) > 0) {
+		if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
-		}*/
+		}
 
 		return view('admin.inventario')
 			->with('inventario', $inventario)
