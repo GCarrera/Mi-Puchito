@@ -114,8 +114,8 @@ class InventoryController extends Controller
         // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
         $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
         $inventory->category_id    = $req->input('category');
-        //$inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
-        $inventory->warehouse_id   = 1;
+        $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
+        //$inventory->warehouse_id   = 1;
         $inventory->enterprise_id  = $req->input('enterprise');
         $inventory->stock_min      = $req->input('stock_min');
 
