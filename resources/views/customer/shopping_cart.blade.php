@@ -58,13 +58,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 <div style="margin-top: 4%"></div>
 
-<!--<img data-src="/img/banner2.jpg" style="height: 470px; margin-top: 4%;" class="d-block w-100" alt="...">-->
-<div id="img-carrito">
-	<div class="row align-items-center h-100">
-		<div class="col-12">
-			<h1 class="text-center text-white font-weight-bold" style="font-size: 5em;">Carrito de compra</h1>
-		</div>
-	</div>
+<div class="">
+	<br>
 </div>
 
 <div class="container-fluid wrapper my-5">
@@ -78,149 +73,151 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			<div class="card shadow-sm mb-3">
 				<div class="card-body">
 
-					<ul class="list-group" style="">
-						@forelse ($cart as $c)
-						@if($c->options->sale_type != 'al-mayor')
-							@php
-							$subtotal = ($c->price - $c->options->retail_iva_amount) * $c->qty;
-							$subtotal = $subtotal*$dolar->price;
-							$iva = $c->options->retail_iva_amount * $c->qty;
+					<div class="row d-none d-sm-flex">
+						<div class="col">
+							<p class="text-muted small text-center">PRODUCTO</p>
+						</div>
+						<div class="col">
+							<p class="text-muted small text-center">DESCRIPCIÓN</p>
+						</div>
+						<div class="col">
+							<p class="text-muted small text-center">PRECIO</p>
+						</div>
+					</div>
 
-							$totalSinIva += $subtotal;
-							@endphp
-						@endif
-							<li class="list-group-item itempadre">
-								<div class="row filapadre">
+					@forelse ($cart as $c)
+					@if($c->options->sale_type != 'al-mayor')
+						@php
+						$subtotal = ($c->price - $c->options->retail_iva_amount) * $c->qty;
+						$subtotal = $subtotal*$dolar->price;
+						$iva = $c->options->retail_iva_amount * $c->qty;
 
-									<div class="d-none" data-id="{{ $c->rowId }}"></div>
-									<div class="d-none sale_type">{{ $c->options->sale_type }}</div>
+						$totalSinIva += $subtotal;
+						@endphp
+					@endif
 
-									<div class="col-md-4 col-sm-6 col-12 order-1">
+					<div class="itempadre">
+					<div class="filapadre">
 
-										@if( $c->options->sale_type == 'al-mayor' )
-											<p class="text-muted small">PRODUCTO AL MAYOR</p>
-										@else
-											<p class="text-muted small">PRODUCTO AL MENOR</p>
+						<div class="d-none" data-id="{{ $c->rowId }}"></div>
+						<div class="d-none sale_type">{{ $c->options->sale_type }}</div>
 
-										@endif
+					<!-- No responsie -->
+					<div class="row d-none d-sm-flex">
 
+						<div class="col">
+							<img data-src="/storage/app/public/{{ $c->options->image }}" class="img-fluid img-thumbnail mr-2">
+						</div>
 
-										<div class="d-flex justify-content-start">
-											<img data-src="/storage/{{ $c->options->image }}" style="height: 70px;" class="mr-2">
-											<p class="small">
-												<span class="font-weight-bold">{{ $c->name }}</span><br>
+						<div class="col">
+							<p class="font-weight-bold">{{ $c->name }}</p>
+							<p class="small d-none d-sm-block">{{ $c->model->inventory->description }}</p>
+							<p class="small">Disponibles: {{ floor($c->model->inventory->total_qty_prod) }}</p>
 
-												@if( $c->options->sale_type == 'al-mayor' )
-													<span>1 {{ $c->model->inventory->unit_type }} de {{ $c->model->inventory->qty_per_unit }} productos</span>
-												@endif
-											</p>
+							<div class="form-row">
+								<div class="col">
+
+									<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
+										<div class="input-group-prepend">
+											<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 										</div>
-
-										<button class="btn btn-danger eliminar d-sm-none" onclick="delete_item('{{$c->rowId}}')" style="position: absolute; top: 4px; right: 4px;">
-												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
-										</button>
-									</div>
-
-									<div class="col-md-2 col-sm-6 col-xs-6 col-12 order-2 padrecantidad">
-										<button class="btn btn-danger eliminar d-none d-sm-block d-md-none" onclick="delete_item('{{$c->rowId}}'')" style="position: relative; top: 4px; left: 84%;">
-												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
-											</button>
-										<p class="text-muted small text-center">CANTIDAD</p>
-										<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
-											<div class="input-group-prepend">
-												<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
-											</div>
-											<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
-											<div class="input-group-append">
-												<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
-											</div>
+										<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
+										<div class="input-group-append">
+											<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 										</div>
 									</div>
 
-									<div class="col-md-3 col-sm-6 col-12 order-3 padreprecio">
-										<p class="text-muted small text-center">PRECIO Bs</p>
-
-										@if($c->options->sale_type == 'al-mayor')
-										@php
-										$ivaprimero = $c->options->wholesale_iva_amount * $c->model->inventory->qty_per_unit;
-										$subtotal = $c->options->wholesale_packet_price * $dolar->price;
-										//$subtotal = $c->options->wholesale_packet_price;
-										$iva = $ivaprimero * $c->qty;
-
-										$totalSinIva += $subtotal;
-										@endphp
-										<p class="small text-center">
-											<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
-											<br>
-											<span class="iva_product iva_product-{{$c->rowId}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
-										</p>
-										@else
-										<p class="small text-center">
-											<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
-											<br>
-											<span class="iva_product iva_product-{{$c->rowId}}">Iva: {{ number_format($iva, 2, ',', '.') }}</span>
-										</p>
-										@endif
-										@if($c->options->sale_type == 'al-mayor')
-											<input type="hidden" class="preciosiniva" value="{{ $c->options->wholesale_packet_price }}">
-											<P class="text-muted small text-center">
-												<span class="preciopvp">{{ number_format(($dolar->price*($c->options->wholesale_total_packet_price + $iva)), 2, ',', '.') }}</span> Bs
-											</P>
-											<br>
-											{{--<span class="text-muted small">
-												<span>IVA {{ $c->options->iva }}%: <span class="iva">{{  number_format($c->options->wholesale_iva_amount, 2, ',', '.') }}</span> Bs</span>
-											</span>--}}
-											<br>
-										@else
-											<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
-											<p class="text-center">
-											<span class="text-muted small">
-												<span class="preciopvp">{{ number_format($dolar->price*$c->price, 2, ',', '.') }}</span> Bs
-											</span>
-											</p>
-											<!--<br>-->
-											{{-- <span class="text-muted small">
-												<span>IVA {{ $c->options->iva }}%: <span class="iva">{{ number_format($c->options->retail_iva_amount, 2, ',', '.') }}</span> Bs</span>
-											</span> --}}
-											<!--<br>-->
-										@endif
-									</div>
-
-									<div class="col-md-2 col-sm-5 col-12 order-4">
-										<p class="text-muted small text-center">DESCRIPCIÓN</p>
-										<p class="font-weight-normal precio text-center">{{ $c->model->inventory->description }}</p>
-										<br>
-										@if($c->options->sale_type == 'al-mayor')
-										<p class="font-weight-bold small">Disponibles para la venta: {{ $c->model->inventory->quantity }}</p>
-										@else
-										<p class="font-weight-bold small">Disponibles para la venta: {{ floor($c->model->inventory->total_qty_prod) }}</p>
-										@endif
-									</div>
-									{{-- <div class="col-md-2 col-sm-6 col-12">
-										<p class="text-muted small">CALIFICAR</p>
-										<input name="input-2" value="2.4" class="star-rating kv-ltr-theme-fas-star rating-loading" data-size="xs">
-									</div> --}}
-
-									<div class="col-md-1 col-sm-1 col-12 order-0 order-sm-5 d-none d-md-block">
-										<div class="w-100 text-center">
-											<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')" style="position: absolute; top: 4px; right: 4px;">
-												<i class="fas fa-trash" style="font-size: 1.5em;"></i>
-											</button>
-										</div>
-									</div>
 								</div>
-							</li>
 
-						@empty
+								<div class="col">
 
-							<h4 class="text-center my-5">
-								<i class="fas fa-2x fa-shopping-cart mb-4"></i><br>
-								No hay productos en el carrito.
-							</h4>
+									<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')">
+										<i class="fas fa-trash"></i>
+									</button>
 
-						@endforelse
+								</div>
+							</div>
 
-					</ul>
+						</div>
+
+						<div class="col">
+
+							<p class="small text-center">
+								<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+							</p>
+
+							<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
+							<p class="text-center">
+							<span class="text-muted small">
+								<span class="preciopvp">{{ number_format($dolar->price*$c->price, 2, ',', '.') }}</span> Bs
+							</span>
+							</p>
+
+						</div>
+
+					</div>
+
+					<!-- responsie -->
+					<div class="row d-inline-inline d-sm-none">
+
+						<div class="col">
+							<img data-src="/storage/app/public/{{ $c->options->image }}" class="img-fluid img-thumbnail mr-2">
+						</div>
+
+						<div class="col">
+							<p class="d-inline-inline d-sm-none">
+								<span class="font-weight-bold">
+									{{ $c->name }}
+								</span>
+								<br>
+								<span class="small font-weight-light preciopvp">PVP {{ number_format($dolar->price*$c->price, 2, ',', '.') }} Bs</span>
+								<span class="small precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }} Bs</span>
+								<span class="small">Disponibles: {{ floor($c->model->inventory->total_qty_prod) }}</span>
+							</p>
+
+						</div>
+
+					</div>
+
+					<div class="row d-inline-inline d-sm-none">
+
+						<div class="col-8">
+
+							<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
+								<div class="input-group-prepend">
+									<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
+								</div>
+								<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
+								<div class="input-group-append">
+									<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="col-4">
+
+							<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')">
+								<i class="fas fa-trash"></i>
+							</button>
+
+						</div>
+
+					</div>
+
+					</div>
+					</div>
+
+					<hr>
+
+					@empty
+
+						<h4 class="text-center my-5">
+							<i class="fas fa-2x fa-shopping-cart mb-4"></i><br>
+							No hay productos en el carrito.
+						</h4>
+
+					@endforelse
 
 
 				</div>
