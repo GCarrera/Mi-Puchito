@@ -110,30 +110,35 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</div>
 
 						<div class="col">
-							<p class="font-weight-bold">{{ $c->name }}</p>
-							<p class="small d-none d-sm-block">{{ $c->model->inventory->description }}</p>
-							<p class="small">Disponibles: {{ floor($c->model->inventory->total_qty_prod) }}</p>
+							<h6>{{ $c->name }}</h6>
+							<p class="small">
+								{{ $c->model->inventory->description }}
+								<br>
+								Disponibles: <span class="font-weight-bold">{{ floor($c->model->inventory->total_qty_prod) }}</span>
+							</p>
 
 							<div class="form-row">
-								<div class="col">
+								<div class="col-4">
 
 									<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 										<div class="input-group-prepend">
-											<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
+											<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 										</div>
 										<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
 										<div class="input-group-append">
-											<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
+											<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 										</div>
 									</div>
 
 								</div>
+							</div>
 
+							<div class="form-row">
 								<div class="col">
 
-									<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')">
-										<i class="fas fa-trash"></i>
-									</button>
+									<p class="text-danger eliminar" role="button" onclick="delete_item('{{$c->rowId}}')" >
+										Eliminar
+									</p>
 
 								</div>
 							</div>
@@ -166,13 +171,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 						<div class="col">
 							<p class="d-inline-inline d-sm-none">
-								<span class="font-weight-bold">
+								<h6>
 									{{ $c->name }}
-								</span>
-								<br>
+								</h6>
 								<span class="small font-weight-light preciopvp">PVP {{ number_format($dolar->price*$c->price, 2, ',', '.') }} Bs</span>
 								<span class="small precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }} Bs</span>
-								<span class="small">Disponibles: {{ floor($c->model->inventory->total_qty_prod) }}</span>
+								<span class="small">Disponibles: <strong>{{ floor($c->model->inventory->total_qty_prod) }}</strong></span>
 							</p>
 
 						</div>
@@ -181,25 +185,25 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 					<div class="row d-inline-inline d-sm-none">
 
+						<div class="col-4">
+
+							<p class="text-danger eliminar" role="button" onclick="delete_item('{{$c->rowId}}')">
+								Eliminar
+							</p>
+
+						</div>
+
 						<div class="col-8">
 
 							<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 								<div class="input-group-prepend">
-									<button class="btn btn-primary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
+									<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 								</div>
 								<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
 								<div class="input-group-append">
-									<button class="btn btn-primary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
+									<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 								</div>
 							</div>
-
-						</div>
-
-						<div class="col-4">
-
-							<button class="btn btn-danger eliminar" onclick="delete_item('{{$c->rowId}}')">
-								<i class="fas fa-trash"></i>
-							</button>
 
 						</div>
 
