@@ -157,6 +157,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 								</div>
 
+							</div>
+
+							<div class="row d-none d-sm-flex">
+
 								<div class="col">
 
 									<p class="text-danger eliminar" role="button" onclick="delete_item('{{$c->rowId}}')" >
