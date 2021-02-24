@@ -70,7 +70,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	</div>
 	<div class="row">
 		<div class="col-lg-9 col-12">
-			<div class="card shadow-sm mb-3">
+			<div class="card mb-3">
 				<div class="card-body">
 
 					<div class="row d-none d-sm-flex">
@@ -119,7 +119,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									<p class="small">
 										{{ $c->model->inventory->description }}
 										<br>
-										Disponibles: <span class="font-weight-bold">{{ floor($c->model->inventory->total_qty_prod) }}</span>
+										Disponibles: <span class="negrita">{{ floor($c->model->inventory->total_qty_prod) }}</span>
 									</p>
 
 								</div>
@@ -143,13 +143,13 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 							<div class="row d-none d-sm-flex">
 
-								<div class="col-4">
+								<div class="col-3">
 
 									<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 										<div class="input-group-prepend">
 											<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 										</div>
-										<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
+										<input type="text" onkeypress="soloNumeros(event)" class="form-control form-control-sm input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
 										<div class="input-group-append">
 											<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 										</div>
@@ -161,7 +161,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 							<div class="row d-none d-sm-flex">
 
-								<div class="col">
+								<div class="col-3">
 
 									<p class="text-danger eliminar" role="button" onclick="delete_item('{{$c->rowId}}')" >
 										Eliminar
@@ -189,7 +189,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								</h6>
 								<span class="small font-weight-light preciopvp">PVP {{ number_format($dolar->price*$c->price, 2, ',', '.') }} Bs</span>
 								<span class="small precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }} Bs</span>
-								<span class="small">Disponibles: <strong>{{ floor($c->model->inventory->total_qty_prod) }}</strong></span>
+								<span class="small">Disponibles: <span class="negrita">{{ floor($c->model->inventory->total_qty_prod) }}</span></span>
 							</p>
 
 						</div>
@@ -212,7 +212,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<div class="input-group-prepend">
 									<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 								</div>
-								<input type="text" onkeypress="soloNumeros(event)" class="form-control input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
+								<input type="text" onkeypress="soloNumeros(event)" class="form-control form-control-sm input-cantidad sinflechas-{{$c->rowId}} rounded-0" value="{{ $c->qty }}" min="1" data-carrito="{{$c->rowId}}">
 								<div class="input-group-append">
 									<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 								</div>
@@ -276,38 +276,38 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<span><span id="totalSinIva">{{ number_format($totalSinIva*$dolar->price, 2, ',', '.') }} </span> Bs.</span>
 						</div>
 					</div>
-					<div class="row mb-1 no-gutters">
+					<!--<div class="row mb-1 no-gutters">
 						<div class="col-5">
 							<span>IVA Total:</span>
 						</div>
 						<div class="col-7 text-right">
 							<span><span id="ivatotal">{{ number_format($ivatotal, 2, ',', '.') }}</span> Bs</span>
 						</div>
-					</div>
+					</div>-->
 					<div class="row mb-1 no-gutters">
 						<div class="col-4">
-							<span class="font-weight-bold">Total:</span>
+							<span class="negrita">Total:</span>
 						</div>
 						<div class="col-8 text-right">
-							<span class="font-weight-bold"><span id="montoTotal">{{ $total }}</span> Bs</span>
+							<span class="negrita"><span id="montoTotal">{{ $total }}</span> Bs</span>
 						</div>
 					</div>
 					<div class="row mb-3 no-gutters">
 						<div class="col-4">
-							<span class="font-weight-bold">Total dolares:</span>
+							<span class="negrita">Dolares:</span>
 						</div>
 						<div class="col-8 text-right">
-							<span class="font-weight-bold"><span id="montoDolares"></span> $</span>
+							<span class="negrita text-success"><span id="montoDolares"></span> $</span>
 						</div>
 					</div>
-					<div class="row mb-3 no-gutters">
+					<!--<div class="row mb-3 no-gutters">
 						<div class="col-4">
 							<span class="font-weight-bold">Precio actual del dolar:</span>
 						</div>
 						<div class="col-8 text-right">
 							<span class="font-weight-bold"><span id="dolar">{{ number_format($dolar->price, 2, ',', '.') }}</span> Bs</span>
 						</div>
-					</div>
+					</div>-->
 					<!--<div class="row mb-1">
 						<div class="col">
 							<span>Descuento:</span>
