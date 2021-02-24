@@ -105,19 +105,44 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					<!-- No responsie -->
 					<div class="row d-none d-sm-flex">
 
-						<div class="col">
+						<div class="col-4">
 							<img data-src="/storage/app/public/{{ $c->options->image }}" class="img-fluid img-thumbnail mr-2">
 						</div>
 
-						<div class="col">
-							<h6>{{ $c->name }}</h6>
-							<p class="small">
-								{{ $c->model->inventory->description }}
-								<br>
-								Disponibles: <span class="font-weight-bold">{{ floor($c->model->inventory->total_qty_prod) }}</span>
-							</p>
 
-							<div class="form-row">
+						<div class="col">
+
+							<div class="row">
+
+								<div class="col">
+									<h6>{{ $c->name }}</h6>
+									<p class="small">
+										{{ $c->model->inventory->description }}
+										<br>
+										Disponibles: <span class="font-weight-bold">{{ floor($c->model->inventory->total_qty_prod) }}</span>
+									</p>
+
+								</div>
+
+								<div class="col">
+
+									<p class="small text-center">
+										<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+									</p>
+
+									<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
+									<p class="text-center">
+									<span class="text-muted small">
+										<span class="preciopvp">{{ number_format($dolar->price*$c->price, 2, ',', '.') }}</span> Bs
+									</span>
+									</p>
+
+								</div>
+
+							</div>
+
+							<div class="row d-none d-sm-flex">
+
 								<div class="col-4">
 
 									<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
@@ -131,9 +156,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</div>
 
 								</div>
-							</div>
 
-							<div class="form-row">
 								<div class="col">
 
 									<p class="text-danger eliminar" role="button" onclick="delete_item('{{$c->rowId}}')" >
@@ -141,22 +164,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</p>
 
 								</div>
+
 							</div>
-
-						</div>
-
-						<div class="col">
-
-							<p class="small text-center">
-								<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
-							</p>
-
-							<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
-							<p class="text-center">
-							<span class="text-muted small">
-								<span class="preciopvp">{{ number_format($dolar->price*$c->price, 2, ',', '.') }}</span> Bs
-							</span>
-							</p>
 
 						</div>
 
