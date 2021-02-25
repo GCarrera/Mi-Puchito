@@ -23,33 +23,33 @@ class ShoppingCartController extends Controller
 	public function index()
 	{
 		$user = [];
-		//$user = auth()->user();
+		$user = auth()->user();
 		// \Cart::session($userId)->clear();
 		$data   = \Cart::content();
 		$total  = \Cart::subtotal();
-		
+
 		$ivatotal    = 0;
 		$totalSinIva = 0;
 
 
 		foreach ($data as $d) {
-			
+
 			if ($d->options->sale_type == 'al-mayor') {
 				$t = $d->options->wholesale_iva_amount * $d->quantity;
 				$ivatotal += $t;
-				
+
 				$r = $d->options->wholesale_total_packet_price * $d->quantity;
 				$totalSinIva += $r;
 			} else {
 				$t = $d->options->retail_iva_amount * $d->quantity;
 				$ivatotal+= $t;
-				
+
 				$r = $d->options->retail_pvp * $d->quantity;
 				$totalSinIva += $r;
 			}
 		}
 		$user_address = [];
-		//$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
+		$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
 		$cb = BankAccount::all();
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
@@ -77,7 +77,7 @@ class ShoppingCartController extends Controller
 		$producto = Product::where('inventory_id', $id)
 			->with('inventory')
 			->first();
-		
+
 		//$userId   = auth()->user()->id;
 
 		$data = \Cart::content();
@@ -90,8 +90,8 @@ class ShoppingCartController extends Controller
 				# code...
 				return 'rejected';
 			}
-					
-					
+
+
 		}
 
 		/*
@@ -100,7 +100,7 @@ class ShoppingCartController extends Controller
 				return 'rejected';
 			}
 		}
-		*/		
+		*/
 
 		\Cart::add([
 			'id' => $producto->id,
@@ -127,7 +127,7 @@ class ShoppingCartController extends Controller
 	public function update(Request $request, $rowId)
 	{
 		//$userId = auth()->user()->id;
-		
+
 		$carrito = \Cart::update($rowId, [
 			'qty' => $request->qty
 		]);
@@ -173,13 +173,13 @@ class ShoppingCartController extends Controller
 	}
 
 	public function prueba(Request $request)
-	{	
+	{
 		$producto = Product::with('inventory')->findOrFail(1);
 		$carrito = \Cart::content();
 		//\Cart::destroy();
 		//$carrito = \Cart::add('1', 'Product 1', 1, 9.99, ['size' => 'large'])->associate($producto);
 		return $carrito;
 		return $carrito->model->inventory;
-    	
+
 	}
 }
