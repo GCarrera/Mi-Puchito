@@ -69,71 +69,86 @@
 					}
 					@endphp
 
-					<div class="card shadow-sm mb-4 w-100">
+					<div class="card shadow-sm mb-4">
 
-						<div class="card-body">
+						<div class="card-body bg-light">
 
-							<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
-							@if($producto->product['oferta'] == 1)
-							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
-							@endif
-							<p class="text-center">{{ $producto->product_name }}</p>
+							<div class="card border-info shadow">
 
-							<div class="text-center">
-								<!--<span class="font-weight-light">Subtotal: {{ number_format($producto->product['retail_total_price'] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
-								<br>
-								<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
-								<span class="font-weight-normal">Total:{{ number_format($producto->product['retail_total_price'] * $dolar->price, 2, ',', '.') }} Bs</span>
-								<p class="text-right text-success">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</p>
+								<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->product->image) }}" class="card-img-top">
+								<div class="card-body body-producto text-center">
+
+									@if($producto->product['oferta'] == 1)
+										<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+									@endif
+									<p class="truncated-text text-center">{{ $producto->product_name }}</p>
+									<!--<div class="text-center">-->
+										<!--<span class="font-weight-light">Subtotal: {{ number_format($producto->product['retail_total_price'] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
+										<br>
+										<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
+										<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product['retail_total_price'] * $dolar->price, 2, ',', '.') }} Bs</span>
+										<br>
+										<span class="text-left text-success small">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</span>
+									<!--</div>-->
+
+									<div class="">
+
+										<!--botones de comprar y listar-->
+
+												<button
+													data-id="{{ $producto->product->id }}"
+													class="btn btn-block addToWishlist"
+													data-producto="{{ $producto->product_name }}"
+													data-precio="{{ $producto->product->retail_total_price }}"
+													data-toggle="tooltip" data-placement="top" title="Lista de Deseos"
+
+													>
+														<i class="fa fa-heart" style="color: #dc3545;"></i>
+														<!--<b class="text-danger">Lista de Deseos</b>-->
+												</button>
+
+
+											@if(isset($respuesta) && $respuesta != 0)
+
+												<button
+													type="button"
+													class="btn btn-block btn-primary addCartBtn"
+													data-id="{{ $producto->id }}"
+													data-producto="{{ $producto->product_name }}"
+													data-precio="{{ $producto->product->retail_total_price }}"
+													data-type="al-menor"
+													data-cantidad="1"
+												>
+													<i class="fas fa-check"></i>
+
+												</button>
+
+
+
+											@else
+
+											<button
+													type="button"
+													class="btn btn-block btn-primary addCartBtn"
+													data-id="{{ $producto->id }}"
+													data-producto="{{ $producto->product_name }}"
+													data-precio="{{ $producto->product['retail_total_price']}}"
+													data-type="al-menor"
+													data-cantidad="1"
+											>
+												<i class="fas fa-shopping-cart"></i>
+												<b class="texto-carrito negrita">Comprar</b>
+											</button>
+
+
+											@endif
+
+									</div>
+
+								</div>
+
 							</div>
-							<!--botones de comprar y listar-->
 
-									<button
-										data-id="{{ $producto->product->id }}"
-										class="btn btn-block addToWishlist"
-										data-producto="{{ $producto->product_name }}"
-										data-precio="{{ $producto->product->retail_total_price }}"
-
-										>
-											<i class="fa fa-heart" style="color: #dc3545;"></i>
-											<b class="text-danger">Lista de Deseos</b>
-									</button>
-
-
-								@if(isset($respuesta) && $respuesta != 0)
-
-									<button
-										type="button"
-										class="btn btn-block btn-primary addCartBtn"
-										data-id="{{ $producto->id }}"
-										data-producto="{{ $producto->product_name }}"
-										data-precio="{{ $producto->product->retail_total_price }}"
-										data-type="al-menor"
-										data-cantidad="1"
-									>
-										<i class="fas fa-check"></i>
-
-									</button>
-
-
-
-								@else
-
-								<button
-										type="button"
-										class="btn btn-block btn-primary addCartBtn"
-										data-id="{{ $producto->id }}"
-										data-producto="{{ $producto->product_name }}"
-										data-precio="{{ $producto->product['retail_total_price']}}"
-										data-type="al-menor"
-										data-cantidad="1"
-								>
-									<i class="fas fa-shopping-cart"></i>
-									<b class="texto-carrito">Comprar</b>
-								</button>
-
-
-								@endif
 
 						</div>
 					</div>
@@ -310,7 +325,7 @@
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				}
 				else {
-					toastr.success('<i>Producto añadido al carrito</i>')
+					toastr.success('<span class="negrita">Producto añadido al carrito</span>')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
 					$('#cart_counter-2').removeClass('d-none')

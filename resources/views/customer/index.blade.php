@@ -59,7 +59,7 @@
 
 						<div class="card-header d-flex justify-content-between align-items-center">
 							<a href="{{Request::get('buytype') == 'major'? '/categoria/'.$d->id.'?buytype=major' : '/categoria/'.$d->id}}" style="color: black;">
-								<h5 class="font-weight-bold">{{ $d->name }}</h5>
+								<h5 class="negrita">{{ $d->name }}</h5>
 							</a>
 						</div>
 
@@ -401,7 +401,7 @@
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				} else {
-					toastr.success('<i>Producto añadido al carrito</i>')
+					toastr.success('<span class="negrita">Producto añadido al carrito</span>')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
 					$('#cart_counter-2').removeClass('d-none')
