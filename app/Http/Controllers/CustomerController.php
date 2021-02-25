@@ -70,6 +70,11 @@ class CustomerController extends Controller
 
 			$data = $data->get();
 
+			if ($search) {
+				$bibi = $search;
+			} else {
+				$bibi = false;
+			}
 
 
 
@@ -82,6 +87,7 @@ class CustomerController extends Controller
 					->with('categories', $categories)
 					->with('empresas', $empresas)
 					->with('carrito', $carrito)
+					->with('bibi', $bibi)
 					->with('dolar', $dolar);
 
 		}

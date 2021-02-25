@@ -16,6 +16,18 @@
 </div>
 
 <div class="container-fluid wrapper">
+	@if ($bibi != false)
+		<div class="card mb-4 shadow-sm">
+			<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col ">
+						<h5 class="mt-2">Resultado de la busqueda {{ $bibi }}</h5>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	@endif
 	<div class="row">
 		<div class="col-lg-3 col-12 order-2 order-lg-1">
 
