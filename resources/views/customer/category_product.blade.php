@@ -97,7 +97,7 @@
 
 												<button
 													data-id="{{ $producto->product->id }}"
-													class="btn btn-block addToWishlist"
+													class="btn btn-block addToWishlist d-none"
 													data-producto="{{ $producto->product_name }}"
 													data-precio="{{ $producto->product->retail_total_price }}"
 													data-toggle="tooltip" data-placement="top" title="Lista de Deseos"
@@ -325,7 +325,7 @@
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				}
 				else {
-					toastr.success('<span class="negrita">Producto añadido al carrito</span>')
+					toastr.success('<span="negrita">Producto añadido al carrito</span>')
 					$('#cart_counter').removeClass('d-none')
 					$('#cart_counter').text(res)
 					$('#cart_counter-2').removeClass('d-none')

@@ -115,7 +115,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<div class="row">
 
 								<div class="col">
-									<h6>{{ $c->name }}</h6>
+									<p class="font-weight-light">{{ $c->name }}</p>
 									<p class="small">
 										{{ $c->model->inventory->description }}
 										<br>
@@ -127,7 +127,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<div class="col">
 
 									<p class="small text-center">
-										<span class="font-weight-bold precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
+										<span class="negrita precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }}</span>
 									</p>
 
 									<input type="hidden" class="preciosiniva" value="{{ $c->options->cost }}">
@@ -349,9 +349,10 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<input type="radio" onchange="changeRadio(this.value)" class="form-check-input" name="delivery" value="no">No
 									</label>
 								</div>
+								<small class="negrita">Servicio Gratuito</small>
 								<i id="address" class="d-none">Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
 
-								<i id="address-descrip" class="d-none"></i>
+								<i id="address-descrip" class="d-none small"></i>
 								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
