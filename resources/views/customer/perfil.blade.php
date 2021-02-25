@@ -18,10 +18,36 @@
 
 	<div class="row">
 		<div class="col-lg-3 col-12 mb-3">
-			<div class="card">
-				<div class="card-body p-0">
-					<div class="list-group shadow-sm" id="list-tab" role="tablist">
-					
+
+			<div class="profile-sidebar">
+				<!-- SIDEBAR USERPIC -->
+				<div class="profile-userpic text-center">
+					<i class="far fa-user fa-5x"></i>
+					<!--<img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">-->
+				</div>
+				<!-- END SIDEBAR USERPIC -->
+				<!-- SIDEBAR USER TITLE -->
+				<div class="profile-usertitle">
+					<div class="profile-usertitle-name">
+						{{ $user->people->name }}</span> <span>{{ $user->people->lastname }}
+					</div>
+					<div class="profile-usertitle-job">
+						<span><i class="far fa-envelope" style="color: #dc3545;"></i> {{ $user->email }}</span><br>
+						@if ($user->people->phone_number != null)
+							<span><i class="fas fa-phone"></i> {{ $user->people->phone_number }}</span><br>
+						@endif
+						<span><i class="far fa-id-badge" style="color: #007bff;"></i> {{ $user->people->dni }}</span>
+					</div>
+				</div>
+				<!-- END SIDEBAR USER TITLE -->
+				<!-- SIDEBAR BUTTONS -->
+				<!--<div class="profile-userbuttons">
+					<button class="mt-2 btn btn-primary btn-sm mt-3" data-toggle="modal" data-target="#modal-edit">Editar Perfil</button>
+				</div>->
+				<!-- END SIDEBAR BUTTONS -->
+				<!-- SIDEBAR MENU -->
+				<div class="profile-usermenu">
+					<div class="list-group list-group-flush" id="list-tab" role="tablist">
 						<a class="list-group-item list-group-item-action active" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
 							<i class="fas fa-road icon-width"></i>Dirección de entregas
 						</a>
@@ -31,40 +57,14 @@
 						<a class="list-group-item list-group-item-action" id="list-oferta-list" data-toggle="list" href="#list-oferta" role="tab" aria-controls="oferta">
 							<i class="fas fa-coins icon-width"></i>Ofertas
 						</a>
-						{{-- <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">
-							<i class="fas fa-star icon-width"></i>Valoraciones
-						</a> --}}
+						<a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#modal-edit" role="button">
+							<i class="fas fa-edit icon-width"></i>Editar Perfil
+						</a>
 					</div>
 				</div>
+				<!-- END MENU -->
 			</div>
 
-			<div class="card shadow">
-												
-				<div class="card-body">
-				
-					
-					<div class="row">
-						<div class="col-3 col-sm-3 col-md-1 col-lg-12 col-xl-3">
-							<div class="row">
-								<div class="col-lg-6 col-xl-12">
-								<i class="far fa-user" style="font-size: 5em;"></i>
-								</div>
-								<div class="col-lg-6 col-xl-12">
-								<button class="mt-2 btn btn-primary mt-3" data-toggle="modal" data-target="#modal-edit"><i class="fas fa-edit"></i></button>
-								</div>
-							</div>
-						</div>
-						<div class="col-9 col-sm-9 col-md-11 col-lg-12 col-xl-9">
-							<p class="font-weight-bold h4"><span>{{ $user->people->name }}</span> <span>{{ $user->people->lastname }}</span></p>
-							<p><i class="far fa-envelope" style="color: #dc3545;"></i> {{ $user->email }}</p>
-							<p><i class="fas fa-phone"></i> {{ $user->people->phone_number }}</p>
-							<p><i class="far fa-id-badge" style="color: #007bff;"></i> {{ $user->people->dni }}</p>
-						</div>
-						
-					</div>
-				
-				</div>
-			</div>
 		</div>
 		<div class="col-lg-9 col-12 mb-3">
 
@@ -90,8 +90,8 @@
 				        	</button>
 			      		</div>
 				      	<div class="modal-body">
-				        	
-				
+
+
 							<form action="editar_perfil" method="GET">
 
 								<div class="row mb-2">
@@ -133,10 +133,10 @@
 									</div>
 								</div>
 							</form>
-					
+
 
 				      	</div>
-			   
+
 			   	 	</div>
 			  	</div>
 			</div>
@@ -144,7 +144,7 @@
 			<div class="card mb-4 shadow-sm">
 				<div class="card-body">
 					<div class="tab-content" id="nav-tabContent">
-						
+
 
 						<div class="tab-pane fade show active" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 							<div class="d-flex justify-content-between mb-4 align-items-center">
@@ -157,16 +157,16 @@
 								<table class="table text-center table-sm table-hover table-bordered">
 									<thead>
 										<tr>
-											<th>N°</th>
-											<th>Direccion</th>
-											<th >ACCIONES</th>
+											<th class="negrita">N°</th>
+											<th class="negrita">Direccion</th>
+											<th class="negrita">ACCIONES</th>
 										</tr>
 									</thead>
 									<tbody>
 										@forelse($rates as $rate)
 											<tr>
 												<td>ADSS-00{{ $rate->id }}</td>
-												<td>{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }} 
+												<td>{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }}
 												{{ $rate->details }}
 												{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}</td>
 												<td>
@@ -186,13 +186,13 @@
 										@endforelse
 									</tbody>
 								</table>
-							
+
 							</div>
 						</div>
 
 						<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
 
-							
+
 							<div class="row mb-4">
 								<div class="col d-flex justify-content-between">
 									<h4 class="font-weight-light">Compras realizadas</h4>
@@ -202,19 +202,19 @@
 							<div class="table-responsive">
 								<table class="table text-center table-bordered table-sm table-hover">
 									<thead class="">
-										<th class="d-none d-md-table-cell small font-weight-bold">ID COMPRA</th>
-										<th class="d-none d-md-table-cell small font-weight-bold">PRODUCTOS</th>
-										<th class="small font-weight-bold">MONTO (Bs)</th>
-										<th class="d-md-table-cell small font-weight-bold">DELIVERY</th>
-										<th  class=" small font-weight-bold">Estado</th>
-										<th class="small font-weight-bold">ACCIONES</th>
+										<th class="d-none d-md-table-cell small negrita">ID COMPRA</th>
+										<th class="d-none d-md-table-cell small negrita">PRODUCTOS</th>
+										<th class="small negrita">MONTO $</th>
+										<th class="d-md-table-cell small negrita">DELIVERY</th>
+										<th  class=" small negrita">ESTADO</th>
+										<th class="small negrita">FACTURA</th>
 									</thead>
 									<tbody>
 										@forelse($pedidos as $compra)
 											<tr>
 												<td class="d-none d-md-table-cell">FC-000{{ $compra->id }}</td>
 												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
-												<td>{{ number_format( $compra->amount, 2, ',', '.') }} <br><small class="font-weight-bold" style="color: #008080">{{number_format( $compra->amount/$compra->dolar->price, 2, ',', '.')}}$</small></td>
+												<td class="text-success">{{ number_format( $compra->amount, 2, ',', '.') }}</td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 												@else
@@ -226,9 +226,9 @@
 													@endif
 												@endif
 												@if ($compra->dispatched != null)
-											
+
 													@if($compra->confirmacion == "denegado")
-															
+
 													<td class="font-weight-bold small">{{$compra->confirmacion}}
 													<button type="button" class="ml-2 btn btn-danger" data-toggle="modal" data-target="#modal-denegado">
 														<i class="fas fa-info"></i>
@@ -238,7 +238,7 @@
 														@if($compra->delivery == "si")
 														<td class="font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
 														@else
-														<td><label class="font-weight-bold small">Puede retirar 
+														<td><label class="font-weight-bold small">Puede retirar
 														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">
 														<i class="fas fa-info"></i>
 														</button>
@@ -246,15 +246,15 @@
 														@endif
 													@endif
 												@else
-												<td class=""><label class="font-weight-bold small">Esperando confirmación</label></td>
+												<td class=""><label class="text-info small">En Espera</label></td>
 												@endif
-												
+
 												<td>
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
 													-->
 													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4-{{ $compra->id }}"><i class="fas fa-info"></i></button>
-													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
+													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-pdf" style="color: #ffffff"></i></a>
 
 												</td>
 											</tr>
@@ -292,9 +292,9 @@
 																@else
 																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>No</li>
 																@endif
-																
+
 															</ul>
-												       	</div> 
+												       	</div>
 											      		<div class="modal-footer">
 											       			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 											      		</div>
@@ -321,7 +321,7 @@
 											        <p>Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</p>
 											      	</div>
 											      	<div class="modal-footer">
-											        	
+
 											        	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
 											      	</div>
 										    	</div>
@@ -342,7 +342,7 @@
 											        <p>Para más informacion comuniquese con nosotros via whatsapp <br> +58-424-337-2191</p>
 											      	</div>
 											      	<div class="modal-footer">
-											        	
+
 											        	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
 											      	</div>
 										    	</div>
@@ -351,10 +351,10 @@
 
 									</tbody>
 								</table>
-								
+
 							</div>
 						</div>
-						
+
 						<!--APARTADO PARA LAS OFERTAS-->
 
 						<div class="tab-pane fade show" id="list-oferta" role="tabpanel" aria-labelledby="list-oferta-list">
@@ -371,12 +371,12 @@
 											<a class="nav-link {{ Request::get('buyType') != 'major' ? 'active' : 'normal' }}" href="{{url('/perfil/?buyType=minor')}}">Al menor</a>
 										</li>
 									</ul>
-					
+
 								</div>
 							</div>
 
 							<hr>
-							
+
 							<div class="row">
 								@foreach($productos as $producto)
 								<div class="col-md-3">
@@ -390,15 +390,15 @@
 											if ($item->options->sale_type == "al-menor") {
 												# code...
 												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
-											}	
-															
+											}
+
 										}
 									}
 									@endphp
 
 									<div class="card shadow">
 										<div class="card-body body-producto">
-											
+
 											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 											<div class="card-body body-producto" id="body-producto">
 												@if($producto->oferta == 1)
@@ -408,18 +408,18 @@
 
 												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
 												<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span >{{number_format($producto->retail_total_price - $producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
-												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6> 
-												
+												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
+
 												<p class="lead font-weight-light truncated-text text-center"  style="margin-bottom: 0px;">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
 
-												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>	
+												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
 
-														
+
 												<div class="">
-													
-															<button 
+
+															<button
 																id="deseos-{{ $producto->id }}"
-																data-id="{{ $producto->id }}" 
+																data-id="{{ $producto->id }}"
 																class="btn btn-block addToWishlist"
 																data-producto="{{ $producto->inventory->product_name }}"
 																data-precio="{{ $producto->retail_total_price }}"
@@ -428,10 +428,10 @@
 																<i class="fa fa-heart" style="color: #dc3545;"></i>
 																<b for="deseos-{{ $producto->id }}" class="text-danger">Lista de Deseos</b>
 															</button>
-															
-														
+
+
 														@if(isset($respuesta) && $respuesta != 0)
-														
+
 															<button
 																id="comprar-{{ $producto->id }}"
 																type="button"
@@ -444,11 +444,11 @@
 															>
 																<i class="fas fa-check" ></i>
 															</button>
-															
-														
-														
+
+
+
 														@else
-													
+
 															<button
 																id="comprar-{{ $producto->id }}"
 																type="button"
@@ -462,12 +462,12 @@
 																<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
 																<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar<b>
 															</button>
-															
-														
+
+
 														@endif
-												
+
 											</div>
-													
+
 
 											</div>
 										</div>
@@ -481,14 +481,14 @@
 										if ($item->options->sale_type == "al-mayor") {
 											# code...
 											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
-										}	
-														
+										}
+
 									}
 								}
 								@endphp
 
 								<div class="card shadow-sm">
-									
+
 									<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
 									<div class="card-body body-producto">
 										@if($producto->oferta == 1)
@@ -507,14 +507,14 @@
 										<p class="lead font-weight-normal text-center">Total: {{ number_format($producto->wholesale_total_packet_price + ($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit), 2, ',', '.') }} Bs</p>
 
 										<p class="text-right text-success">Dolares:{{ number_format($producto->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
-		
+
 												<button id="deseos-{{ $producto->id }}" data-id="{{ $producto->inventory->id }}" class="btn btn-block mb-2 addToWishlist">
 													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
 													<b for="deseos-{{ $producto->id }}" class=" text-danger">Lista de deseos</b>
 												</button>
-											
+
 											@if(isset($respuesta) && $respuesta != 0)
-										
+
 													<button
 														id="comprar-{{ $producto->id }}"
 														type="button"
@@ -527,11 +527,11 @@
 													>
 														<i class="fas fa-check" ></i>
 													</button>
-												
-												
-													
+
+
+
 											@else
-										
+
 												<button
 													id="comprar-{{ $producto->id }}"
 													type="button"
@@ -545,10 +545,10 @@
 													<i class="fas fa-shopping-cart mr-2"></i>
 													<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</b>
 												</button>
-												
-										
+
+
 											@endif
-										
+
 
 									</div>
 								</div>
@@ -561,11 +561,11 @@
 									{{$productos->render()}}
 								</div>
 							</div>
-								
+
 						</div>
 					</div>
 
-							
+
 
 						</div>
 
@@ -601,10 +601,10 @@
 							<label for="state_id">Estado</label><br>
 							<select required name="state_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="state_id"></select>
 							@foreach ($collection as $item)
-								
+
 							@endforeach
 						</div> --}}
-						
+
 					<div class="col-12">
 						<label for="forma_delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
 						<select name="forma_delivery" class="selectpicker mb-2 border form-control" id="forma-delivery">
@@ -642,7 +642,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 
 			</div>
 				<div class="modal-footer">
@@ -670,7 +670,7 @@
 			</div>
 
 			<div class="modal-body">
-				
+
 				<div class="row mb-2">
 					<div class="col col-sm-4">
 						<span class="font-weight-bold">Factura</span>
@@ -807,9 +807,9 @@
 
 
 		$('.detalle').click(function() {
-			
+
 			let data = $(this).data()
-			
+
 			$.post({
 				url: '/get_sale',
 				data,
@@ -823,14 +823,14 @@
 				$('#factura_id').text(res.code)
 				$('#cliente').text(`${res.user.people.name} ${res.user.people.lastname}`)
 				$('#monto').text(`${res.amount} Bs`)
-				
+
 				$('#productos').text('')
 				for(let producto of res.details){
 					$('#productos').append(`
 						<p>${producto.product}</p>
 					`)
 				}
-				
+
 				$('#fecha').text(res.created_at)
 
 				$('#modal_loader').fadeOut()
@@ -881,15 +881,15 @@
 		})
 
 	//CONSULTA DE LOS SECTORES DE LA CIUDAD SELECCIONADA
-	$('#city_id').on('change', function() { 
-			var city_id = $('#city_id').val(); 
+	$('#city_id').on('change', function() {
+			var city_id = $('#city_id').val();
 			$.ajax({
 				url: "sector/"+city_id,
 				type: "GET",
 				dataType: "json",
 				error: function(error){
 				//console.log(error);
-				}, 
+				},
 				success: function(respuesta){
 					console.log(respuesta)
 					$("#sector_id").html('<option value="" selected="true"> Seleccione una opción </option>');
@@ -930,7 +930,7 @@
 			})
 			.done((res) => {
 				console.log(res)
-				
+
 				if (res == 'rejected') {
 					toastr.info('Este producto ya está agregado con un tipo de compra distinto.')
 				} else {
@@ -944,8 +944,8 @@
 				that.removeAttr('disabled')
 				that.html('<i class="fas fa-check" style="color: #28a745;"></i>')
 				$('.texto-carrito').text("Producto agregado");
-				
-				
+
+
 			})
 			.fail((err) => {
 				toastr.error('Ha ocurrido un error.')
@@ -954,7 +954,7 @@
 		});
 
 		// Para añadir cuando está logueado
-		
+
 		$('.addToWishlist').click(function(){
 			let producto = $(this).data('id')
 			let that = $(this)
@@ -993,4 +993,111 @@
 		});
 
 </script>
+@endpush
+
+@push('styles')
+<style>
+	.profile {
+	margin: 20px 0;
+	}
+
+	/* Profile sidebar */
+	.profile-sidebar {
+	padding: 20px 0 10px 0;
+	background: #fff;
+	}
+
+	.profile-userpic img {
+	float: none;
+	margin: 0 auto;
+	width: 50%;
+	height: 50%;
+	-webkit-border-radius: 50% !important;
+	-moz-border-radius: 50% !important;
+	border-radius: 50% !important;
+	}
+
+	.profile-usertitle {
+	text-align: center;
+	margin-top: 20px;
+	}
+
+	.profile-usertitle-name {
+	color: #5a7391;
+	font-size: 16px;
+	font-weight: 600;
+	margin-bottom: 7px;
+	}
+
+	.profile-usertitle-job {
+	text-transform: uppercase;
+	color: #5b9bd1;
+	font-size: 12px;
+	font-weight: 600;
+	margin-bottom: 15px;
+	}
+
+	.profile-userbuttons {
+	text-align: center;
+	margin-top: 10px;
+	}
+
+	.profile-userbuttons .btn {
+	text-transform: uppercase;
+	font-size: 11px;
+	font-weight: 600;
+	padding: 6px 15px;
+	margin-right: 5px;
+	}
+
+	.profile-userbuttons .btn:last-child {
+	margin-right: 0px;
+	}
+
+	.profile-usermenu {
+	margin-top: 30px;
+	}
+
+	.profile-usermenu ul li {
+	border-bottom: 1px solid #f0f4f7;
+	}
+
+	.profile-usermenu ul li:last-child {
+	border-bottom: none;
+	}
+
+	.profile-usermenu ul li a {
+	color: #93a3b5;
+	font-size: 14px;
+	font-weight: 400;
+	}
+
+	.profile-usermenu ul li a i {
+	margin-right: 8px;
+	font-size: 14px;
+	}
+
+	.profile-usermenu ul li a:hover {
+	background-color: #fafcfd;
+	color: #5b9bd1;
+	}
+
+	.profile-usermenu ul li.active {
+	border-bottom: none;
+	}
+
+	.profile-usermenu ul li.active a {
+	color: #5b9bd1;
+	background-color: #f6f9fb;
+	border-left: 2px solid #5b9bd1;
+	margin-left: -2px;
+	}
+
+	/* Profile Content */
+	.profile-content {
+	padding: 20px;
+	background: #fff;
+	min-height: 460px;
+	}
+</style>
 @endpush
