@@ -408,7 +408,7 @@
 													<div class="card-body body-producto text-center">
 
 														@if($producto->oferta == 1)
-															<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+															<!--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>-->
 														@endif
 														<p class="truncated-text text-center">{{ $producto->inventory->product_name }}</p>
 															<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price * $dolar->price, 2, ',', '.') }} Bs</span>
