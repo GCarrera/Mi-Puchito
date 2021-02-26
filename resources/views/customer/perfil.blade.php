@@ -407,7 +407,7 @@
 													<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
 													<div class="card-body body-producto text-center">
 
-														@if($producto->product['oferta'] == 1)
+														@if($producto->oferta == 1)
 															<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 														@endif
 														<p class="truncated-text text-center">{{ $producto->inventory->product_name }}</p>
