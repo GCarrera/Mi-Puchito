@@ -388,10 +388,15 @@
 										<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
 										@php
 										if (isset($carrito)) {
+											$respuestica = 2;
 											foreach ($carrito as $item) {
 												if ($item->options->sale_type == "al-menor") {
 													# code...
 													$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+												}
+
+												if ($item->model->inventory->id === $producto->inventory->id) {
+													$respuestica = 1;
 												}
 
 											}
@@ -404,8 +409,9 @@
 
 												<div class="card border-danger shadow">
 
-													<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
-													<div class="card-body body-producto text-center">
+														<img data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
+
+													<div class="card-footer border-danger body-producto text-center">
 
 														@if($producto->oferta == 1)
 															<!--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>-->
@@ -426,6 +432,7 @@
 																		data-producto="{{ $producto->product_name }}"
 																		data-precio="{{ $producto->retail_total_price }}"
 																		data-toggle="tooltip" data-placement="top" title="Lista de Deseos"
+																		disabled
 
 																		>
 																			<i class="fa fa-heart" style="color: #dc3545;"></i>
@@ -433,13 +440,13 @@
 																	</button>
 
 
-																@if(isset($respuesta) && $respuesta != 0)
+																@if($respuestica === 1)
 
 																	<button
 																		type="button"
 																		class="btn btn-block btn-primary addCartBtn"
-																		data-id="{{ $producto->id }}"
-																		data-producto="{{ $producto->product_name }}"
+																		data-id="{{ $producto->inventory->id }}"
+																		data-producto="{{ $producto->inventory->product_name }}"
 																		data-precio="{{ $producto->retail_total_price }}"
 																		data-type="al-menor"
 																		data-cantidad="1"
@@ -455,14 +462,14 @@
 																<button
 																		type="button"
 																		class="btn btn-block btn-primary addCartBtn"
-																		data-id="{{ $producto->id }}"
-																		data-producto="{{ $producto->product_name }}"
+																		data-id="{{ $producto->inventory->id }}"
+																		data-producto="{{ $producto->inventory->product_name }}"
 																		data-precio="{{ $producto->retail_total_price}}"
 																		data-type="al-menor"
 																		data-cantidad="1"
 																>
 																	<i class="fas fa-shopping-cart"></i>
-																	<b class="texto-carrito negrita">Comprar</b>
+																	<span class="texto-carrito simple">Comprar</span>
 																</button>
 
 
@@ -1106,8 +1113,8 @@
 				}
 
 				that.removeAttr('disabled')
-				that.html('<i class="fas fa-check" style="color: #28a745;"></i>')
-				$('.texto-carrito').text("Producto agregado");
+				that.html('<i class="fas fa-check"></i>')
+				$('.texto-carrito').text("Comprar");
 
 
 			})
