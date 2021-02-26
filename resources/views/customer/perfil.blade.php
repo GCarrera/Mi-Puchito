@@ -411,10 +411,6 @@
 															<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 														@endif
 														<p class="truncated-text text-center">{{ $producto->inventory->product_name }}</p>
-														<!--<div class="text-center">-->
-															<!--<span class="font-weight-light">Subtotal: {{ number_format($producto->product['retail_total_price'] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
-															<br>
-															<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
 															<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price * $dolar->price, 2, ',', '.') }} Bs</span>
 															<br>
 															<span class="text-left text-success small">Dolares:{{ number_format($producto->retail_total_price, 2, ',', '.')}}$</span> <span>   </span> <span class="text-danger small">Oferta!!!</span>
