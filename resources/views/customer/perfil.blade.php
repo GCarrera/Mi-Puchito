@@ -457,7 +457,7 @@
 																		class="btn btn-block btn-primary addCartBtn"
 																		data-id="{{ $producto->id }}"
 																		data-producto="{{ $producto->product_name }}"
-																		data-precio="{{ $producto->product['retail_total_price']}}"
+																		data-precio="{{ $producto->product->retail_total_price}}"
 																		data-type="al-menor"
 																		data-cantidad="1"
 																>
