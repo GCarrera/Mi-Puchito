@@ -409,9 +409,9 @@
 
 												<div class="card border-danger shadow">
 
-														<img data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
+														<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
 
-													<div class="card-footer border-danger body-producto text-center">
+													<div class="card-footer body-producto text-center">
 
 														@if($producto->oferta == 1)
 															<!--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>-->
