@@ -150,7 +150,7 @@
 							<div class="d-flex justify-content-between mb-4 align-items-center">
 								<h4 class="font-weight-light">Direcciones de entrega</h4>
 								<button class="btn btn-primary" data-toggle="modal" data-target="#nuevaDireccion">
-									<i class="fas fa-plus mr-2"></i>Nueva
+									<!--<i class="fas fa-plus mr-2"></i>-->Nueva
 								</button>
 							</div>
 							<div class="table-responsive">
@@ -170,12 +170,15 @@
 												{{ $rate->details }}
 												{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}</td>
 												<td>
-													<button data-id="{{ $rate->id }}" class="btn btn-primary address_edit"><i class="fas fa-edit"></i></button>
+													<button class="btn btn-primary btn-sm" onclick='showEdit({{ $rate->id }})'>
+														<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
+													</button>
+													{{--<button data-id="{{ $rate->id }}" class="btn btn-sm btn-primary address_edit"><i class="fas fa-edit"></i></button>--}}
 													<form action="{{route('direcciones.destroy', $rate->id)}}" method="post" class="d-inline">
 														@method('DELETE')
 														@csrf
 														<input type="hidden" value="{{ $rate->id }}" name="id">
-													<button data-id="{{ $rate->id }}" class="btn btn-danger address_delete" type="submit"><i class="fas fa-trash"></i></button>
+													<button data-id="{{ $rate->id }}" class="btn btn-sm btn-danger address_delete" type="submit"><i class="fas fa-trash"></i></button>
 													</form>
 												</td>
 											</tr>
@@ -363,14 +366,14 @@
 									<h4 class="font-weight-bold">Ofertas</h4>
 								</div>
 								<div class="col-md-3">
-									<ul class="nav nav-pills">
+									<!--<ul class="nav nav-pills">
 										<li class="nav-item">
 											<a class="nav-link {{ Request::get('buyType') == 'major' ? 'active' : 'normal' }}" href="{{url('/perfil/?buyType=major')}}">Al mayor</a>
 										</li>
 										<li class="nav-item">
 											<a class="nav-link {{ Request::get('buyType') != 'major' ? 'active' : 'normal' }}" href="{{url('/perfil/?buyType=minor')}}">Al menor</a>
 										</li>
-									</ul>
+									</ul>-->
 
 								</div>
 							</div>
@@ -379,70 +382,156 @@
 
 							<div class="row">
 								@foreach($productos as $producto)
-								<div class="col-md-3">
 
-								@if(Request::get('buyType') != 'major')
+									<div class="col-lg-4 col-12">
+										@if(Request::get('buytype') != 'major')
+										<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+										@php
+										if (isset($carrito)) {
+											foreach ($carrito as $item) {
+												if ($item->options->sale_type == "al-menor") {
+													# code...
+													$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+												}
 
-									<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
-									@php
-									if (isset($carrito)) {
-										foreach ($carrito as $item) {
-											if ($item->options->sale_type == "al-menor") {
-												# code...
-												$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
 											}
-
 										}
-									}
-									@endphp
+										@endphp
 
-									<div class="card shadow">
-										<div class="card-body body-producto">
+										<div class="card shadow-sm mb-4">
 
-											<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
-											<div class="card-body body-producto" id="body-producto">
-												@if($producto->oferta == 1)
+											<div class="card-body bg-light">
+
+												<div class="card border-danger shadow">
+
+													<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
+													<div class="card-body body-producto text-center">
+
+														@if($producto->product['oferta'] == 1)
+															<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+														@endif
+														<p class="truncated-text text-center">{{ $producto->inventory->product_name }}</p>
+														<!--<div class="text-center">-->
+															<!--<span class="font-weight-light">Subtotal: {{ number_format($producto->product['retail_total_price'] - $producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span>
+															<br>
+															<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
+															<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price * $dolar->price, 2, ',', '.') }} Bs</span>
+															<br>
+															<span class="text-left text-success small">Dolares:{{ number_format($producto->retail_total_price, 2, ',', '.')}}$</span> <span>   </span> <span class="text-danger small">Oferta!!!</span>
+														<!--</div>-->
+
+														<div class="">
+
+															<!--botones de comprar y listar-->
+
+																	<button
+																		data-id="{{ $producto->id }}"
+																		class="btn btn-block addToWishlist d-none"
+																		data-producto="{{ $producto->product_name }}"
+																		data-precio="{{ $producto->retail_total_price }}"
+																		data-toggle="tooltip" data-placement="top" title="Lista de Deseos"
+
+																		>
+																			<i class="fa fa-heart" style="color: #dc3545;"></i>
+																			<!--<b class="text-danger">Lista de Deseos</b>-->
+																	</button>
+
+
+																@if(isset($respuesta) && $respuesta != 0)
+
+																	<button
+																		type="button"
+																		class="btn btn-block btn-primary addCartBtn"
+																		data-id="{{ $producto->id }}"
+																		data-producto="{{ $producto->product_name }}"
+																		data-precio="{{ $producto->product->retail_total_price }}"
+																		data-type="al-menor"
+																		data-cantidad="1"
+																	>
+																		<i class="fas fa-check"></i>
+
+																	</button>
+
+
+
+																@else
+
+																<button
+																		type="button"
+																		class="btn btn-block btn-primary addCartBtn"
+																		data-id="{{ $producto->id }}"
+																		data-producto="{{ $producto->product_name }}"
+																		data-precio="{{ $producto->product['retail_total_price']}}"
+																		data-type="al-menor"
+																		data-cantidad="1"
+																>
+																	<i class="fas fa-shopping-cart"></i>
+																	<b class="texto-carrito negrita">Comprar</b>
+																</button>
+
+
+																@endif
+
+														</div>
+
+													</div>
+
+												</div>
+
+
+											</div>
+										</div>
+
+										@else
+										<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
+										@php
+										if (isset($carrito)) {
+											foreach ($carrito as $item) {
+												if ($item->options->sale_type == "al-mayor") {
+													# code...
+													$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
+												}
+
+											}
+										}
+										@endphp
+										<div class="card shadow-sm mb-4 w-100">
+											<div class="card-body">
+
+												<img style="height: 200px; object-fit: contain" data-src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
+												@if($producto->product['oferta'] == 1)
 												<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 												@endif
-												<h5 class="card-title font-weight-bold truncated-text text-center">{{ $producto->inventory->product_name }}</h5>
+												<h5 class="card-title text-center font-weight-bold">{{ $producto->product_name }}</h5>
+												<div class="text-center">
+													<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->unit_type) }}<br>
+													<span class="font-weight-bold">Cantidad: </span>{{ $producto->qty_per_unit }} <br>
+													<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->product['wholesale_total_individual_price'], 2, ',', '.') }} <br>
+													<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->product['wholesale_packet_price'] - $producto->product['wholesale_iva_amount']), 2, ',', '.') }} <br>
+													<span class="font-weight-bold">Iva: </span>{{number_format($producto->product['wholesale_iva_amount'], 2, ',', '.')  }} <br>
+													<p class="lead font-weight-normal">Total: {{ number_format($producto->product['wholesale_total_packet_price'], 2, ',', '.') }} Bs</p>
+												</div>
+												<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
 
-												{{-- <input name="star-rating" value="3.4" class="kv-ltr-theme-fas-star star-rating rating-loading" data-size="xs"> --}}
-												<h6 class="font-weight-normal truncated-text text-center">Subtotal: <span >{{number_format($producto->retail_total_price - $producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
-												<h6 class="font-weight-normal truncated-text text-center small">Iva: <span class="">{{ number_format($producto->retail_iva_amount, 2, ',', '.') }}</span></h6>
+												<!--BOTONES DE LISTA DE DESEOS Y COMPRAR-->
 
-												<p class="lead font-weight-light truncated-text text-center"  style="margin-bottom: 0px;">{{ number_format($producto->retail_total_price, 2, ',', '.') }} Bs</p>
-
-												<p class="text-right text-success">Dolares:{{ number_format($producto->retail_total_price / $dolar->price, 2, ',', '.')}}$</p>
-
-
-												<div class="">
-
-															<button
-																id="deseos-{{ $producto->id }}"
-																data-id="{{ $producto->id }}"
-																class="btn btn-block addToWishlist"
-																data-producto="{{ $producto->inventory->product_name }}"
-																data-precio="{{ $producto->retail_total_price }}"
-
-															>
-																<i class="fa fa-heart" style="color: #dc3545;"></i>
-																<b for="deseos-{{ $producto->id }}" class="text-danger">Lista de Deseos</b>
+															<button data-id="{{ $producto->id }}" class="btn btn-block mb-2 addToWishlist">
+																<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
+																<b class="d-block text-danger">Lista de deseos</b>
 															</button>
-
 
 														@if(isset($respuesta) && $respuesta != 0)
 
 															<button
-																id="comprar-{{ $producto->id }}"
 																type="button"
-																class="text-center btn btn-block btn-primary addCartBtn"
-																data-id="{{ $producto->inventory->id }}"
-																data-producto="{{ $producto->inventory->product_name }}"
-																data-precio="{{ $producto->retail_total_price }}"
-																data-type="al-menor"
-																data-cantidad="1"
+															class="btn btn-block btn-primary addCartBtn"
+															data-id="{{ $producto->id }}"
+															data-producto="{{ $producto->product_name }}"
+															data-precio="{{ $producto->product->wholesale_total_packet_price }}"
+															data-type="al-mayor"
+															data-cantidad="1"
 															>
-																<i class="fas fa-check" ></i>
+																<i class="fas fa-check"></i>
 															</button>
 
 
@@ -450,116 +539,27 @@
 														@else
 
 															<button
-																id="comprar-{{ $producto->id }}"
 																type="button"
-																class="text-center btn btn-block btn-primary addCartBtn"
-																data-id="{{ $producto->inventory->id }}"
-																data-producto="{{ $producto->inventory->product_name }}"
-																data-precio="{{ $producto->retail_total_price }}"
-																data-type="al-menor"
+																class="btn btn-block btn-primary addCartBtn"
+																data-id="{{ $producto->id }}"
+																data-producto="{{ $producto->product_name }}"
+																data-precio="{{ $producto->product['wholesale_total_packet_price'] }}"
+																data-type="al-mayor"
 																data-cantidad="1"
 															>
-																<i class="fas fa-shopping-cart" style="color: #007bff;"></i>
-																<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar<b>
-															</button>
 
+																<i class="fas fa-shopping-cart mr-2" style="color: #007bff;"></i>
+																<b>Comprar</b>
+															</button>
 
 														@endif
 
 											</div>
-
-
-											</div>
 										</div>
-									</div>
-								@else
-								<!--PRODUCTOS AL MAYOR-->
-								<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
-								@php
-								if (isset($carrito)) {
-									foreach ($carrito as $item) {
-										if ($item->options->sale_type == "al-mayor") {
-											# code...
-											$respuesta = Illuminate\Support\Arr::get($item, 'model.id', 0);
-										}
-
-									}
-								}
-								@endphp
-
-								<div class="card shadow-sm">
-
-									<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/'.$producto->image) }}" class="card-img-top">
-									<div class="card-body body-producto">
-										@if($producto->oferta == 1)
-										<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
 										@endif
-										<h5 class="card-title font-weight-bold text-center">{{ $producto->inventory->product_name }}</h5>
-
-										<p class="text-center">
-											<span class="font-weight-bold">Unidad: </span>{{ ucfirst($producto->inventory->unit_type) }}<br>
-											<span class="font-weight-bold">Cantidad: </span>{{ $producto->inventory->qty_per_unit }} <br>
-											<span class="font-weight-bold">Precio por unidad: </span>{{ number_format($producto->wholesale_total_individual_price, 2, ',', '.') }} <br>
-											<span class="font-weight-bold">Subtotal: </span>{{ number_format(($producto->wholesale_packet_price), 2, ',', '.') }} <br>
-											<span class="font-weight-bold small">Iva: </span>{{number_format($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit, 2, ',', '.')  }} <br>
-										</p>
-
-										<p class="lead font-weight-normal text-center">Total: {{ number_format($producto->wholesale_total_packet_price + ($producto->wholesale_iva_amount * $producto->inventory->qty_per_unit), 2, ',', '.') }} Bs</p>
-
-										<p class="text-right text-success">Dolares:{{ number_format($producto->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
-
-												<button id="deseos-{{ $producto->id }}" data-id="{{ $producto->inventory->id }}" class="btn btn-block mb-2 addToWishlist">
-													<i class="fa fa-heart" data-toggle="tooltip" data-title="Agregar a favoritos" style="color: #dc3545;"></i>
-													<b for="deseos-{{ $producto->id }}" class=" text-danger">Lista de deseos</b>
-												</button>
-
-											@if(isset($respuesta) && $respuesta != 0)
-
-													<button
-														id="comprar-{{ $producto->id }}"
-														type="button"
-														class="text-center btn btn-block btn-primary addCartBtn"
-														data-id="{{ $producto->inventory->id }}"
-														data-producto="{{ $producto->inventory->product_name }}"
-														data-precio="{{ $producto->wholesale_total_packet_price }}"
-														data-type="al-mayor"
-														data-cantidad="1"
-													>
-														<i class="fas fa-check" ></i>
-													</button>
-
-
-
-											@else
-
-												<button
-													id="comprar-{{ $producto->id }}"
-													type="button"
-													class="text-center btn btn-block btn-primary addCartBtn"
-													data-id="{{ $producto->inventory->id }}"
-													data-producto="{{ $producto->inventory->product_name }}"
-													data-precio="{{ $producto->wholesale_total_packet_price }}"
-													data-type="al-mayor"
-													data-cantidad="1"
-												>
-													<i class="fas fa-shopping-cart mr-2"></i>
-													<b for="comprar-{{ $producto->id }}" class="texto-carrito">Comprar</b>
-												</button>
-
-
-											@endif
-
-
 									</div>
-								</div>
 
-
-								@endif
-								</div>
 								@endforeach
-								<div class="float-right">
-									{{$productos->render()}}
-								</div>
 							</div>
 
 						</div>
@@ -606,7 +606,7 @@
 						</div> --}}
 
 					<div class="col-12">
-						<label for="forma_delivery">Seleccione una forma de colocar la direccion para el delivery</label><br>
+						<label for="forma_delivery">Formas de dirección</label><br>
 						<select name="forma_delivery" class="selectpicker mb-2 border form-control" id="forma-delivery">
 							<option value="" id="select-option-forma">Seleccione una forma</option>
 							<option value="1">Escribir la direccion</option>
@@ -720,11 +720,155 @@
 	</div>
 </div>
 
+<!-- Modal EDITAR direccion -->
+<div class="modal fade" id="editarDireccion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Editar Dirección</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal_loader py-5" id="modal_loader_edit">
+				<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
+			</div>
+
+			<form id="editarForm" method="post" enctype="multipart/form-data">
+				@csrf
+				@method('put')
+				<div class="modal-body">
+
+					<input type="hidden" name="forma_delivery" id="forma_delivery_edit" value="">
+					<input type="hidden" name="travel_rate" id="travel_rate_edit" value="">
+
+					<div id="direc-descrip-caja-edit" class="w-100">
+						<div class="col-12">
+							<textarea name="direc_descrip_area" id="direc-descrip-area-edit" cols="30" rows="5" class="form-control" maxlength="255" ></textarea>
+							</div>
+					</div>
+
+					<div id="select-multiples-edit" class="w-100">
+						<div class="col-12">
+							<label for="city_id">Ciudad</label><br>
+							<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id_edit">
+								<option value="0" selected>Seleccione Ciudad</option>
+							@foreach ($cities as $city)
+								<option value="{{$city->id}}">{{$city->city}}</option>
+							@endforeach
+							</select>
+						</div>
+						<div class="col-12">
+							<label for="sector_id_edit">Sector</label><br>
+							<select required name="sector_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="sector_id_edit">
+								<option value="0">Seleccione Sector</option>
+							</select>
+						</div>
+						<div class="col-12">
+							<label for="detalles">Dirección exacta</label><br>
+							<input type="text" class="form-control" name="detalles" id="detalles_edit" placeholder="Calle, Número de Casa, Algún punto de referencia.">
+						</div>
+					</div>
+
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
+					<button type="submit" id="sendformedit" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 
 @endsection
 
 @push('scripts')
 <script>
+
+	function showEdit(id) {
+		$('#editarDireccion').modal('show');
+
+		$('#editarForm').attr('action', `/direcciones/${id}`)
+
+		$.get({
+			url : `/direcciones/${id}`,
+			beforeSend(){
+				$('#modal_loader_edit').show()
+			}
+		})
+		.done((data) => {
+			console.log("data direccion:");
+			console.log(data);
+
+			if (data.travel_rate != null) {
+				$('#forma_delivery_edit').val(2);
+				$('#travel_rate_edit').val(data.travel_rate_id);
+				$('#detalles_edit').val(data.details);
+				$('#select-multiples-edit').show();
+				$('#direc-descrip-caja-edit').hide();
+			} else {
+				$('#forma_delivery_edit').val(1);
+				$('#direc-descrip-area-edit').val(data.details);
+				$('#select-multiples-edit').hide('');
+				$('#direc-descrip-caja-edit').show();
+
+			}
+
+			$('#modal_loader_edit').fadeOut();
+
+			/*$('#product_edit').val(data.id)
+			$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
+
+			$('#cost_edit').val(data.cost)
+
+			$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
+
+			$('#retail_margin_gain_edit').val(data.retail_margin_gain)
+			//ESTABLECEMOS EL CHECK DE LAS OFERTAS
+			if (data.oferta == 1) {
+
+				$('#ofertaEdit2').removeAttr('checked');
+				$('#ofertaEdit1').attr('checked', true);
+
+			}else{
+
+				$('#ofertaEdit1').removeAttr('checked', true);
+				$('#ofertaEdit2').attr('checked', true);
+				$('#fotoeditold').attr('src', '../storage/app/public/'+data.image);
+
+			}
+
+			var costo = data.cost;
+			var gMayor = data.wholesale_margin_gain;
+			result_porcentaje  = (parseFloat(costo)*gMayor)/100;
+			result_porcentaje = result_porcentaje.toFixed(3);
+			precio_mayor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+			$('.wholesale_total_individual_price').val(precio_mayor_total.toFixed(3));
+			var total2 = parseFloat(precio_mayor_total).toFixed(3) * data.inventory.qty_per_unit;
+			$('.wholesale_total_packet_price').val(total2.toFixed(3));
+			$('.qty_per_unit_val').val(data.inventory.qty_per_unit);
+			$('.wholesale_packet_price').val(total2.toFixed(3));
+			$('#totalMayor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_mayor_total));
+
+			var gMenor = data.retail_margin_gain;
+			result_porcentaje  = (parseFloat(costo)*gMenor)/100;
+			result_porcentaje = result_porcentaje.toFixed(3);
+			precio_menor_total = parseFloat(costo)+parseFloat(result_porcentaje);
+			$('.retail_total_price').val(precio_menor_total.toFixed(3));
+
+			$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 3}).format(precio_menor_total));
+
+			$('#modal_loader_edit').fadeOut();*/
+
+		})
+		.fail((err)=> {
+			console.log(err)
+			toastr.error('Ha ocurrido un error.')
+		})
+	}
 
 	$(() => {
 
@@ -896,6 +1040,30 @@
 					respuesta.forEach(element => {
 						console.log(element)
 						$('#sector_id').append('<option value='+element.id+'> '+element.sector+' </option>')
+					});
+					$('.selectpicker').selectpicker('refresh');
+				}
+			});
+
+		})
+
+	$('#city_id_edit').on('change', function() {
+		console.log("UwU");
+			var city_id = $('#city_id_edit').val();
+			console.log(city_id);
+			$.ajax({
+				url: "sector/"+city_id,
+				type: "GET",
+				dataType: "json",
+				error: function(error){
+				//console.log(error);
+				},
+				success: function(respuesta){
+					console.log(respuesta)
+					$("#sector_id_edit").html('<option value="" selected="true"> Seleccione una opción </option>');
+					respuesta.forEach(element => {
+						console.log(element)
+						$('#sector_id_edit').append('<option value='+element.id+'> '+element.sector+' </option>')
 					});
 					$('.selectpicker').selectpicker('refresh');
 				}

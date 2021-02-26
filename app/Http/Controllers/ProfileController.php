@@ -64,14 +64,14 @@ class ProfileController extends Controller
 
 	public function editar_perfil(Request $request)
 	{
-		
+
 		$validator = Validator::make($request->all(), [
             'name' => 'max:255',
 			'email' => 'email',
 			'phone' => 'digits:11',
 			'password' => 'nullable|confirmed|min:6'
 		]);
-		
+
         if ($validator->fails()) {
             return redirect('perfil')
                         ->withErrors($validator)

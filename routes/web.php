@@ -60,6 +60,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::get('/perfil', 'ProfileController@perfil')->name('perfil');
 	Route::get('/editar_perfil', 'ProfileController@editar_perfil')->name('editar_perfil');
 	Route::resource('/direcciones', 'AddressUserDeliveryController');
+	//Route::get('/direcciones', 'AddressUserDeliveryController');
 
 	Route::resource('/travel_rates', 'TravelRateController');
 	Route::resource('/products', 'ProductController');
