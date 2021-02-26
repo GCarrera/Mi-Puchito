@@ -19,10 +19,10 @@
 
 		<div class="col-md-5 col-sm-12 col-xs-12">
 			@if(Request::get('buytype') == 'major')
-			<form action="" method="GET" class="my-2 my-lg-0">
+			<form action="/" method="GET" class="my-2 my-lg-0">
 			<input type="hidden" name="buytype" value="major">
 			@else
-			<form action="" method="GET" class="my-2 my-lg-0">
+			<form action="/" method="GET" class="my-2 my-lg-0">
 			@endif
 				<div class="input-group mb-2">
 					<input name="search" class="form-control SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" aria-describedby="button-addon2">
@@ -38,7 +38,7 @@
 		<ul class="navbar-nav ml-auto">
 
 		    <li class="nav-item" id="inicio">
-		     <a class="nav-link" href="/home"><i class="fas fa-home mr-2" ></i>Inicio</a>
+		     <a class="nav-link" href="/"><i class="fas fa-home mr-2" ></i>Inicio</a>
 		    </li>
 		    <li class="nav-item" id="lista-de-deseos">
 		    @guest
@@ -105,7 +105,7 @@
 		<div class="container bg-dark">
 			<div class="row">
 				<div class="col-md-4 col-lg-4 footer-about wow fadeInUp">
-					<img class="logo-footer" src="{{ asset('public/img/pinchitos-inv.png') }}" alt="logo-footer" data-at2x="public/img/pinchitos.png">
+					<img class="logo-footer" src="{{ asset('public/img/pinchitos.png') }}" alt="logo-footer" data-at2x="public/img/pinchitos.png">
 					<p>
 						Servicio en linea sencillo practico y seguro, integrado al sistema de centralizacion de procesos empresariales PROMETHEUS.
 					</p>
