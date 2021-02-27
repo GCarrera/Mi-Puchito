@@ -109,9 +109,9 @@ class AdminController extends Controller
 
 		$inventario = Inventory::orderBy('id', 'desc')->get();
 
-		if (count($inventario) > 0) {
+		/*if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
-		}
+		}*/
 
 		return view('admin.inventario')
 			->with('inventario', $inventario)
@@ -305,6 +305,27 @@ class AdminController extends Controller
 
 		return view('admin.delivery')
 			->with('ventas', $ventas);
+	}
+
+	public function delivery_data(Request $request)
+	{
+		$ventas = Sale::with(['deliveries',
+		'details' => function($details) {
+			$details->with(['inventory' => function ($inventory) {
+				$inventory->select('id',	'product_name');
+			}]);
+		}, 'user' => function($user) {
+			$user->select('id', 'people_id')->with(['people' => function($people) {
+				$people->select('id', 'name');
+			}]);
+		}])
+		->where('id', $request->id)
+		->whereHas('details')
+		->where('delivery', 'si')
+		->orderBy('id', 'desc')
+		->paginate();
+
+		return $ventas;
 	}
 
 	public function traer_productos()

@@ -115,7 +115,8 @@ class FacturaController extends Controller
         $pdf = PDF::loadView("pdf.factura", compact('pedido', 'subtotal', 'iva', 'total'));
 
         //return response()->json($pedido);
-        return $pdf->download('FC-00'.$pedido->id);
+        return $pdf->stream();
+        //return $pdf->download('FC-00'.$pedido->id);
 
     }
 }

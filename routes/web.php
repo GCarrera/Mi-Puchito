@@ -35,6 +35,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 
 		Route::get('/', 'AdminController@index')->name('admin')->middleware('operador');
 		Route::get('/delivery', 'AdminController@delivery')->name('delivery')->middleware('operador');
+		Route::get('/delivery-data/{id}', 'AdminController@delivery_data')->middleware('operador');
 		Route::get('/usuarios', 'UsuariosController@index')->name('usuarios')->middleware('operador');
 		Route::get('/inventario', 'AdminController@inventario')->name('inventario')->middleware('almacen');
 		Route::get('/faltantes', 'AdminController@faltantes')->name('faltantes')->middleware('almacen');

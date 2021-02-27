@@ -74,7 +74,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				<div class="card-body">
 
 					<div class="row d-none d-sm-flex">
-						<div class="col">
+						<div class="col-3">
 							<p class="text-muted small text-center">PRODUCTO</p>
 						</div>
 						<div class="col">
@@ -105,7 +105,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					<!-- No responsie -->
 					<div class="row d-none d-sm-flex">
 
-						<div class="col-4">
+						<div class="col-3">
 							<img data-src="/storage/app/public/{{ $c->options->image }}" class="img-fluid img-thumbnail mr-2">
 						</div>
 
