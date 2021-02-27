@@ -242,6 +242,8 @@
 
 			$.each( venta.details, function( key, value ) {
 
+				console.log(value.inventory);
+
 				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.sub_total / value.quantity);
 				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.amount);
 
