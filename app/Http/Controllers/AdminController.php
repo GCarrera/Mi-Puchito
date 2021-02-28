@@ -307,25 +307,11 @@ class AdminController extends Controller
 			->with('ventas', $ventas);
 	}
 
-	public function delivery_data(Request $request)
+	public function delivery_data($id)
 	{
-		$ventas = Sale::with(['deliveries',
-		'details' => function($details) {
-			$details->with(['inventory' => function ($inventory) {
-				$inventory->select('id',	'product_name');
-			}]);
-		}, 'user' => function($user) {
-			$user->select('id', 'people_id')->with(['people' => function($people) {
-				$people->select('id', 'name');
-			}]);
-		}])
-		->where('id', $request->id)
-		->whereHas('details')
-		->where('delivery', 'si')
-		->orderBy('id', 'desc')
-		->paginate();
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
 
-		return $ventas;
+		return $pedido;
 	}
 
 	public function traer_productos()

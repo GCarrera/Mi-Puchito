@@ -255,7 +255,8 @@
 
 			});
 
-			$('#total-show').text(`${venta.amount}`);
+			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.amount);
+			$('#total-show').text(totalShow);
 			var url = '/get-pedido-descarga/'+venta.id;
 			$('#factura-pdf').attr('href', url);
 
