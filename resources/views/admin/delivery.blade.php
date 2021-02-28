@@ -189,7 +189,7 @@
 													<th>Cantidad</th>
 													<th>Precio unitario</th>
 													<!--<th>iva unitario</th>-->
-													<th>Precio</th>
+													<th>Subtotal</th>
 											</tr>
 									</thead>
 									<tbody id="table-products">
@@ -197,7 +197,7 @@
 									</tbody>
 							</table>
 							<div class="text-right">
-									<span class=""><span class="font-weight-bold">Total a pagar:</span><span id="total-show"></span></span>
+									<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
 							</div>
 
 								</div>
@@ -235,6 +235,8 @@
 			console.log(data);
 			var venta = data;
 
+			$('#table-products').empty();
+
 			$('#almacen').text(`Factura: 000${venta.id}`);
 			$('#fecha-create').text(`${venta.created_at}`);
 			$('#user-name').text(`${venta.user.people.name}`);
@@ -244,14 +246,14 @@
 
 				//console.log(value.inventory);
 
-					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.sub_total / value.quantity);
-					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.amount);
+					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
+					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
 
 					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 			});
 
-			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.amount);
+			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
 			$('#total-show').text(totalShow);
 			var url = '/get-pedido-descarga/'+venta.id;
 			$('#factura-pdf').attr('href', url);

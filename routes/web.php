@@ -48,6 +48,9 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 		Route::get('/usuarios/{id}', 'UsuariosController@show')->name('usuarios.show');
 
 	});
+
+	Route::get('/notificaciones', 'CustomerController@get_compras');
+
 	//PRECIO ACTUAL DEL DOLAR
 	Route::get('/get_dolar', 'AdminController@get_dolar');
 	Route::post('/establecer_dolar', 'AdminController@establecer_dolar');

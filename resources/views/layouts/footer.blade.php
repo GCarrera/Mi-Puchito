@@ -103,6 +103,68 @@
 	});
 
 	$('#fechas').daterangepicker();
+
+
+	$.get({
+		url : `/notificaciones`,
+	})
+	.done((data) => {
+
+		if (data != false) {
+			var count = data.negadas.length+data.entregadas.length;
+			console.log(count);
+			if (data.negadas.length > 0) {
+
+				$('#buy_counter').empty();
+				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-lg-none" style="width: 35px; height: 25px;">'+data.negadas.length+'</span>');
+				$('#buy_counter').removeClass("d-none");
+			}
+			if (data.entregadas.length > 0) {
+				$('#buy_counter').empty();
+				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-success d-lg-none" style="width: 35px; height: 25px;">'+data.entregadas.length+'</span>');
+				$('#buy_counter').removeClass("d-none");
+			}
+			if (data.entregadas.length > 0 && data.negadas.length > 0) {
+				$('#buy_counter').empty();
+				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-warning d-lg-none" style="width: 35px; height: 25px;">'+data.entregadas.length+'</span>');
+				$('#buy_counter').removeClass("d-none");
+			}
+			if (count > 0) {
+				$('#navbarDropdown').append('<span class="badge badge-warning">'+count+'</span>');
+				$('#perfil_count_buy').append('<span class="badge badge-warning">'+count+'</span>');
+			}
+		}
+		/*var venta = data;
+
+
+		$('#almacen').text(`Factura: 000${venta.id}`);
+		$('#fecha-create').text(`${venta.created_at}`);
+		$('#user-name').text(`${venta.user.people.name}`);
+		$('#user-dni').text(`${venta.user.people.dni}`);
+
+		$.each( venta.details, function( key, value ) {
+
+			//console.log(value.inventory);
+
+				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
+				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+
+				$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
+
+		});
+
+		var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+		$('#total-show').text(totalShow);
+		var url = '/get-pedido-descarga/'+venta.id;
+		$('#factura-pdf').attr('href', url);
+
+		$('#modal_loader').fadeOut();*/
+	})
+	.fail((err)=> {
+		console.log(err)
+		toastr.error('Ha ocurrido un error.')
+	})
+
 </script>
 @stack('scripts')
 </body>

@@ -49,7 +49,7 @@
                                 <th>Cantidad</th>
                                 <th>Precio unitario</th>
                                 <!--<th>iva unitario</th>-->
-                                <th>Precio</th>
+                                <th>Subtotal</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -79,10 +79,9 @@
                         <p class="font-weight-bold text-center" style="font-size: 1.5em;">Gracias por su compra siganos en instragram @Mipuchito.Ca</p>
                     </div>
                     <div class="text-right">
-                        <span class=""><span class="font-weight-bold">Subtotal:</span><span>{{number_format($pedido->sub_total*$pedido->dolar->price, 2, ',', '.') }} Bs.<span></span>
-                        <br>
+                        {{--<span class=""><span class="font-weight-bold">Subtotal:</span><span>{{number_format($pedido->sub_total*$pedido->dolar->price, 2, ',', '.') }} Bs.<span></span>--}}
                         {{--<p class=""><span class="font-weight-bold">IVA:</span><span>{{number_format($pedido->iva, 2, ',', '.') }} Bs.<span></p>--}}
-                        <span class=""><span class="font-weight-bold">Total a pagar:</span><span>{{number_format($pedido->amount*$pedido->dolar->price, 2, ',', '.')}} Bs.<span></span>
+                        <span class=""><span class="font-weight-bold">Total: </span><span>{{number_format($pedido->amount*$pedido->dolar->price, 2, ',', '.')}} Bs.<span></span>
                         <p class="" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{number_format($pedido->amount, 2, ',', '.')}}$.<span></p>
                     </div>
 

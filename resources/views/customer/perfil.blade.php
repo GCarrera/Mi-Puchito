@@ -208,7 +208,7 @@
 										<th class="d-none d-md-table-cell small negrita">ID COMPRA</th>
 										<th class="d-none d-md-table-cell small negrita">PRODUCTOS</th>
 										<th class="small negrita">MONTO $</th>
-										<th class="d-md-table-cell small negrita">DELIVERY</th>
+										<th class="d-none d-md-table-cell small negrita">DELIVERY</th>
 										<th  class=" small negrita">ESTADO</th>
 										<th class="small negrita">FACTURA</th>
 									</thead>
@@ -219,13 +219,13 @@
 												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
 												<td class="text-success">{{ number_format( $compra->amount, 2, ',', '.') }}</td>
 												@if(ucfirst($compra->delivery) == "No")
-												<td class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
+												<td class="d-none d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 												@else
 													@if($compra->stimated_time != null)
-													<td>{{$compra->stimated_time}}min</td>
+													<td class="d-none d-md-table-cell">{{$compra->stimated_time}}min</td>
 
 													@else
-													<td >{{ ucfirst($compra->delivery) }}</td>
+													<td class="d-none d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
 													@endif
 												@endif
 												@if ($compra->dispatched != null)
@@ -239,7 +239,23 @@
 													</td>
 													@else
 														@if($compra->delivery == "si")
-														<td class="font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>
+														<td class="small">
+															@php
+																$estado = \Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans();
+																$estadomin = explode(" ", $estado);
+																$estadomini = $estadomin[1]." ".$estadomin[2];
+															@endphp
+															<span class="d-none d-sm-block text-center">
+																{{ $estado }}
+															</span>
+															<span class="d-block text-center d-sm-none small">
+																{{ $estadomini }}
+																<br>
+															</span>
+															@if($compra->stimated_time != null)
+																<span class="d-table-cell text-center d-sm-none small">Tiempo de llegada: {{$compra->stimated_time}}min</span>
+															@endif
+														</td>
 														@else
 														<td><label class="font-weight-bold small">Puede retirar
 														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">

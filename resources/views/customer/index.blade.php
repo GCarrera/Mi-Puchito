@@ -21,7 +21,19 @@
 			<div class="card-body">
 				<div class="row no-gutters">
 					<div class="col ">
-						<h5 class="mt-2">Resultado de la busqueda {{ $bibi }}</h5>
+						<h5 class="mt-2">Resultado de la busqueda: <span class="text-info">{{ $bibi }}</span></h5>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	@endif
+	@if ($senter != false)
+		<div class="card mb-4 shadow-sm">
+			<div class="card-body">
+				<div class="row no-gutters">
+					<div class="col ">
+						<h5 class="mt-2">Filtrado por empresa: <span class="text-info">{{ $senter->name }}</span></h5>
 					</div>
 				</div>
 

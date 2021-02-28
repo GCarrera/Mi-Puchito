@@ -6,8 +6,11 @@
 	<a class="navbar-brand" href="/">
 		 <img src="{{ asset('public/img/pinchitos.png') }}" width="35" height="35" class="d-inline-block align-top" alt="">
 	</a>
+	<a href="/perfil" class="ml-auto d-none" id="buy_counter">
+
+	</a>
 	<a href="/shoppingcart" class="ml-auto">
-	<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
+		<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
 	</a>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
@@ -66,7 +69,9 @@
 		      <i class="fas fa-user mr-2" ></i>{{ auth()->user()->people->name }}
 		     </a>
 		     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-		      <a class="dropdown-item" href="{{ route('perfil') }}">Perfil</a>
+		      <a class="dropdown-item" href="{{ route('perfil') }}" id="perfil_count_buy">
+						Perfil
+					</a>
 		      {{-- <a class="dropdown-item" href="#">Historial</a> --}}
 		      {{-- <a class="dropdown-item" href="#">Configuración</a> --}}
 		      <div class="dropdown-divider"></div>
