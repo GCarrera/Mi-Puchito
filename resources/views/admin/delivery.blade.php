@@ -249,7 +249,7 @@
 					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.sub_total / value.quantity);
 					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.amount);
 
-					$('#table-products').html('<tr><td>'+value.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
+					$('#table-products').append('<tr><td>'+value.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 				}
 
