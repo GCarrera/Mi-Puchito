@@ -242,16 +242,12 @@
 
 			$.each( venta.details, function( key, value ) {
 
-				console.log(value.inventory);
-
-				if (value.inventory != null) {
+				//console.log(value.inventory);
 
 					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.sub_total / value.quantity);
 					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(value.amount);
 
-					$('#table-products').append('<tr><td>'+value.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
-
-				}
+					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 			});
 
