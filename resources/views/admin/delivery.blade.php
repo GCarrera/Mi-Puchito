@@ -232,7 +232,7 @@
 		})
 		.done((data) => {
 
-			console.log(data.data['0']);
+			console.log(data);
 			var venta = data.data['0']
 
 			$('#almacen').text(`Factura: 000${venta.id}`);
