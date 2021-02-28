@@ -233,7 +233,7 @@
 		.done((data) => {
 
 			console.log(data);
-			var venta = data.data['0']
+			var venta = data;
 
 			$('#almacen').text(`Factura: 000${venta.id}`);
 			$('#fecha-create').text(`${venta.created_at}`);
