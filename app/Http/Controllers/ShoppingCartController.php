@@ -22,49 +22,56 @@ class ShoppingCartController extends Controller
 
 	public function index()
 	{
-		$user = [];
-		$user = auth()->user();
-		// \Cart::session($userId)->clear();
-		$data   = \Cart::content();
-		$total  = \Cart::subtotal();
+		if (auth()->check() && auth()->user()->type == 'customer') {
 
-		$ivatotal    = 0;
-		$totalSinIva = 0;
+			$user = [];
+			$user = auth()->user();
+			// \Cart::session($userId)->clear();
+			$data   = \Cart::content();
+			$total  = \Cart::subtotal();
+
+			$ivatotal    = 0;
+			$totalSinIva = 0;
 
 
-		foreach ($data as $d) {
+			foreach ($data as $d) {
 
-			if ($d->options->sale_type == 'al-mayor') {
-				$t = $d->options->wholesale_iva_amount * $d->quantity;
-				$ivatotal += $t;
+				if ($d->options->sale_type == 'al-mayor') {
+					$t = $d->options->wholesale_iva_amount * $d->quantity;
+					$ivatotal += $t;
 
-				$r = $d->options->wholesale_total_packet_price * $d->quantity;
-				$totalSinIva += $r;
-			} else {
-				$t = $d->options->retail_iva_amount * $d->quantity;
-				$ivatotal+= $t;
+					$r = $d->options->wholesale_total_packet_price * $d->quantity;
+					$totalSinIva += $r;
+				} else {
+					$t = $d->options->retail_iva_amount * $d->quantity;
+					$ivatotal+= $t;
 
-				$r = $d->options->retail_pvp * $d->quantity;
-				$totalSinIva += $r;
+					$r = $d->options->retail_pvp * $d->quantity;
+					$totalSinIva += $r;
+				}
 			}
+			$user_address = [];
+			$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
+			$cb = BankAccount::all();
+			$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
+
+			$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
+
+			return view('customer.shopping_cart')
+					->with('cart', $data)
+					->with('user_address', $user_address)
+					->with('cb', $cb)
+					->with('user', $user)
+					->with('ivatotal', $ivatotal)
+					->with('totalSinIva', $totalSinIva)
+					->with('cities', $cities)
+					->with('total', $total)
+					->with('dolar', $dolar);
+
+		} else {
+			return redirect('/login');
 		}
-		$user_address = [];
-		$user_address = AddressUserDelivery::where('user_id', $user->id)->get();
-		$cb = BankAccount::all();
-		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
-		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
-
-		return view('customer.shopping_cart')
-				->with('cart', $data)
-				->with('user_address', $user_address)
-				->with('cb', $cb)
-				->with('user', $user)
-				->with('ivatotal', $ivatotal)
-				->with('totalSinIva', $totalSinIva)
-				->with('cities', $cities)
-				->with('total', $total)
-				->with('dolar', $dolar);
 	}
 
 	public function store(Request $request)
