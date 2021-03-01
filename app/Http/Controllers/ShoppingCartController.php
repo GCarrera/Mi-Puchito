@@ -69,7 +69,7 @@ class ShoppingCartController extends Controller
 					->with('dolar', $dolar);
 
 		} else {
-			return redirect('/login');
+			return redirect('/');
 		}
 
 	}
@@ -145,8 +145,12 @@ class ShoppingCartController extends Controller
 	public function get_shoppingcart()
 	{
 		//$userId = auth()->user()->id;
+		try {
+			return count(\Cart::content());
+		} catch (\Exception $e) {
+			return response()->json($e);
+		}
 
-		return count(\Cart::content());
 	}
 
 

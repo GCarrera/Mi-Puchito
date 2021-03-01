@@ -17,9 +17,9 @@ class CustomerController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('customer')->except(['index', 'categoria']);
+		$this->middleware('customer')->except(['index', 'categoria', 'get_compras']);
 		// $this->middleware('customer')->except('al-mayor');
-		$this->middleware('auth')->except(['index', 'categoria']);
+		$this->middleware('auth')->except(['index', 'categoria', 'get_compras']);
 	}
 
 	public function get_compras()

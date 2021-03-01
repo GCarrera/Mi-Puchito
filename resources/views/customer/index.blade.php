@@ -400,7 +400,8 @@
 		})
 		.catch((err) => {
 			if (err.status != 401) {
-				toastr.error('Ha ocurrido un error.')
+				console.log("sin notificacion");
+				//toastr.error('Ha ocurrido un error.')
 				console.error(err)
 			}
 		})

@@ -110,7 +110,7 @@
 	})
 	.done((data) => {
 
-		if (data != false) {
+		if (data != 'false') {
 			var count = data.negadas.length+data.entregadas.length;
 			console.log(count);
 			if (data.negadas.length > 0) {
@@ -134,35 +134,11 @@
 				$('#perfil_count_buy').append('<span class="badge badge-warning">'+count+'</span>');
 			}
 		}
-		/*var venta = data;
-
-
-		$('#almacen').text(`Factura: 000${venta.id}`);
-		$('#fecha-create').text(`${venta.created_at}`);
-		$('#user-name').text(`${venta.user.people.name}`);
-		$('#user-dni').text(`${venta.user.people.dni}`);
-
-		$.each( venta.details, function( key, value ) {
-
-			//console.log(value.inventory);
-
-				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
-				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
-
-				$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
-
-		});
-
-		var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
-		$('#total-show').text(totalShow);
-		var url = '/get-pedido-descarga/'+venta.id;
-		$('#factura-pdf').attr('href', url);
-
-		$('#modal_loader').fadeOut();*/
 	})
 	.fail((err)=> {
+		console.log("sin notificacion");
 		console.log(err)
-		toastr.error('Ha ocurrido un error.')
+		//toastr.error('Ha ocurrido un error.')
 	})
 
 </script>
