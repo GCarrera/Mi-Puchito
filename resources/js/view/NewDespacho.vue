@@ -158,7 +158,7 @@
     },
      setFocus(){
        this.$refs.cantidad.focus();
-       console.log("setFocus");
+       //console.log("setFocus");
      },
      agregar_producto_enter(){
 
@@ -190,7 +190,7 @@
        });
      },
      establecer_nombre(id, valor){//COLOCAR EL NOMBRE AL PRODUCTO QUE ESTOY AGREGANDO
-       console.log('establecer_nombre');
+       //console.log('establecer_nombre');
        //console.log(id);
        //console.log(valor);
        let resultado = this.inventario.find(element => element.id == id)
@@ -198,8 +198,8 @@
        this.articulo.modelo = resultado;
        this.articulo.id = resultado.id;
        this.disponibles = resultado.total_qty_prod;
-       console.log('this.articulo');
-       console.log(this.articulo);
+       //console.log('this.articulo');
+       //console.log(this.articulo);
        if(valor == "retiro"){
 
          this.produc_cantidad = resultado.total_qty_prod;
@@ -238,7 +238,7 @@
        axios.post('/api/despachos', {productos: this.productos, piso_venta: this.piso_venta}).then(response => {
          console.log(response)
          this.articulo = {id: 0, nombre: "", cantidad: ""};
-         this.despachos.splice(0,0, response.data);
+         //this.despachos.splice(0,0, response.data);
          this.productos = [];
          this.loading = false;
          window.location="/despachos-almacen";
@@ -252,9 +252,9 @@
    },
    computed: {
      disabled_nuevo(){
-       console.log('disabled_nuevo');
-       console.log(this.articulo.id);
-       console.log(this.articulo.cantidad);
+       //console.log('disabled_nuevo');
+       //console.log(this.articulo.id);
+       //console.log(this.articulo.cantidad);
        var validation = parseFloat(this.disponibles)-parseFloat(this.articulo.cantidad);
 
        if (this.articulo.id != 0 && this.articulo.cantidad != "" && validation >= 0 && this.articulo.cantidad > 0){
@@ -273,8 +273,8 @@
      selectedValue: function (val) {
        if (val != null) {
          this.establecer_nombre(val.value)
-         console.log('selectedValue');
-             console.log(val)
+         //console.log('selectedValue');
+             //console.log(val)
            }
        }
    }
