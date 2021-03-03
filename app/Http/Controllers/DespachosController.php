@@ -366,7 +366,7 @@ class DespachosController extends Controller
         {
           $query->select('id', 'inventory_id', 'cost', 'iva_percent', 'retail_iva_amount', 'retail_total_price', 'wholesale_iva_amount', 'wholesale_packet_price', 'oferta');
         }))
-        ->select('id', 'product_name', 'unit_type', 'unit_type_menor', 'status', 'qty_per_unit')
+        ->select('id', 'product_name', 'unit_type', 'unit_type_menor', 'status', 'qty_per_unit', 'total_qty_prod')
         ->where('status', 1)
         ->get();
 
