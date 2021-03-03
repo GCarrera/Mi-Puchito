@@ -42,6 +42,7 @@
 							</thead>
 							<tbody>
 								@forelse ($inventario as $producto)
+
 									<tr>
 										<td class="small">{{ $producto->product_name }}</td>
 										<td class="small" id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>

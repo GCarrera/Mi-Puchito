@@ -33,7 +33,7 @@ class InventoryController extends Controller
     public function store(Request $req)
     {
 
-      $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->first();
+      $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
       if (isset($sofdeletevalidate)) {
 
         $id = $sofdeletevalidate->id;
