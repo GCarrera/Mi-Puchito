@@ -32,34 +32,35 @@
 						<table class="table text-center table-sm table-hover table-bordered">
 							<thead>
 								<tr>
-									<th>ID FACTURA</th>
-									<th>MONTO (Bs)</th>
-									<th>CLIENTE</th>
-									<th>Tiempo transcurrido</th>
-									<th>Confirmado</th>
-									<th>Opciones</th>
+									<th class="negrita">ID FACTURA</th>
+									<th class="negrita">MONTO (BsS)</th>
+									<th class="negrita">CLIENTE</th>
+									<th class="negrita">ESTADO</th>
+									<th class="negrita">OPCIONES</th>
 								</tr>
 							</thead>
 							<tbody>
 								@forelse($ventas as $venta)
 
 									<tr>
-										<td><a href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}">FC-000{{$venta->id}}</a></td>
-										<td>{{$venta->amount}} <br> <span class="small font-weight-bold text-success">{{number_format($venta->amount / $venta->dolar->price, 2, ',', '.')}}$</span></td>
-										<td><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">C-00{{$venta->user->id}}</a></td>
+										<td class="align-middle"><span role="button" class="text-primary" data-toggle="tooltip" data-title="Detalles" onclick='showInfo({{ $venta->id }})'>FC-000{{$venta->id}}</span></td>
+										<td class="align-middle">
+											<span class="negrita text-success">{{number_format($venta->amount * $venta->dolar->price, 2, ',', '.')}}</span>
+											<br>
+											<span class="negrita small text-success">{{number_format($venta->amount, 2, ',', '.')}}$</span>
+										</td>
+										<td class="align-middle"><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">C-00{{$venta->user->id}}</a></td>
 										@if($venta->dispatched != null)
-										<td>{{\Carbon\Carbon::createFromTimeStamp(strtotime($venta->dispatched))->diffForHumans()}}</td>
+											<td class="align-middle" id="dispatched-{{$venta->id}}" class="small font-weight-bold">
+												<span class="text-capitalize">{{$venta->confirmacion}}</span>
+												<br>
+												<span class="text-capitalize small">{{\Carbon\Carbon::createFromTimeStamp(strtotime($venta->dispatched))->diffForHumans()}}</span>
+											</td>
 										@else
-										<td><b class="small font-weight-bold">Sin confirmado</b></td>
-										@endif
-										@if($venta->dispatched != null)
-
-											<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">{{$venta->confirmacion}}</td>
-										@else
-										<td id="dispatched-{{$venta->id}}" class="small font-weight-bold">Sin confirmar</td>
+										<td class="align-middle" id="dispatched-{{$venta->id}}" class="small font-weight-bold">En Espera</td>
 										@endif
 
-										<td>
+										<td class="align-middle">
 											@if($venta->confirmacion == null)
 											<button class="btn btn-success" data-toggle="modal" data-target="#checkModal-{{$venta->id}}"><i class="fas fa-check"></i></button>
 											<!--
@@ -137,7 +138,7 @@
 								@empty
 
 									<tr>
-										<td colspan="6">No hay datos para mostrar.</td>
+										<td class="align-middle" colspan="6">No hay datos para mostrar.</td>
 									</tr>
 
 								@endforelse
@@ -149,6 +150,59 @@
 							<p >{{$ventas->render()}}</p>
 						</div>
 					</div>
+
+					<!-- Modal -->
+					<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="almacen" aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="almacen"></h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+
+								<div class="modal_loader py-5" id="modal_loader">
+									<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
+								</div>
+
+								<div class="modal-body">
+
+									<div class="mt-3">
+											<span class="float-left"><span class="font-weight-bold" id="fecha-create">Esta factura fue emitida:</span></span>
+											<span class="float-right"><span class="font-weight-bold">Cliente:<span id="user-name"></span></span></span><br>
+									</div>
+
+							<!--TABLA DE PRODUCTOS-->
+
+							<table class="table table-striped table-bordered mt-3">
+									<thead class="bg-info text-white">
+											<tr>
+													<th>Producto</th>
+													<th>Cantidad</th>
+													<th>Precio unitario</th>
+													<!--<th>iva unitario</th>-->
+													<th>Subtotal</th>
+											</tr>
+									</thead>
+									<tbody id="table-products">
+
+									</tbody>
+							</table>
+							<div class="text-right">
+									<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+							</div>
+
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
+									<a type="button" id="factura-pdf" class="btn btn-danger" target="_blank"><i class="fas fa-file-pdf mr-2"></i>PDF</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -159,6 +213,52 @@
 
 @push('scripts')
 <script>
+function showInfo(id) {
+	$('#detailModal').modal('show');
+
+	$.get({
+		url : `/admin/delivery-data/${id}`,
+		beforeSend(){
+			$('#modal_loader').show()
+		}
+	})
+	.done((data) => {
+
+		console.log(data);
+		var venta = data;
+
+		$('#table-products').empty();
+
+		$('#almacen').text(`Factura: 000${venta.id}`);
+		$('#fecha-create').text(`${venta.created_at}`);
+		$('#user-name').text(`${venta.user.people.name}`);
+		$('#user-dni').text(`${venta.user.people.dni}`);
+
+		$.each( venta.details, function( key, value ) {
+
+			//console.log(value.inventory);
+
+				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
+				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+
+				$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
+
+		});
+
+		var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+		$('#total-show').text(totalShow);
+		var url = '/get-pedido-descarga/'+venta.id;
+		$('#factura-pdf').attr('href', url);
+
+		$('#modal_loader').fadeOut();
+	})
+	.fail((err)=> {
+		console.log(err)
+		toastr.error('Ha ocurrido un error.')
+	})
+
+}
+
 	var ventas = @json($ventas);
 
 	$.ajaxSetup({
