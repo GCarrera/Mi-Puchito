@@ -22,19 +22,22 @@ class SaleController extends Controller
 		$this->middleware('customer');
 	}
 
-	public function get_sale(Request $req)
+	public function get_sale($req)
 	{
-		$sale = Sale::find($req->input('id'));
 
-		$detalles = SaleDetail::where('sale_id', $req->input('id'))->get();
-		$sale->details = $detalles;
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($req);
 
-		$sale->user;
+		/*$sale = Sale::find($req);
+
+		$detalles = SaleDetail::where('sale_id', $req)->get();
+		$sale->details = $detalles;*/
+
+		/*$sale->user;
 		$sale->details;
 		// $sale->details->products;
-		$sale->user->people;
+		$sale->user->people;*/
 
-		return $sale;
+		return $pedido;
 	}
 
 	public function store(Request $req)

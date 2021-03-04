@@ -269,11 +269,11 @@
 												@endif
 
 												<td>
+													<button type="button" class="btn btn-primary" data-toggle="tooltip" data-title="Detalles" onclick='showInfo({{ $compra->id }})'><i class="fas fa-info"></i></button>
+													{{--<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-pdf" style="color: #ffffff"></i></a>--}}
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
 													-->
-													<button type="button" class="btn btn-primary d-md-none" data-toggle="modal" data-target="#exampleModal4-{{ $compra->id }}"><i class="fas fa-info"></i></button>
-													<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-pdf" style="color: #ffffff"></i></a>
 
 												</td>
 											</tr>
@@ -423,7 +423,7 @@
 
 											<div class="card-body bg-light">
 
-												<div class="card border-danger shadow">
+												<div class="card border-info shadow">
 
 														<img style="height: 200px; object-fit: contain" data-src="{{ url('storage/app/public/'.$producto->image) }}" class="card-img-top">
 
@@ -801,11 +801,107 @@
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="almacen" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="almacen"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal_loader py-5" id="modal_loader_show">
+				<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
+			</div>
+
+			<div class="modal-body">
+
+				<div class="mt-3">
+						<span class="float-left"><span class="font-weight-bold" id="fecha-create">Esta factura fue emitida:</span></span>
+						<span class="float-right"><span class="font-weight-bold">Cliente:<span id="user-name"></span></span></span><br>
+				</div>
+
+		<!--TABLA DE PRODUCTOS-->
+
+		<table class="table table-striped table-bordered mt-3">
+				<thead class="bg-info text-white">
+						<tr>
+								<th>Producto</th>
+								<th>Cantidad</th>
+								<th>Precio unitario</th>
+								<!--<th>iva unitario</th>-->
+								<th>Subtotal</th>
+						</tr>
+				</thead>
+				<tbody id="table-products">
+
+				</tbody>
+		</table>
+		<div class="text-right">
+				<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+		</div>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
+				<a type="button" id="factura-pdf" class="btn btn-danger" target="_blank"><i class="fas fa-file-pdf mr-2"></i>PDF</a>
+			</div>
+		</div>
+	</div>
+</div>
 
 @endsection
 
 @push('scripts')
 <script>
+	function showInfo(id) {
+		$('#detailModal').modal('show');
+
+		$.get({
+			url : `/get_sale/${id}`,
+			beforeSend(){
+				$('#modal_loader').show()
+			}
+		})
+		.done((data) => {
+
+			console.log(data);
+			var venta = data;
+
+			$('#table-products').empty();
+
+			$('#almacen').text(`Factura: 000${venta.id}`);
+			$('#fecha-create').text(`${venta.created_at}`);
+			$('#user-name').text(`${venta.user.people.name}`);
+			$('#user-dni').text(`${venta.user.people.dni}`);
+
+			$.each( venta.details, function( key, value ) {
+
+				//console.log(value.inventory);
+
+					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
+					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+
+					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
+
+			});
+
+			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+			$('#total-show').text(totalShow);
+			var url = '/get-pedido-descarga/'+venta.id;
+			$('#factura-pdf').attr('href', url);
+
+			$('#modal_loader_show').fadeOut();
+		})
+		.fail((err)=> {
+			console.log(err)
+			toastr.error('Ha ocurrido un error.')
+		})
+
+	}
 
 	function showEdit(id) {
 		$('#editarDireccion').modal('show');

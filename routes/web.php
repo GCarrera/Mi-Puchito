@@ -87,7 +87,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::get('/traer_sectores/{ciudad}', 'TravelRateController@traer_sectores');
 	Route::get('/get_wishlist', 'WishlistController@get_wishlist');
 	Route::post('/sale', 'SaleController@store');
-	Route::post('/get_sale', 'SaleController@get_sale');
+	Route::get('/get_sale/{id}', 'SaleController@get_sale');
 
 	//PDF FACTURA
 	Route::get('/get-pedido/{id}', 'FacturaController@get_pedido')->name('factura.pdf');
