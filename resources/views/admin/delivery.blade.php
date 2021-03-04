@@ -196,8 +196,10 @@
 
 									</tbody>
 							</table>
-							<div class="text-right">
-									<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+							<div class="mt-3">
+								<span class="float-left"><span class="font-weight-bold" id="dir-show"></span></span>
+								<span class="float-right"><span class="font-weight-bold">Total:<span id="total-show"></span></span></span><br>
+								{{--<span class="text-right"><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>--}}
 							</div>
 
 								</div>
@@ -254,7 +256,22 @@
 			});
 
 			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
-			$('#total-show').text(totalShow);
+			$('#total-show').empty();
+			$('#total-show').append(totalShow);
+
+			if (venta.rate.address_user_delivery != null) {
+				if (venta.rate.address_user_delivery.travel_rate_id != null) {
+					$('#dir-show').empty();
+					$('#dir-show').append(venta.dir.sector.sector+' '+venta.rate.address_user_delivery.details);
+				} else {
+					$('#dir-show').empty();
+					$('#dir-show').append(venta.rate.address_user_delivery.details);
+				}
+			} else {
+				$('#dir-show').empty();
+				$('#dir-show').append(venta.sector.sector+' '+venta.dir.details);
+			}
+
 			var url = '/get-pedido-descarga/'+venta.id;
 			$('#factura-pdf').attr('href', url);
 
