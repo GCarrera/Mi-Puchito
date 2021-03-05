@@ -38,7 +38,16 @@
                         </div>
                             <br>
                             <span><span class="font-weight-bold">Cliente:</span> {{$pedido->user->people->name}}</span><br>
-                            <span><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</span>
+                            <span><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</span><br>
+                            @if ($pedido->rate->address_user_delivery != null)
+                              @if ($pedido->rate->address_user_delivery->travel_rate_id != null)
+                                <span class="">{{$pedido->dir->sector->sector}} {{$pedido->rate->address_user_delivery->details}}</span>
+                              @else
+                                <span class="">{{$pedido->rate->address_user_delivery->details}}</span>
+                              @endif
+                            @else
+                              <span class="">{{$pedido->sector->sector}} {{$pedido->dir->details}}</span>
+                            @endif
 
                     <!--TABLA DE PRODUCTOS-->
 

@@ -7,6 +7,9 @@ use App\Sale;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Despacho;
+use App\Delivery;
+use App\TravelRate;
+use Illuminate\Support\Facades\DB;
 
 class FacturaController extends Controller
 {
@@ -89,13 +92,14 @@ class FacturaController extends Controller
         $iva = 0;
         $total = 0;
 
-        if (Auth::user()->type == 'admin') {
+        $pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
+        /*if (Auth::user()->type == 'admin') {
 
             $pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
         }else if(Auth::user()->type == 'customer'){
 
             $pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->where('user_id', Auth::id())->findOrFail($id);
-        }
+        }*/
 
         foreach ($pedido->details as $producto) {
             if ($producto->type == "al-mayor") {
@@ -109,6 +113,28 @@ class FacturaController extends Controller
 
 
         }
+
+        $rate   = Delivery::with('address_user_delivery')->where('sale_id', $id)->first();
+        if (isset($rate->address_user_delivery->travel_rate_id)) {
+    			$datadir = $rate->address_user_delivery->travel_rate_id;
+    			$dir	  = TravelRate::with('sector')->where('id', $datadir)->first();
+    			$pedido->dir = $dir;
+    		} else {
+    			$datadir = $rate->address_user_delivery_id;
+    			$dir = DB::table('address_user_deliveries')->where('id', $datadir)->first();
+    			$datasector = $dir->travel_rate_id;
+    			//return $dir->travel_rate_id;
+    			$sector = DB::table('travel_rates')->where('id', $datasector)->first();
+    			if (isset($sector->sector_id)) {
+    				$datasectrofinla = $sector->sector_id;
+    				$sectorfinal = DB::table('sectors')->where('id', $datasectrofinla)->first();
+    				//return $dir;
+    				//$sector	  = TravelRate::with('sector')->get();
+    				$pedido->sector = $sectorfinal;
+    			}
+    			$pedido->dir = $dir;
+    		}
+    		$pedido->rate = $rate;
 
         $total = $subtotal + $iva;
 
