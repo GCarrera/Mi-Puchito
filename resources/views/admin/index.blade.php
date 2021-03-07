@@ -217,7 +217,7 @@ function showInfo(id) {
 	$('#detailModal').modal('show');
 
 	$.get({
-		url : `/admin/delivery-data/${id}`,
+		url : `/admin/delivery-data-simple/${id}`,
 		beforeSend(){
 			$('#modal_loader').show()
 		}

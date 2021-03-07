@@ -336,6 +336,13 @@ class AdminController extends Controller
 		return $pedido;
 	}
 
+	public function delivery_data_simple($id)
+	{
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
+
+		return $pedido;
+	}
+
 	public function traer_productos()
 	{
 		$productos = Inventory::all();
