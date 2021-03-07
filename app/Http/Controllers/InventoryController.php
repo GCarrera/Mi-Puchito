@@ -188,7 +188,9 @@ class InventoryController extends Controller
 
         $inventory = Inventory::find($id);
         $inventory->total_qty_prod += $request->cantidad;
-        $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        if ($inventory->qty_per_unit != 0) {
+          $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        }
         $inventory->save();
 
         return $inventory->total_qty_prod;
