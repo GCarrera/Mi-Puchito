@@ -61,7 +61,12 @@ class InventoryController extends Controller
         $inventory->description    = $req->input('description');
         $inventory->quantity       = $req->input('cantidad');
         $inventory->unit_type      = $req->input('tipo_unidad');
-        $inventory->qty_per_unit   = $req->input('cant_prod');
+        //$inventory->qty_per_unit   = $req->input('cant_prod');
+        if ($req->input('cant_prod') != 0) {
+          $inventory->qty_per_unit   = $req->input('cant_prod');
+        } else {
+          $inventory->qty_per_unit   = '1';
+        }
         $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
         // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
         $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
@@ -98,7 +103,12 @@ class InventoryController extends Controller
         $inventory->description    = $req->input('description');
         $inventory->quantity       = $req->input('cantidad');
         $inventory->unit_type      = $req->input('tipo_unidad');
-        $inventory->qty_per_unit   = $req->input('cant_prod');
+        //$inventory->qty_per_unit   = $req->input('cant_prod');
+        if ($req->input('cant_prod') != 0) {
+          $inventory->qty_per_unit   = $req->input('cant_prod');
+        } else {
+          $inventory->qty_per_unit   = '1';
+        }
         $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
         // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
         $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
@@ -156,7 +166,11 @@ class InventoryController extends Controller
         $inventory->description    = $req->input('description');
         $inventory->quantity       = $req->input('cantidad');
         $inventory->unit_type      = $req->input('tipo_unidad');
-        $inventory->qty_per_unit   = $req->input('cant_prod');
+        if ($req->input('cant_prod') != 0) {
+          $inventory->qty_per_unit   = $req->input('cant_prod');
+        } else {
+          $inventory->qty_per_unit   = '1';
+        }
         // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
         $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
         $inventory->category_id    = $req->input('category');
