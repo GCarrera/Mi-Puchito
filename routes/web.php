@@ -45,6 +45,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 		Route::resource('/cuentas-bancarias', 'BankAccountController')->middleware('admin');
 		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
 		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');
+		Route::put('/finalizar-pedido-delivery/{id}', 'AdminController@finalizar_pedido_delivery');
 		//USUARIOS
 		Route::get('/usuarios/{id}', 'UsuariosController@show')->name('usuarios.show');
 

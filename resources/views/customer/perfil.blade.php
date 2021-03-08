@@ -166,9 +166,11 @@
 										@forelse($rates as $rate)
 											<tr>
 												<td>ADSS-00{{ $rate->id }}</td>
-												<td>{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }}
-												{{ $rate->details }}
-												{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}</td>
+												<td>
+													{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }}
+													{{ $rate->details }}
+													{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}
+												</td>
 												<td>
 													<button class="btn btn-primary btn-sm" onclick='showEdit({{ $rate->id }})'>
 														<i class="fas fa-edit" data-toggle="tooltip" data-title="Editar"></i>
@@ -232,14 +234,14 @@
 
 													@if($compra->confirmacion == "denegado")
 
-													<td class="font-weight-bold small">{{$compra->confirmacion}}
+													<td class="font-weight-bold small text-capitalize">{{$compra->confirmacion}}
 													<button type="button" class="ml-2 btn btn-danger" data-toggle="modal" data-target="#modal-denegado">
 														<i class="fas fa-info"></i>
 													</button>
 													</td>
 													@else
 														@if($compra->delivery == "si")
-														<td class="small">
+														<td class="small text-capitalize">
 															@php
 																$estado = \Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans();
 																$estadomin = explode(" ", $estado);

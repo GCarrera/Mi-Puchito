@@ -116,22 +116,22 @@
 			if (data.negadas.length > 0) {
 
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-lg-none" style="width: 35px; height: 25px;">'+data.negadas.length+'</span>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-danger d-lg-none">'+data.negadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (data.entregadas.length > 0) {
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-success d-lg-none" style="width: 35px; height: 25px;">'+data.entregadas.length+'</span>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-success d-lg-none">'+data.entregadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (data.entregadas.length > 0 && data.negadas.length > 0) {
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-warning d-lg-none" style="width: 35px; height: 25px;">'+data.entregadas.length+'</span>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-warning d-lg-none">'+data.entregadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (count > 0) {
-				$('#navbarDropdown').append('<span class="badge badge-warning">'+count+'</span>');
-				$('#perfil_count_buy').append('<span class="badge badge-warning">'+count+'</span>');
+				$('#navbarDropdown').append('<a href="/perfil"><span class="badge badge-warning">'+count+'</span></a>');
+				$('#perfil_count_buy').append('<a href="/perfil"><span class="badge badge-warning">'+count+'</span></a>');
 			}
 		}
 	})

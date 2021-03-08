@@ -531,6 +531,18 @@ class AdminController extends Controller
 
 	}
 
+	public function finalizar_pedido_delivery($id, Request $request)
+	{
+
+		$venta = Sale::findOrFail($id);
+
+		$venta->confirmacion = 'Entregado';
+		$venta->save();
+
+		return redirect()->back()->with('success', 'Pedido Entregado Correctamente.');
+
+	}
+
 	public function get_dolar()
 	{
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR

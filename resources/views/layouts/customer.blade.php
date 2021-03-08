@@ -3,19 +3,26 @@
 
 <!--Navbar-->
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-	<a class="navbar-brand" href="/">
-		 <img src="{{ asset('public/img/pinchitos.png') }}" width="35" height="35" class="d-inline-block align-top" alt="">
-	</a>
-	<a href="/perfil" class="ml-auto d-none" id="buy_counter">
 
-	</a>
-	<a href="/shoppingcart" class="ml-auto">
-		<span style="line-height: 20px; font-size: 2em" class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2" style="width: 35px; height: 25px;">0</span>
-	</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
+			<a class="navbar-brand" href="/">
+				<img src="{{ asset('public/img/pinchitos.png') }}" width="35" height="35" class="d-inline-block align-top" alt="">
+			</a>
 
-	</button>
+
+			<div class="row">
+
+				<div class="col">
+					<a href="/shoppingcart" class="ml-auto">
+						<span class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2">0</span>
+					</a>
+					<span id="buy_counter"></span>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+				</div>
+
+			</div>
+
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 

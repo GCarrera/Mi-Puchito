@@ -57,7 +57,11 @@
 										<td class="align-middle"><b class="small negrita text-info">En Espera</b></td>
 										@endif
 										@if($venta->dispatched != null)
-											<td class="align-middle" id="dispatched-{{$venta->id}}" class="small negrita text-success">{{$venta->confirmacion}}</td>
+											@if ($venta->confirmacion != 'Entregado')
+												<td class="align-middle small negrita text-success text-capitalize" role="button" onclick='showEstado({{ $venta->id }})'>{{$venta->confirmacion}}</td>
+											@else
+												<td class="align-middle small negrita text-success text-capitalize" id="dispatched-{{$venta->id}}">{{$venta->confirmacion}}</td>
+											@endif
 										@else
 											<td class="align-middle">
 
@@ -212,6 +216,34 @@
 						</div>
 					</div>
 
+					<!--MODAL DE ESTADO-->
+
+					<div class="modal fade" tabindex="-1" id="estadoModal">
+						<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Finalizar pedido</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+								<div class="modal-body" >
+									<p>¿Esta seguro que desea finalizar el pedido?</p>
+								</div>
+								<div class="modal-footer">
+									<form id="estadoForm" method="post">
+										@csrf
+										@method('put')
+										<input type="text" id="id_venta_estado" class="form-control" name="id_venta" required>
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+										<button type="submit" class="btn btn-primary">Finalizar</button>
+									</form>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -284,6 +316,15 @@
 
 	}
 
+	function showEstado(id) {
+		$('#estadoModal').modal('show');
+
+		$('#estadoForm').attr('action', `/admin/finalizar-pedido-delivery/${id}`);
+
+		$('#id_venta_estado').val(id);
+
+	}
+
 	var ventas = @json($ventas);
 
 
@@ -314,7 +355,7 @@
 				}else if(res == "el campo tiempo estimado es obligatorio"){
 					toastr.error(res)
 				}else{
-
+					window.location.href = '/home';
 					$('#dispatched-'+id).text(res);
 				}
 			})
