@@ -107,9 +107,9 @@
 				"positionClass": "toast-bottom-left",
 			}
 
-			@if ($erroritos)
+			@isset($erroritos)
 				toastr.error("{{ $erroritos }}")
-			@endif()
+			@endisset
 
 			LocalStorage = window.localStorage;
 			console.log(LocalStorage.getItem('buttonPressed'))
