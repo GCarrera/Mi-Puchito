@@ -841,10 +841,12 @@
 
 				</tbody>
 		</table>
+		<div class="small">
+			<p>Para mas informacion o alguna duda puedes comuicarte con nosotros via whatsapp a traves del  0424-3372191</p>
+		</div>
 		<div class="text-right">
 				<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
 		</div>
-
 			</div>
 
 			<div class="modal-footer">
