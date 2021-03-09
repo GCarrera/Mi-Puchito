@@ -69,7 +69,8 @@ class ShoppingCartController extends Controller
 					->with('dolar', $dolar);
 
 		} else {
-			return redirect('/');
+			//return redirect('/login')->with('erroritos', 'Por Favor Inicia Sesion Primero');
+			return view('auth.login', ['erroritos' => 'Por Favor Inicia Sesion Primero']);
 		}
 
 	}

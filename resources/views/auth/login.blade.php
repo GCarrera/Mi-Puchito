@@ -100,6 +100,17 @@
 				"positionClass": "toast-top-right",
 				"timeOut": 10000,
 			}
+
+			toastr.options = {
+				"closeButton": true,
+				"progressBar": true,
+				"positionClass": "toast-bottom-left",
+			}
+
+			@if ($erroritos)
+				toastr.error("{{ $erroritos }}")
+			@endif()
+
 			LocalStorage = window.localStorage;
 			console.log(LocalStorage.getItem('buttonPressed'))
 			var val = LocalStorage.getItem('buttonPressed')
