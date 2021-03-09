@@ -34,8 +34,8 @@
 								<tr>
 									<th>PRODUCTO</th>
 									<th>CANTIDAD</th>
-									<th>EMPRESA</th>
-									<th>CATEGORIA</th>
+									<!--<th>EMPRESA</th>
+									<th>CATEGORIA</th>-->
 									<th>FECHA</th>
 									<th class="text-center" style="width: 88px;">ACCIONES</th>
 								</tr>
@@ -46,8 +46,8 @@
 									<tr>
 										<td class="small">{{ $producto->product_name }}</td>
 										<td class="small" id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
-										<td class="small">{{ $producto->enterprise->name }}</td>
-										<td class="small">{{ $producto->category->name }}</td>
+										{{--<td class="small">{{ $producto->enterprise->name }}</td>
+										<td class="small">{{ $producto->category->name }}</td>--}}
 										<td class="small">{{ $producto->created_at }}</td>
 										<td class="small text-center">
 											<button class="btn btn-info btn-sm" onclick='showEdit({{ $producto->id }})'>

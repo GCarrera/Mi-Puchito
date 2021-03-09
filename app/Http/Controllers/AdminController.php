@@ -100,15 +100,16 @@ class AdminController extends Controller
 
 	public function inventario()
 	{
-		$categorias      = Category::all();
-		$empresas        = Enterprise::all();
+		$categorias      = Category::select('id', 'name')->get();
+		$empresas        = Enterprise::select('id', 'name')->get();
 		// $empresasCount   = count($empresas);
 		// $categoriasCount = count($categorias);
 		// $salesCount      = Sale::all()->count();
 		// $productosCount  = Product::all()->count();
 		$almacen         = '01-Cagua';
 
-		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at', 'enterprise_id', 'category_id')->get();
+		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at')->get();
+		//$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at', 'enterprise_id', 'category_id')->get();
 
 		/*if (count($inventario) > 0) {
 			$almacen = $inventario[0]->warehouse->name;
