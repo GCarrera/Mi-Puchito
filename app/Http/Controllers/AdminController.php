@@ -219,7 +219,7 @@ class AdminController extends Controller
 		//return $productos;
 
 		return view('admin.costos')
-			//->with('inventario', $inventario)
+			->with('inventario', $inventario)
 			->with('productos', $productos)
 			->with('dolar', $dolar);
 			// ->with('empresasCount', $empresasCount)
