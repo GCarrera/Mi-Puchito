@@ -21,25 +21,25 @@
            </div>
          </div>
 
-         <table class="table table-bordered">
+         <table class="table table-bordered text-center">
            <thead>
              <tr>
-               <th>Fecha</th>
-               <th>Piso de venta</th>
-               <!--<th>Tipo</th>-->
-               <th>Estado</th>
-               <th>Acciones</th>
+               <th class="negrita">FECHA</th>
+               <th class="negrita">PISO DE VENTA</th>
+               <!--<th class="negrita">Tipo</th>-->
+               <th class="negrita">ESTADO</th>
+               <th class="negrita">ACCIONES</th>
              </tr>
            </thead>
            <tbody>
              <tr v-for="(despacho, index) in despachos" :key="index">
-               <td>{{despacho.created_at}} {{despacho.id}}</td>
-               <td>{{despacho.piso_venta.nombre}}</td>
+               <td class="align-middle">{{despacho.created_at}} {{despacho.id}}</td>
+               <td class="align-middle">{{despacho.piso_venta.nombre}}</td>
                <!--<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>-->
-               <td v-if="despacho.confirmado == null" class="small font-weight-bold text-secondary">Pendiente</td>
-               <td v-else-if="despacho.confirmado == 1" class="small font-weight-bold text-success">Confirmado</td>
-               <td v-else class="small font-weight-bold text-danger">Negado</td>
-               <td>
+               <td v-if="despacho.confirmado == null" class=" align-middle small negrita text-secondary">Pendiente</td>
+               <td v-else-if="despacho.confirmado == 1" class=" align-middle small negrita text-success">Confirmado</td>
+               <td v-else class=" align-middle small negrita text-danger">Negado</td>
+               <td class="align-middle">
                  <button class="btn btn-primary" @click="showModalDetalles(despacho)">Ver</button>
                  <a :href="'/get-despacho/'+despacho.id" role="button" class="btn btn-primary" target="_blank">Imprimir</a>
                  <!--<button class="btn btn-primary" @click="showPdf(despacho)">Imprimir</button>-->
