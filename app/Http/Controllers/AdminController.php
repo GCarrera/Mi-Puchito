@@ -213,18 +213,10 @@ class AdminController extends Controller
 		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name')->where('status', 2)->get();
 		//$productos  = Product::all();
 		//$productos  = Product::has('inventory')->get();
-		$productos = Product::orderBy('id', 'desc')->select('id', 'cost', 'wholesale_total_individual_price', 'wholesale_margin_gain', 'retail_margin_gain', 'retail_total_price', 'inventory_id')->get();
-		/*$productos = Product::query()
-		->with(array('inventory' => function ($query)
-		{
-			$query->select('id', 'inventory_id', 'product_name', 'iva_percent', 'retail_iva_amount', 'retail_total_price', 'wholesale_iva_amount', 'wholesale_packet_price', 'oferta');
-		}))
-		->select('id', 'product_name', 'unit_type', 'unit_type_menor', 'status', 'qty_per_unit', 'total_qty_prod')
-		->where('status', 1)
-		->get();*/
+		$productos = Product::with('inventory')->orderBy('id', 'desc')->select('id', 'cost', 'wholesale_total_individual_price', 'wholesale_margin_gain', 'retail_margin_gain', 'retail_total_price', 'inventory_id')->get();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
-		//return $productos;
+		//	return $productos;
 
 		return view('admin.costos')
 			->with('inventario', $inventario)
