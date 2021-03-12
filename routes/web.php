@@ -114,6 +114,7 @@ Route::get('test', function () {
 });
 //PARA LOS PISOS DE VENTAS
 Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index')->middleware('almacen');
+Route::get('/piso-ventas-ganancias', 'PisoVentasController@ganancias')->name('piso.ventas.ganancias')->middleware('almacen');
 Route::get('/piso-ventas/ventas/{id}', 'PisoVentasController@ventas_mostrar');
 Route::get('/piso-ventas/inventario/{id}', 'PisoVentasController@inventario_mostrar');
 Route::get('/piso-ventas/despachos/{id}', 'PisoVentasController@despachos_mostar');

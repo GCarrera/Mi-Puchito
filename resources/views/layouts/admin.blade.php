@@ -27,8 +27,14 @@
 		@switch(auth()->user()->type)
 		    @case("admin")
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item" id="piso-ventas">
-							<a class="nav-link" href="{{ route('piso.ventas.index') }}"><i class="fas fa-coins mr-2	"></i>Pisos de ventas</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="pisosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fas fa-coins mr-2"></i>Pisos de ventas
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="{{ route('piso.ventas.index') }}">Detalles</a>
+								<a class="dropdown-item" href="{{ route('piso.ventas.ganancias') }}">Ganancias</a>
+							</div>
 						</li>
 						<li class="nav-item" id="despachos">
 							<a class="nav-link" href="{{ route('despachos.almacen.index') }}"><i class="fas fa-coins mr-2	"></i>Despachos</a>

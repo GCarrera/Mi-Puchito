@@ -12,6 +12,7 @@ use App\Vaciar_caja;
 use App\Sincronizacion;
 use App\Inventario;
 use App\Precio;
+use App\Product;
 use App\Inventory;
 use Illuminate\Support\Arr;
 
@@ -21,6 +22,28 @@ class PisoVentasController extends Controller
     public function index()
     {
     	return view('admin.piso_ventas');
+    }
+
+    public function ganancias(Request $request)
+    {
+      if ($request->fechas) {
+        $fechas = explode('-', $request->fechas);
+
+  			$fecha_inicial = new Carbon($fechas[0]);
+  			$fecha_final = new Carbon($fechas[1]);
+
+        $cajas = Vaciar_caja::with('pisos_de_ventas')
+        ->whereDate('created_at', '>=', $fecha_inicial)
+  			->whereDate('created_at', '<=', $fecha_final)
+        ->get();
+
+      } else {
+        $cajas = Vaciar_caja::with('pisos_de_ventas')->get();
+      }
+
+      //return $cajas;
+      return view('admin.gain')->with('cajas', $cajas);
+
     }
 
     public function ventas_mostrar($id)
@@ -296,6 +319,7 @@ class PisoVentasController extends Controller
             $vaciar_caja = new Vaciar_caja();
             $vaciar_caja->piso_venta_id = $caja['piso_venta_id'];
             $vaciar_caja->monto = $caja['monto'];
+            $vaciar_caja->monto = $caja['ganancia'];
             $vaciar_caja->id_extra = $caja['id_extra'];
             $vaciar_caja->save();
         }
