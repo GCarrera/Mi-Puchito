@@ -77,7 +77,9 @@
 						      				<!--<span class="font-weight-bold">Sub total:</span><br>
 						      				<span class="font-weight-bold">iva:</span><br>-->
 						      				<br>
-						      				<span class="font-weight-bold">Total:</span>
+						      				<span class="font-weight-bold">Total:</span><br>
+													<span v-if="venta.pago == 1" class="font-weight-bold small">Descuento:</span><br>
+													<span v-if="venta.pago == 1" class="font-weight-bold small">Total con Descuento:</span>
 
 						      			</div>
 
@@ -85,7 +87,9 @@
 						      				<!--<span>{{venta.sub_total}}</span><br>
 							      			<span>{{venta.iva}}</span><br>-->
 							   				<br>
-							      			<span>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total)}}</span>
+							      			<span>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total)}}</span><br>
+													<span v-if="venta.pago == 1" class="small"> BsS {{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total*0.03)}}</span><br>
+													<span v-if="venta.pago == 1"> BsS {{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(venta.total-(venta.total*0.03))}}</span>
 						      			</div>
 
 						      		</div>
