@@ -56,16 +56,22 @@ class SaleController extends Controller
 		if ($req->forma_delivery == 1) {//esribir la direccion
 
 			$validator = Validator::make($req->all(), [
-            'direc_descrip_area' => 'required|max:255',
+				'phone_contact_escribir' => 'required',
+        'direc_descrip_area' => 'required|max:255',
 
 			]);
+
+			$phone_contact = $req->phone_contact_escribir;
 		}else if($req->forma_delivery == 2){//busar i direion
 
 			$validator = Validator::make($req->all(), [
+	            'phone_contact_select' => 'required',
 	            'city_id' => 'required',
 	            'sector_id' => 'required',
 	            'detalles' => 'required'
 			]);
+
+			$phone_contact = $req->phone_contact_select;
 		}
 
         if ($validator->fails()) {
@@ -117,6 +123,7 @@ class SaleController extends Controller
 						if ($req->forma_delivery == 1 || $req->forma_delivery == 2) {//SI LA OPCION ES ESCRIBIR LA DIRECCION O BUSCARLA
 						$address_delivery = new AddressUserDelivery();
 						$address_delivery->user_id = $user;
+						$address_delivery->phone_contact =  $phone_contact;
 
 							if ($req->forma_delivery == 1 ) {
 								$address_delivery->details =  $req->direc_descrip_area;

@@ -273,7 +273,9 @@
 
 			$('#almacen').text(`Factura: 000${venta.id}`);
 			$('#fecha-create').text(`${venta.created_at}`);
-			$('#user-name').text(`${venta.user.people.name}`);
+			//$('#user-name').text(`${venta.user.people.name}`);
+			$('#user-name').empty();
+			$('#user-name').append(venta.user.people.name);
 			$('#user-dni').text(`${venta.user.people.dni}`);
 
 			$.each( venta.details, function( key, value ) {
@@ -295,13 +297,16 @@
 				if (venta.rate.address_user_delivery.travel_rate_id != null) {
 					$('#dir-show').empty();
 					$('#dir-show').append(venta.dir.sector.sector+' '+venta.rate.address_user_delivery.details);
+					$('#user-name').append(' - Telf:'+venta.rate.address_user_delivery.phone_contact);
 				} else {
 					$('#dir-show').empty();
 					$('#dir-show').append(venta.rate.address_user_delivery.details);
+					$('#user-name').append(' - Telf:'+venta.rate.address_user_delivery.phone_contact);
 				}
 			} else {
 				$('#dir-show').empty();
 				$('#dir-show').append(venta.sector.sector+' '+venta.dir.details);
+				$('#user-name').append(' - Telf:'+venta.dir.phone_contact);
 			}
 
 			var url = '/get-pedido-descarga/'+venta.id;

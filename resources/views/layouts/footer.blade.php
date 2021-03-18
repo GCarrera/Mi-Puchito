@@ -116,17 +116,17 @@
 			if (data.negadas.length > 0) {
 
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-danger d-lg-none">'+data.negadas.length+'</span></a>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-danger d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.negadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (data.entregadas.length > 0) {
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-success d-lg-none">'+data.entregadas.length+'</span></a>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-success d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.entregadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (data.entregadas.length > 0 && data.negadas.length > 0) {
 				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-warning d-lg-none">'+data.entregadas.length+'</span></a>');
+				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-warning d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.entregadas.length+'</span></a>');
 				$('#buy_counter').removeClass("d-none");
 			}
 			if (count > 0) {

@@ -353,6 +353,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<i id="address" class="d-none">Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
 
 								<i id="address-descrip" class="d-none small"></i>
+								<i id="phone_contact_info" class="d-none small"></i>
 								{{-- <select id="delivery" name="delivery" class="form-control border selectpicker">
 									<option selected disabled>Selecciona</option>
 									<option value="si">Si</option>
@@ -572,11 +573,26 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 					<div id="direc-descrip-caja" class="w-100">
 						<div class="col-12">
+							<label for="phone_contact_escribir">Telefono de Contacto</label><br>
+							<input type="tel" class="form-control" name="phone_contact_escribir" id="phone_contact_escribir" placeholder="04**-*******">
+							<div class="invalid-feedback">
+				        Por favor ingrese un numero de contacto.
+				      </div>
+						</div>
+						<br>
+						<div class="col-12">
 							<textarea name="direc_descrip_area" id="direc-descrip-area" cols="30" rows="5" class="form-control" maxlength="255" ></textarea>
 						</div>
 					</div>
 
 					<div id="select-multiples" class="w-100">
+						<div class="col-12">
+							<label for="phone_contact_select">Telefono de Contacto</label><br>
+							<input type="tel" class="form-control" name="phone_contact_select" id="phone_contact_select" placeholder="04**-*******">
+							<div class="invalid-feedback">
+				        Por favor ingrese un numero de contacto.
+				      </div>
+						</div>
 						<div class="col-12">
 							<label for="city_id">Ciudad</label><br>
 							<select required name="city_id" data-live-search="true" class="selectpicker mb-2 border form-control" data-width="100%" id="city_id">
@@ -603,7 +619,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 					<b style="font-size: 1.3em; margin-top: 5%;">Direcciones anteriores:</b>
 					@foreach($user_address as $address)
 					<div class="list-group">
-					  <button type="button" class="list-group-item list-group-item-action direc-list" value="{{$address->id}}" name="direc_list" id="direc-list-{{$address->id}}">{{$address->details}} {{ $address->travel_rate_id ? ", ".$address->travel_rate->sector->sector : "" }} {{ $address->travel_rate_id ? $address->travel_rate->rate : "" }}
+					  <button type="button" class="list-group-item list-group-item-action direc-list" value="{{$address->id}}" name="direc_list" id="direc-list-{{$address->id}}">
+							{{$address->details}} {{ $address->travel_rate_id ? ", ".$address->travel_rate->sector->sector : "" }} {{ $address->travel_rate_id ? $address->travel_rate->rate : "" }} {{$address->phone_contact}}
 					  </button>
 					</div>
 					@endforeach
@@ -1216,6 +1233,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 				$('.detallesescondidos').addClass('d-none');
 			} else {
 				$('#sector_info').text('')
+				$('#phone_contact_info').text('')
 				$('#stimatedtime_info').text('')
 				$('#detalles_info').text('')
 				$('#tarifa_info').text('')
@@ -1265,39 +1283,63 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		// boton listo del modal del delivery
 		$('#listo').click(() => {
 
-			if ($('#forma-delivery').val() == 2) {
-				$('#address-descrip').addClass('d-none').removeClass('d-block');
-				let sector        = $('#sector_id option:selected').text()
-				// let stimated_time = $('#stimatedtime').text()
-				// let tarifa        = $('#tarifa').text()
-				let detalles      = $('#detalles').val()
-				$('#detallesescondidos-2').addClass('d-block').removeClass('d-none')
-				if ( ! $('#sector_id')[0].validity.valueMissing ){
-					$('#user_address_delivery').val($('#sector_id').val())
-					$('#sector_info').text(sector)
-					$('#detalles_info').text(detalles)
-					// $('#stimatedtime_info').text(stimated_time)
-					// $('#tarifa_info').text(tarifa)
-					// $('.delivery_cost').removeClass('d-none')
-					// $('#delivery_cost').text(tarifa)
-					$('.detallesescondidos').removeClass('d-none')
-					$('#modalDelivery').modal('hide')
-				} else {
-					$('#sector_id')[0].setCustomValidity('Este campo no puede quedar vacío.')
+				if ($('#forma-delivery').val() == 2) {
+					var inpObj = document.getElementById("phone_contact_select");
+				  if (!inpObj.checkValidity()) {
+						$('#phone_contact_select').addClass('is-invalid');
+
+				  } else {
+
+						$('#phone_contact_select').addClass('is-valid');
+						$('#phone_contact_info').text($('#phone_contact_select').val());
+						$('#phone_contact_info').addClass('d-block').removeClass('d-none');
+
+						$('#address-descrip').addClass('d-none').removeClass('d-block');
+						let sector        = $('#sector_id option:selected').text()
+						// let stimated_time = $('#stimatedtime').text()
+						// let tarifa        = $('#tarifa').text()
+						let detalles      = $('#detalles').val()
+						$('#detallesescondidos-2').addClass('d-block').removeClass('d-none')
+						if ( ! $('#sector_id')[0].validity.valueMissing ){
+							$('#user_address_delivery').val($('#sector_id').val())
+							$('#sector_info').text(sector)
+							$('#detalles_info').text(detalles)
+							// $('#stimatedtime_info').text(stimated_time)
+							// $('#tarifa_info').text(tarifa)
+							// $('.delivery_cost').removeClass('d-none')
+							// $('#delivery_cost').text(tarifa)
+							$('.detallesescondidos').removeClass('d-none')
+							$('#modalDelivery').modal('hide')
+						} else {
+							$('#sector_id')[0].setCustomValidity('Este campo no puede quedar vacío.')
+						}
+
+				  }
+				}else if($('#forma-delivery').val() == 1){
+					var inpObj = document.getElementById("phone_contact_escribir");
+				  if (!inpObj.checkValidity()) {
+						$('#phone_contact_escribir').addClass('is-invalid');
+
+				  } else {
+
+						$('#phone_contact_escribir').addClass('is-valid');
+						$('#phone_contact_info').text($('#phone_contact_escribir').val());
+						$('#phone_contact_info').addClass('d-block').removeClass('d-none');
+
+						$('#address-descrip').text($('#direc-descrip-area').val());
+
+						$('#address-descrip').addClass('d-block').removeClass('d-none');
+						$('#modalDelivery').modal('hide');
+
+						$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
+
+				  }
+				}else if ($('#forma-delivery').val() == ""){
+					$('#address-descrip').text($('#input-text-direc-anteriores').val());
+					$('#address-descrip').addClass('d-block').removeClass('d-none');
+					$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
+					$('#modalDelivery').modal('hide');
 				}
-			}else if($('#forma-delivery').val() == 1){
-				$('#address-descrip').text($('#direc-descrip-area').val());
-
-				$('#address-descrip').addClass('d-block').removeClass('d-none');
-				$('#modalDelivery').modal('hide');
-
-				$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
-			}else if ($('#forma-delivery').val() == ""){
-				$('#address-descrip').text($('#input-text-direc-anteriores').val());
-				$('#address-descrip').addClass('d-block').removeClass('d-none');
-				$('#detallesescondidos-2').addClass('d-none').removeClass('d-block')
-				$('#modalDelivery').modal('hide');
-			}
 
 			console.log($('#forma-delivery').val());
 		})

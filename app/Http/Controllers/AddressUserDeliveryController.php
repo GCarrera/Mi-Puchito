@@ -99,6 +99,7 @@ class AddressUserDeliveryController extends Controller
 				$address_delivery = AddressUserDelivery::find($id);
 				/*$address_delivery = new AddressUserDelivery();
 				$address_delivery->user_id = $user_id;*/
+				$address_delivery->phone_contact =  $req->phone_contact_edit;
 
 					if ($req->forma_delivery == 1 ) {
 						$address_delivery->details =  $req->direc_descrip_area;

@@ -32,7 +32,7 @@
 				<div class="card-body">
 
 					<ul class="list-group">
-						
+
 						@forelse ($products as $producto)
 						<!--LOGICA PARA CAMBIAR EL ICONO DE LOS BOTONES CUANDO YA ESTA EN EL CARRITO EL PRODUCTO-->
 						@php
@@ -41,15 +41,15 @@
 								if ($item->options->sale_type == "al-menor") {
 									# code...
 									$respuesta1 = Illuminate\Support\Arr::get($item, 'model.id', 0);
-								}	
-												
+								}
+
 							}
 							foreach ($carrito as $item) {
 								if ($item->options->sale_type == "al-mayor") {
 									# code...
 									$respuesta2 = Illuminate\Support\Arr::get($item, 'model.id', 0);
-								}	
-												
+								}
+
 							}
 						}
 						@endphp
@@ -57,9 +57,9 @@
 								<div class="row">
 
 									<div class="col-md-2 col-sm-6 col-12 mt-3">
-										
+
 										<div class="">
-											
+
 											<img data-src="/storage/{{ $producto->product->image }}" style="height: 80px; position: relative; top: 0px; left: 15px;">
 											@if(isset($respuesta1) && $respuesta1 != 0)
 											<div class="alert alert-success" role="alert" class="font-weight-bold" style="font-size: 0.9em; margin-bottom: 0px;">
@@ -72,23 +72,23 @@
 											</div>
 											@endif
 										</div>
-											
-										
+
+
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12 mt-3">
-										
+
 										<p class="text-muted small">PRODUCTO</p>
 											<p class="">
 												<small class="font-weight-bold">{{ $producto->product->inventory->product_name }}</small><br>
 												<small>{{ $producto->product->inventory->description }}</small>
 											</p>
-										
+
 									</div>
 
 									<div class="col-md-2 col-sm-6 col-12 mt-3 padreprecio">
 										<p class="text-muted small">PRECIO MENOR Bs</p>
-										
+
 										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span><br>
 										<span class="text-muted"><small><span class="font-weight-bold">Iva:</span> {{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</small></span><br>
 										<span class="text-muted"><small><span class="font-weight-bold">Subtotal:</span> {{ number_format(($producto->product->retail_total_price-$producto->product->retail_iva_amount), 2, ',', '.') }}</small></span>
@@ -243,7 +243,7 @@
 			"progressBar": true,
 			"positionClass": "toast-bottom-left",
 		}
-		
+
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -261,9 +261,13 @@
 		$.get('/get_shoppingcart', (res) => {
 			if (res > 0) {
 				$('#cart_counter').removeClass('d-none')
-				$('#cart_counter').text(res)
+				$('#cart_counter').empty()
+				$('#cart_counter').append('<i class="fas fa-shopping-cart"></i>'+res)
+				//$('#cart_counter').text(res)
 				$('#cart_counter-2').removeClass('d-none')
-				$('#cart_counter-2').text(res)
+				//$('#cart_counter-2').text(res)
+				$('#cart_counter-2').empty()
+				$('#cart_counter-2').append('<i class="fas fa-shopping-cart"></i>'+res)
 			}
 
 			$('#loading').fadeOut()

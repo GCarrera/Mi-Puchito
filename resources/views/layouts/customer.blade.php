@@ -13,9 +13,13 @@
 
 				<div class="col">
 					<a href="/shoppingcart" class="ml-auto">
-						<span class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2">0</span>
+						<span class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2">
+							0
+						</span>
 					</a>
-					<span id="buy_counter"></span>
+					<span id="buy_counter">
+
+					</span>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>

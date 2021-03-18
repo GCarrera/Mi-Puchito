@@ -327,9 +327,13 @@
 				else {
 					toastr.success('<span="negrita">Producto añadido al carrito</span>')
 					$('#cart_counter').removeClass('d-none')
-					$('#cart_counter').text(res)
+					$('#cart_counter').empty()
+					$('#cart_counter').append('<i class="fas fa-shopping-cart"></i>'+res)
+					//$('#cart_counter').text(res)
 					$('#cart_counter-2').removeClass('d-none')
-					$('#cart_counter-2').text(res)
+					$('#cart_counter-2').empty()
+					$('#cart_counter-2').append('<i class="fas fa-shopping-cart"></i>'+res)
+					//$('#cart_counter-2').text(res)
 				}
 
 				that.removeAttr('disabled')

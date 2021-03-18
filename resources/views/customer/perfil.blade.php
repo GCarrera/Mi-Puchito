@@ -48,10 +48,10 @@
 				<!-- SIDEBAR MENU -->
 				<div class="profile-usermenu">
 					<div class="list-group list-group-flush" id="list-tab" role="tablist">
-						<a class="list-group-item list-group-item-action active" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
+						<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">
 							<i class="fas fa-road icon-width"></i>Dirección de entregas
 						</a>
-						<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">
+						<a class="list-group-item list-group-item-action active" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">
 							<i class="fas fa-cubes icon-width"></i>Pedidos
 						</a>
 						<a class="list-group-item list-group-item-action" id="list-oferta-list" data-toggle="list" href="#list-oferta" role="tab" aria-controls="oferta">
@@ -146,7 +146,7 @@
 					<div class="tab-content" id="nav-tabContent">
 
 
-						<div class="tab-pane fade show active" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+						<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 							<div class="d-flex justify-content-between mb-4 align-items-center">
 								<h4 class="font-weight-light">Direcciones de entrega</h4>
 								<button class="btn btn-primary" data-toggle="modal" data-target="#nuevaDireccion">
@@ -159,6 +159,7 @@
 										<tr>
 											<th class="negrita">N°</th>
 											<th class="negrita">Direccion</th>
+											<th class="negrita">Telefono</th>
 											<th class="negrita">ACCIONES</th>
 										</tr>
 									</thead>
@@ -170,6 +171,9 @@
 													{{ $rate->travel_rate_id ? $rate->travel_rate->sector->sector : "" }}
 													{{ $rate->details }}
 													{{ $rate->travel_rate_id ?$rate->travel_rate->rate : "" }}
+												</td>
+												<td>
+													{{ $rate->phone_contact }}
 												</td>
 												<td>
 													<button class="btn btn-primary btn-sm" onclick='showEdit({{ $rate->id }})'>
@@ -195,7 +199,7 @@
 							</div>
 						</div>
 
-						<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+						<div class="tab-pane fade show active" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
 
 
 							<div class="row mb-4">
@@ -764,6 +768,12 @@
 					<input type="hidden" name="forma_delivery" id="forma_delivery_edit" value="">
 					<input type="hidden" name="travel_rate" id="travel_rate_edit" value="">
 
+					<div class="w-100">
+						<div class="col-12">
+							<input type="tel" class="form-control" name="phone_contact_edit" id="phone_contact_edit" placeholder="04**-*******">
+						</div>
+					</div>
+
 					<div id="direc-descrip-caja-edit" class="w-100">
 						<div class="col-12">
 							<textarea name="direc_descrip_area" id="direc-descrip-area-edit" cols="30" rows="5" class="form-control" maxlength="255" ></textarea>
@@ -921,6 +931,8 @@
 		.done((data) => {
 			console.log("data direccion:");
 			console.log(data);
+
+			$('#phone_contact_edit').val(data.phone_contact);
 
 			if (data.travel_rate != null) {
 				$('#forma_delivery_edit').val(2);
@@ -1223,9 +1235,13 @@
 				} else {
 					toastr.success('<i>Producto añadido al carrito</i>')
 					$('#cart_counter').removeClass('d-none')
-					$('#cart_counter').text(res)
+					//$('#cart_counter').text(res)
+					$('#cart_counter').empty()
+					$('#cart_counter').append('<i class="fas fa-shopping-cart"></i>'+res)
 					$('#cart_counter-2').removeClass('d-none')
-					$('#cart_counter-2').text(res)
+					$('#cart_counter-2').empty()
+					$('#cart_counter-2').append('<i class="fas fa-shopping-cart"></i>'+res)
+					//$('#cart_counter-2').text(res)
 				}
 
 				that.removeAttr('disabled')
