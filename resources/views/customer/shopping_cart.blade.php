@@ -458,7 +458,15 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 			<div class="modal-body">
 				<h6 class="font-weight-light">Información bancaria</h6>
-				@forelse($cb as $c)
+				<div class="card-body">
+					<h5 class="negrita">Pago movil:</h5>
+					<div class="row">
+						<h6 class="col-6"><b class="negrita">Telf: </b> 0424-337 21 91 <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('phone-04243372191')"></i></h6>
+						<h6 class="col-6"><b class="negrita">Cedula: </b> 23.795.320 <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('dni-23795320')"></i></h6>
+						<h6 class="col-6"><b class="negrita">Banco: </b> Exterior (0115) <i class="far fa-copy text-primary" data-toggle="tooltip" title="Copiar" onclick="copiarAlPortapapeles('code-0115')"></i></h6>
+					</div>
+				</div>
+				{{--@forelse($cb as $c)
 					@if(isset($c->name_enterprise) && isset($c->account_number) && isset($c->bank) && isset($c->dni))
 					<div class="card-body">
 						<h5><b>Transferencias:</b></h5>
@@ -487,7 +495,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 							<b>No hay información disponible</b>
 						</div>
 					</div>
-				@endforelse
+				@endforelse--}}
 
 				<hr>
 
