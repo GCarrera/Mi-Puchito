@@ -115,9 +115,12 @@ class ProductController extends Controller
 
 			$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
 			// $product->wholesale_pvp          = $req->input('wholesale_pvp');
-			$product->wholesale_packet_price = $req->input('wholesale_packet_price');
+			/*$product->wholesale_packet_price = $req->input('wholesale_packet_price');
 			$product->wholesale_total_individual_price = $req->input('wholesale_total_individual_price');
-			$product->wholesale_total_packet_price     = $req->input('wholesale_total_packet_price');
+			$product->wholesale_total_packet_price     = $req->input('wholesale_total_packet_price');*/
+			$product->wholesale_packet_price = '1';
+			$product->wholesale_total_individual_price = '1';
+			$product->wholesale_total_packet_price     = '1';
 			$product->wholesale_iva_amount   = $req->input('wholesale_iva_amount');
 			$product->inventory_id           = $product->inventory_id;
 			$product->oferta			           = $req->input('oferta');
