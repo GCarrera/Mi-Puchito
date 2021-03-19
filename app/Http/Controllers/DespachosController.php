@@ -566,13 +566,13 @@ class DespachosController extends Controller
                 }
             }
 
-            $despacho = Despacho::with(['productos' => function($producto){
+            /*$despacho = Despacho::with(['productos' => function($producto){
                 $producto->select('product_name');
-            }, 'piso_venta'])->findOrFail($despacho->id);
+            }, 'piso_venta'])->findOrFail($despacho->id);*/
 
             DB::commit();
 
-            return response()->json($despacho);
+            return response()->json($despacho->id);
 
         }catch(Exception $e){
 
