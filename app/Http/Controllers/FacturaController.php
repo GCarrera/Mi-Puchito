@@ -57,7 +57,7 @@ class FacturaController extends Controller
     	$iva = 0;
     	$total = 0;*/
 
-    	if (Auth::user()->type == 'admin') {
+    	if (Auth::user()->type == 'admin' || Auth::user()->type == 'almacen') {
 
         $despacho = Despacho::with(['productos' => function($producto){
             $producto->select('product_name');
