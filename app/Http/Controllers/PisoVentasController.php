@@ -413,7 +413,7 @@ class PisoVentasController extends Controller
       $solicitudes = $request->data;
 
       foreach ($solicitudes as $key => $value) {
-        return $value->nombre;
+        return $key->nombre;
         $solicitud = new Solicitud();
 
     		$solicitud->nombre = $value->nombre;
