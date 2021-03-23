@@ -413,14 +413,13 @@ class PisoVentasController extends Controller
       $solicitudes = $request->data;
 
       foreach ($solicitudes as $key => $value) {
-        return $value['nombre'];
         $solicitud = new Solicitud();
 
-    		$solicitud->nombre = $value->nombre;
-    		$solicitud->telefono = $value->telefono;
-    		$solicitud->producto = $value->producto;
-    		$solicitud->piso_venta_id = $value->piso_venta_id;
-    		$solicitud->id_extra = $value->id;
+    		$solicitud->nombre = $value['nombre'];
+    		$solicitud->telefono = $value['telefono'];
+    		$solicitud->producto = $value['producto'];
+    		$solicitud->piso_venta_id = $value['piso_venta_id'];
+    		$solicitud->id_extra = $value['id'];
     		$solicitud->save();
       }
 
