@@ -32,11 +32,12 @@
                               retiro
                             @endif fue emitido para </span> {{ $despacho->piso_venta->nombre }}</span>
                             <br>
-                            <span><span class="font-weight-bold">Estado:</span> <span style="font-size: 1.2em;">@switch ($despacho->confirmado)
-                            @case(1)
+                            <span><span class="font-weight-bold">Estado:</span> <span style="font-size: 1.2em;">
+                              @switch ($despacho->confirmado)
+                            @case('1')
                               <span class="text-success">Confirmado</span>
                               @break
-                            @case(0)
+                            @case('0')
                               <span class="text-danger">Negado</span>
                               @break
                             @case(null)
