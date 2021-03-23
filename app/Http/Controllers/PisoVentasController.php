@@ -14,6 +14,7 @@ use App\Inventario;
 use App\Precio;
 use App\Product;
 use App\Inventory;
+use App\Solicitud;
 use Illuminate\Support\Arr;
 
 class PisoVentasController extends Controller
@@ -396,5 +397,32 @@ class PisoVentasController extends Controller
         $inventario->save();
 
         return response()->json(true);
+    }
+
+    public function last_solicitud(Request $request)
+    {
+      $usuario = $request->id;
+
+      $solicitud = Solicitud::select('id_extra')->where('piso_venta_id', $usuario)->orderBy('id', 'desc')->first();
+
+      return $solicitud;
+    }
+
+    public function nuevas_solicitud(Request $request)
+    {
+      $solicitudes = $request->data;
+
+      foreach ($solicitudes as $key => $value) {
+        $solicitud = new Solicitud();
+
+    		$solicitud->nombre = $value->nombre;
+    		$solicitud->telefono = $value->telefono;
+    		$solicitud->producto = $value->producto;
+    		$solicitud->piso_venta_id = $value->piso_venta_id;
+    		$solicitud->id_extra = $value->id;
+    		$solicitud->save();
+      }
+
+      return $solicitud;
     }
 }

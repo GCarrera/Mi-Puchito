@@ -127,6 +127,10 @@ Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('des
 Route::get('/nuevo-despacho', 'DespachosController@new_despacho');
 //---------------------------------------RUTAS APIS-----------------------------------------------//
 Route::group(['prefix' => 'api'], function(){
+	//SOLICITUDES
+	Route::post('/last-solicitud', 'PisoVentasController@last_solicitud');
+	Route::post('/nuevas-solicitud', 'PisoVentasController@nuevas_solicitud');
+
 	//PISOS DE VENTAS
 	Route::post('/piso-venta-cantidad-edit', 'PisoVentasController@cantidad_edit');
 	Route::post('/auditoria', 'PisoVentasController@auditoria');
