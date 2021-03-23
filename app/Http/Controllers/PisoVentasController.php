@@ -47,6 +47,14 @@ class PisoVentasController extends Controller
 
     }
 
+    public function solicitudes()
+    {
+      $solicitudes = Solicitud::get();
+
+      return view('admin.solicitudes')->with('solicitudes', $solicitudes);
+
+    }
+
     public function ventas_mostrar($id)
     {
       $ventas = Venta::with('detalle')->where('piso_venta_id', $id)->where('type', 1)->get();

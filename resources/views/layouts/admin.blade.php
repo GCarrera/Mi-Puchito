@@ -34,6 +34,7 @@
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ route('piso.ventas.index') }}">Detalles</a>
 								<a class="dropdown-item" href="{{ route('piso.ventas.ganancias') }}">Ganancias</a>
+								<a class="dropdown-item" href="{{ route('piso.ventas.solicitudes') }}">Solicitudes</a>
 							</div>
 						</li>
 						<li class="nav-item" id="despachos">
