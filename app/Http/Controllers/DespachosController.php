@@ -418,7 +418,14 @@ class DespachosController extends Controller
                 //RESTAR DE INVENTORY
                 try {
 
-                  $inventary = DB::table('inventories')->where('id', $producto['id'])->decrement('total_qty_prod', $producto['cantidad']);
+                  //$inventary = DB::table('inventories')->where('id', $producto['id'])->decrement('total_qty_prod', $producto['cantidad']);
+
+                  //Cambios de cantidades
+                  $inventary = Inventory::findOrFail($producto['id']);
+                  $inventary->total_qty_prod -= $producto['cantidad'];
+                  $inventary->quantity = $inventary->total_qty_prod / $inventary->qty_per_unit;
+                  $inventary->save();
+                  //Cambios de cantidades
 
                   DB::commit();
 
