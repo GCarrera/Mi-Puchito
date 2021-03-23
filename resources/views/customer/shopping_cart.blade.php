@@ -817,6 +817,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 		//$('.sinflechas-'+id).val(myCart[id].qty)
 		let data = {"qty": e.target.value}
 
+		console.log(data);
+
 		$.ajax({
 		    type: 'PUT',
 		    url: '/shoppingcart/'+ id,
@@ -838,7 +840,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 	function subtotal_item(id) {
 		// console.log(typeof myCart[id].price, typeof parseInt(myCart[id].options.retail_iva_amount), typeof myCart[id].qty)
-		myCart[id].subtotal = (myCart[id].price - parseInt(myCart[id].options.retail_iva_amount)) * myCart[id].qty
+		myCart[id].subtotal = (myCart[id].price - parseFloat(myCart[id].options.retail_iva_amount)) * myCart[id].qty
 		if(myCart[id].options.sale_type == "al-menor"){
 
 			myCart[id].iva = myCart[id].options.retail_iva_amount * myCart[id].qty
@@ -862,19 +864,19 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			//console.log("carrito "+myCart[cart])
 			if (myCart[cart].options.sale_type == "al-mayor") {
 
-				subtotal += (myCart[cart].price * parseInt(myCart[cart].qty))
+				subtotal += (myCart[cart].price * parseFloat(myCart[cart].qty))
 
-				iva += parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity) * myCart[cart].qty)
+				iva += parseFloat((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity) * myCart[cart].qty)
 
-				total += (myCart[cart].price + parseInt((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity))) * myCart[cart].qty
+				total += (myCart[cart].price + parseFloat((myCart[cart].options.wholesale_iva_amount * myCart[cart].options.wholesale_quantity))) * myCart[cart].qty
 
 			}else if(myCart[cart].options.sale_type == "al-menor"){
 
 			total += myCart[cart].price * myCart[cart].qty
-			// console.log(myCart[cart].price, myCart[cart].qty, parseInt(myCart[cart].options.retail_iva_amount))
-			subtotal += (myCart[cart].price * parseInt(myCart[cart].qty)) - (parseInt(myCart[cart].options.retail_iva_amount) * parseInt(myCart[cart].qty))
+			// console.log(myCart[cart].price, myCart[cart].qty, parseFloat(myCart[cart].options.retail_iva_amount))
+			subtotal += (myCart[cart].price * parseFloat(myCart[cart].qty)) - (parseFloat(myCart[cart].options.retail_iva_amount) * parseFloat(myCart[cart].qty))
 			// console.log("subtotal: ", subtotal)
-			iva += parseInt(myCart[cart].options.retail_iva_amount * myCart[cart].qty)
+			iva += parseFloat(myCart[cart].options.retail_iva_amount * myCart[cart].qty)
 			}
 
 

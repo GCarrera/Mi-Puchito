@@ -61,7 +61,7 @@ class CustomerController extends Controller
 			$search = str_replace("+", " ", $request->search);
 			$data = Category::select('id', 'name')
 			->with(['inventory' => function($inventory) use($request, $search) {
-				$inventory->where('status', 1);
+				$inventory->where('status', 1)->where('total_qty_prod', '>', 0);
 				//EL TAKE DETERMINA LA CANTIDAD DE PRODUCTOS A MOSTRAR
 				$inventory->take(20)->with(['product' => function($product) {
 					if ($product != NULL) {
