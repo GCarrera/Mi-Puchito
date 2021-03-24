@@ -39,19 +39,21 @@
                             <br>
                             <span><span class="font-weight-bold">Cliente:</span> {{$pedido->user->people->name}}</span><br>
                             <span><span class="font-weight-bold">Cedula:</span> {{$pedido->user->people->dni}}</span><br>
-                            @if ($pedido->rate->address_user_delivery != null)
-                              <span><span class="font-weight-bold">Telefono:</span> {{$pedido->rate->address_user_delivery->phone_contact}}</span><br>
-                            @else
-                              <span><span class="font-weight-bold">Telefono:</span> {{$pedido->dir->phone_contact}}</span><br>
-                            @endif
-                            @if ($pedido->rate->address_user_delivery != null)
-                              @if ($pedido->rate->address_user_delivery->travel_rate_id != null)
-                                <span class="">{{$pedido->dir->sector->sector}} {{$pedido->rate->address_user_delivery->details}}</span>
+                            @if ($pedido->rate != false)
+                              @if ($pedido->rate->address_user_delivery != null)
+                                <span><span class="font-weight-bold">Telefono:</span> {{$pedido->rate->address_user_delivery->phone_contact}}</span><br>
                               @else
-                                <span class="">{{$pedido->rate->address_user_delivery->details}}</span>
+                                <span><span class="font-weight-bold">Telefono:</span> {{$pedido->dir->phone_contact}}</span><br>
                               @endif
-                            @else
-                              <span class="">{{$pedido->sector->sector}} {{$pedido->dir->details}}</span>
+                              @if ($pedido->rate->address_user_delivery != null)
+                                @if ($pedido->rate->address_user_delivery->travel_rate_id != null)
+                                  <span class="">{{$pedido->dir->sector->sector}} {{$pedido->rate->address_user_delivery->details}}</span>
+                                @else
+                                  <span class="">{{$pedido->rate->address_user_delivery->details}}</span>
+                                @endif
+                              @else
+                                <span class="">{{$pedido->sector->sector}} {{$pedido->dir->details}}</span>
+                              @endif
                             @endif
 
                     <!--TABLA DE PRODUCTOS-->
@@ -89,6 +91,7 @@
 
                         </tbody>
                     </table>
+
                     <div class="text-center" style="width: 70%; position: absolute; bottom: 0px; left: 100px;">
                         <p class="font-weight-bold text-center" style="font-size: 1.5em;">Gracias por su compra siganos en instragram @Mipuchito.Ca</p>
                     </div>
@@ -99,6 +102,19 @@
                         <p class="" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{number_format($pedido->amount, 2, ',', '.')}}$.<span></p>
                     </div>
 
+                    @if ($pedido->rate == false)
+                      <div class="text-center mt-3">
+
+                        <span class="">
+                          Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 100 metros antes del automercado Villa Cagua
+                          <br>
+                          0424-3372191
+                          <br>
+                          <small>Comuniquese via mensaje de Wasapt o Texto</small>
+                        </span>
+
+                      </div>
+                    @endif
 
     </body>
 </html>

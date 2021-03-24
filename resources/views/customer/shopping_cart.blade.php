@@ -350,7 +350,18 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 									</label>
 								</div>
 								<small class="negrita">Servicio Gratuito</small>
-								<i id="address" class="d-none">Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</i>
+								<i id="address" class="d-none">
+									<p>
+										Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 100 metros antes del automercado Villa Cagua
+									</p>
+									<p>
+										Comercial Mi Puchito
+									</p>
+									<p>
+										0424-3372191
+									</p>
+									<small>Comuniquese via mensaje de WhatsApp o Texto</small>
+								</i>
 
 								<i id="address-descrip" class="d-none small"></i>
 								<i id="phone_contact_info" class="d-none small"></i>

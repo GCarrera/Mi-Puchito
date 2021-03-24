@@ -78,7 +78,7 @@ class FacturaController extends Controller
 
       	$total = $subtotal + $iva;*/
 
-        //return response()->json($despacho);
+        //return $despacho;
       	$pdf = PDF::loadView("pdf.despacho", compact('despacho'));
 
       	return $pdf->stream();
@@ -120,19 +120,24 @@ class FacturaController extends Controller
     			$dir	  = TravelRate::with('sector')->where('id', $datadir)->first();
     			$pedido->dir = $dir;
     		} else {
-    			$datadir = $rate->address_user_delivery_id;
-    			$dir = DB::table('address_user_deliveries')->where('id', $datadir)->first();
-    			$datasector = $dir->travel_rate_id;
-    			//return $dir->travel_rate_id;
-    			$sector = DB::table('travel_rates')->where('id', $datasector)->first();
-    			if (isset($sector->sector_id)) {
-    				$datasectrofinla = $sector->sector_id;
-    				$sectorfinal = DB::table('sectors')->where('id', $datasectrofinla)->first();
-    				//return $dir;
-    				//$sector	  = TravelRate::with('sector')->get();
-    				$pedido->sector = $sectorfinal;
-    			}
-    			$pedido->dir = $dir;
+          if (isset($rate->address_user_delivery_id)) {
+            $datadir = $rate->address_user_delivery_id;
+            $dir = DB::table('address_user_deliveries')->where('id', $datadir)->first();
+            $datasector = $dir->travel_rate_id;
+            //return $dir->travel_rate_id;
+            $sector = DB::table('travel_rates')->where('id', $datasector)->first();
+            if (isset($sector->sector_id)) {
+              $datasectrofinla = $sector->sector_id;
+              $sectorfinal = DB::table('sectors')->where('id', $datasectrofinla)->first();
+              //return $dir;
+              //$sector	  = TravelRate::with('sector')->get();
+              $pedido->sector = $sectorfinal;
+            }
+            $pedido->dir = $dir;
+          } else {
+            $rate = false;
+          }
+
     		}
     		$pedido->rate = $rate;
 

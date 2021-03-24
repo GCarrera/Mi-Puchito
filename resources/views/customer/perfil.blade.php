@@ -342,8 +342,17 @@
 										        		<span aria-hidden="true">&times;</span>
 										        		</button>
 										    		</div>
-											    	<div class="modal-body">
-											        <p>Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</p>
+											    	<div class="modal-body text-center">
+											        <p>
+																Puede retirar en: Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 100 metros antes del automercado Villa Cagua
+															</p>
+															<p>
+																Comercial Mi Puchito
+															</p>
+															<p>
+																0424-3372191
+															</p>
+															<small>Comuniquese via mensaje de WhatsApp o Texto</small>
 											      	</div>
 											      	<div class="modal-footer">
 
