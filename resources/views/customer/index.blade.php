@@ -303,9 +303,9 @@
 
 	function filterEnterprise(enterprise) {
 		@if(Request::get('buytype') == 'major')
-		window.location = '?buytype=major&enterprise=' + enterprise
+		window.location = '/empresa/'+enterprise+'?buytype=major';
 		@else
-		window.location = '?enterprise=' + enterprise
+		window.location = '/empresa/'+enterprise;
 		@endif
 	}
 
@@ -443,7 +443,7 @@
 
 				that.removeAttr('disabled')
 				that.html('<i class="fas fa-check"></i>')
-				$('.texto-carrito').text("Producto agregado");
+				$('.texto-carrito').text("Comprar");
 
 
 			})

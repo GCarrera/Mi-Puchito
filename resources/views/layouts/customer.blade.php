@@ -128,8 +128,11 @@
 				</div>
 				<div class="col-md-4 col-lg-4 offset-lg-1 footer-contact wow fadeInDown">
 					<h3>Dirección:</h3>
-						<p>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 Cerca de las Terrazas.</p>
-						<p>comercialmipuchitoca@gmail.com</p>
+					<p>Aragua, Cagua, Centro de Cagua, Calle Sabana Larga entre Rondon y Mariño Local 1 N° 104-10-19 100 metros antes del automercado Villa Cagua</p>
+
+					<p>Comercial Mi Puchito</p>
+					<p>0424-3372191</p>
+					<small>Comuniquese via mensaje de Wasapt o Texto </small>
 				</div>
 				<div class="col-md-4 col-lg-3 footer-social wow fadeInUp">
 					<h3>Enlaces</h3>

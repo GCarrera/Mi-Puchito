@@ -190,4 +190,43 @@ class CustomerController extends Controller
 		return view('customer.category_product', compact('data','categorias', 'empresas', 'carrito', 'dolar'));
 
 	}
+
+	public function empresa($empresa)
+	{
+		$categorias = Category::all();
+		$empresas   = Enterprise::all();
+
+		//$products   = Product::all();
+
+		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
+
+		$senter = Enterprise::select('name')->where('id', $empresa)->first();
+
+		/*$phone = Enterprise::where('id', $empresa)->with(['inventory' => function ($inventory) use($empresa)
+		{
+			$inventory->where('status', 1)->where('total_qty_prod', '>', 0)->with('product');
+		}])->get();*/
+
+		//$phone = Enterprise::where('id', $empresa)->with('inventory')->get();
+
+		$data = Inventory::where('enterprise_id', $empresa)->where('status', 1)->where('total_qty_prod', '>', 0)->with('product')->get();
+
+		/*return $phone;
+
+		$data = Category::with(['inventory' =>  function($inventory) use($empresa) {
+			//STATUS 1 ESPECIFICO QUE ESTE HABILITADO PARA LA VENTA
+			$inventory->where('status', 1)->where('total_qty_prod', '>', 0)->where('enterprise_id', $empresa)->with('product');
+			//$inventory->where('status', 1)->where('total_qty_prod', '>', 0)->where('enterprise_id', $empresa)->with('product');
+		}])->get();*/
+
+		//return $data;
+
+		//SI EL USUARIO ESTA AUTENTICADO NADA MAS
+
+			// \Cart::session($userId)->clear();
+			$carrito   = \Cart::content();
+
+		return view('customer.empresa_product', compact('data','categorias', 'empresas', 'carrito', 'dolar', 'senter'));
+
+	}
 }

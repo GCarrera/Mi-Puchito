@@ -19,24 +19,24 @@
 		<div class="card-body">
 			<div class="row no-gutters">
 				<div class="col-4 col-md-2">
-					<h5 class="mt-2">{{ $data->name }}</h5>
+					<h5 class="mt-2">{{ $senter->name }}</h5>
 				</div>
 				<div class="col col-md-5">
-					<p class="mb-0 mt-2 d-none d-md-block">{{ count($data->inventory) }} productos encontrados</p>
+					<p class="mb-0 mt-2 d-none d-md-block">{{ count($data) }} productos encontrados</p>
 				</div>
 				<div class="col col-md-2">
 					<!--<p class="mb-0 mt-2 d-none d-md-block text-right">Usted está comprando:</p>-->
 				</div>
 				<div class="col-8 col-md-3">
 
-						<!--<ul class="nav nav-pills ml-md-5">
+						{{--<!--<ul class="nav nav-pills ml-md-5">
 							<li class="nav-item">
 								<a class="nav-link {{ Request::get('buytype') == 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=major')}}">Al mayor</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link {{ Request::get('buytype') != 'major' ? 'active' : 'normal' }}" href="{{url('/categoria/'.$data->id.'?buytype=minor')}}">Al menor</a>
 							</li>
-						</ul>-->
+						</ul>-->--}}
 
 
 				</div>
@@ -52,7 +52,7 @@
 
 			<div class="row">
 
-				@foreach ($data->inventory as $producto)
+				@foreach ($data as $producto)
 
 				<div class="col-lg-3 col-12">
 					@if(Request::get('buytype') != 'major')
