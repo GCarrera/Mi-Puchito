@@ -360,7 +360,7 @@
 				}else if(res == "el campo tiempo estimado es obligatorio"){
 					toastr.error(res)
 				}else{
-					window.location.href = '/home';
+					window.location.href = '/admin/delivery';
 					$('#dispatched-'+id).text(res);
 				}
 			})
