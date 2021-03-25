@@ -13,6 +13,7 @@
 
 Route::get('/', 'CustomerController@index');
 Route::get('/home', 'CustomerController@index')->name('home')->middleware('customer');
+Route::get('/search', 'CustomerController@search')->name('search')->middleware('customer');
 // Route::get('/home', function () {
 //     return redirect('services');
 // });

@@ -130,6 +130,44 @@ class CustomerController extends Controller
 
 	}
 
+	public function search(Request $request)
+	{
+			$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
+			$empresas   = Enterprise::all();
+			$categories = Category::select('id', 'name')->get();
+			$search = str_replace("+", " ", $request->search);
+
+			if ($search) {
+				$bibi = $search;
+			} else {
+				$bibi = false;
+			}
+
+			if ($request->enterprise) {
+				$senter = Enterprise::select('name')->where('id', $request->enterprise)->first();
+			} else {
+				$senter = false;
+			}
+
+				//$user = auth()->user();
+				// \Cart::session($userId)->clear();
+				$carrito   = \Cart::content();
+
+				$data = Inventory::where('product_name', 'like', '%'.$search.'%')->where('status', 1)->where('total_qty_prod', '>', 0)->with('product')->get();
+
+				//return $data;
+
+				return view('customer.search')
+					->with('data', $data)
+					->with('categories', $categories)
+					->with('empresas', $empresas)
+					->with('carrito', $carrito)
+					->with('bibi', $bibi)
+					->with('senter', $senter)
+					->with('dolar', $dolar);
+
+	}
+
 	public function al_mayor()
 	{
 		if (auth()->check() && auth()->user()->type == 'admin') {
