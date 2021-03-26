@@ -4,7 +4,7 @@
 	<div class="animate fadeIn">
 
 		<div class="mb-3 d-flex justify-content-center">
-			<img src="{{ asset('img/pinchitos.png') }}" style="width: 200px; ">
+			<img src="{{ asset('public/img/pinchitos.png') }}" style="width: 200px; ">
 		</div>
 
 		<div class="card mb-4" style="width: 100%;">
