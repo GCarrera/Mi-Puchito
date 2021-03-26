@@ -33,10 +33,10 @@
 
 		<div class="col-md-5 col-sm-12 col-xs-12">
 			@if(Request::get('buytype') == 'major')
-			<form action="/search" method="GET" class="my-2 my-lg-0">
+			<form action="/search" autocomplete="off" method="GET" class="my-2 my-lg-0">
 			<input type="hidden" name="buytype" value="major">
 			@else
-			<form action="/search" method="GET" class="my-2 my-lg-0">
+			<form action="/search" autocomplete="off" method="GET" class="my-2 my-lg-0">
 			@endif
 				<div class="input-group mb-2">
 					<input name="search" class="form-control SearchProductNameAutoComplete" type="search" placeholder="Buscar productos" aria-describedby="button-addon2">
