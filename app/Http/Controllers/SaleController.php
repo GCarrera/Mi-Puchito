@@ -25,7 +25,7 @@ class SaleController extends Controller
 	public function get_sale($req)
 	{
 
-		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($req);
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory', 'dolar')->findOrFail($req);
 
 		/*$sale = Sale::find($req);
 

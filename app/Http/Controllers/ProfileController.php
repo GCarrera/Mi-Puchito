@@ -49,6 +49,8 @@ class ProfileController extends Controller
 
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
+		//return $dolar;
+
 		return view('customer.perfil')
 			->with('pedidosCount', $pedidosCount)
 			->with('wishlistCount', $wishlistCount)

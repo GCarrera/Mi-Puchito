@@ -47,6 +47,8 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
 		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');
 		Route::put('/finalizar-pedido-delivery/{id}', 'AdminController@finalizar_pedido_delivery');
+		//finalizar venta
+		Route::put('/finalizar-venta/{id}', 'AdminController@finalizar_venta');
 		//USUARIOS
 		Route::get('/usuarios/{id}', 'UsuariosController@show')->name('usuarios.show');
 

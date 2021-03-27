@@ -212,8 +212,8 @@
 								<table class="table text-center table-bordered table-sm table-hover">
 									<thead class="">
 										<th class="d-none d-md-table-cell small negrita">ID COMPRA</th>
-										<th class="d-none d-md-table-cell small negrita">PRODUCTOS</th>
-										<th class="small negrita">MONTO $</th>
+										{{--<th class="d-none d-md-table-cell small negrita">PRODUCTOS</th>--}}
+										<th class="small negrita">MONTO</th>
 										<th class="d-none d-md-table-cell small negrita">DELIVERY</th>
 										<th  class=" small negrita">ESTADO</th>
 										<th class="small negrita">FACTURA</th>
@@ -221,31 +221,35 @@
 									<tbody>
 										@forelse($pedidos as $compra)
 											<tr>
-												<td class="d-none d-md-table-cell">FC-000{{ $compra->id }}</td>
-												<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>
-												<td class="text-success">{{ number_format( $compra->amount, 2, ',', '.') }}</td>
+												<td class="d-none d-md-table-cell align-middle">FC-000{{ $compra->id }}</td>
+												{{--<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>--}}
+												<td class="text-success align-middle">
+													<span class="negrita text-success">{{number_format($compra->amount * $dolar->price, 2, ',', '.')}}BsS</span>
+													<br>
+													<span class="negrita small text-success">{{number_format($compra->amount, 2, ',', '.')}}$</span>
+												</td>
 												@if(ucfirst($compra->delivery) == "No")
-												<td class="d-none d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
+												<td class="d-none d-md-table-cell align-middle">{{ ucfirst($compra->delivery) }}</td>
 												@else
 													@if($compra->stimated_time != null)
-													<td class="d-none d-md-table-cell">{{$compra->stimated_time}}min</td>
+													<td class="d-none d-md-table-cell align-middle">{{$compra->stimated_time}}min</td>
 
 													@else
-													<td class="d-none d-md-table-cell">{{ ucfirst($compra->delivery) }}</td>
+													<td class="d-none d-md-table-cell align-middle">{{ ucfirst($compra->delivery) }}</td>
 													@endif
 												@endif
 												@if ($compra->dispatched != null)
 
 													@if($compra->confirmacion == "denegado")
 
-													<td class="font-weight-bold small text-capitalize">{{$compra->confirmacion}}
+													<td class="font-weight-bold small text-capitalize align-middle">{{$compra->confirmacion}}
 													<button type="button" class="ml-2 btn btn-danger" data-toggle="modal" data-target="#modal-denegado">
 														<i class="fas fa-info"></i>
 													</button>
 													</td>
 													@else
 														@if($compra->delivery == "si")
-														<td class="small text-capitalize">
+														<td class="small text-capitalize align-middle">
 															@php
 																$estado = \Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans();
 																$estadomin = explode(" ", $estado);
@@ -262,20 +266,27 @@
 																<span class="d-table-cell text-center d-sm-none small">Tiempo de llegada: {{$compra->stimated_time}}min</span>
 															@endif
 														</td>
+														@elseif ($compra->confirmacion == "Finalizado")
+															<td class="negrita small text-capitalize align-middle">
+																Compra Retirada
+																<button type="button" class="ml-2 btn btn-info" data-toggle="modal" data-target="#modal-venta-retirada">
+																	<i class="fas fa-check"></i>
+																</button>
+															</td>
 														@else
-														<td><label class="font-weight-bold small">Puede retirar
+														<td class="align-middle"><span class="negrita small">Puede Retirar
 														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">
 														<i class="fas fa-info"></i>
 														</button>
-														</label></td>
+													</span></td>
 														@endif
 													@endif
 												@else
-												<td class=""><label class="text-info small">En Espera</label></td>
+												<td class="align-middle"><label class="text-info small">En Espera</label></td>
 												@endif
 
-												<td>
-													<button type="button" class="btn btn-primary" data-toggle="tooltip" data-title="Detalles" onclick='showInfo({{ $compra->id }})'><i class="fas fa-info"></i></button>
+												<td class="align-middle">
+													<button type="button" class="btn btn-primary" data-toggle="tooltip" data-title="Detalles" onclick='showInfo({{ $compra->id }})'><i class="fas fa-search"></i></button>
 													{{--<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf', ['id' => $compra->id])}}"><i class="fas fa-file-pdf" style="color: #ffffff"></i></a>--}}
 													<!--
 													<button data-toggle="modal" data-id="{{ $compra->id }}" data-target="#detalles" class="btn btn-primary detalle"><i class="fas fa-info"></i></button>
@@ -374,6 +385,30 @@
 										    		</div>
 											    	<div class="modal-body">
 											        <p>Para más informacion comuniquese con nosotros via whatsapp <br> +58-424-337-2191</p>
+											      	</div>
+											      	<div class="modal-footer">
+
+											        	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+											      	</div>
+										    	</div>
+										  	</div>
+										</div>
+
+										<!-- Modal venta retirada -->
+										<div class="modal fade" id="modal-venta-retirada" tabindex="-1" aria-labelledby="modal-denegado" aria-hidden="true">
+											<div class="modal-dialog">
+										    	<div class="modal-content">
+										    		<div class="modal-header">
+										        		<h5 class="modal-title" id="exampleModalLabel">Informacion</h5>
+										        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										        		<span aria-hidden="true">&times;</span>
+										        		</button>
+										    		</div>
+											    	<div class="modal-body text-center">
+											        <h5>Gracias por preferirnos!!! <i class="fas fa-laugh-wink"></i></h5>
+															<p>Su compra fue retirada satisfactoriamente</p>
+															<p class="small">Cualquier inconveninente puede comunicarse con nosotros a travez de los siguientes numeros via whatsapp o via mensaje de texto</p>
+															<p>0424-3372191</p>
 											      	</div>
 											      	<div class="modal-footer">
 
@@ -863,8 +898,8 @@
 		<div class="small">
 			<p>Para mas informacion o alguna duda puedes comuicarte con nosotros via whatsapp a traves del  0424-3372191</p>
 		</div>
-		<div class="text-right">
-				<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+		<div class="text-right" id="total-show">
+
 		</div>
 			</div>
 
@@ -905,15 +940,18 @@
 
 				//console.log(value.inventory);
 
-					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
-					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format((value.sub_total / value.quantity)*venta.dolar.price);
+					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount*venta.dolar.price);
 
 					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 			});
 
-			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
-			$('#total-show').text(totalShow);
+			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount*venta.dolar.price);
+			var totalDolar = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+			//$('#total-show').text(totalShow);
+			$('#total-show').empty();
+			$('#total-show').append('<span class="negrita">Total: </span><span>'+totalShow+'BsS</span><br><span class="negrita small text-success">'+totalDolar+'$</span>');
 			var url = '/get-pedido-descarga/'+venta.id;
 			$('#factura-pdf').attr('href', url);
 

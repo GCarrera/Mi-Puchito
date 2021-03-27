@@ -210,14 +210,13 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		// $salesCount      = Sale::all()->count();
 
-		//$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name')->where('status', 2)->get();
-		$inventario = Inventory::orderBy('id', 'desc')->where('status', 2)->get();
+		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name')->where('status', 2)->get();
 		//$productos  = Product::all();
-		$productos  = Product::has('inventory')->get();
-		//$productos = Product::with('inventory')->orderBy('id', 'desc')->select('id', 'cost', 'wholesale_total_individual_price', 'wholesale_margin_gain', 'retail_margin_gain', 'retail_total_price', 'inventory_id')->get();
+		//$productos  = Product::has('inventory')->get();
+		$productos = Product::with('inventory')->orderBy('id', 'desc')->select('id', 'cost', 'wholesale_total_individual_price', 'wholesale_margin_gain', 'retail_margin_gain', 'retail_total_price', 'inventory_id')->get();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
-		//return $productos;
+		//	return $productos;
 
 		return view('admin.costos')
 			->with('inventario', $inventario)
@@ -343,7 +342,7 @@ class AdminController extends Controller
 
 	public function delivery_data_simple($id)
 	{
-		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory', 'dolar')->findOrFail($id);
 
 		return $pedido;
 	}
@@ -545,6 +544,18 @@ class AdminController extends Controller
 		$venta->save();
 
 		return redirect()->back()->with('success', 'Pedido Entregado Correctamente.');
+
+	}
+
+	public function finalizar_venta($id, Request $request)
+	{
+
+		$venta = Sale::findOrFail($id);
+
+		$venta->confirmacion = 'Finalizado';
+		$venta->save();
+
+		return redirect()->back()->with('success', 'Venta Finalizada Correctamente.');
 
 	}
 

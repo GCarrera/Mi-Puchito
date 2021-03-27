@@ -67,6 +67,14 @@
 											<a class="btn btn-danger" target="_blank" href="{{route('factura.pdf.descarga', ['id' => $venta->id])}}"><i class="fas fa-file-alt" style="color: #ffffff"></i></a>
 											-->
 											@endif
+
+											@if($venta->confirmacion == 'aprobado')
+
+											<button class="btn btn-info" onclick="openModalFinalizarVenta({{$venta->id}})">
+												<i class="fas fa-calendar-check"></i>
+											</button>
+
+											@endif
 											<button class="btn btn-md btn-primary" onclick="openModal({{$venta->id}})">
 												<i class="fas fa-coins"></i>
 											</button>
@@ -151,6 +159,31 @@
 						</div>
 					</div>
 
+					<!-- Modal Finalizar Venta -->
+					<div class="modal fade" id="modalFinalizarVenta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title">Finalizar Venta</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+								<form id="form_finalizar" method="post">
+									@method('put')
+									@csrf
+					      <div class="modal-body">
+					        ¿Esta seguro que desea finalizar esta venta?
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+					        <button type="submit" class="btn btn-primary">Finalizar</button>
+					      </div>
+							</form>
+					    </div>
+					  </div>
+					</div>
+
 					<!-- Modal -->
 					<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="almacen" aria-hidden="true">
 						<div class="modal-dialog modal-lg" role="document">
@@ -189,8 +222,8 @@
 
 									</tbody>
 							</table>
-							<div class="text-right">
-									<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+							<div class="text-right" id="total-show">
+
 							</div>
 
 								</div>
@@ -238,15 +271,18 @@ function showInfo(id) {
 
 			//console.log(value.inventory);
 
-				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
-				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+				var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format((value.sub_total / value.quantity)*venta.dolar.price);
+				var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount*venta.dolar.price);
 
 				$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 		});
 
-		var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
-		$('#total-show').text(totalShow);
+		var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount*venta.dolar.price);
+		var totalDolar = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+		//$('#total-show').text(totalShow);
+		$('#total-show').empty();
+		$('#total-show').append('<span class="negrita">Total: </span><span>'+totalShow+'BsS</span><br><span class="negrita small text-success">'+totalDolar+'$</span>');
 		var url = '/get-pedido-descarga/'+venta.id;
 		$('#factura-pdf').attr('href', url);
 
@@ -270,6 +306,14 @@ function showInfo(id) {
 	function openModal(id) {
 
 		$('#modalDetails-'+id).modal('show')
+	}
+
+	function openModalFinalizarVenta(id) {
+
+		$('#form_finalizar').attr('action', `/admin/finalizar-venta/${id}`)
+
+		$('#modalFinalizarVenta').modal('show');
+
 	}
 
 	$(() => {
