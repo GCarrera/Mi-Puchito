@@ -115,6 +115,7 @@
 		if (data != 'false' && data.length > 0) {
 			console.log(data);
 			$('#buy_counter').empty();
+			$('#buy_counter').addClass("badge badge-info");
 			$('#buy_counter').append('<div class="dropleft"><span class="" id="dropdownNotify" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i></span><div class="dropdown-menu" aria-labelledby="dropdownNotify" id="notifyMenu"></div></div>');
 			$('#notifyMenu').empty();
 

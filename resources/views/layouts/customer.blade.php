@@ -17,7 +17,7 @@
 							0
 						</span>
 					</a>
-					<span id="buy_counter" class="ml-auto mr-2 badge badge-info d-lg-none">
+					<span id="buy_counter" class="ml-auto mr-2 d-lg-none">
 
 					</span>
 
