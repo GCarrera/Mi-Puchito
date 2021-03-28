@@ -216,7 +216,7 @@ class AdminController extends Controller
 		$productos = Product::with('inventory')->orderBy('id', 'desc')->select('id', 'cost', 'wholesale_total_individual_price', 'wholesale_margin_gain', 'retail_margin_gain', 'retail_total_price', 'inventory_id')->get();
 		$dolar = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
-		//	return $productos;
+		//return $productos;
 
 		return view('admin.costos')
 			->with('inventario', $inventario)
@@ -469,6 +469,7 @@ class AdminController extends Controller
 		}
 		$confirmacion = $venta->dispatched = $now;
 		$venta->confirmacion = $request->confirmacion;
+		$venta->notify			 = '1';
 		$venta->save();
 
 			return $venta->confirmacion;

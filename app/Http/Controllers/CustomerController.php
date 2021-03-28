@@ -24,29 +24,31 @@ class CustomerController extends Controller
 
 	public function get_compras()
 	{
-		$now = Carbon::now()->subDay();
 
 		if (auth()->check() && auth()->user()->type == 'customer') {
 			$user = auth()->user();
-			$comprasNegadas  = Sale::orderBy('id', 'desc')
+			$compras  = Sale::orderBy('id', 'desc')
 			->where('user_id', $user->id)
-			->where('dispatched', '!=', 'NULL')
-			->where('confirmacion', 'denegado')
-			->whereDate('updated_at', '>=', $now)
+			->where('notify', '1')
 			->get();
-			$comprasEntregadas  = Sale::orderBy('id', 'desc')
-			->where('user_id', $user->id)
-			->where('dispatched', '!=', 'NULL')
-			->where('delivery', 'si')
-			->where('confirmacion', '!=', 'denegado')
-			->where('stimated_time', '!=', 'NULL')
-			->whereDate('updated_at', '>=', $now)
-			->get();
-			$data = array('negadas' => $comprasNegadas, 'entregadas' => $comprasEntregadas);
-			return $data;
+			return $compras;
 		} else {
 			return "false";
 		}
+
+	}
+
+	public function finish_notify($id)
+	{
+
+		if (auth()->check() && auth()->user()->type == 'customer') {
+			$user = auth()->user();
+			$compras = Sale::find($id);
+			$compras->notify = '0';
+			$compras->save();
+			return 'true';
+		}
+
 	}
 
 	public function index(Request $request)

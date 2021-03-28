@@ -12,14 +12,15 @@
 			<div class="row">
 
 				<div class="col">
-					<a href="/shoppingcart" class="ml-auto">
+					<a href="/shoppingcart" class="ml-auto mr-2">
 						<span class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2">
 							0
 						</span>
 					</a>
-					<span id="buy_counter">
+					<span id="buy_counter" class="ml-auto mr-2 badge badge-info d-lg-none">
 
 					</span>
+
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
@@ -49,7 +50,14 @@
 			</form>
 		</div>
 
+
 		<ul class="navbar-nav ml-auto">
+
+				@auth
+					<li class="d-none d-sm-block" id="notify-nav">
+
+			    </li>
+				@endauth
 
 		    <li class="nav-item" id="inicio">
 		     <a class="nav-link" href="/"><i class="fas fa-home mr-2" ></i>Inicio</a>

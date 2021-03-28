@@ -332,6 +332,7 @@ function showInfo(id) {
 				}else{
 
 				$('#dispatched-'+id).text(res);
+
 				}
 			})
 			.catch((err) => {

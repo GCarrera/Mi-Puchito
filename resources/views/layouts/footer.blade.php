@@ -20,6 +20,8 @@
 <script>
 
 	var comma = false;
+
+
 		//LAZY LOAD
 	$(function(){
 
@@ -110,29 +112,30 @@
 	})
 	.done((data) => {
 
-		if (data != 'false') {
-			var count = data.negadas.length+data.entregadas.length;
-			console.log(count);
-			if (data.negadas.length > 0) {
+		if (data != 'false' && data.length > 0) {
+			console.log(data);
+			$('#buy_counter').empty();
+			$('#buy_counter').append('<div class="dropleft"><span class="" id="dropdownNotify" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i></span><div class="dropdown-menu" aria-labelledby="dropdownNotify" id="notifyMenu"></div></div>');
+			$('#notifyMenu').empty();
 
-				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-danger d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.negadas.length+'</span></a>');
-				$('#buy_counter').removeClass("d-none");
-			}
-			if (data.entregadas.length > 0) {
-				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-success d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.entregadas.length+'</span></a>');
-				$('#buy_counter').removeClass("d-none");
-			}
-			if (data.entregadas.length > 0 && data.negadas.length > 0) {
-				$('#buy_counter').empty();
-				$('#buy_counter').append('<a href="/perfil"><span class="ml-auto mr-2 badge badge-warning d-lg-none" data-toggle="tooltip" data-placement="top" title="Tooltip on top"><i class="fas fa-shopping-bag"></i>'+data.entregadas.length+'</span></a>');
-				$('#buy_counter').removeClass("d-none");
-			}
-			if (count > 0) {
-				$('#navbarDropdown').append('<a href="/perfil"><span class="badge badge-warning">'+count+'</span></a>');
-				$('#perfil_count_buy').append('<a href="/perfil"><span class="badge badge-warning">'+count+'</span></a>');
-			}
+			$('#notify-nav').empty();
+			$('#notify-nav').append('<li class="nav-item dropdown"><span class="nav-link dropdown-toggle" id="dropdownNotifyNav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell" style="color: #17a2b8 !important;"></i></span><div class="dropdown-menu" aria-labelledby="dropdownNotifyNav" id="notifyMenuNav"></div></li>');
+			$('#notifyMenuNav').empty();
+			const fill = (number, len) =>
+			"0".repeat(len - number.toString().length) + number.toString();
+
+			$.each( data, function( key, value ) {
+
+					var codigo = value.id;
+					codigo = fill(codigo, 4);
+					var status = value.confirmacion;
+					var total = value.amount;
+
+					$('#notifyMenu').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
+					$('#notifyMenuNav').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
+
+			});
+
 		}
 	})
 	.fail((err)=> {
@@ -141,7 +144,22 @@
 		//toastr.error('Ha ocurrido un error.')
 	})
 
+	function hideNotify(id) {
+		console.log("id venta: "+id);
+		$.get({
+			url : `/finalizar-notificacion/`+id,
+		})
+		.done((data) => {
+
+				window.location = '/perfil';
+
+		})
+		.fail((err)=> {
+			console.log(err);
+		})
+	}
 </script>
 @stack('scripts')
+
 </body>
 </html>

@@ -36,6 +36,7 @@ class PisoVentasController extends Controller
         $cajas = Vaciar_caja::with('pisos_de_ventas')
         ->whereDate('created_at', '>=', $fecha_inicial)
   			->whereDate('created_at', '<=', $fecha_final)
+        ->orderBy('id', 'desc')
         ->get();
 
       } else {
