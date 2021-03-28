@@ -435,7 +435,7 @@ class AdminController extends Controller
 			foreach ($venta->details as $detalle) {
 				//BUSCAMOS EL PRODUCTO DEL CARRO
 				$producto = Product::findOrFail($detalle->product_id);
-				$inventario = Inventory::findOrFail($producto->inventory_id);
+				$inventario = Inventory::withTrashed()->findOrFail($producto->inventory_id);
 				//SI LA COMPRA ES AL MENOR
 				if ($detalle->type == "al-menor") {
 
