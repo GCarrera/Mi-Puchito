@@ -37,20 +37,23 @@
 								</tr>
 							</thead>
 							<tbody>
-								@forelse ($productos as $pro)
-									<tr>
-										<td class="small">{{ $pro->inventory->product_name }}</td>
-										<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
+								@forelse ($productos as $key => $pro)
 
-										<td>
-											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 3, ',', '.')}}</span>">
+									@if ($pro->inventory != null)
+
+										<tr>
+											<td class="small">{{ $pro->inventory['product_name'] }}</td>
+											<td class="small">{{number_format($pro->cost*$dolar->price, 2, ',', '.')  }}</td>
+
+											<td>
+												<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->wholesale_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->wholesale_total_individual_price, 3, ',', '.')}}</span>">
 												{{ number_format($pro->wholesale_total_individual_price*$dolar->price, 3, ',', '.') }} BsS
 											</span>
 										</td>
 
 										<td>
 											<span class="badge badge-pill badge-secondary" data-toggle="tooltip" data-html="true" data-title="Margen de Ganancia: <span class='badge badge-primary'>{{ $pro->retail_margin_gain }}%</span><br>Precio en $: <span class='badge badge-primary'>{{number_format($pro->retail_total_price, 3, ',', '.')}}</span>">
-												{{ number_format($pro->retail_total_price*$dolar->price, 3, ',', '.') }} BsS
+											{{ number_format($pro->retail_total_price*$dolar->price, 3, ',', '.') }} BsS
 											</span>
 										</td>
 										<td class="text-center">
@@ -62,6 +65,8 @@
 											</button>
 										</td>
 									</tr>
+
+									@endif
 
 								@empty
 									<tr>
