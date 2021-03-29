@@ -202,7 +202,7 @@
 							</table>
 							<div class="mt-3">
 								<span class="float-left"><span class="font-weight-bold" id="dir-show"></span></span>
-								<span class="float-right"><span class="font-weight-bold">Total:<span id="total-show"></span></span></span><br>
+								<span class="float-right text-right"><span class="font-weight-bold">Total:<span id="total-show"></span></span></span><br>
 								{{--<span class="text-right"><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>--}}
 							</div>
 
@@ -282,16 +282,17 @@
 
 				//console.log(value.inventory);
 
-					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.sub_total / value.quantity);
-					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
+					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format((value.sub_total / value.quantity)*venta.dolar.price);
+					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount*venta.dolar.price);
 
 					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
 
 			});
 
-			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount*venta.dolar.price);
+			var totalDolar = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
 			$('#total-show').empty();
-			$('#total-show').append(totalShow);
+			$('#total-show').append('<span class="negrita">Total: </span><span>'+totalShow+'BsS</span><br><span class="negrita small text-success">'+totalDolar+'$</span>');
 
 			if (venta.rate.address_user_delivery != null) {
 				if (venta.rate.address_user_delivery.travel_rate_id != null) {

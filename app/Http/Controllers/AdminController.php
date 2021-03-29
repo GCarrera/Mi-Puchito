@@ -314,7 +314,7 @@ class AdminController extends Controller
 
 	public function delivery_data($id)
 	{
-		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory')->findOrFail($id);
+		$pedido = Sale::with('user.people', 'details', 'details.product', 'details.product.inventory', 'dolar')->findOrFail($id);
 		$rate   = Delivery::with('address_user_delivery')->where('sale_id', $id)->first();
 		if (isset($rate->address_user_delivery->travel_rate_id)) {
 			$datadir = $rate->address_user_delivery->travel_rate_id;
