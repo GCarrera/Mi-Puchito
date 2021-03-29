@@ -71,6 +71,7 @@
 $(document).ready( function () {
 	$('#table_gain').DataTable({
 		"searching": false,
+		"order": [[ 0, "desc" ]],
 		"language": {
 			"search": "Buscar:",
 			"scrollX": true,
