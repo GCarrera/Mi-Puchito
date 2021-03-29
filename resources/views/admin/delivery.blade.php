@@ -203,8 +203,8 @@
 								</table>
 							</div>
 							<div class="mt-3">
-								<span class="float-left"><span class="negrita" id="dir-show"></span></span>
-								<span class="float-right text-right"><span class="negrita">Total:<span id="total-show"></span></span></span><br>
+								<span class="float-left"><span class="small" id="dir-show"></span></span>
+								<span class="float-right text-right"><span class="negrita"><span id="total-show"></span></span></span><br>
 								{{--<span class="text-right"><span class="negrita">Total: </span><span id="total-show"></span></span>--}}
 							</div>
 
@@ -300,16 +300,16 @@
 				if (venta.rate.address_user_delivery.travel_rate_id != null) {
 					$('#dir-show').empty();
 					$('#dir-show').append(venta.dir.sector.sector+' '+venta.rate.address_user_delivery.details);
-					$('#user-name').append(' - Telf:'+venta.rate.address_user_delivery.phone_contact);
+					$('#user-name').append(' <br> Telf:'+venta.rate.address_user_delivery.phone_contact);
 				} else {
 					$('#dir-show').empty();
 					$('#dir-show').append(venta.rate.address_user_delivery.details);
-					$('#user-name').append(' - Telf:'+venta.rate.address_user_delivery.phone_contact);
+					$('#user-name').append('<br>Telf:'+venta.rate.address_user_delivery.phone_contact);
 				}
 			} else {
 				$('#dir-show').empty();
 				$('#dir-show').append(venta.sector.sector+' '+venta.dir.details);
-				$('#user-name').append(' - Telf:'+venta.dir.phone_contact);
+				$('#user-name').append('<br>Telf:'+venta.dir.phone_contact);
 			}
 
 			var url = '/get-pedido-descarga/'+venta.id;
