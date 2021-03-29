@@ -329,7 +329,7 @@ class PisoVentasController extends Controller
             $vaciar_caja = new Vaciar_caja();
             $vaciar_caja->piso_venta_id = $caja['piso_venta_id'];
             $vaciar_caja->monto = $caja['monto'];
-            $vaciar_caja->monto = $caja['ganancia'];
+            $vaciar_caja->ganancia = $caja['ganancia'];
             $vaciar_caja->id_extra = $caja['id_extra'];
             $vaciar_caja->save();
         }
