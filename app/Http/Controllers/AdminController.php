@@ -528,9 +528,8 @@ class AdminController extends Controller
 			$confirmacion = $venta->dispatched = $now;
 			$venta->confirmacion = $request->confirmacion;
 			$venta->stimated_time = $request->stimated_time;
+			$venta->notify = '1';
 			$venta->save();
-
-
 
 			return $venta->confirmacion;
 
