@@ -875,26 +875,28 @@
 			<div class="modal-body">
 
 				<div class="mt-3">
-						<span class="float-left"><span class="font-weight-bold" id="fecha-create">Esta factura fue emitida:</span></span>
-						<span class="float-right"><span class="font-weight-bold">Cliente:<span id="user-name"></span></span></span><br>
+						<span class="float-left"><span class="negrita" id="fecha-create">Esta factura fue emitida:</span></span>
+						<span class="float-right"><span class="negrita">Cliente:<span id="user-name"></span></span></span><br>
 				</div>
 
 		<!--TABLA DE PRODUCTOS-->
 
-		<table class="table table-striped table-bordered mt-3">
-				<thead class="bg-info text-white">
-						<tr>
-								<th>Producto</th>
-								<th>Cantidad</th>
-								<th>Precio unitario</th>
-								<!--<th>iva unitario</th>-->
-								<th>Subtotal</th>
-						</tr>
-				</thead>
-				<tbody id="table-products">
+		<div class="table-responsive">
+			<table class="table table-sm table-striped table-bordered mt-3">
+					<thead class="bg-info text-white small text-center">
+							<tr>
+									<th class="negrita">Producto</th>
+									<th class="negrita">Cantidad</th>
+									<th class="negrita">Precio</th>
+									<!--<th class="negrita">iva unitario</th>-->
+									<th class="negrita">Sub Total</th>
+							</tr>
+					</thead>
+					<tbody id="table-products" class="small text-center">
 
-				</tbody>
-		</table>
+					</tbody>
+			</table>
+		</div>
 		<div class="small">
 			<p>Para mas informacion o alguna duda puedes comuicarte con nosotros via whatsapp a traves del  0424-3372191</p>
 		</div>
@@ -943,7 +945,7 @@
 					var subtotal = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format((value.sub_total / value.quantity)*venta.dolar.price);
 					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount*venta.dolar.price);
 
-					$('#table-products').append('<tr><td>'+value.product.inventory.product_name+'</td><td>'+value.quantity+'</td><td>'+subtotal+'</td><td>'+total+'</td></tr>');
+					$('#table-products').append('<tr><td class="align-middle">'+value.product.inventory.product_name+'</td><td class="align-middle">'+value.quantity+'</td><td class="align-middle">'+subtotal+'</td><td class="align-middle">'+total+'</td></tr>');
 
 			});
 
