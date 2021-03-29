@@ -33,8 +33,8 @@
 					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
 					<td>
 						<!--<button type="button" class="btn btn-primary" data-toggle="modal" :data-target="'#verDetalles'+producto.id">Detalles</button>-->
-						<b-button id="details-btn" @click="showDetail(producto)" v-b-tooltip.hover title="Ver Detalles"><i class="fas fa-eye"></i></b-button>
-						<b-button id="show-btn" @click="showModal(producto.id, producto.cantidad)" v-b-tooltip.hover title="Editar Cantidad"><i class="fas fa-edit"></i></b-button>
+						<b-button variant="primary" id="details-btn" @click="showDetail(producto)" v-b-tooltip.hover title="Ver Detalles"><i class="fas fa-eye"></i></b-button>
+						<b-button variant="info" id="show-btn" @click="showModal(producto.id, producto.cantidad)" v-b-tooltip.hover title="Editar Cantidad"><i class="fas fa-edit"></i></b-button>
 					</td>
 
 				</tr>
