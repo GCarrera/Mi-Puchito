@@ -150,7 +150,7 @@ class SaleController extends Controller
 						//VALIDACION PARA LA CANTIDAD DE PRODUCTOS DISPONIBLES
 						if ($producto->options->sale_type == "al-menor") {
 							$stock = $producto->model->inventory->total_qty_prod - $producto->qty;
-							if ($stock <= 0) {
+							if ($stock < 0) {
 								return redirect()->back()->withErrors(['no hay suficientes '. $producto->model->inventory->product_name. " para la venta"]);
 							}
 							//RESTAMOS DEL STOCK

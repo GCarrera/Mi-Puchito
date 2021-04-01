@@ -1,49 +1,3 @@
-{{-- OBJETIVOS DEL DIA DE MAÑANA
-
-* IR AL PERFIL DEL CLIENTE Y MOSTRAR LA VENTA CON TODA LA INFO
-*
-* MOSTARAR LA VENTA Y STATUS EN EL ADMIN
-* CAMBIAR STATUS CUANDO EL REPARTIDOR LLEGUE
-
-* HACER UNA FACTURA QUE SE DESCARGUE SOLA CUANDO NO SELECCIONE EL DELIVERY
-* HACER QUE LA FACTURA TENGA UN STATUS PARA SABR SI FUE RETIRADA O NO
-* MANEJO DE RLES Y PERSMISOS
-
-
-
-El objetivo de la semana es completar el flujo entero de la compra. El cual es:
-
-1) user ve los productos en el ecommerce. (LISTO)
-
-2) user agrega los productos que quiere comprar al mayor o al menor. (LISTO)
-
-3) El sistema hace los cálculos matemáticos pertinentes para mostrar el precio y demás.(LISTO)
-
-4) El usuario una vez dispuesto a cancelar por los productos debe llenar 2 formularios:
-
-4.1) Uno donde indica la dirección a donde se le enviarán los productos (en caso de que así lo quiera).(LISTO)
-
-4.2) Otro donde pueda introducir la constancia de que el pago se efectuó. (LISTO)
-
-5) Una vez hecho el pago, será redirigido a su perfil donde en la parte de pedidos muestre toda la información de la compra efectuada dándole la opción de descargar la factura, la cual es requerida para retirar/recibir los productos comprados. (INCOMPLETO)
-
-6) Se restan los productos comprados en el almacén. (FALTA)
-
-7)  El admin debe darse cuenta de la compra efectuada con toda su información. (FALTA)
-
-
-********************** DONE ******************************
-* LISTA DE DESEOS
-* MOSTRAR SELECCION DE LA ENTREGA EN ALGUN LADO ANTES DE LA COMPRA
-* MONTO TOTAL JUNTO CON LA TARIFA DEL DELIVERY
-* AL DARLE A PAGAR MOSTRAR DIALOGO DE TIPO DE PAGO Y UN BOTON PARA PAGAR Y LISTO
-* HACER LOS CAMBIOS PERTINENES A LA DB
-* ADMINISTRAR LAS DIRECCIONES DE ENTREGA
-	- IR A LA CONFIGURACION DEL PERFIL
-	- CREARLAS, ELIMINARLAS, MODIFUCARLAS
-* MOSTRAR LAS DIRECCIONES EN EL MODAL Y OPCION PARA AÑADIR NUEVAS --}}
-
-
 @extends('layouts.customer')
 
 @section('content')
@@ -85,7 +39,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 						</div>
 					</div>
 
-					@forelse ($cart as $c)
+					@forelse ($cart as $key => $c)
 					@if($c->options->sale_type != 'al-mayor')
 						@php
 						$subtotal = ($c->price - $c->options->retail_iva_amount) * $c->qty;
@@ -143,9 +97,11 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 							<div class="row d-none d-sm-flex">
 
-								<div class="col-3">
+								<div class="col-2">
 
-									<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
+									<input class="form-control form-control-sm" type="text" placeholder="1" data-carrito="{{$c->rowId}}" min="1" onclick="showCant('{{$c->rowId}}', '{{$c->model->inventory->total_qty_prod}}')" id="cant-{{$c->id}}" readonly value="{{ $c->qty }}">
+
+									{{--<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 										<div class="input-group-prepend">
 											<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 										</div>
@@ -153,7 +109,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 										<div class="input-group-append">
 											<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 										</div>
-									</div>
+									</div>--}}
 
 								</div>
 
@@ -208,7 +164,9 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 						<div class="col-8">
 
-							<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
+							<input class="form-control form-control-sm" type="text" placeholder="1" data-carrito="{{$c->rowId}}" min="1" onclick="showCant('{{$c->rowId}}', '{{$c->model->inventory->total_qty_prod}}')" id="cant-{{$c->id}}" readonly value="{{ $c->qty }}">
+
+							{{--<div class="input-group mb-3 padre mx-auto" id="carrito-cantidades">
 								<div class="input-group-prepend">
 									<button class="btn btn-secondary btn-sm" onclick="substract('{{$c->rowId}}')"><i class="fas fa-angle-down"></i></button>
 								</div>
@@ -216,7 +174,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 								<div class="input-group-append">
 									<button class="btn btn-secondary btn-sm" onclick="add('{{$c->rowId}}')"><i class="fas fa-angle-up"></i></button>
 								</div>
-							</div>
+							</div>--}}
 
 						</div>
 
@@ -696,7 +654,44 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="cantModal" tabindex="-1" role="dialog" aria-labelledby="almacen" aria-hidden="true">
+	<div class="modal-dialog modal-sm" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="cantTitle"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
+			<div class="modal_loader py-5" id="modal_loader">
+				<div class="spinner-grow mb-2 ml-4" style="width: 5rem; height: 5rem" role="status"></div>
+			</div>
+
+			<div class="modal-body">
+
+				<div class="form-row">
+
+					<div class="col">
+						<label for="cantidad">Cantidad</label>
+						<input type="text" min="1" class="form-control" name="cantidad" id="cantidad" required onkeyup="ValidarCant(this)" autocomplete="off">
+						<input type="hidden" id="disponibleNow">
+						<small class="text-muted text-help">Cantidad a pedir entre 0.001 y <span id="titleDisponible"></span></small>
+					</div>
+
+				</div>
+
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+				<button type="button" class="btn btn-primary" disabled id="btnCant" data-dismiss="modal">Cambiar</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 {{-- MODAL PAR LIMPIAR EL CARRITO --}}
 <div class="modal fade" id="clear_cart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -734,6 +729,77 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			$('#pay_method_modal').modal('show');
 		}
 
+	function showCant(id, disponible){
+
+		console.log(myCart[id]);
+		$('#cantModal').modal('show');
+
+		$('#cantTitle').empty();
+		$('#cantTitle').append(myCart[id].name);
+
+		$('#titleDisponible').empty();
+		$('#titleDisponible').append(disponible);
+
+		$('#cantidad').val('');
+
+		$('#disponibleNow').val(disponible);
+
+		$('#btnCant').attr('onclick', "cambiarCant('"+id+"')");
+
+		$('#modal_loader').fadeOut();
+
+	}
+
+	function ValidarCant(input){
+
+		var valor = input.value;
+		var patron = /^[0123456789]+([.][0123456789]+)?$/;
+		var disponible = $('#disponibleNow').val();
+		var validation = parseFloat(disponible)-parseFloat(valor);
+
+		console.log(validation);
+
+		if (patron.test(valor) == true && validation >= 0 && valor > 0) {
+			$('#btnCant').attr('disabled', false);
+		} else {
+			$('#btnCant').attr('disabled', true);
+		}
+
+	}
+
+	function cambiarCant(id){
+
+		var cant = $('#cantidad').val();
+		var cantTwo = parseFloat(cant).toFixed(3);
+
+		console.log(cantTwo);
+
+		$("input[data-carrito|='"+id+"']").val(cantTwo)
+
+		console.log(id);
+
+		let data = {"qty": cantTwo}
+
+		$.ajax({
+		    type: 'PUT',
+		    url: '/shoppingcart/'+ id,
+		    data: data, // access in body
+		}).done(function (response) {
+
+		    console.log(response);
+				myCart = response;
+		    //subtotal_item(id)
+				myCart[id].subtotal = (myCart[id].price - parseFloat(myCart[id].options.retail_iva_amount)) * myCart[id].qty;
+				console.log("estoy en subtotal_item");
+				$('.precio-'+id).text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].subtotal*dolar));
+				$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].iva*dolar));
+				subtotal()
+		}).fail(function (e) {
+
+		    console.log(e);
+		});
+
+	}
 
 	function changeRadio(val) {
 		if ($('#pay_method').val() == "dolares") {
@@ -825,6 +891,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 	$('.input-cantidad').change(function(e){
 
 		let id = e.target.attributes[5].value
+		console.log("miga");
+		console.log(id);
 		//$('.sinflechas-'+id).val(myCart[id].qty)
 		let data = {"qty": e.target.value}
 
@@ -859,8 +927,12 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 			myCart[id].iva = (myCart[id].options.wholesale_iva_amount * myCart[id].options.wholesale_quantity) * myCart[id].qty
 		}
 
-		$('.precio-'+id).text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].subtotal*dolar))
-		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].iva*dolar))
+		console.log("estoy en subtotal_item");
+		//console.log($('.precio-'+id));
+		$('.precio-'+id).empty();
+		$('.precio-'+id).text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].subtotal*dolar));
+		$('.iva_product-'+id).empty();
+		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(myCart[id].iva*dolar));
 		/*$('.precio-'+id).text(new Intl.NumberFormat('de-DE').format(myCart[id].subtotal)+',00')
 		$('.iva_product-'+id).text("Iva: " + new Intl.NumberFormat('de-DE').format(myCart[id].iva)+',00')*/
 		return myCart[id].subtotal
@@ -893,7 +965,7 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 
 		}
-		console.log("total: ", subtotal)
+		console.log("subtotal: ", subtotal)
 		console.log("total: ", total)
 		$('#totalSinIva').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(subtotal*dolar))
 
@@ -912,6 +984,8 @@ El objetivo de la semana es completar el flujo entero de la compra. El cual es:
 
 	$(() => {
 		subtotal()
+
+
 
 		@if ($errors->any())
 			@foreach ($errors->all() as $error)
