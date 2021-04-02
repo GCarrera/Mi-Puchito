@@ -197,10 +197,16 @@ class VentasController extends Controller
 
         $idPisoVenta = $request->piso_venta_id;
 
+        if ($valor['pago'] == null) {
+          $pago = 2;
+        } else {
+          $pago = $valor['pago'];
+        }
+
 		    	$venta = new Venta();
 		        $venta->piso_venta_id = $request->piso_venta_id;
 		        $venta->type = $valor['type'];
-		        $venta->pago = $valor['pago'];
+		        $venta->pago = $pago;
 		        $venta->sub_total = $valor['sub_total'];
 		        $venta->iva = $valor['iva'];
 		        $venta->total = $valor['total'];
