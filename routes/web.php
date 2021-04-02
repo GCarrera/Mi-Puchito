@@ -120,7 +120,11 @@ Route::get('test', function () {
 //PARA LOS PISOS DE VENTAS
 Route::get('/piso-ventas', 'PisoVentasController@index')->name('piso.ventas.index')->middleware('almacen');
 Route::get('/piso-ventas-ganancias', 'PisoVentasController@ganancias')->name('piso.ventas.ganancias')->middleware('almacen');
+//SOLICITUDES
 Route::get('/piso-ventas-solicitudes', 'PisoVentasController@solicitudes')->name('piso.ventas.solicitudes');
+Route::post('/solicitud/{id}', 'PisoVentasController@finish_solicitud');
+
+
 Route::get('/piso-ventas/ventas/{id}', 'PisoVentasController@ventas_mostrar');
 Route::get('/piso-ventas/inventario/{id}', 'PisoVentasController@inventario_mostrar');
 Route::get('/piso-ventas/despachos/{id}', 'PisoVentasController@despachos_mostar');
@@ -136,6 +140,7 @@ Route::group(['prefix' => 'api'], function(){
 	//SOLICITUDES
 	Route::post('/last-solicitud', 'PisoVentasController@last_solicitud');
 	Route::post('/nuevas-solicitud', 'PisoVentasController@nuevas_solicitud');
+	Route::post('/finished-solicitud', 'PisoVentasController@finished_solicitud');
 
 	//PISOS DE VENTAS
 	Route::post('/piso-venta-cantidad-edit', 'PisoVentasController@cantidad_edit');

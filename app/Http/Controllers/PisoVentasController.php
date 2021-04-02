@@ -412,7 +412,7 @@ class PisoVentasController extends Controller
     {
       $usuario = $request->id;
 
-      $solicitud = Solicitud::select('id_extra')->where('piso_venta_id', $usuario)->orderBy('id', 'desc')->first();
+      $solicitud = Solicitud::withTrashed()->select('id_extra')->where('piso_venta_id', $usuario)->orderBy('id', 'desc')->first();
 
       return $solicitud;
     }
@@ -431,6 +431,24 @@ class PisoVentasController extends Controller
     		$solicitud->id_extra = $value['id'];
     		$solicitud->save();
       }
+
+      return $solicitud;
+    }
+
+    public function finish_solicitud($Solicitud)
+    {
+      $Solicitud = Solicitud::find($Solicitud);
+
+      $Solicitud->delete();
+
+      return redirect()->back()->with('success', 'Solicitud finalizada exitosamente.');
+    }
+
+    public function finished_solicitud(Request $request)
+    {
+      $usuario = $request->id;
+
+      $solicitud = Solicitud::onlyTrashed()->select('id_extra')->where('piso_venta_id', $usuario)->orderBy('id', 'desc')->get();
 
       return $solicitud;
     }

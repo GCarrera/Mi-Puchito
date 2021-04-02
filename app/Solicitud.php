@@ -3,10 +3,14 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Solicitud extends Model
 {
-    protected $table = 'solicitudes';
+
+  use SoftDeletes;
+
+  protected $table = 'solicitudes';
 
     public function pisos()
     {

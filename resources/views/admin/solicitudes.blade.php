@@ -27,6 +27,7 @@
 									<th class="negrita">TELEFONO</th>
 									<th class="negrita">PISO DE VENTA</th>
 									<th class="negrita">PRODUCTO</th>
+									<th class="negrita">ACCIONES</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -57,6 +58,9 @@
 
 										@endswitch
 										<td class="align-middle">{{ $solicitud->producto }}</td>
+										<td class="align-middle">
+											<i class="fas fa-check-square text-primary" data-toggle="tooltip" data-placement="top" title="Finalizar Solicitud" role="button" onclick="showFinish({{ $solicitud->id }})"></i>
+										</td>
 									</tr>
 								@empty
 
@@ -67,6 +71,30 @@
 								@endforelse
 							</tbody>
 						</table>
+
+						<!-- Modal Finalizar Solicitud -->
+						<div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						  <div class="modal-dialog" role="document">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <h5 class="modal-title">Finalizar Solicitud</h5>
+						        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						          <span aria-hidden="true">&times;</span>
+						        </button>
+						      </div>
+						      <form method="post" id="finishForm">
+										@csrf
+										<div class="modal-body">
+							        ¿Seguro que desea finalizar esta solicitud?
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+							        <button type="submit" class="btn btn-primary">Finalizar</button>
+							      </div>
+						      </form>
+						    </div>
+						  </div>
+						</div>
 
 					</div>
 
@@ -107,6 +135,15 @@ $(document).ready( function () {
 	$(() => {
 		$('#loading').fadeOut()
 	})
+
+	function showFinish(id) {
+		$('#finishForm').attr('action', `/solicitud/${id}`)
+		$('#finishModal').modal('show');
+	}
+
+	function finishSol(id) {
+		console.log("Finalizar solicitud "+id);
+	}
 
 </script>
 @endpush
