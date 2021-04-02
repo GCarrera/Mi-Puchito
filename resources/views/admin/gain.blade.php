@@ -31,6 +31,7 @@
 						<table class="table text-center table-sm table-hover table-bordered" id="table_gain">
 							<thead>
 								<tr>
+									<th class="d-none">#</th>
 									<th class="negrita">FECHA</th>
 									<th class="negrita">PISO DE VENTA</th>
 									<th class="negrita">CIERRE (BsS)</th>
@@ -40,6 +41,7 @@
 							<tbody>
 								@forelse($cajas as $caja)
 									<tr>
+										<td class="align-middle d-none">{{ $caja->id }}</td>
 										<td class="align-middle">{{ Carbon::createFromFormat('Y-m-d H:i:s', $caja->created_at)->format('d-m-Y') }}</td>
 										<td class="align-middle">{{ $caja->pisos_de_ventas->nombre }}</td>
 										<td class="align-middle">{{ number_format($caja->monto, 2, ',', '.') }}</td>
@@ -71,7 +73,7 @@
 $(document).ready( function () {
 	$('#table_gain').DataTable({
 		"searching": false,
-		//"order": [[ 0, "desc" ]],
+		"order": [[ 0, "desc" ]],
 		"language": {
 			"search": "Buscar:",
 			"scrollX": true,
