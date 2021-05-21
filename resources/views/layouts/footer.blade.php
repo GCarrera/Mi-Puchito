@@ -130,7 +130,7 @@
 					var codigo = value.id;
 					codigo = fill(codigo, 4);
 					var status = value.confirmacion;
-					var total = value.amount;
+					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
 
 					$('#notifyMenu').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
 					$('#notifyMenuNav').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
