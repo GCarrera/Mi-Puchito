@@ -57,8 +57,10 @@
 										<td class="align-middle"><b class="small negrita text-info">En Espera</b></td>
 										@endif
 										@if($venta->dispatched != null)
-											@if ($venta->confirmacion != 'Entregado')
+											@if ($venta->confirmacion != 'Entregado' && $venta->confirmacion != 'denegado')
 												<td class="align-middle small negrita text-info text-capitalize" role="button" data-toggle="tooltip" data-placement="top" title="Finalizar Venta" onclick='showEstado({{ $venta->id }})'>{{$venta->confirmacion}}</td>
+											@elseif ($venta->confirmacion == 'denegado')
+												<td class="align-middle small negrita text-danger text-capitalize">{{$venta->confirmacion}}</td>
 											@else
 												<td class="align-middle small negrita text-success text-capitalize" id="dispatched-{{$venta->id}}">{{$venta->confirmacion}}</td>
 											@endif
