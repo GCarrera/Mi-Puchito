@@ -247,6 +247,8 @@
 														<i class="fas fa-info"></i>
 													</button>
 													</td>
+													@elseif ($compra->confirmacion == "Entregado")
+														<td class="align-middle small negrita text-success text-capitalize" id="dispatched-{{$compra->id}}">{{$compra->confirmacion}}</td>
 													@else
 														@if($compra->delivery == "si")
 														<td class="small text-capitalize align-middle">

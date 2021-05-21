@@ -67,7 +67,7 @@
 													<span class="small">Cantidad: </span><span class="text-info small">{{ count($compra->details) }}</span>
 												</td>
 												{{--<td class="d-none d-md-table-cell">{{ count($compra->details) }}</td>--}}
-												<td class="align-middle">{{ number_format( $compra->amount*$compra->dolar->price, 2, ',', '.') }} <br><small class="font-weight-bold" style="color: #008080">{{number_format( $compra->amount, 2, ',', '.')}}$</small></td>
+												<td class="align-middle">{{ number_format( $compra->amount*$compra->dolar->price, 2, ',', '.') }} <br><small class="negrita" style="color: #008080">{{number_format( $compra->amount, 2, ',', '.')}}$</small></td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-md-table-cell align-middle">{{ ucfirst($compra->delivery) }}</td>
 												@else
@@ -82,17 +82,19 @@
 
 													@if($compra->confirmacion == "denegado")
 
-													<td class="align-middle font-weight-bold small">{{$compra->confirmacion}}
+													<td class="align-middle negrita small">{{$compra->confirmacion}}
 													<button type="button" class="ml-2 btn btn-danger" data-toggle="modal" data-target="#modal-denegado">
 														<i class="fas fa-info"></i>
 													</button>
 													</td>
+													@elseif ($compra->confirmacion == "Entregado")
+														<td class="align-middle small negrita text-success text-capitalize" id="dispatched-{{$compra->id}}">{{$compra->confirmacion}}</td>
 													@else
 														@if($compra->delivery == "si")
-														{{--<td class="d-none d-md-table-cell small font-weight-bold">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>--}}
-														<td class="d-none align-middle d-md-table-cell small text-info font-weight-bold">Confirmado</td>
+														{{--<td class="d-none d-md-table-cell small negrita">{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</td>--}}
+														<td class="d-none align-middle d-md-table-cell small text-info negrita">Confirmado</td>
 														@else
-														<td class="align-middle"><label class="font-weight-bold small">Puede retirar
+														<td class="align-middle"><label class="negrita small">Puede retirar
 														<button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#modal-direccion">
 														<i class="fas fa-info"></i>
 														</button>
@@ -100,7 +102,7 @@
 														@endif
 													@endif
 												@else
-												<td class="align-middle d-none d-md-table-cell"><label class="font-weight-bold text-secondary small">En Espera</label></td>
+												<td class="align-middle d-none d-md-table-cell"><label class="negrita text-secondary small">En Espera</label></td>
 												@endif
 
 												<td class="align-middle">
@@ -128,11 +130,11 @@
 											      		</div>
 											      		<div class="modal-body">
 											      			<ul class="list-group">
-													  			<li class="list-group-item"><span class="font-weight-bold">ID COMPRA: </span>{{ $compra->code }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">PRODUCTOS: </span>{{ $compra->count_product }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">MONTO (Bs): </span>{{ $compra->amount }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">MONTO ($): </span>{{ number_format( ($compra->amount/$compra->dolar->price), 2, ',', '.') }}</li>
-																<li class="list-group-item"><span class="font-weight-bold">DELIVERY: </span>
+													  			<li class="list-group-item"><span class="negrita">ID COMPRA: </span>{{ $compra->code }}</li>
+																<li class="list-group-item"><span class="negrita">PRODUCTOS: </span>{{ $compra->count_product }}</li>
+																<li class="list-group-item"><span class="negrita">MONTO (Bs): </span>{{ $compra->amount }}</li>
+																<li class="list-group-item"><span class="negrita">MONTO ($): </span>{{ number_format( ($compra->amount/$compra->dolar->price), 2, ',', '.') }}</li>
+																<li class="list-group-item"><span class="negrita">DELIVERY: </span>
 																	@if(ucfirst($compra->delivery) == "No")
 																	<span class="d-md-table-cell">{{ ucfirst($compra->delivery) }}</span>
 																	@else
@@ -145,9 +147,9 @@
 																	@endif
 																</li>
 																@if($compra->dispatched != null)
-																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</li>
+																<li class="list-group-item"><span class="negrita">CONFIRMADO: </span>{{\Carbon\Carbon::createFromTimeStamp(strtotime($compra->dispatched))->diffForHumans()}}</li>
 																@else
-																<li class="list-group-item"><span class="font-weight-bold">CONFIRMADO: </span>No</li>
+																<li class="list-group-item"><span class="negrita">CONFIRMADO: </span>No</li>
 																@endif
 
 															</ul>
@@ -231,8 +233,8 @@
 										<div class="modal-body">
 
 											<div class="mt-3">
-													<span class="float-left"><span class="font-weight-bold" id="fecha-create">Esta factura fue emitida:</span></span>
-													<span class="float-right"><span class="font-weight-bold">Cliente:<span id="user-name"></span></span></span><br>
+													<span class="float-left"><span class="negrita" id="fecha-create">Esta factura fue emitida:</span></span>
+													<span class="float-right"><span class="negrita">Cliente:<span id="user-name"></span></span></span><br>
 											</div>
 
 									<!--TABLA DE PRODUCTOS-->
@@ -252,7 +254,7 @@
 											</tbody>
 									</table>
 									<div class="text-right">
-											<span class=""><span class="font-weight-bold">Total: </span><span id="total-show"></span></span>
+											<span class=""><span class="negrita">Total: </span><span id="total-show"></span></span>
 									</div>
 
 										</div>

@@ -58,7 +58,7 @@
 										@endif
 										@if($venta->dispatched != null)
 											@if ($venta->confirmacion != 'Entregado')
-												<td class="align-middle small negrita text-success text-capitalize" role="button" onclick='showEstado({{ $venta->id }})'>{{$venta->confirmacion}}</td>
+												<td class="align-middle small negrita text-info text-capitalize" role="button" data-toggle="tooltip" data-placement="top" title="Finalizar Venta" onclick='showEstado({{ $venta->id }})'>{{$venta->confirmacion}}</td>
 											@else
 												<td class="align-middle small negrita text-success text-capitalize" id="dispatched-{{$venta->id}}">{{$venta->confirmacion}}</td>
 											@endif
@@ -219,7 +219,6 @@
 					</div>
 
 					<!--MODAL DE ESTADO-->
-
 					<div class="modal fade" tabindex="-1" id="estadoModal">
 						<div class="modal-dialog">
 								<div class="modal-content">
@@ -236,7 +235,7 @@
 									<form id="estadoForm" method="post">
 										@csrf
 										@method('put')
-										<input type="text" id="id_venta_estado" class="form-control" name="id_venta" required>
+										<input type="hidden" id="id_venta_estado" class="form-control" name="id_venta" required>
 										<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 										<button type="submit" class="btn btn-primary">Finalizar</button>
 									</form>
