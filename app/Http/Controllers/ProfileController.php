@@ -40,8 +40,12 @@ class ProfileController extends Controller
 		$cities = City::where('state_id', 4)->where('id', 44)->get(); //4 es aragua y 44 cagua
 
 		//PRODUCTOS EN OFERTA
-
-		$productos = Product::with(['inventory'])->where('oferta', 1)->paginate();
+		$productos = Product::where('oferta', 1)
+		->with('inventory')
+		->whereHas('inventory', function($query) {
+        $query->where('total_qty_prod', '>', 0);
+    })
+		->paginate();
 
 		$user = auth()->user();
 
