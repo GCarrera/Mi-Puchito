@@ -61,6 +61,12 @@ class CustomerController extends Controller
 			$empresas   = Enterprise::all();
 			$categories = Category::select('id', 'name')->get();
 			$search = str_replace("+", " ", $request->search);
+			/*$productos = Product::where('oferta', 1)
+			->with('inventory')
+			->whereHas('inventory', function($query) {
+	        $query->where('total_qty_prod', '>', 0);
+	    })
+			->paginate();*/
 			$data = Category::select('id', 'name')
 			->with(['inventory' => function($inventory) use($request, $search) {
 				$inventory->where('status', 1)->where('total_qty_prod', '>', 0);
@@ -83,10 +89,12 @@ class CustomerController extends Controller
 				$inventory->whereHas('product');
 			}])->whereHas('inventory', function ($inventory) use ($request, $search) {
 				if ($request->enterprise) {
-					$inventory->where('enterprise_id', $request->enterprise);
+					$inventory->where('enterprise_id', $request->enterprise)
+					->where('total_qty_prod', '>', 0);
 				}
 				if ($search) {
 					$inventory->where('product_name', 'like', '%'.$search.'%')
+					->where('total_qty_prod', '>', 0)
 					->orWhereHas('category_p', function($categ) use($search) {
 						return $categ->where('name', 'like', '%'.$search.'%');
 					});
