@@ -551,7 +551,7 @@
 					<div id="direc-descrip-caja" class="w-100">
 						<div class="col-12">
 							<label for="phone_contact_escribir">Telefono de Contacto</label><br>
-							<input type="tel" class="form-control" name="phone_contact_escribir" id="phone_contact_escribir" placeholder="04**-*******">
+							<input type="tel" class="form-control" name="phone_contact_escribir" id="phone_contact_escribir" placeholder="04**-*******" required>
 							<div class="invalid-feedback">
 				        Por favor ingrese un numero de contacto.
 				      </div>
@@ -565,7 +565,7 @@
 					<div id="select-multiples" class="w-100">
 						<div class="col-12">
 							<label for="phone_contact_select">Telefono de Contacto</label><br>
-							<input type="tel" class="form-control" name="phone_contact_select" id="phone_contact_select" placeholder="04**-*******">
+							<input type="tel" class="form-control" name="phone_contact_select" id="phone_contact_select" placeholder="04**-*******" required>
 							<div class="invalid-feedback">
 				        Por favor ingrese un numero de contacto.
 				      </div>
