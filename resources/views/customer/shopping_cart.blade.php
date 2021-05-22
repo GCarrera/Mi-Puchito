@@ -557,7 +557,7 @@
 					<div id="direc-descrip-caja" class="w-100">
 						<div class="col-12">
 							<label for="phone_contact_escribir">Telefono de Contacto</label><br>
-							<input type="tel" class="form-control" name="phone_contact_escribir" id="phone_contact_escribir" placeholder="04**-*******" required>
+							<input type="tel" class="form-control" name="phone_contact_escribir" id="phone_contact_escribir" placeholder="04**-*******">
 							<div class="invalid-feedback">
 				        Por favor ingrese un numero de contacto.
 				      </div>
@@ -571,7 +571,7 @@
 					<div id="select-multiples" class="w-100">
 						<div class="col-12">
 							<label for="phone_contact_select">Telefono de Contacto</label><br>
-							<input type="tel" class="form-control" name="phone_contact_select" id="phone_contact_select" placeholder="04**-*******" required>
+							<input type="tel" class="form-control" name="phone_contact_select" id="phone_contact_select" placeholder="04**-*******">
 							<div class="invalid-feedback">
 				        Por favor ingrese un numero de contacto.
 				      </div>
@@ -1386,7 +1386,8 @@
 
 				if ($('#forma-delivery').val() == 2) {
 					var inpObj = document.getElementById("phone_contact_select");
-				  if (!inpObj.checkValidity()) {
+					console.log($('#phone_contact_select').val());
+				  if (isNaN($('#phone_contact_select').val()) || $('#phone_contact_select').val() == "") {
 						$('#phone_contact_select').addClass('is-invalid');
 
 				  } else {
@@ -1418,7 +1419,7 @@
 				  }
 				}else if($('#forma-delivery').val() == 1){
 					var inpObj = document.getElementById("phone_contact_escribir");
-				  if (!inpObj.checkValidity()) {
+				  if (isNaN($('#phone_contact_escribir').val()) || $('#phone_contact_escribir').val() == "") {
 						$('#phone_contact_escribir').addClass('is-invalid');
 
 				  } else {
