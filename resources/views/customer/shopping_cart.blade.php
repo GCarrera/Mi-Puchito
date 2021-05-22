@@ -162,7 +162,13 @@
 
 						</div>
 
-						<div class="col-8">
+						<div class="col-2">
+
+
+
+						</div>
+
+						<div class="col-4">
 
 							<input class="form-control form-control-sm" type="text" placeholder="1" data-carrito="{{$c->rowId}}" min="1" onclick="showCant('{{$c->rowId}}', '{{$c->model->inventory->total_qty_prod}}')" id="cant-{{$c->id}}" readonly value="{{ $c->qty }}">
 
