@@ -284,7 +284,7 @@
 														@endif
 													@endif
 												@else
-												<td class="align-middle"><label class="text-info small">En Espera</label></td>
+												<td class="align-middle"><label class="text-info small">En espera por cambio de estatus</label></td>
 												@endif
 
 												<td class="align-middle">
