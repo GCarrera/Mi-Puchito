@@ -99,7 +99,8 @@ class CustomerController extends Controller
 						return $categ->where('name', 'like', '%'.$search.'%');
 					});
 				}
-				$inventory->whereHas('product');
+				$inventory->whereHas('product')
+				->where('total_qty_prod', '>', 0);
 			});
 
 			if ($request->category) {
