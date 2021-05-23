@@ -73,7 +73,7 @@
 									<p class="small">
 										{{ $c->model->inventory->description }}
 										<br>
-										Disponibles: <span class="negrita">{{ floor($c->model->inventory->total_qty_prod) }}</span>
+										Disponibles: <span class="negrita">{{ $c->model->inventory->total_qty_prod }}</span>
 									</p>
 
 								</div>
@@ -145,7 +145,7 @@
 								</h6>
 								<span class="small font-weight-light preciopvp">PVP {{ number_format($dolar->price*$c->price, 2, ',', '.') }} Bs</span>
 								<span class="small precio-{{$c->rowId}}">{{ number_format($subtotal, 2, ',', '.') }} Bs</span>
-								<span class="small">Disponibles: <span class="negrita">{{ floor($c->model->inventory->total_qty_prod) }}</span></span>
+								<span class="small">Disponibles: <span class="negrita">{{ $c->model->inventory->total_qty_prod }}</span></span>
 							</p>
 
 						</div>
