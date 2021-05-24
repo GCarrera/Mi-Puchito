@@ -152,9 +152,9 @@
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad" class="selectpicker border form-control" data-width="100%">
-								<option disabled>Selecciona</option>
+								<option selected disabled>Selecciona</option>
 								<option value="bulto">Bulto</option>
-								<option selected value="caja">Caja</option>
+								<option value="caja">Caja</option>
 								<option value="saco">Saco</option>
 								<option value="granel">Granel</option>
 								<option value="cesta">Cesta</option>
@@ -242,12 +242,12 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-md-4 col-12 mb-3">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="cantidad">Cantidad</label>
 							<input type="number" min="0" class="form-control" name="cantidad" id="cantidad_edit" required>
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12 mb-3">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad_edit" class="selectpicker border form-control" data-width="100%">
 								<option disabled selected>Selecciona</option>
@@ -260,9 +260,26 @@
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12">
+						<div class="col-md-3 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod_edit" required>
+						</div>
+						<div class="col-md-3 col-12">
+							<label for="presentacion_edit">Presentación</label><br>
+							<select name="presentacion" id="presentacion_edit" class="selectpicker border form-control" data-width="100%">
+								<option disabled selected>Selecciona</option>
+								<option value="Kg">Kg</option>
+								<option value="Unidad">Unidad</option>
+								<option value="Lata">Lata</option>
+								<option value="Empaque">Empaque</option>
+								<option value="Tasa">Tasa</option>
+								<option value="Granel">Granel</option>
+								<option value="Bolsa">Bolsa</option>
+								<option value="Sobre">Sobre</option>
+								<option value="Papeleta">Papeleta</option>
+								<option value="Caja">Caja</option>
+								<option value="Otros">Otros</option>
+							</select>
 						</div>
 					</div>
 
@@ -402,6 +419,9 @@ function showEdit(id) {
 
 		$('#tipo_unidad_edit').val(response.unit_type)
 		$('#tipo_unidad_edit').change()
+
+		$('#presentacion_edit').val(response.unit_type_menor)
+		$('#presentacion_edit').change()
 
 		$('#cant_prod_edit').val(response.qty_per_unit)
 

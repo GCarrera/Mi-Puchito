@@ -150,6 +150,7 @@ class InventoryController extends Controller
             'cantidad' => 'required|max:191',
             'stock_min' => 'required|max:191',
             'tipo_unidad' => 'required|max:191',
+            'presentacion' => 'required|max:191',
             'cant_prod' => 'required|max:191',
             'category' => 'required|integer',
             'enterprise' => 'required|integer',
@@ -162,10 +163,11 @@ class InventoryController extends Controller
         }
         $inventory = Inventory::find($id);
 
-        $inventory->product_name   = $req->input('product_name');
-        $inventory->description    = $req->input('description');
-        $inventory->quantity       = $req->input('cantidad');
-        $inventory->unit_type      = $req->input('tipo_unidad');
+        $inventory->product_name    = $req->input('product_name');
+        $inventory->description     = $req->input('description');
+        $inventory->quantity        = $req->input('cantidad');
+        $inventory->unit_type       = $req->input('tipo_unidad');
+        $inventory->unit_type_menor = $req->input('presentacion');
         if ($req->input('cant_prod') != 0) {
           $inventory->qty_per_unit   = $req->input('cant_prod');
         } else {
