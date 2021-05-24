@@ -81,9 +81,9 @@
 
                                 @else
                                 <td>{{$producto->quantity . " " .$producto->product->inventory->unit_type_menor}}</td>
-                                <td>{{number_format($producto->sub_total / $producto->quantity, 2, ',', '.')}}</td>
+                                <td>{{number_format(($producto->sub_total / $producto->quantity)*$pedido->dolar->price, 2, ',', '.')}}</td>
                                 {{--<td>{{number_format($producto->iva / $producto->quantity, 2, ',', '.') }}</td>--}}
-                                <td>{{number_format(($producto->amount), 2, ',', '.') }}</td>
+                                <td>{{number_format(($producto->amount*$pedido->dolar->price), 2, ',', '.') }}</td>
                                 @endif
 
                             </tr>
