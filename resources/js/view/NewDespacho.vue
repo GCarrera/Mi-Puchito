@@ -64,6 +64,11 @@
                </tbody>
              </table>
 
+             <b-form-checkbox v-model="guardar" name="check-button" switch>
+               <p v-if="guardar != true" class="negrita">Despachar</p>
+               <p v-else class="negrita">Guardar</p>
+             </b-form-checkbox>
+
                <span v-if="loading == false">
                  <button type="submit" class="btn btn-primary" :disabled="productos.length <= 0">
                    Despachar
@@ -98,6 +103,8 @@
    },
    data(){
      return{
+       dataId: this.$attrs.dataid,
+       guardar: true,
        toastCount: 0,
        loading: false,
        despachos: [],
@@ -214,7 +221,7 @@
        }else{
          this.productos.push(this.articulo);
 
-         //console.log(this.productos)
+         console.log(this.productos)
          this.articulo = {id: 0, nombre: "", cantidad: ""};
        }
 
@@ -235,7 +242,7 @@
 
        //console.log(this.productos);
 
-       axios.post('/api/despachos', {productos: this.productos, piso_venta: this.piso_venta}).then(response => {
+       axios.post('/api/despachos', {productos: this.productos, piso_venta: this.piso_venta, guardar: this.guardar}).then(response => {
          console.log(response)
          this.articulo = {id: 0, nombre: "", cantidad: ""};
          //this.despachos.splice(0,0, response.data);
@@ -268,6 +275,7 @@
    created(){
 
      this.get_datos();
+     //console.log(this.dataId);
    },
    watch:{
      selectedValue: function (val) {

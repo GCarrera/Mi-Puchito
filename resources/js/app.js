@@ -41,6 +41,7 @@ Vue.component('piso-ventas-inventario', require('./view/PisoVentasInventario.vue
 Vue.component('piso-ventas-despachos', require('./view/PisoVentasDespachos.vue').default);
 Vue.component('piso-ventas-retiros', require('./view/PisoVentasRetiros.vue').default);
 Vue.component('new-despacho', require('./view/NewDespacho.vue').default);
+Vue.component('terminar-despacho', require('./view/TerminarDespacho.vue').default);
 
 import Vue from 'vue'
 import {ModalPlugin, PaginationPlugin, AlertPlugin, BootstrapVue, IconsPlugin } from 'bootstrap-vue'

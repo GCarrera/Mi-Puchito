@@ -11,7 +11,7 @@
              </div>
              <div class="col-12 col-md-4">
                <div class="ml-auto">
-                 <a type="button" class="btn btn-primary" href="/nuevo-despacho">
+                 <a type="button" class="btn btn-primary" href="/nuevo-despacho/new">
                    Nuevo
                  </a>
                  <button type="button" class="btn btn-danger" @click="showModalRetiro">Retirar</button>
@@ -38,13 +38,17 @@
                <!--<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>-->
                <td v-if="despacho.confirmado == null" class=" align-middle small negrita text-secondary">Pendiente</td>
                <td v-else-if="despacho.confirmado == 1" class=" align-middle small negrita text-success">Confirmado</td>
-               <td v-else class=" align-middle small negrita text-danger">Negado</td>
-               <td class="align-middle">
+               <td v-else-if="despacho.confirmado == 2" class=" align-middle small negrita text-danger">Negado</td>
+               <td v-else class=" align-middle small negrita text-warning">Incompleto</td>
+               <td v-if="despacho.confirmado != 3" class="align-middle">
                  <button class="btn btn-primary" @click="showModalDetalles(despacho)">Ver</button>
                  <a :href="'/get-despacho/'+despacho.id" role="button" class="btn btn-primary" target="_blank">Imprimir</a>
                  <!--<button class="btn btn-primary" @click="showPdf(despacho)">Imprimir</button>-->
                  <!--<button class="btn btn-primary" data-toggle="modal" data-target="#modalVer">Ver</button>-->
 
+               </td>
+               <td v-else class="align-middle">
+                 <a :href="'/terminar-despacho/'+despacho.id" role="button" class="btn btn-primary">Editar</a>
                </td>
 
              </tr>

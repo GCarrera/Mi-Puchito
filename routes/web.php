@@ -134,7 +134,8 @@ Route::get('/piso-ventas-precio', 'PisoVentasController@precios')->name('piso.ve
 Route::get('/piso-ventas-anclar', 'PisoVentasController@anclar')->name('piso.ventas.anclar');
 //DESPACHOS ALMACEN
 Route::get('/despachos-almacen', 'DespachosController@index_almacen')->name('despachos.almacen.index')->middleware('almacen');
-Route::get('/nuevo-despacho', 'DespachosController@new_despacho');
+Route::get('/nuevo-despacho/{id}', 'DespachosController@new_despacho');
+Route::get('/terminar-despacho/{id}', 'DespachosController@edit_despacho');
 //---------------------------------------RUTAS APIS-----------------------------------------------//
 Route::group(['prefix' => 'api'], function(){
 	//SOLICITUDES
@@ -173,7 +174,9 @@ Route::group(['prefix' => 'api'], function(){
 
 	//DESPACHOS ALMACEN
 	Route::get('/despachos-datos-create', 'DespachosController@get_datos_create');
+	Route::get('/despachos-datos-edit/{id}', 'DespachosController@get_datos_edit');
 	Route::post('/despachos', 'DespachosController@store');
+	Route::post('/despachos-edit', 'DespachosController@store_edit');
 	Route::post('/store-retiro', 'DespachosController@store_retiro');
 	Route::get('/get-despachos-almacen', 'DespachosController@get_despachos_almacen');
 	//Route::post('/despachos-retiro', 'DespachosController@store_retiro');
