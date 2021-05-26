@@ -36,7 +36,7 @@
                <td class="align-middle">{{despacho.created_at}} {{despacho.id}}</td>
                <td class="align-middle">{{despacho.piso_venta.nombre}}</td>
                <!--<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>-->
-               <td v-if="despacho.confirmado == null" class=" align-middle small negrita text-secondary">Pendiente</td>
+               <td v-if="despacho.confirmado == 4" class=" align-middle small negrita text-secondary">Pendiente</td>
                <td v-else-if="despacho.confirmado == 1" class=" align-middle small negrita text-success">Confirmado</td>
                <td v-else-if="despacho.confirmado == 2" class=" align-middle small negrita text-danger">Negado</td>
                <td v-else class=" align-middle small negrita text-warning">Incompleto</td>

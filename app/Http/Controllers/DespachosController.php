@@ -428,11 +428,13 @@ class DespachosController extends Controller
 
             $id = $request->id;
 
+            // status confirmado 1 aceptado 2 negado 3 guardado 4 no guardado
+
             $despacho = Despacho::find($id);
             if ($request->guardar != false) {
               $despacho->confirmado = 3;
             } else {
-              $despacho->confirmado = NULL;
+              $despacho->confirmado = 4;
             }
             $despacho->save();
 
@@ -560,6 +562,8 @@ class DespachosController extends Controller
             $despacho->type = 1;
             if ($request->guardar != false) {
               $despacho->confirmado = 3;
+            } else {
+              $despacho->confirmado = 4;
             }
             $despacho->save();
 
