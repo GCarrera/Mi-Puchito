@@ -48,7 +48,7 @@
 										<td class="small" id="total-productos-{{$producto->id}}">{{ $producto->total_qty_prod }}</td>
 										{{--<td class="small">{{ $producto->enterprise->name }}</td>
 										<td class="small">{{ $producto->category->name }}</td>--}}
-										<td class="small">{{ $producto->created_at }}</td>
+										<td class="small">{{ $producto->updated_at }}</td>
 										<td class="small text-center">
 											<button class="btn btn-info btn-sm" onclick='showEdit({{ $producto->id }})'>
 												<i class="fas fa-edit fa-xs" data-toggle="tooltip" data-title="Editar"></i>
