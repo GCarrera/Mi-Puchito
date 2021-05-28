@@ -50,7 +50,7 @@
 											<br>
 											<span class="negrita small text-success">{{number_format($venta->amount, 2, ',', '.')}}$</span>
 										</td>
-										<td class="align-middle"><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">C-00{{$venta->user->id}}</a></td>
+										<td class="align-middle"><a href="{{route('usuarios.show', ['id' => $venta->user->id])}}">{{$venta->user->people->name}} {{$venta->user->people->lastname}}</a></td>
 										@if($venta->dispatched != null)
 										<td class="align-middle">{{\Carbon\Carbon::createFromTimeStamp(strtotime($venta->dispatched))->diffForHumans()}}</td>
 										@else
