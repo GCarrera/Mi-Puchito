@@ -37,10 +37,10 @@
 							<tbody>
 								@forelse ($inventario as $producto)
 									<tr>
-										<td class="small">{{ $producto["codigo"] }}</td>
-										<td class="small">{{ $producto["product_name"] }}</td>
-										<td class="small" id="total-productos">{{ $producto["total_qty_prod"] }}</td>
-										<td class="small">{{ $producto["ubicacion"] }}</td>
+										<td class="small">{{ $producto['codigo'] }}</td>
+										<td class="small">{{ $producto['product_name'] }}</td>
+										<td class="small" id="total-productos">{{ $producto['total_qty_prod'] }}</td>
+										<td class="small">{{ $producto['ubicacion'] }}</td>
 									</tr>
 
 								@empty

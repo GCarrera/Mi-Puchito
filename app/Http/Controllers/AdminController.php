@@ -171,6 +171,11 @@ class AdminController extends Controller
 							$pisop["codigo"] = str_pad("AII-".$value["id"], 4, "0", STR_PAD_LEFT);
 							break;
 
+						case '5':
+							$pisop["ubicacion"] = "Piso Pruebas";
+							$pisop["codigo"] = str_pad("PP-".$value["id"], 4, "0", STR_PAD_LEFT);
+							break;
+
 					}
 
 					$pisop["total_qty_prod"] = $pisos["cantidad"];
@@ -196,6 +201,8 @@ class AdminController extends Controller
 				}
 			}
 		}*/
+
+		//return $inventariotwo;
 
 			return view('admin.faltantes')
 			->with('inventario', $inventariotwo)
