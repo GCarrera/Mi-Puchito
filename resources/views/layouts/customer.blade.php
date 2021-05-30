@@ -9,32 +9,26 @@
 			</a>
 
 
-			<div class="row">
+			<!--<div class="row">-->
 
-				<div class="col">
+				<!--<div class="col">-->
 					<a href="/shoppingcart" class="ml-auto mr-2">
 						<span class="ml-auto mr-2 badge badge-danger d-none d-lg-none" id="cart_counter-2">
 							0
 						</span>
 					</a>
-				</div>
 					{{--<span id="buy_counter" class="ml-auto mr-2 d-lg-none">
 
 					</span>--}}
-					<div class="col">
-						<notify-sales></notify-sales>
-
-					</div>
+					<notify-sales></notify-sales>
 					<!--<notify-sales v-bind:compras="{{-- $dataCompras --}}"></notify-sales>-->
-					<div class="col">
 
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
-				</div>
-				</div>
+				<!--</div>-->
 
-			</div>
+			<!--</div>-->
 
 
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
