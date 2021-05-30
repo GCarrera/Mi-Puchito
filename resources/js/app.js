@@ -42,6 +42,8 @@ Vue.component('piso-ventas-despachos', require('./view/PisoVentasDespachos.vue')
 Vue.component('piso-ventas-retiros', require('./view/PisoVentasRetiros.vue').default);
 Vue.component('new-despacho', require('./view/NewDespacho.vue').default);
 Vue.component('terminar-despacho', require('./view/TerminarDespacho.vue').default);
+Vue.component('notify-sales', require('./components/NotifySales.vue').default);
+Vue.component('notify-nav', require('./components/NotifyNav.vue').default);
 
 import Vue from 'vue'
 import {ModalPlugin, PaginationPlugin, AlertPlugin, BootstrapVue, IconsPlugin } from 'bootstrap-vue'
@@ -66,4 +68,7 @@ Vue.use(IconsPlugin)
 
 const app = new Vue({
     el: '#app',
+    mounted(){
+
+    }
 });

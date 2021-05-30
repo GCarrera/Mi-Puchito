@@ -1,5 +1,5 @@
 <?php
-
+use App\Events\NotificacionVentaStatusChangedEvent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,9 +15,11 @@ Route::get('/', 'CustomerController@index');
 Route::get('/home', 'CustomerController@index')->name('home')->middleware('customer');
 Route::get('/finalizar-notificacion/{id}', 'CustomerController@finish_notify')->middleware('customer');
 Route::get('/search', 'CustomerController@search')->name('search');
-// Route::get('/home', function () {
-//     return redirect('services');
-// });
+ /*Route::get('/venta-status', function () {
+	 event(new NotificacionVentaStatusChangedEvent);
+	 return "Prueba";
+     //return redirect('services');
+ });*/
 Route::post('/get_dni', 'ProfileController@getDni');
 
 Auth::routes();

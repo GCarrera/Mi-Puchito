@@ -17,9 +17,11 @@
 							0
 						</span>
 					</a>
-					<span id="buy_counter" class="ml-auto mr-2 d-lg-none">
+					{{--<span id="buy_counter" class="ml-auto mr-2 d-lg-none">
 
-					</span>
+					</span>--}}
+					<notify-sales></notify-sales>
+					<!--<notify-sales v-bind:compras="{{-- $dataCompras --}}"></notify-sales>-->
 
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
@@ -54,9 +56,11 @@
 		<ul class="navbar-nav ml-auto">
 
 				@auth
-					<li class="d-none d-sm-block" id="notify-nav">
+					<notify-nav></notify-nav>
+					<!--<notify-nav v-bind:compras="{{-- $dataCompras --}}"></notify-nav>-->
+					{{--<li class="d-none d-sm-block" id="notify-nav">
 
-			    </li>
+			    </li>--}}
 				@endauth
 
 		    <li class="nav-item" id="inicio">

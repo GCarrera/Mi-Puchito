@@ -1,3 +1,4 @@
+</div>
 <!-- Scripts -->
 <script src="{{ asset('public/js/jquery-3.4.1.min.js') }}"></script>
 <script src="{{ asset('public/js/popper.min.js') }}"></script>
@@ -105,62 +106,7 @@
 	});
 
 	$('#fechas').daterangepicker();
-
-
-	$.get({
-		url : `/notificaciones`,
-	})
-	.done((data) => {
-
-		if (data != 'false' && data.length > 0) {
-			console.log(data);
-			$('#buy_counter').empty();
-			$('#buy_counter').addClass("badge badge-info");
-			$('#buy_counter').append('<div class="dropleft"><span class="" id="dropdownNotify" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell"></i></span><div class="dropdown-menu" aria-labelledby="dropdownNotify" id="notifyMenu"></div></div>');
-			$('#notifyMenu').empty();
-
-			$('#notify-nav').empty();
-			$('#notify-nav').append('<li class="nav-item dropdown"><span class="nav-link dropdown-toggle" id="dropdownNotifyNav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bell" style="color: #17a2b8 !important;"></i></span><div class="dropdown-menu" aria-labelledby="dropdownNotifyNav" id="notifyMenuNav"></div></li>');
-			$('#notifyMenuNav').empty();
-			const fill = (number, len) =>
-			"0".repeat(len - number.toString().length) + number.toString();
-
-			$.each( data, function( key, value ) {
-
-					var codigo = value.id;
-					codigo = fill(codigo, 4);
-					var status = value.confirmacion;
-					var total = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value.amount);
-
-					$('#notifyMenu').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
-					$('#notifyMenuNav').append('<a class="dropdown-item" href="#" onclick="hideNotify('+value.id+')"><h6>FC-'+codigo+'</h6><span class="text-muted small text-capitalize">'+status+' - <span class="text-success">'+total+'$</span></span></a><div class="dropdown-divider"></div>');
-
-			});
-
-		}
-	})
-	.fail((err)=> {
-		console.log("sin notificacion");
-		console.log(err)
-		//toastr.error('Ha ocurrido un error.')
-	})
-
-	function hideNotify(id) {
-		console.log("id venta: "+id);
-		$.get({
-			url : `/finalizar-notificacion/`+id,
-		})
-		.done((data) => {
-
-				window.location = '/perfil';
-
-		})
-		.fail((err)=> {
-			console.log(err);
-		})
-	}
 </script>
 @stack('scripts')
-
 </body>
 </html>

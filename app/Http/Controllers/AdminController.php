@@ -31,6 +31,7 @@ use App\Dolar;
 use Illuminate\Support\Facades\Validator;
 use App\Inventario_piso_venta;
 use Illuminate\Support\Facades\DB;
+use App\Events\NotificacionVentaStatusChangedEvent;
 
 
 class AdminController extends Controller
@@ -482,6 +483,8 @@ class AdminController extends Controller
 		$venta->notify			 = '1';
 		$venta->save();
 
+		event( new NotificacionVentaStatusChangedEvent);
+
 			return $venta->confirmacion;
 
 	}
@@ -492,6 +495,8 @@ class AdminController extends Controller
 		$now = Carbon::now();
 
 		$venta = Sale::with('details')->findOrFail($id);
+
+		$iduser = $venta->user_id;
 
 		if ($request->confirmacion != "aprobado") {
 
@@ -541,6 +546,7 @@ class AdminController extends Controller
 			$venta->notify = '1';
 			$venta->save();
 
+			event( new NotificacionVentaStatusChangedEvent);
 			return $venta->confirmacion;
 
 	}
