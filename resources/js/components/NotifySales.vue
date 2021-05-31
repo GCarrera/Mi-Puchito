@@ -1,6 +1,13 @@
 <template>
 
   <div v-if="sales.length > 0">
+
+    <b-modal ref="my-modalr" hide-footer title="">
+      <div class="d-block text-center">
+        <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
+      </div>
+    </b-modal>
+
     <div class="ml-auto mr-2 d-lg-none badge badge-info">
       <div class="dropleft">
         <span class="" id="dropdownNotify" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -41,6 +48,7 @@
         window.Echo.channel('venta-status')
         .listen('NotificacionVentaStatusChangedEvent', (e) => {
           this.getNotify();
+          this.showModal();
         });
       },
       methods: {
@@ -56,6 +64,9 @@
             }).catch(e => {
               console.log(e.response)
             });
+        },
+        showModal() {
+          this.$refs['my-modalr'].show()
         },
         hideNotify(id) {
           axios.get('/finalizar-notificacion/'+id)
