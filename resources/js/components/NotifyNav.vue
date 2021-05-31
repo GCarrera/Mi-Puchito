@@ -2,6 +2,12 @@
 
   <div v-if="sales.length > 0">
 
+    <b-modal ref="my-modal" hide-footer title="">
+      <div class="d-block text-center">
+        <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
+      </div>
+    </b-modal>
+
     <li class="nav-item dropdown d-none d-sm-block">
       <span class="nav-link dropdown-toggle" id="dropdownNotifyNav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell" style="color: #17a2b8 !important;"></i>
@@ -41,6 +47,7 @@
         window.Echo.channel('venta-status')
         .listen('NotificacionVentaStatusChangedEvent', (e) => {
           this.getNotify();
+          this.showModal();
         });
       },
       methods: {
@@ -64,7 +71,10 @@
           }).catch(e => {
             console.log(e.response)
           });
-      	}
+      	},
+        showModal() {
+          this.$refs['my-modal'].show()
+        },
       },
       created(){
   			this.getNotify();
