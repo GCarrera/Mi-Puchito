@@ -1,12 +1,12 @@
 <template>
 
-  <div v-if="sales.length > 0">
+  <b-modal ref="my-modalr" hide-footer title="">
+    <div class="d-block text-center">
+      <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
+    </div>
+  </b-modal>
 
-    <b-modal ref="my-modalr" hide-footer title="">
-      <div class="d-block text-center">
-        <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
-      </div>
-    </b-modal>
+  <div v-if="sales.length > 0">
 
     <div class="ml-auto mr-2 d-lg-none badge badge-info">
       <div class="dropleft">
