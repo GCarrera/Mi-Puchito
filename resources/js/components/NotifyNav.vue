@@ -2,7 +2,7 @@
 
   <div>
 
-    <b-button id="show-btn" @click="showModal">Open Modal</b-button>
+    <b-button id="show-btn" class="d-none" @click="showModal">Open Modal</b-button>
 
   <b-modal ref="my-modall" hide-footer title="">
     <div class="d-block text-center">
@@ -53,7 +53,6 @@
         window.Echo.channel('venta-status')
         .listen('NotificacionVentaStatusChangedEvent', (e) => {
           this.getNotify();
-          this.showModal();
         });
       },
       methods: {
@@ -65,6 +64,8 @@
             .then(response=>{
               if (response.data != 'false' && response.data.length > 0) {
                 this.sales = response.data;
+                //this.showModal();
+                $( "#show-btn" ).click();
               }
             }).catch(e => {
               console.log(e.response)
