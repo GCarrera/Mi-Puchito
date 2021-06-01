@@ -52,7 +52,8 @@
         window.Echo.channel('venta-status')
         .listen('NotificacionVentaStatusChangedEvent', (e) => {
           this.getNotify();
-          this.showModal();
+          //this.showModal();
+          this.$refs['my-modalr'].show()
         });
       },
       methods: {

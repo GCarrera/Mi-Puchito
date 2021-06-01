@@ -2,7 +2,7 @@
 
   <div>
 
-    <b-button id="show-btn" class="d-none" @click="showModal">Open Modal</b-button>
+    <b-button id="show-btn" class="d-none" @click="showModal"></b-button>
 
   <b-modal ref="my-modall" hide-footer title="">
     <div class="d-block text-center">
