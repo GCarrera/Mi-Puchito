@@ -1,12 +1,12 @@
 <template>
 
-  <div v-if="sales.length > 0">
+  <b-modal ref="my-modall" hide-footer title="">
+    <div class="d-block text-center">
+      <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
+    </div>
+  </b-modal>
 
-    <b-modal ref="my-modal" hide-footer title="">
-      <div class="d-block text-center">
-        <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
-      </div>
-    </b-modal>
+  <div v-if="sales.length > 0">
 
     <li class="nav-item dropdown d-none d-sm-block">
       <span class="nav-link dropdown-toggle" id="dropdownNotifyNav" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,7 +73,7 @@
           });
       	},
         showModal() {
-          this.$refs['my-modal'].show()
+          this.$refs['my-modall'].show()
         },
       },
       created(){
