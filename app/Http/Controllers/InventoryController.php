@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Inventory;
+use App\Inventario;
 
 class InventoryController extends Controller
 {
@@ -181,6 +182,8 @@ class InventoryController extends Controller
         $inventory->stock_min      = $req->input('stock_min');
 
         $inventory->save();
+
+        $producto = Inventario::where('inventory_id', $id)->update(['name' => $req->input('product_name')]);
 
         return redirect()->back()->with('success', 'Producto editado exitosamente.');
     }
