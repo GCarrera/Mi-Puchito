@@ -2,6 +2,8 @@
 
   <div>
 
+    <b-button id="show-btn" @click="showModal">Open Modal</b-button>
+
   <b-modal ref="my-modall" hide-footer title="">
     <div class="d-block text-center">
       <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
