@@ -1,5 +1,7 @@
 <template>
 
+  <div>
+
   <b-modal ref="my-modall" hide-footer title="">
     <div class="d-block text-center">
       <h3>Hola, tienes nuevas notificaciones sobre tus compras!!!</h3>
@@ -24,6 +26,8 @@
         </div>
       </div>
     </li>
+
+  </div>
 
   </div>
 
