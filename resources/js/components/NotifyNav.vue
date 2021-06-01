@@ -53,6 +53,7 @@
         window.Echo.channel('venta-status')
         .listen('NotificacionVentaStatusChangedEvent', (e) => {
           this.getNotify();
+          $( "#show-btn" ).click();
         });
       },
       methods: {
@@ -65,7 +66,6 @@
               if (response.data != 'false' && response.data.length > 0) {
                 this.sales = response.data;
                 //this.showModal();
-                $( "#show-btn" ).click();
               }
             }).catch(e => {
               console.log(e.response)
