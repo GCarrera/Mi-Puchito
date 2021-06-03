@@ -303,7 +303,7 @@ class PisoVentasController extends Controller
     public function auditoria(Request $request)
     {
       $productos = Inventario_piso_venta::with('inventario.piso_venta')->where('piso_venta_id', $request->id)->get();
-      $softdeletes = Inventory::onlyTrashed()->with('inventario.piso_venta')->where('piso_venta_id', $request->id)->get();
+      $softdeletes = Inventory::onlyTrashed()->get();
 
       return response()->json(['productos' => $productos, 'softdeletes' => $softdeletes]);
     }
