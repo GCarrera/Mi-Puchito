@@ -65,7 +65,10 @@ class InventarioController extends Controller
         if ($request->id != 0) {
 
           $inventoryCreated = Inventory::with('product')->where('created_at', '>', $request->id["created"])->get();
-          $inventoryUpdated = Inventory::where('updated_at', '>', $request->id["updated"])->get();
+          //$inventoryUpdated = Inventory::with('product')->where('updated_at', '>', $request->id["updated"])->get();
+          $inventoryUpdated = Inventory::with(['product' => function ($query) {
+              $query->where('updated_at', '>', $request->id["updated"]);
+          }])->orWhere('updated_at', '>', $request->id["updated"])->get();
           if ($request->id["deleted"] != 0) {
             $softdeletes = Inventory::onlyTrashed()->where('deleted_at', '>', $request->id["deleted"])->get();
           } else {
