@@ -55,13 +55,50 @@ class InventarioController extends Controller
         return response()->json($inventory);
     }
 
+    public function get_inventorybk(Request $request)//WEB
+    {
+
+      try {
+
+        DB::beginTransaction();
+
+        if ($request->id != 0) {
+
+          $inventoryCreated = Inventory::with('product')->where('created_at', '>', $request->id["created"])->get();
+          $inventoryUpdated = Inventory::where('updated_at', '>', $request->id["updated"])->get();
+          if ($request->id["deleted"] != 0) {
+            $softdeletes = Inventory::onlyTrashed()->where('deleted_at', '>', $request->id["deleted"])->get();
+          } else {
+            $softdeletes = Inventory::onlyTrashed()->get();
+          }
+
+        } else {
+
+          $inventoryCreated = Inventory::with('product')->get();
+          $inventoryUpdated = [];
+          $softdeletes = Inventory::onlyTrashed()->get();
+
+        }
+
+
+        DB::commit();
+
+        return response()->json(['created' => $inventoryCreated, 'updated' => $inventoryUpdated, 'deleted' => $softdeletes]);
+
+      } catch (Exception $e) {
+        DB::rollback();
+        return response()->json($e);
+      }
+
+    }
+
     public function store_inventory(Request $request)
     {
         try{
 
             DB::beginTransaction();
             foreach ($request->productos as $producto) {
-            
+
                 $inventory = new Inventory();
                 $inventory->product_name = $producto['product_name'];
                 $inventory->description = $producto['description'];
@@ -73,7 +110,7 @@ class InventarioController extends Controller
                 $inventory->total_qty_prod = $producto['total_qty_prod'];
                 $inventory->save();
                 if ($producto['product'] != null) {
-                
+
                     //REGISTRAMOS LOS PRECIOS PRODUCT
                     $product = new Product();
                     $product->cost = $producto['product']['cost'];
@@ -95,14 +132,14 @@ class InventarioController extends Controller
             DB::commit();
 
             return response()->json(true);
-            
+
         }catch(Exception $e){
 
             DB::rollback();
             return response()->json($e);
         }
-        
-        
+
+
     }
 
     public function get_precios_inventory($id)//WEB
@@ -121,7 +158,7 @@ class InventarioController extends Controller
             DB::beginTransaction();
 
             foreach ($request->productos as $producto) {
-                
+
                 $inventario = Inventario::select('id')->where('inventory_id', $producto['id'])->orderBy('id', 'desc')->first();
 
                 if ($inventario['id'] != null) {
@@ -137,12 +174,12 @@ class InventarioController extends Controller
                     $precio->oferta = $producto['product']['oferta'];
                     $precio->save();
                 }
-                
+
             }
             DB::commit();
 
             return response()->json(true);
-            
+
         }catch(Exception $e){
 
             DB::rollback();
@@ -155,7 +192,7 @@ class InventarioController extends Controller
         $productos = [];
 
         foreach ($request->inventario as $valor) {
-            
+
             $inventario = Inventario::where('inventory_id', '!=', null)->where('piso_venta_id', $request->piso_venta)->where('id_extra', $valor['id_extra'])->orderBy('id', 'desc')->first();
 
             array_push($productos, $inventario);
@@ -168,7 +205,7 @@ class InventarioController extends Controller
     {
 
         $inventario = Inventario::with('inventory')->get();
-    	
+
     	return $inventario;
     }
 
