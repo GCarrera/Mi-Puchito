@@ -173,7 +173,9 @@ Route::group(['prefix' => 'api'], function(){
 
 	Route::post('/get-despachos-web', 'DespachosController@get_despachos_web');
 	Route::get('/ultimo-despacho', 'DespachosController@ultimo_despacho');
+	Route::get('/ultimo-retiro/{piso_venta_id}', 'DespachosController@ultimo_retiro');
 	Route::post('/registrar-despachos-piso-venta', 'DespachosController@registrar_despacho_piso_venta');
+	Route::post('/store-retiros', 'DespachosController@store_retiros');
 
 	//DESPACHOS ALMACEN
 	Route::get('/despachos-datos-create', 'DespachosController@get_datos_create');

@@ -131,10 +131,19 @@ class DespachosController extends Controller
         return response()->json($despacho);
     }
 
+    public function ultimo_retiro($id)
+    {
+
+        $despacho = Despacho::select('id_extra')->where('piso_venta_id', $id)->where('type', 2)->orderBy('id', 'desc')->first();
+
+        return response()->json($despacho);
+    }
+
     public function get_despachos_web(Request $request)//DEL LADO DE LA WEB
     {
 
-        $despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->get();
+        //$despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->get();
+        $despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->where('type', '!=', '2')->get();
 
         return response()->json($despachos);
 
@@ -231,9 +240,61 @@ class DespachosController extends Controller
         return response()->json(true);
     }
 
+    public function store_retiros(Request $request)
+    {
+      try{
+
+          DB::beginTransaction();
+
+          foreach ($request->retiros as $despacho){
+              //REGISTRAMOS EL DESPACHO
+              $registro = new Despacho();
+              $registro->id_extra = $despacho['id'];
+              $registro->piso_venta_id = $despacho['piso_venta_id'];
+              $registro->type = $despacho['type'];
+              $registro->save();
+
+              foreach ($despacho['productos'] as $producto) {
+                  //REGISTRAMOS LOS PRODUCTOS
+                  $detalles = new Despacho_detalle();
+                  $detalles->despacho_id = $registro->id;
+                  $detalles->cantidad = $producto['pivot']['cantidad'];
+                  $detalles->inventory_id = $producto['pivot']['inventory_id'];
+                  $detalles->save();
+
+                  //SUMAMOS AL STOCK
+                  $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($producto){
+                      $q->where('inventory_id', $producto['pivot']['inventory_id']);
+                  })->where('piso_venta_id', $despacho['piso_venta_id'])->orderBy('id', 'desc')->first();
+                  $inventario->cantidad += $detalle['pivot']['cantidad'];
+                  $inventario->sincronizacion = 2;
+                  $inventario->save();
+
+                  //SUMAMOS DE INVENTORY DE PROMETHEUS
+                  $inventario = Inventory::findOrFail($detalle['id']);
+                  $inventario->total_qty_prod += $detalle['pivot']['cantidad'];
+                  $inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
+                  $inventario->save();
+
+              }
+          }
+
+          DB::commit();
+
+          return response()->json(true);
+
+      }catch(Exception $e){
+
+          DB::rollback();
+          return response()->json($e);
+      }
+
+      return response()->json(true);
+    }
+
     public function get_despachos_sin_confirmacion($id)//DEL LADO DE LA WEB
     {
-        $despachos = Despacho::select('id_extra')->where('piso_venta_id', $id)->where('confirmado', null)->get();
+        $despachos = Despacho::select('id_extra')->where('piso_venta_id', $id)->where('confirmado', 4)->where('type', 1)->get();
 
         return response()->json($despachos);
     }
@@ -261,7 +322,7 @@ class DespachosController extends Controller
 
               if ($valor != null) {
 
-                $despacho = Despacho::with('productos')->where('id_extra', $valor['id_extra'])->where('piso_venta_id', $request->piso_venta_id)->first();
+                $despacho = Despacho::where('id_extra', $valor['id_extra'])->where('piso_venta_id', $request->piso_venta_id)->where('type', 1)->first();
                 $despacho->confirmado = $valor['confirmado'];
                 $despacho->save();
 
@@ -270,7 +331,7 @@ class DespachosController extends Controller
 
                     if ($despacho->type == 1) {
 
-                            if ($despacho->confirmado === 0) {//NEGADO
+                            if ($despacho->confirmado === 2) {//NEGADO
                                 //RESTAMOS DE INVENTORY DE PROMETHEUS
                                 $inventario = Inventory::findOrFail($detalle['id']);
                                 $inventario->total_qty_prod += $detalle['pivot']['cantidad'];
