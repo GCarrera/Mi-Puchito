@@ -44,7 +44,7 @@ Vue.component('new-despacho', require('./view/NewDespacho.vue').default);
 Vue.component('terminar-despacho', require('./view/TerminarDespacho.vue').default);
 Vue.component('notify-sales', require('./components/NotifySales.vue').default);
 Vue.component('notify-nav', require('./components/NotifyNav.vue').default);
-Vue.component('table-inventario', require('./components/TableInventarioV.vue').default);
+Vue.component('table-inventarios', require('./components/TableInventarioV.vue').default);
 
 import Vue from 'vue'
 import {ModalPlugin, PaginationPlugin, AlertPlugin, BootstrapVue, IconsPlugin } from 'bootstrap-vue'
