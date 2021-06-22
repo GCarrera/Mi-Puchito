@@ -21,7 +21,7 @@
 		<div class="col">
 			<div class="card shadow-sm">
 				<div class="card-header d-flex justify-content-between mb-3">
-					<h3>Inventario</h3>
+					<h3>Inventarios</h3>
 					<p class="lead">
 						<span class="font-weight-normal">Almacen:</span> <span>{{ $almacen }}</span>
 					</p>
