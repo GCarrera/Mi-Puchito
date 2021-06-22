@@ -29,7 +29,7 @@
 				<div class="card-body">
 					<div class="table-responsive-xl">
 
-						<table-inventario v-bind:inventario="{{$inventario}}" />
+						<table-inventario v-bind:inventario="{{$inventario}}" />						
 
 					</div>
 				</div>
@@ -37,9 +37,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 
 <!-- MODALES -->
 <!-- Modal añadir poducto -->
@@ -108,15 +105,13 @@
 								<option value="Caja">Caja</option>
 								<option value="Otros">Otros</option>
 							</select>
-							<!--<input type="text" class="form-control" name="tipo_unidad_menor" id="tipo-unidad-menor" required>-->
-							<!--<small class="text-muted text-help">Tipo de unidad en la que se vendera al menor</small>-->
 						</div>
 						<div class="col-md-4 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad" class="selectpicker border form-control" data-width="100%">
-								<option disabled>Selecciona</option>
+								<option selected disabled>Selecciona</option>
 								<option value="bulto">Bulto</option>
-								<option selected value="caja">Caja</option>
+								<option value="caja">Caja</option>
 								<option value="saco">Saco</option>
 								<option value="granel">Granel</option>
 								<option value="cesta">Cesta</option>
@@ -128,29 +123,8 @@
 						<div class="col-md-4 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod" required>
-							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
 						</div>
-						{{-- <div class="col-md-3 col-12">
-							<label for="whole_sale_quantity">Cantidad de venta al mayor</label>
-							<input type="number" class="form-control" name="whole_sale_quantity" id="whole_sale_quantity" required>
-						</div> --}}
 					</div>
-
-					<!--<div class="form-row mb-4">
-						<div class="col-md-4 col-12">
-							<label for="cant_prod_um">Cantidad por unidad de medida</label>
-							<input type="number" class="form-control" name="cant_prod_um" id="cant_prod_um" required>
-						</div>
-						<div class="col-md-4 col-12">
-							<label for="unidad_medida">Unidad de medida</label><br>
-							<select name="unidad_medida" id="unidad_medida" class="selectpicker border form-control" data-width="100%">
-								<option disabled selected>Selecciona</option>
-								<option value="KG">Kilos</option>
-								<option value="L">Litros</option>
-							</select>
-						</div>
-
-					</div>-->
 
 					<div class="form-row mb-4">
 						<div class="col-3">
@@ -225,12 +199,12 @@
 					</div>
 
 					<div class="form-row mb-4">
-						<div class="col-md-4 col-12 mb-3">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="cantidad">Cantidad</label>
 							<input type="number" min="0" class="form-control" name="cantidad" id="cantidad_edit" required>
 							<small class="text-muted text-help">Cantidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12 mb-3">
+						<div class="col-md-3 col-12 mb-3">
 							<label for="tipo_unidad">Tipo de unidad</label><br>
 							<select name="tipo_unidad" id="tipo_unidad_edit" class="selectpicker border form-control" data-width="100%">
 								<option disabled selected>Selecciona</option>
@@ -243,10 +217,26 @@
 							</select>
 							<small class="text-muted text-help">Tipo de unidad comprada al mayor</small>
 						</div>
-						<div class="col-md-4 col-12">
+						<div class="col-md-3 col-12">
 							<label for="cant_prod">Cantidad por unidad</label>
 							<input type="text" pattern="^[0-9]+([.][0-9]+)?$" class="form-control" name="cant_prod" id="cant_prod_edit" required>
-							<!--<small class="text-muted text-help">Cantidad de productos por tipo de unidad</small>-->
+						</div>
+						<div class="col-md-3 col-12">
+							<label for="presentacion_edit">Presentación</label><br>
+							<select name="presentacion" id="presentacion_edit" class="selectpicker border form-control" data-width="100%">
+								<option disabled selected>Selecciona</option>
+								<option value="Kg">Kg</option>
+								<option value="Unidad">Unidad</option>
+								<option value="Lata">Lata</option>
+								<option value="Empaque">Empaque</option>
+								<option value="Tasa">Tasa</option>
+								<option value="Granel">Granel</option>
+								<option value="Bolsa">Bolsa</option>
+								<option value="Sobre">Sobre</option>
+								<option value="Papeleta">Papeleta</option>
+								<option value="Caja">Caja</option>
+								<option value="Otros">Otros</option>
+							</select>
 						</div>
 					</div>
 
@@ -259,10 +249,6 @@
 							<label for="description_edit">Descripción del producto</label>
 							<textarea name="description" id="description_edit" rows="3" class="form-control"></textarea>
 						</div>
-						<!--<div class="col-4 text-right">
-							<h5>Cantidad Total</h5>
-							<p class="lead cantidad_producto">-</p>
-						</div>-->
 					</div>
 
 				</div>
@@ -275,91 +261,6 @@
 	</div>
 </div>
 
-<!-- Modal DELETE poducto -->
-<div class="modal fade" id="deletePRoduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-sm" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title" id="deleteModalName"></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form id="form_delete" method="post">
-				@csrf
-				@method('delete')
-
-				<div class="modal-body">
-
-					<p>Esta seguro que desea eliminar el producto <span id="deleteModalNameSpan"></span>??	</p>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-primary">Borrar</button>
-				</div>
-			</form>
-
-		</div>
-	</div>
-</div>
-
-<!-- MODAL PARA SUMAR PRODUCTOS -->
-<div class="modal fade" id="modal-sumar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="plusModalName"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<label for="cantidad-sumar">Cantidad al menor a sumar:</label>
-						<div class="row">
-							<div class="col-6">
-
-								<input type="text" name="cantidad_sumar" id="cantidad-sumar" class="form-control" placeholder="60">
-
-							</div>
-							<div class="col-6">
-								<button class="btn btn-primary" id="plusModalButton">Agregar</button>
-							</div>
-						</div>
-					</div>
-
-			</div>
-		</div>
-</div>
-
-
-<!-- MODAL PARA RESTAR PRODUCTOS -->
-<div class="modal fade" id="modal-restar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="minusModalName"></h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<label for="cantidad-restar">Cantidad al menor a restar:</label>
-						<div class="row">
-							<div class="col-6">
-
-								<input type="text" name="cantidad_restar" id="cantidad-restar" class="form-control" placeholder="60">
-
-							</div>
-							<div class="col-6">
-								<button class="btn btn-primary" id="minusModalButton">Restar</button>
-							</div>
-						</div>
-					</div>
-
-			</div>
-		</div>
-</div>
 @endsection
 
 @push('scripts')
@@ -391,6 +292,9 @@ function showEdit(id) {
 		$('#tipo_unidad_edit').val(response.unit_type)
 		$('#tipo_unidad_edit').change()
 
+		$('#presentacion_edit').val(response.unit_type_menor)
+		$('#presentacion_edit').change()
+
 		$('#cant_prod_edit').val(response.qty_per_unit)
 
 		$('#description_edit').val(response.description)
@@ -411,133 +315,6 @@ function showEdit(id) {
 	})
 };
 
-function showDelete(id, name) {
-	$('#deletePRoduct').modal('show');
-
-	$('#form_delete').attr('action', `/inventory/${id}`);
-
-	$('#deleteModalName').html(name)
-	$('#deleteModalNameSpan').html(name)
-
-};
-
-function showPlus(id, name) {
-	$('#modal-sumar').modal('show');
-
-	$('#plusModalName').html(name);
-	$('#plusModalButton').click(function () {
-		console.log($('#cantidad-sumar').val())
-
-		$.ajax({type: 'PUT', url: `/sumar-inventory/${id}`, data: {cantidad: $('#cantidad-sumar').val()}})
-			.done((res) => {
-				console.log(res)
-
-				//$('#cantidad-sumar').val('');
-				$('#total-productos-'+id).text(res);
-				location.reload();
-
-			})
-			.catch((err) => {
-				toastr.error('Ha ocurrido un error')
-				console.error(err)
-			})
-
-
-		$('#modal-sumar').modal('hide');
-	});
-
-};
-
-function showMinus(id, name) {
-	$('#modal-restar').modal('show');
-
-	$('#minusModalName').html(name);
-	$('#minusModalButton').click(function () {
-		console.log($('#cantidad-restar').val());
-
-		$.ajax({type: 'PUT', url: `/restar-inventory/${id}`, data: {cantidad: $('#cantidad-restar').val()}})
-			.done((res) => {
-				console.log(res)
-
-				$('#total-productos-'+id).text(res);
-				location.reload();
-
-			})
-			.catch((err) => {
-				toastr.error('Ha ocurrido un error')
-				console.error(err)
-			})
-
-
-		$('#modal-restar').modal('hide');
-	});
-
-};
-//COSTOS
-	/*$('#editarForm').attr('action', `/products/${id}`)
-
-	$.get({
-		url : `/products/${id}`,
-		beforeSend(){
-			$('#modal_loader_edit').show()
-		}
-	})
-	.done((data) => {
-
-		$('#product_edit').val(data.id)
-		$('#product_edit').html(`<option selected>${data.inventory.product_name}</option>`)
-
-		$('#cost_edit').val(data.cost)
-
-		$('#wholesale_margin_gain_edit').val(data.wholesale_margin_gain)
-
-		$('#retail_margin_gain_edit').val(data.retail_margin_gain)
-		//ESTABLECEMOS EL CHECK DE LAS OFERTAS
-		if (data.oferta == 1) {
-
-			$('#ofertaEdit2').removeAttr('checked');
-			$('#ofertaEdit1').attr('checked', true);
-
-		}else{
-
-			$('#ofertaEdit1').removeAttr('checked', true);
-			$('#ofertaEdit2').attr('checked', true);
-
-		}
-
-		$('#totalMenor').text(new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(precio_menor_total));
-
-		$('#modal_loader_edit').fadeOut();
-
-	})
-	.fail((err)=> {
-		console.log(err)
-		toastr.error('Ha ocurrido un error.')
-	})
-}*/
-
-	$(document).ready( function () {
-		$('#inventario-table').DataTable({
-			"language": {
-    		"search": "Buscar:",
-    		"scrollX": true,
-				"emptyTable": "No se consigio nada",
-				"info": "",
-				"infoEmpty": "",
-				"infoFiltered": "",
-				"lengthMenu": "Ver _MENU_ Filas",
-				"loadingRecords": "Cargando...",
-				"processing": "Procesando...",
-				"zeroRecords": "No se consigio nada",
-				"paginate": {
-	        "first":      "Primero",
-	        "last":       "Ultimo",
-	        "next":       "Siguiente",
-	        "previous":   "Anterior"
-			   }
-			}
-		});
-	} );
 	$(() => {
 
 		$.ajaxSetup({
@@ -572,8 +349,6 @@ function showMinus(id, name) {
 			}
 		});
 
-
-
 		$('#cantidad, #cant_prod, #cantidad_edit, #cant_prod_edit').on('keyup change', function() {
 			// logica para calcular los totales
 
@@ -586,54 +361,7 @@ function showMinus(id, name) {
 			$('.cantidad_producto').text(`${productos_totales} productos`)
 			$('#cantidad_producto_hd').val(productos_totales)
 			$('#cantidad_producto_hd_edit').val(productos_totales)
-		})
-
-		$('.editProduct').click(function(e){
-
-			let id = $(this).data('id')
-
-			$('#form_edit').attr('action', `/inventory/${id}`)
-
-			$.get({
-				url: `/inventory/${id}`,
-				beforeSend(){
-					$('#modal_loader').show()
-				}
-			})
-			.done((response) => {
-				console.log(response)
-
-				$('#product_name_edit').val(response.product_name)
-
-				$('#enterprise_edit').val(response.enterprise_id)
-				$('#enterprise_edit').change()
-
-				$('#category_edit').val(response.category_id)
-				$('#category_edit').change()
-
-				$('#cantidad_edit').val(response.quantity)
-
-				$('#tipo_unidad_edit').val(response.unit_type)
-				$('#tipo_unidad_edit').change()
-
-				$('#cant_prod_edit').val(response.qty_per_unit)
-
-				$('#description_edit').val(response.description)
-
-				let cantidad  = $('#cantidad').val() || $('#cantidad_edit').val()
-				let cant_prod = $('#cant_prod').val() || $('#cant_prod_edit').val()
-
-				let productos_totales = cantidad * cant_prod
-
-				$('#cantidad_producto_hd_edit').val(productos_totales)
-
-				$('#modal_loader').fadeOut()
-			})
-			.fail((err) => {
-				console.error(err)
-				toastr.error('Algo a ocurrido.')
-			})
-		})
+		});
 
 	})
 
