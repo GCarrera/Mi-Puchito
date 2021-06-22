@@ -29,8 +29,7 @@
 				<div class="card-body">
 					<div class="table-responsive-xl">
 
-						{{--<table-inventarios v-bind:inventario="{{$inventario}}" />--}}
-						<table-inventario><table-inventario/>
+						<example-component v-bind:inventario="{{$inventario}}" />
 
 					</div>
 				</div>
