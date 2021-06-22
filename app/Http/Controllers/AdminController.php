@@ -127,6 +127,34 @@ class AdminController extends Controller
 			// ->with('categoriasCount', $categoriasCount);
 	}
 
+	public function inventariov()
+	{
+		$categorias      = Category::select('id', 'name')->get();
+		$empresas        = Enterprise::select('id', 'name')->get();
+		// $empresasCount   = count($empresas);
+		// $categoriasCount = count($categorias);
+		// $salesCount      = Sale::all()->count();
+		// $productosCount  = Product::all()->count();
+		$almacen         = '01-Cagua';
+
+		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->get();
+		//$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at', 'enterprise_id', 'category_id')->get();
+
+		/*if (count($inventario) > 0) {
+			$almacen = $inventario[0]->warehouse->name;
+		}*/
+
+		return view('admin.inventariov')
+			->with('inventario', $inventario)
+			->with('almacen', $almacen)
+			->with('empresas', $empresas)
+			->with('categorias', $categorias);
+			// ->with('empresasCount', $empresasCount)
+			// ->with('productosCount', $productosCount)
+			// ->with('salesCount', $salesCount)
+			// ->with('categoriasCount', $categoriasCount);
+	}
+
 	public function faltantes()
 	{
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Inventory;
 use App\Inventario;
+use DB;
 
 class InventoryController extends Controller
 {
@@ -205,6 +206,8 @@ class InventoryController extends Controller
     public function sumar_producto(Request $request, $id)
     {
 
+      try {
+        DB::beginTransaction();
         $inventory = Inventory::find($id);
         $inventory->total_qty_prod += $request->cantidad;
         if ($inventory->qty_per_unit != 0) {
@@ -212,19 +215,32 @@ class InventoryController extends Controller
         }
         $inventory->save();
 
+        DB::commit();
         return $inventory->total_qty_prod;
+      } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json($e);
+      }
 
     }
 
     public function restar_producto(Request $request, $id)
     {
-
+      try {
+        DB::beginTransaction();
         $inventory = Inventory::find($id);
         $inventory->total_qty_prod -= $request->cantidad;
-        $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        if ($inventory->qty_per_unit != 0) {
+          $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
+        }
         $inventory->save();
 
+        DB::commit();
         return $inventory->total_qty_prod;
+      } catch (\Exception $e) {
+        DB::rollback();
+        return response()->json($e);
+      }
 
     }
 }
