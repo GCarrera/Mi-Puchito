@@ -30,7 +30,7 @@
 					<div class="table-responsive-xl">
 
 						{{--<table-inventarios v-bind:inventario="{{$inventario}}" />--}}
-						<example-component><example-component/>
+						<table-inventario><table-inventario/>
 
 					</div>
 				</div>
