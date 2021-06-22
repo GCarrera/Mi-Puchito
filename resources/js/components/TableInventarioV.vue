@@ -344,6 +344,9 @@
           $('#tipo_unidad_edit').val(response.unit_type)
           $('#tipo_unidad_edit').change()
 
+          $('#presentacion_edit').val(response.unit_type_menor)
+          $('#presentacion_edit').change()
+
           $('#cant_prod_edit').val(response.qty_per_unit)
 
           $('#description_edit').val(response.description)
