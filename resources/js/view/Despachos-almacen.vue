@@ -26,7 +26,7 @@
              <tr>
                <th class="negrita">FECHA</th>
                <th class="negrita">PISO DE VENTA</th>
-               <!--<th class="negrita">Tipo</th>-->
+               <th class="negrita">Tipo</th>
                <th class="negrita">ESTADO</th>
                <th class="negrita">ACCIONES</th>
              </tr>
@@ -35,7 +35,7 @@
              <tr v-for="(despacho, index) in despachos" :key="index">
                <td class="align-middle">{{despacho.created_at}} {{despacho.id}}</td>
                <td class="align-middle">{{despacho.piso_venta.nombre}}</td>
-               <!--<th>{{despacho.type == 1? "despacho" : "retiro"}}</th>-->
+               <th>{{despacho.type == 1? "Despacho" : "Retiro"}}</th>
                <td v-if="despacho.confirmado == 4" class=" align-middle small negrita text-secondary">Pendiente</td>
                <td v-else-if="despacho.confirmado == 1" class=" align-middle small negrita text-success">Confirmado</td>
                <td v-else-if="despacho.confirmado == 2" class=" align-middle small negrita text-danger">Negado</td>
