@@ -35,7 +35,7 @@
              <tr v-for="(despacho, index) in despachos" :key="index">
                <td class="align-middle">{{despacho.created_at}} {{despacho.id}}</td>
                <td class="align-middle">{{despacho.piso_venta.nombre}}</td>
-               <td>{{despacho.type == 1? "Despacho" : "Retiro"}}</td>
+               <td class="align-middle">{{despacho.type == 1? "Despacho" : "Retiro"}}</td>
                <td v-if="despacho.confirmado == 4" class=" align-middle small negrita text-secondary">Pendiente</td>
                <td v-else-if="despacho.confirmado == 1" class=" align-middle small negrita text-success">Confirmado</td>
                <td v-else-if="despacho.confirmado == 2" class=" align-middle small negrita text-danger">Negado</td>
