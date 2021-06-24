@@ -266,7 +266,7 @@ class DespachosController extends Controller
                   $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($producto){
                       $q->where('inventory_id', $producto['pivot']['inventory_id']);
                   })->where('piso_venta_id', $despacho['piso_venta_id'])->orderBy('id', 'desc')->first();
-                  $inventario->cantidad += $detalle['pivot']['cantidad'];
+                  $inventario->cantidad -= $detalle['pivot']['cantidad'];
                   $inventario->sincronizacion = 2;
                   $inventario->save();
 
@@ -369,7 +369,7 @@ class DespachosController extends Controller
 
                             }
 
-                    }else if($despacho->type == 2){
+                    }/*else if($despacho->type == 2){
 
                             if ($despacho->confirmado === 0) {//NEGADO
                                 //SUMAMOS DE INVENTORY DE PROMETHEUS
@@ -387,7 +387,7 @@ class DespachosController extends Controller
                                 $inventario->save();
                             }
 
-                    }
+                    }*/
                 }
 
               }
