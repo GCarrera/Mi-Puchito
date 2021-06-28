@@ -35,93 +35,101 @@ class InventoryController extends Controller
     public function store(Request $req)
     {
 
-      $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
-      if (isset($sofdeletevalidate)) {
+      try {
+        $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
+        if (isset($sofdeletevalidate->id)) {
 
-        $id = $sofdeletevalidate->id;
+          $id = $sofdeletevalidate->id;
 
-        $validator = Validator::make($req->all(), [
-            'product_name' => 'required|max:191',
-            'description' => 'nullable|max:191',
-            'cantidad' => 'required|max:191',
-            'stock_min' => 'required|max:191',
-            'tipo_unidad' => 'required|max:191',
-            'cant_prod' => 'required|max:191',
-            'category' => 'required|integer',
-            'enterprise' => 'required|integer',
-		    ]);
+          $validator = Validator::make($req->all(), [
+              'product_name' => 'required|max:191',
+              'description' => 'nullable|max:191',
+              'cantidad' => 'required|max:191',
+              'stock_min' => 'required|max:191',
+              'tipo_unidad' => 'required|max:191',
+              'cant_prod' => 'required|max:191',
+              'category' => 'required|integer',
+              'enterprise' => 'required|integer',
+          ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-        $inventory = Inventory::withTrashed()->find($id)->restore();
-        $inventory = Inventory::withTrashed()->find($id);
+          if ($validator->fails()) {
+              return redirect()->back()
+                          ->withErrors($validator)
+                          ->withInput();
+          }
+          $inventory = Inventory::withTrashed()->find($id)->restore();
+          $inventory = Inventory::withTrashed()->find($id);
 
-        $inventory->product_name   = $req->input('product_name');
-        $inventory->description    = $req->input('description');
-        $inventory->quantity       = $req->input('cantidad');
-        $inventory->unit_type      = $req->input('tipo_unidad');
-        //$inventory->qty_per_unit   = $req->input('cant_prod');
-        if ($req->input('cant_prod') != 0) {
-          $inventory->qty_per_unit   = $req->input('cant_prod');
+          $inventory->product_name   = $req->input('product_name');
+          $inventory->description    = $req->input('description');
+          $inventory->quantity       = $req->input('cantidad');
+          $inventory->unit_type      = $req->input('tipo_unidad');
+          //$inventory->qty_per_unit   = $req->input('cant_prod');
+          if ($req->input('cant_prod') != 0) {
+            $inventory->qty_per_unit   = $req->input('cant_prod');
+          } else {
+            $inventory->qty_per_unit   = '1';
+          }
+          $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
+          // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
+          $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
+          $inventory->category_id    = $req->input('category');
+          $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
+          $inventory->enterprise_id  = $req->input('enterprise');
+          $inventory->stock_min      = $req->input('stock_min');
+
+          $inventory->save();
+
+          DB::commit();
+
+          return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
+
         } else {
-          $inventory->qty_per_unit   = '1';
+
+          $validator = Validator::make($req->all(), [
+              'product_name' => 'required|max:191|unique:App\Inventory,product_name',
+              'description' => 'nullable|max:191',
+              'cantidad' => 'required|max:191',
+              'tipo_unidad' => 'required|max:191',
+              'stock_min' => 'required|max:191',
+              'cant_prod' => 'required|max:191',
+              'category' => 'required|integer',
+              'enterprise' => 'required|integer',
+          ]);
+
+          if ($validator->fails()) {
+              return redirect()->back()
+                          ->withErrors($validator)
+                          ->withInput();
+          }
+          $inventory = new Inventory();
+
+          $inventory->product_name   = $req->input('product_name');
+          $inventory->description    = $req->input('description');
+          $inventory->quantity       = $req->input('cantidad');
+          $inventory->unit_type      = $req->input('tipo_unidad');
+          //$inventory->qty_per_unit   = $req->input('cant_prod');
+          if ($req->input('cant_prod') != 0) {
+            $inventory->qty_per_unit   = $req->input('cant_prod');
+          } else {
+            $inventory->qty_per_unit   = '1';
+          }
+          $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
+          // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
+          $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
+          $inventory->category_id    = $req->input('category');
+          $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
+          $inventory->enterprise_id  = $req->input('enterprise');
+          $inventory->stock_min  = $req->input('stock_min');
+
+          $inventory->save();
+          DB::commit();
+          return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
         }
-        $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
-        // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
-        $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
-        $inventory->category_id    = $req->input('category');
-        $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
-        $inventory->enterprise_id  = $req->input('enterprise');
-        $inventory->stock_min      = $req->input('stock_min');
-
-        $inventory->save();
-
-        return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
-
-      } else {
-
-        $validator = Validator::make($req->all(), [
-            'product_name' => 'required|max:191|unique:App\Inventory,product_name',
-            'description' => 'nullable|max:191',
-            'cantidad' => 'required|max:191',
-            'tipo_unidad' => 'required|max:191',
-            'stock_min' => 'required|max:191',
-            'cant_prod' => 'required|max:191',
-            'category' => 'required|integer',
-            'enterprise' => 'required|integer',
-		    ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
-        $inventory = new Inventory();
-
-        $inventory->product_name   = $req->input('product_name');
-        $inventory->description    = $req->input('description');
-        $inventory->quantity       = $req->input('cantidad');
-        $inventory->unit_type      = $req->input('tipo_unidad');
-        //$inventory->qty_per_unit   = $req->input('cant_prod');
-        if ($req->input('cant_prod') != 0) {
-          $inventory->qty_per_unit   = $req->input('cant_prod');
-        } else {
-          $inventory->qty_per_unit   = '1';
-        }
-        $inventory->unit_type_menor   = $req->input('tipo_unidad_menor');
-        // $inventory->qty_wholesale  = $req->input('whole_sale_quantity');
-        $inventory->total_qty_prod = $req->input('cantidad_producto_hd');
-        $inventory->category_id    = $req->input('category');
-        $inventory->warehouse_id   = auth()->user()->warehouses[0]->id;
-        $inventory->enterprise_id  = $req->input('enterprise');
-        $inventory->stock_min  = $req->input('stock_min');
-
-        $inventory->save();
-
-        return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
+      } catch (\Exception $e) {
+        DB::rollback();
+        //return response()->json($e);
+        return redirect()->back()->with('danger', 'Algo a fallado.');
       }
 
     }

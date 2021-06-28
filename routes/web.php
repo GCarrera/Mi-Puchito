@@ -157,7 +157,7 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('/ultimo-inventory', 'InventarioController@ultimo_inventory');
 	Route::get('/get-inventory/{id}', 'InventarioController@get_inventory');//WEB
 	Route::post('/get-inventorybk', 'InventarioController@get_inventorybk');//WEB
-	Route::post('/registrar-inventory', 'InventarioController@store_inventory');
+	//Route::post('/registrar-inventory', 'InventarioController@store_inventory');//POR DUPLICADO DE INVENTORY EN WEB
 	Route::get('/get-precios-inventory/{id}', 'InventarioController@get_precios_inventory');//WEB
 	Route::post('/actualizar-precios-inventory', 'InventarioController@actualizar_precios_inventory');
 
