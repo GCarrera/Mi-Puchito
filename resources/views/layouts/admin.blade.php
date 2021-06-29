@@ -51,8 +51,7 @@
 								<i class="fas fa-clipboard-list mr-2"></i>Almacen
 							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
-								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario Pruebas</a>
+								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
 							</div>
 						</li>
@@ -96,7 +95,7 @@
 								<i class="fas fa-clipboard-list mr-2"></i>Almacen
 							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
+								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
 							</div>
 						</li>
@@ -135,7 +134,7 @@
 								<i class="fas fa-clipboard-list mr-2"></i>Almacen
 							</a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ route('inventario') }}">Inventario</a>
+								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
 							</div>
 						</li>
@@ -217,7 +216,7 @@
 </div>
 <footer id="sticky-footer" class="py-4 bg-dark text-white-50">
     <div class="container">
-    	<p>Copyright &copy; 2020 - PrometheusV1</p>
+    	<p>Copyright &copy; 2021 - PrometheusV1</p>
     </div>
 </footer>
 
