@@ -12,6 +12,7 @@ use App\Inventory;
 use App\Despacho_detalle;
 use DB;
 use App\Precio;
+use Carbon\Carbon;
 //use App\Inventory;
 
 class DespachosController extends Controller
@@ -537,6 +538,10 @@ class DespachosController extends Controller
                   $inventary->save();
                   //Cambios de cantidades
 
+                  DB::table('logs')->insert(
+                    ['accion' => 'Despachar producto '.$producto['cantidad'], 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
+                  );
+
                   DB::commit();
 
                 } catch (Exception $e) {
@@ -651,6 +656,10 @@ class DespachosController extends Controller
                   $inventary->quantity = $inventary->total_qty_prod / $inventary->qty_per_unit;
                   $inventary->save();
                   //Cambios de cantidades
+
+                  DB::table('logs')->insert(
+                    ['accion' => 'Despachar producto '.$producto['cantidad'], 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
+                  );
 
                   DB::commit();
 

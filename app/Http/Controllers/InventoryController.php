@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Inventory;
 use App\Inventario;
 use DB;
+use Carbon\Carbon;
 
 class InventoryController extends Controller
 {
@@ -34,6 +35,8 @@ class InventoryController extends Controller
      */
     public function store(Request $req)
     {
+
+      DB::beginTransaction();
 
       try {
         $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
@@ -82,6 +85,10 @@ class InventoryController extends Controller
 
           DB::commit();
 
+          DB::table('logs')->insert(
+            ['accion' => 'Registro de producto desde cero', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+          );
+
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
 
         } else {
@@ -124,6 +131,10 @@ class InventoryController extends Controller
 
           $inventory->save();
           DB::commit();
+
+          DB::table('logs')->insert(
+            ['accion' => 'Registro de producto borrado', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+          );
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
         }
       } catch (\Exception $e) {
@@ -194,6 +205,10 @@ class InventoryController extends Controller
 
         $producto = Inventario::where('inventory_id', $id)->update(['name' => $req->input('product_name')]);
 
+        DB::table('logs')->insert(
+          ['accion' => 'Editar producto', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+        );
+
         return redirect()->back()->with('success', 'Producto editado exitosamente.');
     }
 
@@ -206,6 +221,10 @@ class InventoryController extends Controller
     public function destroy(Inventory $inventory)
     {
         $inventory->delete();
+
+        DB::table('logs')->insert(
+          ['accion' => 'borrar producto', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
+        );
 
         //return $inventory;
         return redirect()->back()->with('success', 'Producto eliminado exitosamente.');
@@ -222,6 +241,10 @@ class InventoryController extends Controller
           $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
         }
         $inventory->save();
+
+        DB::table('logs')->insert(
+          ['accion' => 'sumar productos', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
+        );
 
         DB::commit();
         return $inventory->total_qty_prod;
@@ -242,6 +265,10 @@ class InventoryController extends Controller
           $inventory->quantity = $inventory->total_qty_prod / $inventory->qty_per_unit;
         }
         $inventory->save();
+
+        DB::table('logs')->insert(
+          ['accion' => 'restar productos', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
+        );
 
         DB::commit();
         return $inventory->total_qty_prod;
