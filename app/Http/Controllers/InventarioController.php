@@ -78,6 +78,7 @@ class InventarioController extends Controller
           $inventoryCreated = Inventory::with('product')->get();
           $inventoryUpdated = [];
           $softdeletes = Inventory::onlyTrashed()->get();
+          $productUpdated = [];
 
         }
 
