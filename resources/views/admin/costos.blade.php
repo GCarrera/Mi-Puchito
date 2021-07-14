@@ -655,6 +655,14 @@ function calcularPrecioModalMenorMarcar(e) {
 }
 
 $(document).ready( function () {
+
+	$("#formstore").submit(function (e) {
+		e.preventDefault();
+		$("#sendform").attr("disabled", true);
+
+		return true;
+	});
+	
 	$('#costos-table').DataTable({
 		"language": {
 			"search": "Buscar:",
