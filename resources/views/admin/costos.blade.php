@@ -94,7 +94,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="/products" method="post" enctype="multipart/form-data">
+			<form action="/products" method="post" enctype="multipart/form-data" id="formstore">
 				@csrf
 				<div class="modal-body">
 
@@ -660,7 +660,7 @@ $(document).ready( function () {
 		e.preventDefault();
 		$("#sendform").attr("disabled", true);
 
-		return true;
+		document.getElementById("formstore").submit();
 	});
 	
 	$('#costos-table').DataTable({
