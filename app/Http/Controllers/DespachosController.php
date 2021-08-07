@@ -539,7 +539,7 @@ class DespachosController extends Controller
                   //Cambios de cantidades
 
                   DB::table('logs')->insert(
-                    ['accion' => 'Despachar producto '.$producto['cantidad'], 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
+                    ['accion' => 'Despachar producto '.$producto['cantidad'].' Despacho '.$id, 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
                   );
 
                   DB::commit();
@@ -658,7 +658,7 @@ class DespachosController extends Controller
                   //Cambios de cantidades
 
                   DB::table('logs')->insert(
-                    ['accion' => 'Despachar producto '.$producto['cantidad'], 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
+                    ['accion' => 'Despachar '.$producto['cantidad'].' producto - Despacho '.$despacho->id, 'usuario' => auth()->user()->email, 'inventories' => $inventary->product_name, 'created_at' => Carbon::now() ]
                   );
 
                   DB::commit();
