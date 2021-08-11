@@ -490,7 +490,7 @@ class DespachosController extends Controller
 
             $id = $request->id;
 
-            // status confirmado 1 aceptado 2 negado 3 guardado 4 no guardado
+            // status confirmado -1 aceptado- -2 negado- -3 guardado- -4 no guardado-
 
             $despacho = Despacho::find($id);
             if ($request->guardar != false) {
