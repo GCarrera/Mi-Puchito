@@ -94,6 +94,19 @@ class InventarioController extends Controller
 
     }
 
+    public function all_product_price(Request $request)
+	{
+		$data = [];
+		foreach ($request->data as $value) {
+			$product = Product::where('inventory_id', $value['inventory_id']);
+			if ($product->retail_total_price != $value['retail_total_price']) {
+				array_push($data, $product);
+			}
+		}
+
+    	return response()->json($data);
+	}
+
     public function store_inventory(Request $request)
     {
         try{

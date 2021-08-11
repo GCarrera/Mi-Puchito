@@ -142,7 +142,7 @@ Route::get('/terminar-despacho/{id}', 'DespachosController@edit_despacho');
 //---------------------------------------RUTAS APIS-----------------------------------------------//
 Route::group(['prefix' => 'api'], function(){
 	//SINCRONIZAR INVENTARIO
-	Route::post('/all-product-price', 'ProductController@all_product_price');
+	Route::post('/all-product-price', 'InventarioController@all_product_price');
 
 	//SOLICITUDES
 	Route::post('/last-solicitud', 'PisoVentasController@last_solicitud');
