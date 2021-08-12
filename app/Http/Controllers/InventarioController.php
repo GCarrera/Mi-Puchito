@@ -100,8 +100,8 @@ class InventarioController extends Controller
 		foreach ($request->data as $value) {
             foreach ($value as $precio) {
                 //return response()->json($precio);
-                $product = Product::where('inventory_id', $precio->inventory_id);
-                if ($product->retail_total_price != $precio->retail_total_price) {
+                $product = Product::where('inventory_id', $precio['inventory_id']);
+                if ($product->retail_total_price != $precio['retail_total_price']) {
                     array_push($data, $product);
                 }
             }
