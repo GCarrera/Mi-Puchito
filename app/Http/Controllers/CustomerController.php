@@ -104,7 +104,8 @@ class CustomerController extends Controller
 						$product->where('retail_total_price', '>', 0);
 						if ($product != NULL) {
 							$product->where('retail_total_price', '>', 0);
-						})
+						}
+					}])
 					->orWhereHas('category_p', function($categ) use($search) {
 						return $categ->where('name', 'like', '%'.$search.'%');
 					});
