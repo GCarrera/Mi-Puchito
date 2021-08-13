@@ -73,7 +73,7 @@ class CustomerController extends Controller
 				//EL TAKE DETERMINA LA CANTIDAD DE PRODUCTOS A MOSTRAR
 				$inventory->take(20)->with(['product' => function($product) {
 					if ($product != NULL) {
-
+						$product->where('retail_total_price', '>', 0);
 					}
 				}]);
 				if ($request->enterprise) {
@@ -83,10 +83,14 @@ class CustomerController extends Controller
 				if ($search) {
 					$inventory->where('product_name', 'like', '%'.$search.'%')
 					->orWhereHas('category_p', function($categ) use($search) {
-						return $categ->where('name', 'like', '%'.$search.'%');
+						return $categ->where('name', 'like', '%'.$search.'%')->where('total_qty_prod', '>', 0);
 					});
 				}
-				$inventory->whereHas('product');
+				$inventory->with(['product' => function($product) {
+					if ($product != NULL) {
+						$product->where('retail_total_price', '>', 0);
+					}
+				}]);
 			}])->whereHas('inventory', function ($inventory) use ($request, $search) {
 				if ($request->enterprise) {
 					$inventory->where('enterprise_id', $request->enterprise)
