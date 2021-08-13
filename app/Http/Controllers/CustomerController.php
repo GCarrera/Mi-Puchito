@@ -111,13 +111,7 @@ class CustomerController extends Controller
 					});
 				}
 				$inventory->whereHas('product')
-				->where('total_qty_prod', '>', 0)
-				->whereHas(['product' => function($product) {
-					$product->where('retail_total_price', '>', 0);
-					if ($product != NULL) {
-						$product->where('retail_total_price', '>', 0);
-					}
-				}]);
+				->where('total_qty_prod', '>', 0);
 			});
 
 			if ($request->category) {
