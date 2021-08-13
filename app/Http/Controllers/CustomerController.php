@@ -115,8 +115,7 @@ class CustomerController extends Controller
 					if ($product != NULL) {
 						$product->where('retail_total_price', '>', 0);
 					}
-				->where('total_qty_prod', '>', 0);
-			});
+				}]);
 
 			if ($request->category) {
 				$data = $data->where('id', $request->category);
