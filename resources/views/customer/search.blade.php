@@ -79,7 +79,7 @@
 								<div class="card-body body-producto text-center">
 
 									@if($producto->product['oferta'] == 1)
-										<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+										{{--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>--}}
 									@endif
 									<p class="truncated-text text-center">{{ $producto->product_name }}</p>
 									<!--<div class="text-center">-->
@@ -88,7 +88,7 @@
 										<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
 										<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product['retail_total_price'] * $dolar->price, 2, ',', '.') }} Bs</span>
 										<br>
-										<span class="text-left text-success small">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</span>
+										<span class="text-left text-success small">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</span><span>   </span> <span class="text-danger small">Oferta!!!</span>
 									<!--</div>-->
 
 									<div class="">
@@ -171,7 +171,7 @@
 
 							<img style="height: 200px; object-fit: contain" data-src='/storage/{{ $producto->product['image'] }}' class="card-img-top">
 							@if($producto->product['oferta'] == 1)
-							<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>
+							{{--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>--}}
 							@endif
 							<h5 class="card-title text-center font-weight-bold">{{ $producto->product_name }}</h5>
 							<div class="text-center">
@@ -182,7 +182,7 @@
 								<span class="font-weight-bold">Iva: </span>{{number_format($producto->product['wholesale_iva_amount'], 2, ',', '.')  }} <br>
 								<p class="lead font-weight-normal">Total: {{ number_format($producto->product['wholesale_total_packet_price'], 2, ',', '.') }} Bs</p>
 							</div>
-							<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p>
+							<p class="text-right text-success">Dolares:{{ number_format($producto->product->wholesale_total_packet_price / $dolar->price, 2, ',', '.')}}$</p><span>   </span> <span class="text-danger small">Oferta!!!</span>
 
 							<!--BOTONES DE LISTA DE DESEOS Y COMPRAR-->
 
