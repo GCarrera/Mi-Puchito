@@ -168,8 +168,9 @@ class CustomerController extends Controller
 				// \Cart::session($userId)->clear();
 				$carrito   = \Cart::content();
 
-				$data = Inventory::where('product_name', 'like', '%'.$search.'%')->where('status', 1)->where('total_qty_prod', '>', 0)->with('product')->get();
-
+				$data = Inventory::where('product_name', 'like', '%'.$search.'%')->where('status', 1)->where('total_qty_prod', '>', 0)->whereHas('product', function ($product) use ($request, $search) {
+					$product->where('retail_total_price', '>', 0);
+				})->get();
 				//return $data;
 
 				return view('customer.search')
