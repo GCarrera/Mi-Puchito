@@ -18,4 +18,13 @@ class Authenticate extends Middleware
             return route('login');
         }
     }
+
+    public function handle($request, Closure $next)
+    {
+      if (auth()->check() ) {
+          return $next($request);
+      }
+
+      return redirect('/login');
+    }
 }
