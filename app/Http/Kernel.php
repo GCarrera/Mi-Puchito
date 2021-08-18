@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'costos' => \App\Http\Middleware\CostosMiddleware::class,
         'operador' => \App\Http\Middleware\OperadorMiddleware::class,
         'customer' => \App\Http\Middleware\CustomerMiddleware::class,
+        "session" => \App\Http\Middleware\CheckSession::class,
         'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
         "cors" => \App\Http\Middleware\Cors::class,
     ];

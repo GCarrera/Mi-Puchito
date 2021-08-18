@@ -28,7 +28,7 @@ Route::get('/prueba', 'ShoppingCartController@prueba');
 
 Route::get('/city/{state_id}', 'ShoppingCartController@getCity');
 Route::get('/sector/{city_id}', 'ShoppingCartController@getSector');
-Route::resource('shoppingcart', 'ShoppingCartController');
+Route::resource('shoppingcart', 'ShoppingCartController')->middleware('session');
 Route::get('/get_shoppingcart', 'ShoppingCartController@get_shoppingcart');
 Route::delete('/limpiar_carrito', 'ShoppingCartController@clear');
 
@@ -68,9 +68,9 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 	Route::get('/ventas-al-mayor', 'CustomerController@al_mayor');
 
 
-	Route::resource('lista-de-deseos', 'WishlistController');
+	Route::resource('lista-de-deseos', 'WishlistController')->middleware('session');
 
-	Route::get('/perfil', 'ProfileController@perfil')->name('perfil');
+	Route::get('/perfil', 'ProfileController@perfil')->name('perfil')->middleware('session');
 	Route::get('/editar_perfil', 'ProfileController@editar_perfil')->name('editar_perfil');
 	Route::resource('/direcciones', 'AddressUserDeliveryController');
 	//Route::get('/direcciones', 'AddressUserDeliveryController');
