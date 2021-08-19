@@ -27,7 +27,7 @@
         <b-form-group
           label="Buscar"
           label-for="filter-input"
-          label-cols-sm="7"
+          label-cols-sm="5"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
