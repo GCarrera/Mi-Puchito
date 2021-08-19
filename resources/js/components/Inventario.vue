@@ -223,7 +223,7 @@
     },
     data() {
       return {
-        checkZero: false,
+        checkZero: true,
         datatab: [],
         feedbackPlus: "La cantidad es necesaria",
         plusState: null,
@@ -424,9 +424,11 @@
       },
       changeData(checked) {
         if (checked) {
-          this.datatab = this.inventario;          
+          this.datatab = this.inventario;
+          console.log(this.datatab);      
         } else {
           this.datatab = this.invzero;
+          console.log(this.datatab);      
         }
       }
     }
