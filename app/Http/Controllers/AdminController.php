@@ -138,6 +138,7 @@ class AdminController extends Controller
 		$almacen         = '01-Cagua';
 
 		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->get();
+		$inventarioZero = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->where('total_qty_prod', '>', 0)->get();
 		//$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at', 'enterprise_id', 'category_id')->get();
 
 		/*if (count($inventario) > 0) {
@@ -146,6 +147,7 @@ class AdminController extends Controller
 
 		return view('admin.inventariov')
 			->with('inventario', $inventario)
+			->with('invzero', $inventarioZero)
 			->with('almacen', $almacen)
 			->with('empresas', $empresas)
 			->with('categorias', $categorias);

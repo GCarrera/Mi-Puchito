@@ -45,6 +45,21 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
+
+        <b-form-group
+          label="Mostrar"
+          label-for="per-page-select"
+          label-cols-sm="4"
+          label-cols-md="3"
+          label-cols-lg="2"
+          label-align-sm="right"
+          label-size="sm"
+          class="mb-0"
+        >
+          <b-form-checkbox v-model="checkZero" name="check-button" switch @change="changeData">
+            Sin Existencia
+          </b-form-checkbox>
+        </b-form-group>
       </b-col>
 
     </b-row>
@@ -198,9 +213,16 @@
         required: true,
         default: () => []
       },
+      invzero:{
+        type: Array,
+        required: true,
+        default: () => []
+      },
     },
     data() {
       return {
+        checkZero: false,
+        datatab: [],
         feedbackPlus: "La cantidad es necesaria",
         plusState: null,
         cantidadPlus: "",
@@ -275,6 +297,8 @@
     mounted() {
       // Set the initial number of items
       this.totalRows = this.inventario.length;
+      // Asignar array para data
+      this.datatab = this.inventario;
     },
     methods: {
       deleteOk(id){
@@ -395,6 +419,9 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
+      },
+      changeData(checked) {
+        console.log(checked);
       }
     }
   }
