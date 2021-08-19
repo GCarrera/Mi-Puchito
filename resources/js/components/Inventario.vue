@@ -59,7 +59,7 @@
           class="mb-0"
         >
           <b-form-checkbox v-model="checkZero" name="check-button" switch @change="changeData">
-            Sin Existencia
+            <small>Sin Existencia</small>
           </b-form-checkbox>
         </b-form-group>
       </b-col>
@@ -423,7 +423,11 @@
         this.currentPage = 1
       },
       changeData(checked) {
-        console.log(checked);
+        if (checked) {
+          this.datatab = this.inventario;          
+        } else {
+          this.datatab = this.invzero;
+        }
       }
     }
   }
