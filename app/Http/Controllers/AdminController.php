@@ -155,6 +155,21 @@ class AdminController extends Controller
 			// ->with('categoriasCount', $categoriasCount);
 	}
 
+	public function cero()
+	{
+		$categorias      = Category::select('id', 'name')->get();
+		$empresas        = Enterprise::select('id', 'name')->get();
+		$almacen         = '01-Cagua';
+
+		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->where('total_qty_prod', 0)->get();
+
+		return view('admin.cero')
+			->with('inventario', $inventario)
+			->with('almacen', $almacen)
+			->with('empresas', $empresas)
+			->with('categorias', $categorias);
+	}
+
 	public function faltantes()
 	{
 

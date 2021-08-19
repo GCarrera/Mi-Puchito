@@ -45,6 +45,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 		Route::get('/inventario', 'AdminController@inventario')->name('inventario')->middleware('almacen');
 		Route::get('/inventariov', 'AdminController@inventariov')->name('inventariov')->middleware('almacen');
 		Route::get('/faltantes', 'AdminController@faltantes')->name('faltantes')->middleware('almacen');
+		Route::get('/cero', 'AdminController@cero')->name('cero')->middleware('almacen');
 		Route::get('/venta', 'AdminController@compra_venta')->name('venta')->middleware('costos');
 		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias')->middleware('admin');
 		Route::resource('/cuentas-bancarias', 'BankAccountController')->middleware('admin');

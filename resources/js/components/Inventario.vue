@@ -23,11 +23,11 @@
         </b-form-group>
       </b-col>
 
-      <b-col sm="8" lg="6" class="my-1">
+      <b-col sm="10" lg="9" class="my-1">
         <b-form-group
           label="Buscar"
           label-for="filter-input"
-          label-cols-sm="3"
+          label-cols-sm="7"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
@@ -44,23 +44,6 @@
               <b-button :disabled="!filter" @click="filter = ''">Limpiar</b-button>
             </b-input-group-append>
           </b-input-group>
-        </b-form-group>
-        
-      </b-col>
-      <b-col sm="2" lg="3" class="my-1">
-        <b-form-group
-          label="Mostrar"
-          label-for="per-page-select"
-          label-cols-sm="8"
-          label-cols-md="6"
-          label-cols-lg="5"
-          label-align-sm="right"
-          label-size="sm"
-          class="mb-0"
-        >
-          <b-form-checkbox v-model="checkZero" name="check-button" switch @change="changeData">
-            <small>Sin Existencia</small>
-          </b-form-checkbox>
         </b-form-group>
       </b-col>
 
@@ -215,16 +198,9 @@
         required: true,
         default: () => []
       },
-      invzero:{
-        type: Array,
-        required: true,
-        default: () => []
-      },
     },
     data() {
       return {
-        checkZero: true,
-        datatab: [],
         feedbackPlus: "La cantidad es necesaria",
         plusState: null,
         cantidadPlus: "",
@@ -260,7 +236,7 @@
         totalRows: 1,
         currentPage: 1,
         perPage: 5,
-        pageOptions: [10, 20, 30, { value: 100, text: "Mostrar Todo" }],
+        pageOptions: [5, 10, 15, { value: 100, text: "Mostrar Todo" }],
         sortBy: '',
         sortDesc: false,
         sortDirection: 'asc',
@@ -299,8 +275,6 @@
     mounted() {
       // Set the initial number of items
       this.totalRows = this.inventario.length;
-      // Asignar array para data
-      this.datatab = this.inventario;
     },
     methods: {
       deleteOk(id){
@@ -421,14 +395,6 @@
         // Trigger pagination to update the number of buttons/pages due to filtering
         this.totalRows = filteredItems.length
         this.currentPage = 1
-      },
-      changeData(checked) {
-        if (checked) {
-          this.filterOn = [];
-        } else {
-          this.filterOn = ['total_qty_prod'];
-          this.filter = /^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$/;
-        }
       }
     }
   }

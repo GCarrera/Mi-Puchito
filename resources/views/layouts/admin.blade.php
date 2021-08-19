@@ -53,6 +53,7 @@
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+								<a class="dropdown-item" href="{{ route('cero') }}">Sin Existencia</a>
 							</div>
 						</li>
 						<li class="nav-item" id="venta">
@@ -97,6 +98,7 @@
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+								<a class="dropdown-item" href="{{ route('cero') }}">Sin Existencia</a>
 							</div>
 						</li>
 						<li class="nav-item" id="venta">
@@ -136,6 +138,7 @@
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
 								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
+								<a class="dropdown-item" href="{{ route('cero') }}">Sin Existencia</a>
 							</div>
 						</li>
 						<li class="nav-item dropdown">
