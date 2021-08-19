@@ -427,7 +427,7 @@
           this.filterOn = [];
         } else {
           this.filterOn = ['total_qty_prod'];
-          this.filter = "5";
+          this.filter = /^(0*[1-9][0-9]*(\.[0-9]+)?|0+\.[0-9]*[1-9][0-9]*)$/;
         }
       }
     }
