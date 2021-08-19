@@ -137,7 +137,7 @@ class AdminController extends Controller
 		// $productosCount  = Product::all()->count();
 		$almacen         = '01-Cagua';
 
-		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->get();
+		$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'updated_at')->where('total_qty_prod', '>', 0)->get();
 		//$inventario = Inventory::orderBy('id', 'desc')->select('id', 'product_name', 'total_qty_prod', 'created_at', 'enterprise_id', 'category_id')->get();
 
 		/*if (count($inventario) > 0) {
