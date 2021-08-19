@@ -23,7 +23,7 @@
         </b-form-group>
       </b-col>
 
-      <b-col sm="10" lg="9" class="my-1">
+      <b-col sm="8" lg="6" class="my-1">
         <b-form-group
           label="Buscar"
           label-for="filter-input"
@@ -45,13 +45,15 @@
             </b-input-group-append>
           </b-input-group>
         </b-form-group>
-
+        
+      </b-col>
+      <b-col sm="2" lg="3" class="my-1">
         <b-form-group
           label="Mostrar"
           label-for="per-page-select"
-          label-cols-sm="3"
-          label-cols-md="2"
-          label-cols-lg="1"
+          label-cols-sm="8"
+          label-cols-md="6"
+          label-cols-lg="5"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
