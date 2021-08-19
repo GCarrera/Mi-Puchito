@@ -424,11 +424,10 @@
       },
       changeData(checked) {
         if (checked) {
-          this.datatab = this.inventario;
-          console.log(this.datatab);      
+          this.filterOn = [];
         } else {
-          this.datatab = this.invzero;
-          console.log(this.datatab);      
+          this.filterOn = ['total_qty_prod'];
+          this.filter = "5";
         }
       }
     }
