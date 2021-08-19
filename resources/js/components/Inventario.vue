@@ -27,7 +27,7 @@
         <b-form-group
           label="Buscar"
           label-for="filter-input"
-          label-cols-sm="5"
+          label-cols-sm="3"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
@@ -49,9 +49,9 @@
         <b-form-group
           label="Mostrar"
           label-for="per-page-select"
-          label-cols-sm="4"
-          label-cols-md="3"
-          label-cols-lg="2"
+          label-cols-sm="3"
+          label-cols-md="2"
+          label-cols-lg="1"
           label-align-sm="right"
           label-size="sm"
           class="mb-0"
