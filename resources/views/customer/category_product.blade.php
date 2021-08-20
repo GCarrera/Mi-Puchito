@@ -88,7 +88,7 @@
 										<span class="font-weight-light small">iva: {{ number_format($producto->product['retail_iva_amount'], 2, ',', '.') }} Bs</span><br>-->
 										<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product['retail_total_price'] * $dolar->price, 2, ',', '.') }} Bs</span>
 										<br>
-										<span class="text-left text-success small">Dolares:{{ number_format(($producto->product['retail_total_price']* $dolar->price)/ $dolar->priceo, 2, ',', '.')}}$</span>
+										<span class="text-left text-success small">Dolares:{{ number_format(($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo, 2, ',', '.')}}$ {{$dolar->priceo}}</span>
 									<!--</div>-->
 
 									<div class="">
