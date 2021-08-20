@@ -64,7 +64,7 @@ class ProductController extends Controller
 			if ($req->file('fileinput') != null) {
 				$product->image                = explode('public/', $req->file('fileinput')->store('public'))[1];
 			} else {
-				$product->image                = "default.jpeg";
+				$product->image                = "default.jpg";
 			}
 			$product->wholesale_margin_gain  = $req->input('wholesale_margin_gain');
 			// $product->wholesale_pvp          = $req->input('wholesale_pvp');
