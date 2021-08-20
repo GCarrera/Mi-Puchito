@@ -952,7 +952,8 @@
 			});
 
 			var totalShow = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount*venta.dolar.price);
-			var totalDolar = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(venta.amount);
+			let totalo = (venta.amount*venta.dolar.price)/venta.dolar.priceo
+			var totalDolar = new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(totalo);
 			//$('#total-show').text(totalShow);
 			$('#total-show').empty();
 			$('#total-show').append('<span class="negrita">Total: </span><span>'+totalShow+'BsS</span><br><span class="negrita small text-success">'+totalDolar+'$</span>');

@@ -99,7 +99,7 @@
                         {{--<span class=""><span class="font-weight-bold">Subtotal:</span><span>{{number_format($pedido->sub_total*$pedido->dolar->price, 2, ',', '.') }} Bs.<span></span>--}}
                         {{--<p class=""><span class="font-weight-bold">IVA:</span><span>{{number_format($pedido->iva, 2, ',', '.') }} Bs.<span></p>--}}
                         <span class=""><span class="font-weight-bold">Total: </span><span>{{number_format($pedido->amount*$pedido->dolar->price, 2, ',', '.')}} Bs.<span></span>
-                        <p class="" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{number_format($pedido->amount, 2, ',', '.')}}$.<span></p>
+                        <p class="" style="font-size: 0.9em"><span class="text-success">Total dolares:</span><span> {{number_format((($pedido->amount*$pedido->dolar->price)/$pedido->dolar->priceo), 2, ',', '.')}}$.<span></p>
                     </div>
 
                     @if ($pedido->rate == false)
