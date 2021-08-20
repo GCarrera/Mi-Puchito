@@ -127,7 +127,7 @@
 												@else
 													<p class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product->retail_total_price * $dolar->price, 2, ',', '.') }} BsS</p>
 												@endif
-												<p class="text-left text-success"><small>Dolares:{{ number_format($producto->product->retail_total_price, 2, ',', '.')}}$</small></p>
+												<p class="text-left text-success"><small>Dolares:{{ number_format((($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</small></p>
 
 													<div class="">
 

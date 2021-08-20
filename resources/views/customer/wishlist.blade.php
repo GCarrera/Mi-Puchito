@@ -92,7 +92,7 @@
 										<span class="font-weight-bold precio">{{ number_format($producto->product->retail_total_price, 2, ',', '.') }}</span><br>
 										<span class="text-muted"><small><span class="font-weight-bold">Iva:</span> {{ number_format($producto->product->retail_iva_amount, 2, ',', '.') }}</small></span><br>
 										<span class="text-muted"><small><span class="font-weight-bold">Subtotal:</span> {{ number_format(($producto->product->retail_total_price-$producto->product->retail_iva_amount), 2, ',', '.') }}</small></span>
-										<span class="text-success"><small><span class="">Dolares:</span> {{ number_format($producto->product->retail_total_price / $dolar->price, 2, ',', '.') }}$</small></span>
+										<span class="text-success"><small><span class="">Dolares:</span> {{ number_format((($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo), 2, ',', '.') }}$</small></span>
 									</div>
 									<div class="col-md-2 col-sm-6 col-12 mt-3 padreprecio">
 										<p class="text-muted small">PRECIO MAYOR Bs</p>

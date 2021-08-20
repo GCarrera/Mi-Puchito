@@ -86,10 +86,10 @@
 											<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->product['retail_total_price'] * $dolar->price, 2, ',', '.') }} Bs</span>
 										<br>
 										@if($producto->product['oferta'] == 1)
-											<span class="text-left text-success small">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</span><span>   </span> <span class="text-danger small">Oferta!!!</span>
+											<span class="text-left text-success small">Dolares:{{ number_format((($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</span><span>   </span> <span class="text-danger small">Oferta!!!</span>
 											{{--<span class="badge badge-danger mb-2" style="font-size: 1.5em;">Oferta</span>--}}
 											@else
-											<span class="text-left text-success small">Dolares:{{ number_format($producto->product['retail_total_price'], 2, ',', '.')}}$</span>
+											<span class="text-left text-success small">Dolares:{{ number_format((($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</span>
 										@endif
 									<!--</div>-->
 
