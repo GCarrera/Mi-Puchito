@@ -630,6 +630,7 @@ class AdminController extends Controller
 		$dolar = new Dolar();
 
 		$dolar->price = $request->precio;
+		$dolar->priceo = $request->precioo;
 		$dolar->save();
 
 		return redirect()->back()->with('success', 'Nuevo precio del dolar establecido.');

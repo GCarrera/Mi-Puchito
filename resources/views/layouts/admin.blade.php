@@ -191,7 +191,7 @@
       		</div>
 	      	<div class="modal-body">
 
-			<h6 class="font-weight-bold text-success">Precio actual establecido: <span id="dolar-precio"></span></h6>
+			<h6 class="font-weight-bold text-success">Dolar Trabajo: <span id="dolar-precio"></span> / Dolar Oficial: <span id="dolar-oficial"></span></h6>
 
 			<p class="text-center">Establesca un nuevo precio.</p>
 
@@ -199,7 +199,11 @@
 				@csrf
 				<div class="text-center">
 				<input type="text" placeholder="Ejem: 310000" name="precio">
-				BS
+				BS (Trabajo)
+				<hr>
+				<input type="text" placeholder="Ejem: 310000" name="precioo">
+				BS (Oficial)
+				<hr>
 				<button class="btn btn-primary" type="submit">Establecer</button>
 				</div>
 			</form>

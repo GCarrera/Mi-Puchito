@@ -95,6 +95,7 @@
 		})
 		.done((data) => {
 			$('#dolar-precio').text(data.price);
+			$('#dolar-oficial').text(data.priceo);
 			$('#modal-dolar').modal('show');
 			//console.log(data);
 		})
