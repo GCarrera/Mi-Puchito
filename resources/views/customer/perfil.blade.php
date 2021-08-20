@@ -226,7 +226,7 @@
 												<td class="text-success align-middle">
 													<span class="negrita text-success">{{number_format($compra->amount * $dolar->price, 2, ',', '.')}}BsS</span>
 													<br>
-													<span class="negrita small text-success">{{number_format($compra->amount, 2, ',', '.')}}$</span>
+													<span class="negrita small text-success">{{number_format((($compra->amount * $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</span>
 												</td>
 												@if(ucfirst($compra->delivery) == "No")
 												<td class="d-none d-md-table-cell align-middle">{{ ucfirst($compra->delivery) }}</td>
