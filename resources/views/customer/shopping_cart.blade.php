@@ -728,8 +728,7 @@
 @push('scripts')
 <script>
 	var myCart = @json($cart);
-	var dolar = @json($dolar->price);
-	//var dolaro = @json($dolar->priceo);
+	var dolar = @json($dolar->price)
 
 	function openModanPayMethod(){
 
@@ -978,9 +977,7 @@
 
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(iva*dolar))
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total*dolar))
-		let totalo = (total*dolar)/dolaro;
-		console.log(totalo);
-		$('#montoDolares').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(totalo)
+		$('#montoDolares').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total))
 
 		/*$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
 
