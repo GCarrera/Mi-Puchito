@@ -487,7 +487,7 @@
 														<p class="truncated-text text-center">{{ $producto->inventory->product_name }}</p>
 															<span class="lead font-weight-light truncated-text text-center">{{ number_format($producto->retail_total_price * $dolar->price, 2, ',', '.') }} Bs</span>
 															<br>
-															<span class="text-left text-success small">Dolares:{{ number_format((($producto->product['retail_total_price']* $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</span> <span>   </span> <span class="text-danger small">Oferta!!!</span>
+															<span class="text-left text-success small">Dolares:{{ number_format((($producto->retail_total_price * $dolar->price) / $dolar->priceo), 2, ',', '.')}}$</span> <span>   </span> <span class="text-danger small">Oferta!!!</span>
 														<!--</div>-->
 
 														<div class="">
