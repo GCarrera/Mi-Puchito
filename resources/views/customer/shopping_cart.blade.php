@@ -978,7 +978,8 @@
 
 		$('#ivatotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(iva*dolar))
 		$('#montoTotal').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total*dolar))
-		$('#montoDolares').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(total))
+		let totalo = (total*dolar)/dolaro
+		$('#montoDolares').text(new Intl.NumberFormat('de-DE', {minimumFractionDigits: 2}).format(totalo))
 
 		/*$('#totalSinIva').text(new Intl.NumberFormat('de-DE').format(subtotal)+',00')
 
