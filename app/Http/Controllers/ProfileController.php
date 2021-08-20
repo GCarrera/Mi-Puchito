@@ -30,7 +30,7 @@ class ProfileController extends Controller
 		$user     = auth()->user();
 		$sectores = TravelRate::all();
 		$rates    = AddressUserDelivery::where('user_id', $user->id)->get();
-		$pedidos  = Sale::orderBy('id', 'desc')->where('user_id', $user->id)->get();
+		$pedidos  = Sale::with('dolar')->orderBy('id', 'desc')->where('user_id', $user->id)->get();
 		$detalles = [];
 
 		$pedidosCount  = count($pedidos);
