@@ -729,6 +729,7 @@
 <script>
 	var myCart = @json($cart);
 	var dolar = @json($dolar->price)
+	var dolaro = @json($dolar->priceo)
 
 	function openModanPayMethod(){
 
