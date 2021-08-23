@@ -307,7 +307,7 @@ class PisoVentasController extends Controller
       //$productos = Inventario::with('inventory.product')->where('piso_venta_id', $request->id)->get();
       $productos = Inventory::with(['inventario' => function ($query) use($request) {
           $query->where('piso_venta_id', $request->id);
-      }, 'products'])->get();
+      }, 'product'])->get();
     
       /*$productos = Inventory::whereHas('inventario', function($inventario) use($request) {
 				$inventario->where('piso_venta_id', $request->id);
