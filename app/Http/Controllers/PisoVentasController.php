@@ -311,12 +311,12 @@ class PisoVentasController extends Controller
         {
           $inventario_piso_venta->where('piso_venta_id', $request->id);
         });
-      })->with('product')->get();
+      })->with('product:id,retail_margin_gain,retail_total_price')->get();
 
       $cantidades = Inventario_piso_venta::whereHas('inventario', function($inventario) use($request)
       {
         $inventario->where('piso_venta_id', $request->id);
-      })->with('inventario')->where('piso_venta_id', $request->id)->get();
+      })->with('inventario:id,inventory_id')->where('piso_venta_id', $request->id)->get();
 
       /*$productos = Inventory::with(['inventario' => function ($query) {
           $query->where('piso_venta_id', 2);
