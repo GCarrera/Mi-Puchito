@@ -16,6 +16,11 @@ class Inventory extends Model implements Buyable
     {
     	return $this->belongsTo('App\Category');
     }
+    
+    public function inventario()
+    {
+    	return $this->belongsTo('App\Inventario');
+    }
 
     public function enterprise()
     {
