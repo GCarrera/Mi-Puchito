@@ -16,6 +16,7 @@ use App\Product;
 use App\Inventory;
 use App\Solicitud;
 use Illuminate\Support\Arr;
+use Illuminate\Database\Eloquent\Builder;
 
 class PisoVentasController extends Controller
 {
@@ -303,14 +304,14 @@ class PisoVentasController extends Controller
     public function auditoria(Request $request)
     {
       //$productos = Inventario_piso_venta::with('inventario.piso_venta')->where('piso_venta_id', $request->id)->get();
-      $productos = Inventory::wherehas(['inventario' => function($inventario) use($request) {
+      $productos = Inventory::whereHas('inventario', function($inventario) use($request) {
 				$inventario->where('piso_venta_id', $request->id);
 				$inventario->with(['inventario_piso_venta' => function($product) {
 					if ($product != NULL) {
 
 					}
 				}]);				
-			}])->get();
+			})->get();
       //$productos = Inventory::with('inventario')->get();
       $softdeletes = Inventory::onlyTrashed()->get();
 
