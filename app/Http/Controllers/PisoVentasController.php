@@ -303,11 +303,14 @@ class PisoVentasController extends Controller
     public function auditoria(Request $request)
     {
       //$productos = Inventario_piso_venta::with('inventario.piso_venta')->where('piso_venta_id', $request->id)->get();
-      $productos = Inventory::whereHas('inventario', function ($query) {
-          $query->whereHas('inventario_piso_venta', function ($querydos) {
-              $query->where('piso_venta_id', $request->id);
-          });
-      })->get();
+      $productos = Inventory::with(['inventario' => function($inventario) use($request) {
+				$inventario->where('piso_venta_id', $request->id);
+				$inventario->with(['inventario_piso_venta' => function($product) {
+					if ($product != NULL) {
+
+					}
+				}]);				
+			}])->get();
       //$productos = Inventory::with('inventario')->get();
       $softdeletes = Inventory::onlyTrashed()->get();
 
