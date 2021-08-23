@@ -86,7 +86,7 @@ class InventoryController extends Controller
           DB::commit();
 
           DB::table('logs')->insert(
-            ['accion' => 'Registro de producto desde cero', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+            ['accion' => 'Registro de producto desde cero cantidad '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
           );
 
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
@@ -133,7 +133,7 @@ class InventoryController extends Controller
           DB::commit();
 
           DB::table('logs')->insert(
-            ['accion' => 'Registro de producto borrado', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+            ['accion' => 'Registro de producto borrado quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
           );
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
         }
@@ -206,7 +206,7 @@ class InventoryController extends Controller
         $producto = Inventario::where('inventory_id', $id)->update(['name' => $req->input('product_name')]);
 
         DB::table('logs')->insert(
-          ['accion' => 'Editar producto', 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+          ['accion' => 'Editar producto quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
         );
 
         return redirect()->back()->with('success', 'Producto editado exitosamente.');
@@ -243,7 +243,7 @@ class InventoryController extends Controller
         $inventory->save();
 
         DB::table('logs')->insert(
-          ['accion' => 'sumar '.$request->cantidad.' productos', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
+          ['accion' => 'sumar '.$request->cantidad.' productos quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
         );
 
         DB::commit();
@@ -267,7 +267,7 @@ class InventoryController extends Controller
         $inventory->save();
 
         DB::table('logs')->insert(
-          ['accion' => 'restar '.$request->cantidad.' productos', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
+          ['accion' => 'restar '.$request->cantidad.' productos quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
         );
 
         DB::commit();

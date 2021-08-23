@@ -313,6 +313,11 @@ class PisoVentasController extends Controller
         });
       })->with('product')->get();
 
+      $cantidades = Inventario_piso_venta::whereHas('inventario', function($inventario) use($request)
+      {
+        $inventario->where('piso_venta_id', $request->id);
+      })->with('inventario')->where('piso_venta_id', $request->id)->get();
+
       /*$productos = Inventory::with(['inventario' => function ($query) {
           $query->where('piso_venta_id', 2);
       }, 'product'])->get();*/
@@ -328,7 +333,7 @@ class PisoVentasController extends Controller
       //$productos = Inventory::with('inventario')->get();
       $softdeletes = Inventory::onlyTrashed()->get();
 
-      return response()->json(['productos' => $productos, 'softdeletes' => $softdeletes]);
+      return response()->json(['productos' => $productos, 'softdeletes' => $softdeletes, 'cantidades' => $cantidades]);
     }
 
     public function actualizar_dinero_piso_venta($id, Request $request)//WEB Y LOCAL
