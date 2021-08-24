@@ -105,6 +105,7 @@ class AdminController extends Controller
 		$almacen = '01-Cagua';		
 
 		return view('admin.bitacora')
+			->with('almacen', $almacen)
 			->with('logs', $logs);
 	}
 	
