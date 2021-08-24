@@ -73,6 +73,7 @@
 								{{-- <a class="dropdown-item" href="/admin/cuentas-bancarias">Códigos de descuentos</a> --}}
 								<a class="dropdown-item" href="/admin/cuentas-bancarias">Cuentas Bancarias</a>
 								<a class="dropdown-item" href="{{ route('empresa_categorias') }}">Empresas y Categorias</a>
+								<a class="dropdown-item" href="{{ route('bitacora') }}">Bitacora</a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
 							</div>

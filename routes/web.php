@@ -48,6 +48,7 @@ Route::middleware(['auth', 'optimizeImages'])->group(function(){
 		Route::get('/cero', 'AdminController@cero')->name('cero')->middleware('almacen');
 		Route::get('/venta', 'AdminController@compra_venta')->name('venta')->middleware('costos');
 		Route::get('/empresa_categorias', 'AdminController@empresa_categorias')->name('empresa_categorias')->middleware('admin');
+		Route::get('/bitacora', 'AdminController@bitacora')->name('bitacora')->middleware('admin');
 		Route::resource('/cuentas-bancarias', 'BankAccountController')->middleware('admin');
 		Route::put('/confirmar-pedido/{id}', 'AdminController@confirmar_pedido');
 		Route::put('/confirmar-pedido-delivery/{id}', 'AdminController@confirmar_pedido_delivery');

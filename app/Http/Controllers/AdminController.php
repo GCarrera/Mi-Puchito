@@ -99,6 +99,15 @@ class AdminController extends Controller
 			// ->with('categoriasCount', $categoriasCount);
 	}
 
+	public function bitacora()
+	{
+		$logs = DB::table('logs')->orderBy('id', 'desc')->get();
+		$almacen = '01-Cagua';		
+
+		return view('admin.bitacora')
+			->with('logs', $logs);
+	}
+	
 	public function inventario()
 	{
 		$categorias      = Category::select('id', 'name')->get();
