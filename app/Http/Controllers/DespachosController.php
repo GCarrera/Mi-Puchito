@@ -437,6 +437,7 @@ class DespachosController extends Controller
         }))
         ->select('id', 'product_name', 'unit_type', 'unit_type_menor', 'status', 'qty_per_unit', 'total_qty_prod')
         ->where('status', 1)
+        ->where('total_qty_prod', '>', 0,000)
         ->get();
 
         return response()->json(["piso_ventas" => $piso_ventas, "productos" => $productos]);
