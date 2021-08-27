@@ -193,7 +193,7 @@
          });
          //console.log(this.inventarioSelect);
        }).catch(e => {
-         console.log(e.respose);
+         console.log(e.response)
        });
      },
      establecer_nombre(id, valor){//COLOCAR EL NOMBRE AL PRODUCTO QUE ESTOY AGREGANDO
