@@ -175,7 +175,7 @@ class InventoryController extends Controller
             'cant_prod' => 'required|max:191',
             'category' => 'required|integer',
             'enterprise' => 'required|integer',
-		]);
+		    ]);
 
         if ($validator->fails()) {
             return redirect()->back()

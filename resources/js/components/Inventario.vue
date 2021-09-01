@@ -282,7 +282,8 @@
           _method: 'delete'
         })
         .then(response=>{
-            window.location = "/admin/inventariov";
+            //window.location = "/admin/inventariov";
+            location.reload();
         }).catch(e => {
           console.log(e.response)
         });
@@ -294,7 +295,8 @@
           cantidad: plus
         })
         .then(response=>{
-            window.location = "/admin/inventariov";
+            //window.location = "/admin/inventariov";
+            location.reload();
         }).catch(e => {
           console.log(e.response)
         });
@@ -306,7 +308,8 @@
           cantidad: minus
         })
         .then(response=>{
-            window.location = "/admin/inventariov";
+            //window.location = "/admin/inventariov";
+            location.reload();
         }).catch(e => {
           console.log(e.response)
         });
