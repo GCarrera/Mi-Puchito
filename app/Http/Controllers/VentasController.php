@@ -256,12 +256,12 @@ class VentasController extends Controller
 		            $detalles->save();
 
 		            //RESTAMOS DEL STOCK
-                $idArticuloConsulta = $articulo['id'];
+                	$idArticuloConsulta = $articulo['id'];
 		            $inventario = Inventario_piso_venta::where('piso_venta_id', $request->piso_venta_id)->where('inventario_id', $idArticuloConsulta)->whereHas('inventario', function($q){
 		            	//$q->where('inventory_id', $producto['inventory_id']);
 		            })->orderBy('id', 'desc')->first();
 		            //SI NO ENCUENTRA EL PRODUCTO QUE LO REGISTRE
-                $leng = isset($inventario['id']) ? $inventario['id'] : null;
+                	$leng = isset($inventario['id']) ? $inventario['id'] : null;
 		            if ($leng == null) {
                         //REGISTRA LA CANTIDAD EN EL INVENTARIO DEL PISO DE VENTA
                         $inventario = new Inventario_piso_venta();

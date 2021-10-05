@@ -236,7 +236,7 @@
         totalRows: 1,
         currentPage: 1,
         perPage: 5,
-        pageOptions: [5, 10, 15, { value: 100, text: "Mostrar Todo" }],
+        pageOptions: [10, 20, 30, { value: 100, text: "Mostrar Todo" }],
         sortBy: '',
         sortDesc: false,
         sortDirection: 'asc',
