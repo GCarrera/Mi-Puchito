@@ -135,7 +135,8 @@ class DespachosController extends Controller
     public function ultimo_retiro($id)
     {
 
-        $despacho = Despacho::select('id_extra')->where('piso_venta_id', $id)->where('type', 2)->orderBy('id', 'desc')->first();
+        //$despacho = Despacho::select('id_extra')->where('piso_venta_id', $id)->where('type', 2)->orderBy('id', 'desc')->first();
+        $despacho = Despacho::select('created_at')->where('piso_venta_id', $id)->where('type', 2)->orderBy('id', 'desc')->first();
 
         return response()->json($despacho);
     }
@@ -253,6 +254,7 @@ class DespachosController extends Controller
               $registro->id_extra = $despacho['id'];
               $registro->piso_venta_id = $despacho['piso_venta_id'];
               $registro->type = $despacho['type'];
+              $registro->created_at = $despacho['created_at'];
               $registro->save();
 
               foreach ($despacho['productos'] as $producto) {
