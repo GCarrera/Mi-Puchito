@@ -269,13 +269,13 @@ class DespachosController extends Controller
                   $inventario = Inventario_piso_venta::whereHas('inventario', function($q)use($producto){
                       $q->where('inventory_id', $producto['pivot']['inventory_id']);
                   })->where('piso_venta_id', $despacho['piso_venta_id'])->orderBy('id', 'desc')->first();
-                  $inventario->cantidad -= $detalle['pivot']['cantidad'];
+                  $inventario->cantidad -= $producto['pivot']['cantidad'];
                   $inventario->sincronizacion = 2;
                   $inventario->save();
 
                   //SUMAMOS DE INVENTORY DE PROMETHEUS
                   $inventario = Inventory::findOrFail($detalle['id']);
-                  $inventario->total_qty_prod += $detalle['pivot']['cantidad'];
+                  $inventario->total_qty_prod += $producto['pivot']['cantidad'];
                   $inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
                   $inventario->save();
 
