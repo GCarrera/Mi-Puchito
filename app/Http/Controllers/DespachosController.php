@@ -254,6 +254,7 @@ class DespachosController extends Controller
               $registro->id_extra = $despacho['id'];
               $registro->piso_venta_id = $despacho['piso_venta_id'];
               $registro->type = $despacho['type'];
+              $despacho->confirmado = 1;
               $registro->created_at = $despacho['created_at'];
               $registro->save();
 
