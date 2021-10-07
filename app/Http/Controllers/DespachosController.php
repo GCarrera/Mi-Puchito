@@ -751,6 +751,8 @@ class DespachosController extends Controller
             $despacho->type = 2;
             $despacho->confirmado = 1;
             $despacho->save();
+            
+            $id = $despacho->id;
 
             $despacho->id_extra = $despacho->id;
             $despacho->save();
@@ -819,6 +821,9 @@ class DespachosController extends Controller
 
             DB::commit();
 
+            DB::table('logs')->insert(
+                ['accion' => 'Guardar Retiro - '.$producto['cantidad'].' unidades - Despacho '.$id.' - Quedan '.$inventario->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $inventario->product_name, 'created_at' => Carbon::now() ]
+            );
             return response()->json($despacho->id);
 
         }catch(Exception $e){
