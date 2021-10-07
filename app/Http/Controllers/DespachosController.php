@@ -274,7 +274,7 @@ class DespachosController extends Controller
                   $inventario->save();
 
                   //SUMAMOS DE INVENTORY DE PROMETHEUS
-                  $inventario = Inventory::findOrFail($detalle['id']);
+                  $inventario = Inventory::findOrFail($producto['pivot']['inventory_id']);
                   $inventario->total_qty_prod += $producto['pivot']['cantidad'];
                   $inventario->quantity = $inventario->total_qty_prod / $inventario->qty_per_unit;
                   $inventario->save();
