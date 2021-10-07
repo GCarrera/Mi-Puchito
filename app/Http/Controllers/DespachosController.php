@@ -288,7 +288,7 @@ class DespachosController extends Controller
           DB::commit();
 
           DB::table('logs')->insert(
-            ['accion' => 'Guardar Retiro - '.$producto['pivot']['cantidad'].' unidades - Despacho '.$id.' - Quedan '.$inventario->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $inventario->product_name, 'created_at' => Carbon::now() ]
+            ['accion' => 'Guardar Retiro - '.$producto['pivot']['cantidad'].' unidades - Despacho '.$id.' - Quedan '.$inventario->total_qty_prod, 'usuario' => $registro->piso_venta_id, 'inventories' => $inventario->product_name, 'created_at' => Carbon::now() ]
         );
 
           return response()->json(true);
