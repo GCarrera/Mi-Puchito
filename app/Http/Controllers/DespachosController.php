@@ -254,9 +254,11 @@ class DespachosController extends Controller
               $registro->id_extra = $despacho['id'];
               $registro->piso_venta_id = $despacho['piso_venta_id'];
               $registro->type = $despacho['type'];
-              $despacho->confirmado = 1;
+              $registro->confirmado = 1;
               $registro->created_at = $despacho['created_at'];
               $registro->save();
+
+              $id = $registro->id;
 
               foreach ($despacho['productos'] as $producto) {
                   //REGISTRAMOS LOS PRODUCTOS
@@ -284,6 +286,10 @@ class DespachosController extends Controller
           }
 
           DB::commit();
+
+          DB::table('logs')->insert(
+            ['accion' => 'Guardar Retiro - '.$producto['pivot']['cantidad'].' unidades - Despacho '.$id.' - Quedan '.$inventario->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $inventario->product_name, 'created_at' => Carbon::now() ]
+        );
 
           return response()->json(true);
 
@@ -740,7 +746,7 @@ class DespachosController extends Controller
         }
     }
 
-    public function store_retiro(Request $request)
+    public function store_retiross(Request $request)
     {
         try{
 
