@@ -278,6 +278,10 @@ class VentasController extends Controller
 	                    }else if ($venta->type == 2){
 	                    	$inventario->cantidad += $producto['pivot']['cantidad'];
 	                    }
+
+						if ($inventario->cantidad < 0) {
+							$inventario->cantidad = 0;
+						}
 		            }
 		            //
 		            //VALICACION POR SI NO HAY SUFICIENTES PRODUCTOS
