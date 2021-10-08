@@ -637,6 +637,7 @@ class AdminController extends Controller
 
 	public function establecer_dolar(Request $request)
 	{
+		$select = Dolar::orderby('id','DESC')->first();//ULTIMO DOLAR
 
 		$price = ($request->precio != '') ? $request->precio : NULL;
 		$priceo = ($request->precioo != '') ? $request->precioo : NULL;
@@ -645,13 +646,13 @@ class AdminController extends Controller
 		if ($price != NULL) {
 			$dolar->price = $request->precio;
 		} else {
-			$dolar->price = $dolar->price;
+			$dolar->price = $select->price;
 		}
 
 		if ($priceo != NULL) {
 			$dolar->priceo = $request->precioo;
 		} else {
-			$dolar->priceo = $dolar->priceo;
+			$dolar->priceo = $select->priceo;
 		}
 		
 		$dolar->save();
