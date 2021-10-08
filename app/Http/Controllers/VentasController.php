@@ -175,7 +175,8 @@ class VentasController extends Controller
     public function ultima_venta($piso_venta)//DEL LADO DE LA WEB
     {
     	//OBTENEMOS LA ULTIMA VENTA QUE TIENE LA WEB Y LE MANDAMOS EL ID_EXTRA
-    	$venta = Venta::select('id_extra')->where('piso_venta_id', $piso_venta)->orderBy('id', 'desc')->first();
+    	//$venta = Venta::select('id_extra')->where('piso_venta_id', $piso_venta)->orderBy('id', 'desc')->first();
+    	$venta = Venta::select('created_at')->where('piso_venta_id', $piso_venta)->orderBy('id', 'desc')->first();
 
     	return response()->json($venta);
     }

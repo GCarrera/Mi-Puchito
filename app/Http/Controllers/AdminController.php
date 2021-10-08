@@ -637,10 +637,23 @@ class AdminController extends Controller
 
 	public function establecer_dolar(Request $request)
 	{
-		$dolar = new Dolar();
 
-		$dolar->price = $request->precio;
-		$dolar->priceo = $request->precioo;
+		$price = ($request->precio != '') ? $request->precio : NULL;
+		$priceo = ($request->precioo != '') ? $request->precioo : NULL;
+
+		$dolar = new Dolar();
+		if ($price != NULL) {
+			$dolar->price = $request->precio;
+		} else {
+			$dolar->price = $dolar->price;
+		}
+
+		if ($priceo != NULL) {
+			$dolar->priceo = $request->precioo;
+		} else {
+			$dolar->priceo = $dolar->priceo;
+		}
+		
 		$dolar->save();
 
 		return redirect()->back()->with('success', 'Nuevo precio del dolar establecido.');
