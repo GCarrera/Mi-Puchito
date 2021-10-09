@@ -59,7 +59,7 @@ class PisoVentasController extends Controller
 
     public function ventas_mostrar($id)
     {
-      $ventas = Venta::with('detalle')->where('piso_venta_id', $id)->where('type', 1)->get();
+      $ventas = Venta::with('detalle')->where('piso_venta_id', $id)->where('type', 1)->limit(1555)->get();
       $piso_ventas = Piso_venta::where('id', $id)->get();
     	return view('admin.piso_ventas_ventas')
       ->with('piso_venta', $piso_ventas)
