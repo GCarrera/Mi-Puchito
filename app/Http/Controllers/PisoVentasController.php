@@ -354,8 +354,8 @@ class PisoVentasController extends Controller
     public function auditorias(Request $request)
     {
       $status = Inventario::where('piso_venta_id', $request->id)
-          ->where('audit', 0)
-          ->update(['audit' => 1]);
+          ->where('audit', 1)
+          ->update(['audit' => 0]);
 
       return response()->json($status);
     }
