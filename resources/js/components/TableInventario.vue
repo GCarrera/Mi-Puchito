@@ -27,7 +27,7 @@
 			</thead>
 			<tbody>
 				<tr v-for="(producto, index) in productos" :key="index">
-					<td>{{producto.inventario.name}}</td>
+					<td v-if="producto.inventario.audit == 1"><b-badge variant="info">{{producto.inventario.name}}</b-badge></td>
 					<td v-if="producto.sincronizacion == 1"><b-badge variant="warning">{{producto.cantidad}}</b-badge></td>
 					<td v-else><b-badge variant="success">{{producto.cantidad}}</b-badge></td>
 					<td>{{new Intl.NumberFormat("de-DE", {minimumFractionDigits: 2}).format(producto.inventario.precio.total_menor)}}</td>
