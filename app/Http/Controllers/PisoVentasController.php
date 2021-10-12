@@ -355,7 +355,7 @@ class PisoVentasController extends Controller
     {
       $status = Inventario::where('piso_venta_id', $request->id)
           ->where('audit', 1)
-          ->update(['audit' => 0]);
+          ->update(['audit' => '0']);
 
       return response()->json($status);
     }
