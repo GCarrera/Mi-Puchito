@@ -335,6 +335,16 @@ class PisoVentasController extends Controller
 
       return response()->json(['productos' => $productos, 'softdeletes' => $softdeletes, 'cantidades' => $cantidades]);
     }
+    
+    public function auditoriap(Request $request)
+    {      
+      $cantidades = Inventario_piso_venta::whereHas('inventario', function($inventario) use($request)
+      {
+        $inventario->where('piso_venta_id', $request->id)->where('audit', 1);
+      })->with('inventario:id,inventory_id')->where('piso_venta_id', $request->id)->get();
+
+      return response()->json(['cantidades' => $cantidades]);
+    }
 
     public function actualizar_dinero_piso_venta($id, Request $request)//WEB Y LOCAL
     {

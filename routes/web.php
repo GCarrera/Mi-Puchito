@@ -154,6 +154,7 @@ Route::group(['prefix' => 'api'], function(){
 	//PISOS DE VENTAS
 	Route::post('/piso-venta-cantidad-edit', 'PisoVentasController@cantidad_edit');
 	Route::post('/auditoria', 'PisoVentasController@auditoria');
+	Route::post('/auditoriap', 'PisoVentasController@auditoriap');
 
 	//USUARIO
 	Route::get('/get-id', 'UsersController@get_id');
