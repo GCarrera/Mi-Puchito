@@ -346,6 +346,15 @@ class PisoVentasController extends Controller
 
       return response()->json(['cantidades' => $cantidades]);
     }
+    
+    public function auditorias(Request $request)
+    {
+      $status = Inventario::where('piso_venta_id', $request->id)
+          ->where('audit', 0)
+          ->update(['audit' => 1]);
+
+      return response()->json($status);
+    }
 
     public function actualizar_dinero_piso_venta($id, Request $request)//WEB Y LOCAL
     {
