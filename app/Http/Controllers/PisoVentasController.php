@@ -296,6 +296,7 @@ class PisoVentasController extends Controller
       $producto = Inventario_piso_venta::where('id', $request->idproductos)->orderBy('id', 'desc')->first();
 
       $producto->cantidad = $request->cantidad;
+      $producto->audit = 1;
       $producto->save();
 
       return response()->json($producto);
