@@ -15,7 +15,7 @@ class AlmacenMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if (auth()->check() && auth()->user()->type == 'almacen' || auth()->user()->type == 'admin' || auth()->user()->type == 'costos') {
+      if (auth()->check() && auth()->user()->type == 'almacen' || auth()->user()->type == 'admin' || auth()->user()->type == 'costos' || auth()->user()->type == 'cajero') {
           return $next($request);
       }
 
