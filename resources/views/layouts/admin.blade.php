@@ -173,36 +173,7 @@
 							</div>
 						</li>
 					</ul>
-				@break
-
-				@case("cajero")
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item" id="dolar">
-							<a class="nav-link" id="btn_dolar" href="#"><i class="fas fa-dollar-sign mr-2"></i>Dolar</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="inventoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-clipboard-list mr-2"></i>Almacen
-							</a>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="{{ route('inventariov') }}">Inventario</a>
-								<a class="dropdown-item" href="{{ route('faltantes') }}">Faltantes</a>
-								<a class="dropdown-item" href="{{ route('cero') }}">Sin Existencia</a>
-							</div>
-						</li>
-						<li class="nav-item" id="venta">
-							<a class="nav-link" href="{{ route('venta') }}"><i class="fas fa-clipboard-list mr-2"></i>Costos</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fas fa-user mr-2"></i>Cajero
-							</a>
-							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" onclick="$('#logoutform').submit()" href="#">Salir</a>
-							</div>
-						</li>
-					</ul>
-				@break
+					@break
 
 		@endswitch
 
