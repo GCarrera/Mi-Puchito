@@ -54,6 +54,10 @@ class LoginController extends Controller
         if (auth()->user()->type == 'operador') {
             return '/admin';
         }
+        
+        if (auth()->user()->type == 'cajero') {
+            return '/admin/inventariov';
+        }
 
         return '/home';
     }
