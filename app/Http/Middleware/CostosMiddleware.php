@@ -15,7 +15,7 @@ class CostosMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if (auth()->check() && auth()->user()->type == 'costos' || auth()->user()->type == 'admin') {
+      if (auth()->check() && auth()->user()->type == 'costos' || auth()->user()->type == 'admin' || auth()->user()->type == 'cajero') {
           return $next($request);
       }
 
