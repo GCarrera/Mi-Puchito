@@ -227,8 +227,6 @@ class InventoryController extends Controller
 
       $producto->delete();
 
-      $inventario->delete();
-
       $inventory->delete();
 
         DB::table('logs')->insert(
