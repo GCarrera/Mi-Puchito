@@ -283,7 +283,8 @@
         })
         .then(response=>{
             //window.location = "/admin/inventariov";
-            location.reload();
+            console.log(response);
+            //location.reload();
         }).catch(e => {
           console.log(e.response)
         });
