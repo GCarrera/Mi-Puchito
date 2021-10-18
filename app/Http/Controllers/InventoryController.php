@@ -220,7 +220,15 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-        $inventory->delete();
+      $inventario = Inventario::where('inventory_id', $inventory->id)->orderBy('id', 'desc')->first();
+
+      $producto = Inventario_piso_venta::where('inventario_id', $inventario->id)->orderBy('id', 'desc')->first();
+
+      $producto->delete();
+
+      $inventario->delete();
+
+      $inventory->delete();
 
         DB::table('logs')->insert(
           ['accion' => 'borrar producto', 'usuario' => auth()->user()->email, 'inventories' => $inventory->product_name, 'created_at' => Carbon::now() ]
