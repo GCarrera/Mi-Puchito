@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Inventory;
 use App\Inventario;
+use App\Inventario_piso_venta;
 use DB;
 use Carbon\Carbon;
 
