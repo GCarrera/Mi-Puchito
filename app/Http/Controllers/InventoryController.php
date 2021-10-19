@@ -223,8 +223,6 @@ class InventoryController extends Controller
     {
       $inventario = Inventario::where('inventory_id', $inventory['id'])->orderBy('id', 'desc')->first();
 
-      return $inventario;
-
       $producto = Inventario_piso_venta::where('inventario_id', $inventario->id)->first();
 
       $producto->delete();
