@@ -284,7 +284,7 @@
         .then(response=>{
             //window.location = "/admin/inventariov";
             console.log(response);
-            //location.reload();
+            location.reload();
         }).catch(e => {
           console.log(e.response)
         });
