@@ -221,9 +221,9 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-      $inventario = Inventario::where('inventory_id', $inventory)->orderBy('id', 'desc')->first();
+      $inventario = Inventario::where('inventory_id', $inventory['id'])->orderBy('id', 'desc')->first();
 
-      return $inventory['id'];
+      return $inventario;
 
       $producto = Inventario_piso_venta::where('inventario_id', $inventario->id)->first();
 
