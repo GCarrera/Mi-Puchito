@@ -404,7 +404,8 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fas fa-times mr-2"></i>Cerrar</button>
-					<button type="submit" id="sendformedit" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
+					<!--<button type="submit" id="sendformedit" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>-->
+					<button type="button" onclick='saveEdit()' id="sendformedit" class="btn btn-primary"><i class="fas fa-edit mr-2"></i>Editar</button>
 				</div>
 			</form>
 		</div>
@@ -415,6 +416,11 @@
 
 @push('scripts')
 <script>
+
+	function saveEdit() {
+		$('#sendformedit').prop('disabled', true);
+		$('#editarForm').submit();
+	}
 
 	function showEdit(id) {
 		$('#editarPrecio').modal('show');
