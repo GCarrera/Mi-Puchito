@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Inventory;
 use App\Inventario;
+use App\Product;
 use App\Inventario_piso_venta;
 use DB;
 use Carbon\Carbon;
@@ -222,6 +223,12 @@ class InventoryController extends Controller
     public function destroy(Inventory $inventory)
     {
       $inventario = Inventario::where('inventory_id', $inventory['id'])->orderBy('id', 'desc')->get();
+      
+      $precio = Product::where('inventory_id', $inventory['id'])->orderBy('id', 'desc')->first();
+
+      if (isset($precio->id)) {
+        $precio->delete();
+      }
       
       //return $inventario->id;
 
