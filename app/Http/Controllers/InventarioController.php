@@ -98,14 +98,29 @@ class InventarioController extends Controller
 	{
 		$data = [];
 
-		foreach ($request->data as $key => $value) {
-            $product = Product::where('inventory_id', $value['inventory_id'])->first();
-            if ($product->retail_total_price != $value['retail_total_price']) {
-                array_push($data, $product);
-            }
-		}
+        try{
 
-    	return response()->json($data);
+            DB::beginTransaction();
+
+            foreach ($request->data as $key => $value) {
+                $product = Product::where('inventory_id', $value['inventory_id'])->first();
+                if (isset($product->retail_total_price)) {
+                    if ($product->retail_total_price != $value['retail_total_price']) {
+                        array_push($data, $product);
+                    }
+                }
+            }
+                
+            DB::commit();
+            
+            return response()->json($data);
+
+        }catch(Exception $e){
+
+            DB::rollback();
+            return response()->json($e);
+        }
+		
 	}
 
     public function store_inventory(Request $request)
