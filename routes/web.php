@@ -179,7 +179,7 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('/get-despachos-sin-confirmacion/{piso_venta_id}', 'DespachosController@get_despachos_sin_confirmacion');
 	Route::post('/get-despachos-confirmados', 'DespachosController@get_despachos_confirmados');
 	Route::post('/actualizar-confirmados', 'DespachosController@actualizar_confirmaciones');
-	Route::post('/get-despachos-no-guardados', 'DespachosController@get_despachos_no_guardados')->middleware('cors');
+	Route::post('/get-despachos-no-guardados', 'DespachosController@get_despachos_no_guardados');
 
 	Route::post('/get-despachos-web', 'DespachosController@get_despachos_web');
 	Route::get('/ultimo-despacho', 'DespachosController@ultimo_despacho');
