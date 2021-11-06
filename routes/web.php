@@ -132,6 +132,7 @@ Route::post('/solicitud/{id}', 'PisoVentasController@finish_solicitud');
 
 Route::get('/piso-ventas/ventas/{id}', 'PisoVentasController@ventas_mostrar');
 Route::get('/piso-ventas/inventario/{id}', 'PisoVentasController@inventario_mostrar');
+Route::get('/piso-ventas/inventariov/{id}', 'PisoVentasController@inventario_mostrarv');
 Route::get('/piso-ventas/despachos/{id}', 'PisoVentasController@despachos_mostar');
 Route::get('/piso-ventas/retiros/{id}', 'PisoVentasController@retiros_mostrar');
 Route::get('/piso-ventas/cajas/{id}', 'PisoVentasController@cajas_mostrar');
@@ -178,6 +179,7 @@ Route::group(['prefix' => 'api'], function(){
 	Route::get('/get-despachos-sin-confirmacion/{piso_venta_id}', 'DespachosController@get_despachos_sin_confirmacion');
 	Route::post('/get-despachos-confirmados', 'DespachosController@get_despachos_confirmados');
 	Route::post('/actualizar-confirmados', 'DespachosController@actualizar_confirmaciones');
+	Route::post('/get-despachos-no-guardados', 'DespachosController@get_despachos_no_guardados');
 
 	Route::post('/get-despachos-web', 'DespachosController@get_despachos_web');
 	Route::get('/ultimo-despacho', 'DespachosController@ultimo_despacho');

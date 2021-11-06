@@ -322,6 +322,19 @@ class DespachosController extends Controller
 
         return response()->json($despachos);
     }
+    
+    public function get_despachos_no_guardados(Request $request)//RECIBE EL RESULTADO DEL METODO ANTERIOR
+    {
+        $despachos = [];
+
+        foreach ($request->despachos as $valor) {
+
+            $despachos[] = Despacho::where('id', $valor['id_extra'])->first();
+        }
+
+
+        return response()->json($despachos);
+    }
 
     public function actualizar_confirmaciones(Request $request)//DEL LADO DE LA WEB
     {
