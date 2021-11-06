@@ -145,7 +145,8 @@ class DespachosController extends Controller
     {
 
         //$despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->get();
-        $despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->where('type', '!=', '2')->get();
+        $despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('type', '!=', '2')->get();
+        //$despachos = Despacho::with('productos', 'productos.product')->where('piso_venta_id', $request->piso_venta_id)->where('id_extra', '>', $request->ultimo_despacho)->where('confirmado', '!=', 3)->where('type', '!=', '2')->get();
 
         return response()->json($despachos);
 
