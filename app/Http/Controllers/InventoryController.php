@@ -41,7 +41,9 @@ class InventoryController extends Controller
       DB::beginTransaction();
 
       try {
-        $sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
+
+        //RECICLAJE DE ID AL REGISTRAR UN NUEVO PRODUCTO
+        /*$sofdeletevalidate = Inventory::withTrashed()->where('product_name', $req->input('product_name'))->where('deleted_at', '!=', NULL)->first();
         if (isset($sofdeletevalidate->id)) {
 
           $id = $sofdeletevalidate->id;
@@ -88,15 +90,17 @@ class InventoryController extends Controller
           DB::commit();
 
           DB::table('logs')->insert(
-            ['accion' => 'Registro de producto desde cero - cantidad '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+            ['accion' => 'Registro de producto borrado antiguamente - cantidad '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
           );
 
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
 
         } else {
+        */
 
           $validator = Validator::make($req->all(), [
               'product_name' => 'required|max:191|unique:App\Inventory,product_name',
+              //'product_name' => 'required|max:191',
               'description' => 'nullable|max:191',
               'cantidad' => 'required|max:191',
               'tipo_unidad' => 'required|max:191',
@@ -135,10 +139,10 @@ class InventoryController extends Controller
           DB::commit();
 
           DB::table('logs')->insert(
-            ['accion' => 'Registro de producto borrado - quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
+            ['accion' => 'Registro de producto nuevo - quedan '.$inventory->total_qty_prod, 'usuario' => auth()->user()->email, 'inventories' => $req->input('product_name'), 'created_at' => Carbon::now() ]
           );
           return redirect()->back()->with('success', 'Producto registrado exitosamente en el inventario.');
-        }
+        //}
       } catch (\Exception $e) {
         DB::rollback();
         //return response()->json($e);
