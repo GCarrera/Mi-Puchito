@@ -99,8 +99,8 @@ class InventoryController extends Controller
         */
 
           $validator = Validator::make($req->all(), [
-              'product_name' => 'required|max:191|unique:App\Inventory,product_name',
-              //'product_name' => 'required|max:191',
+              //'product_name' => 'required|max:191|unique:App\Inventory,product_name',
+              'product_name' => 'required|max:191',
               'description' => 'nullable|max:191',
               'cantidad' => 'required|max:191',
               'tipo_unidad' => 'required|max:191',
