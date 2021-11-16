@@ -41,9 +41,9 @@ class InventoryController extends Controller
       DB::beginTransaction();
 
       try {
+        //'product_name' => 'required|max:191|unique:App\Inventory,product_name', --> SIN RECICLAJE DE ID ES NO ES POSIBLE ASEGURAR NOMBRES UNICOS
 
         $validator = Validator::make($req->all(), [
-          //'product_name' => 'required|max:191|unique:App\Inventory,product_name', --> SIN RECICLAJE DE ID ES NO ES POSIBLE ASEGURAR NOMBRES UNICOS
           'product_name' => 'required|max:191',
           'description' => 'nullable|max:191',
           'cantidad' => 'required|max:191',
