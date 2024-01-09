@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         "session" => \App\Http\Middleware\CheckSession::class,
         'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
         "cors" => \App\Http\Middleware\Cors::class,
+        "api.token" => \App\Http\Middleware\ApiToken::class,
     ];
 
     /**
