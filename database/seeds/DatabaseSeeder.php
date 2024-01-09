@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-            StatesTableSeeder::class,
+            ProductoSeeder::class,
+            BranchSeeder::class,
+            DispatchSeeder::class,
+            /* StatesTableSeeder::class,
             CitiesTableSeeder::class,
             SectorsTableSeeder::class,
             UsersTableSeeder::class,
@@ -25,7 +28,7 @@ class DatabaseSeeder extends Seeder
             InventoriesTableSeeder::class,
             BankAccountsSeeder::class,
             DolarsTableSeeder::class,
-            PisoVentasTableSeeder::class
+            PisoVentasTableSeeder::class */
         ]);
 
     }
